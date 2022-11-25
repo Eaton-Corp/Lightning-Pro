@@ -10,7 +10,7 @@ Note: If this is your first time using git the following [video](https://www.you
 
 2. Open the git bash terminal 
 
-3. Git clone "url"
+3. `git -c http.sslVerify=false clone https://github.com/Eaton-Corp/Lightning-Pro.git`
 
 ## Start Developing
 
