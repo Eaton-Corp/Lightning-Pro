@@ -12,6 +12,6 @@ Note: If this is your first time using git the following [video](https://www.you
 
 3. Git clone "url"
 
-## Get Developing
+## Start Developing
 
 ## Deployment
