@@ -1,0 +1,238 @@
+﻿<UserControl x:Class="PRL123_Final.Views.Assembler"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PRL123_Final.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="1920" d:DesignWidth="1080" KeyDown="KeyDownClick">
+    <Grid Background="White" >
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="255"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="175"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Grid.Column="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.6*"/>
+                <ColumnDefinition Width="0.4*"/>
+                <ColumnDefinition  Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="19"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Button Name="PWL123" Visibility="Hidden" Grid.Column="0" Content="PRL123" Height="28" Background="Blue" VerticalAlignment="Center" Foreground="White" />
+            <Button Name="PWL4" Visibility="Hidden" Grid.Column="0"  Content="PRL4"  Height="28"  Background="Blue" VerticalAlignment="Center" Foreground="White" />
+            <Button Name ="PWLCS" Visibility="Hidden" Grid.Column="0" Content="CS" Height="28" Background="Blue" VerticalAlignment="Center" Foreground="White" />
+            <Button Name="PWLEC"  Visibility="Hidden"  Grid.Column="0"  Content="EC"  Height="28"  Background="Blue" VerticalAlignment="Center" Foreground="White" />
+
+            <Button Background="LightGray" Foreground="White" Grid.Column="1" Grid.Row="0" Height="40" Width="40" Click="Scan_Click" ToolTip="Scan">
+                <DockPanel>
+                    <Image Width="25" Height="25" Source="/Assets/qr-code.png"/>
+                </DockPanel>
+            </Button>
+            
+            <TextBox x:Name="Scan" Grid.Row="0" Grid.Column="2" TextWrapping="Wrap"  Height="24" />
+
+            <CheckBox x:Name="SpecialCustomer" Content="Special Customer" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <TextBox x:Name="Customer" Grid.Row="1" Grid.Column="2" TextWrapping="Wrap"  Height="24" />
+
+            <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="47"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <CheckBox x:Name="AMO" Content="AMO" Grid.Row="0" Grid.Column="0" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <Button Name="AMOButton" Content="AMO" Visibility="Hidden" Grid.Row="0" Grid.Column="1" FontSize="9" Height="17" Width="60"  Click="AMO_Clicked" />
+            </Grid>
+            
+            <CheckBox x:Name="DNSB" Visibility="Hidden" Content="DNSB" Grid.Row="2" Grid.Column="2" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+            <Grid x:Name="checkBoxGridPRL123" Visibility="Hidden" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Grid.RowSpan="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <CheckBox x:Name="BoxEarly" Content="Box Early" Grid.Row="0" Grid.Column="0" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <CheckBox x:Name="BoxSent" Content="Box Sent" Grid.Row="0" Grid.Column="1" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <CheckBox x:Name="RatedNeutral200" Content="200% RN" Grid.Row="1" Grid.Column="0" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <CheckBox x:Name="ServiceEntrance" Content="Service Entrance" Grid.Row="1" Grid.Column="1" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <CheckBox x:Name="DoubleSection" Content="Double Section" Grid.Row="2" Grid.Column="0" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <CheckBox x:Name="PaintedBox" Content="Painted Box" Grid.Row="2" Grid.Column="1" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <CheckBox x:Name="Complete" Content="Complete" Grid.Row="3" Grid.Column="0" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <CheckBox x:Name="Short" Content="Short" Grid.Row="3" Grid.Column="1" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            </Grid>
+
+            <Grid x:Name="checkBoxGridPRL4" Visibility="Hidden" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Grid.RowSpan="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <CheckBox x:Name="DNSB_4" Content="DNSB" Grid.Row="0" Grid.Column="0" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <CheckBox x:Name="ServiceEntrance_4" Content="Service Entrance" Grid.Row="0" Grid.Column="1" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <CheckBox x:Name="RatedNeutral200_4" Content="200% RN" Grid.Row="1" Grid.Column="0" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <CheckBox x:Name="PaintedBox_4" Content="Painted Box" Grid.Row="1" Grid.Column="1" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <CheckBox x:Name="DoorOverDist_4" Content="DoorOverDist" Grid.Row="2" Grid.Column="0" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <CheckBox x:Name="DoorInDoor_4" Content="DoorInDoor" Grid.Row="2" Grid.Column="1" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <CheckBox x:Name="Complete_4" Content="Complete" Grid.Row="3" Grid.Column="0" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <CheckBox x:Name="Short_4" Content="Short" Grid.Row="3" Grid.Column="1" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            </Grid>
+        </Grid>
+
+        <Grid x:Name="AssemblerData" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="1" Grid.RowSpan="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="65"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="45"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="90"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="7"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Content="GO Item:" HorizontalAlignment="Left" Grid.Row="0" Grid.Column="0" FontSize="14" VerticalAlignment="Center" Width="70"/>
+            <Label Content="Amps:" HorizontalAlignment="Left" Grid.Row="0" Grid.Column="2" FontSize="14" VerticalAlignment="Center" Width="70"/>
+            <Label Content="Bus:" HorizontalAlignment="Left" Grid.Row="0" Grid.Column="4"  FontSize="14" VerticalAlignment="Center" Width="70"/>
+            <Label Content="Appearance:" HorizontalAlignment="Left" Grid.Row="0" Grid.Column="6" FontSize="14" VerticalAlignment="Center" Width="90"/>
+            <Label Content="Torque:" HorizontalAlignment="Left" Grid.Row="1" Grid.Column="0" FontSize="14" VerticalAlignment="Center" Width="70"/>
+            <Label Content="Volts:" HorizontalAlignment="Left" Grid.Row="1" Grid.Column="2" FontSize="14" VerticalAlignment="Center" Width="70"/>
+            <Label Content="Type:" HorizontalAlignment="Left" Grid.Row="1" Grid.Column="4" FontSize="14" VerticalAlignment="Center" Width="70"/>
+            <Label Content="Urgency:" HorizontalAlignment="Left" Grid.Row="1" Grid.Column="6" FontSize="14" VerticalAlignment="Center" Width="70"/>
+
+            <TextBox x:Name="GO_Item" Grid.Row="0" Grid.Column="1" TextWrapping="Wrap" Height="24"/>
+
+            <ComboBox Name="Amps" Height="40" Grid.Row="0" Grid.Column="3" FontSize="16" VerticalAlignment="Center">
+                <ComboBoxItem FontSize="20" Content="100A"></ComboBoxItem>
+                <ComboBoxItem FontSize="20" Content="225A"></ComboBoxItem>
+                <ComboBoxItem FontSize="20" Content="250A"></ComboBoxItem>
+                <ComboBoxItem FontSize="20" Content="400A"></ComboBoxItem>
+                <ComboBoxItem FontSize="20" Content="600A"></ComboBoxItem>
+                <ComboBoxItem FontSize="20" Content="800A"></ComboBoxItem>
+                <ComboBoxItem FontSize="20" Content="1200A"></ComboBoxItem>
+            </ComboBox>
+            <ComboBox Name="Bus" Height="40" Grid.Row="0" Grid.Column="5" FontSize="16" VerticalAlignment="Center">
+                <ComboBoxItem FontSize="20" Content="ALUMINUM"></ComboBoxItem>
+                <ComboBoxItem FontSize="20" Content="COPPER"></ComboBoxItem>
+                <ComboBoxItem FontSize="20" Content="TIN"></ComboBoxItem>
+            </ComboBox>
+            <ComboBox Name="Volts" Height="40" Grid.Row="1" Grid.Column="3" FontSize="16" VerticalAlignment="Center">
+                <ComboBoxItem FontSize="20" Content="208Y/120V"></ComboBoxItem>
+                <ComboBoxItem FontSize="20" Content="240V/120"></ComboBoxItem>
+                <ComboBoxItem FontSize="20" Content="600Y/347V"></ComboBoxItem>
+                <ComboBoxItem FontSize="20" Content="600V"></ComboBoxItem>
+                <ComboBoxItem FontSize="20" Content="480Y/277V"></ComboBoxItem>
+                <ComboBoxItem FontSize="20" Content="480V"></ComboBoxItem>
+                <ComboBoxItem FontSize="20" Content="240V"></ComboBoxItem>
+            </ComboBox>
+            <ComboBox Name="Type" Height="40" Grid.Row="1" Grid.Column="5" FontSize="16" VerticalAlignment="Center">
+                <ComboBoxItem FontSize="20" Content="TYPE 1"></ComboBoxItem>
+                <ComboBoxItem FontSize="20" Content="TYPE 2"></ComboBoxItem>
+                <ComboBoxItem FontSize="20" Content="SPRINKLERPROOF"></ComboBoxItem>
+                <ComboBoxItem FontSize="20" Content="TYPE 3R"></ComboBoxItem>
+                <ComboBoxItem FontSize="20" Content="TYPE 4"></ComboBoxItem>
+                <ComboBoxItem FontSize="20" Content="TYPE 4X"></ComboBoxItem>
+                <ComboBoxItem FontSize="20" Content="TYPE 12"></ComboBoxItem>
+            </ComboBox>
+            <ComboBox x:Name="Torque" FontSize="16" Height="40" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center"/>
+            <ComboBox x:Name="Appearance" FontSize="16" Height="40" Grid.Row="0" Grid.Column="7" VerticalAlignment="Center"/>
+            <Label Name="Urgency" Content="" HorizontalAlignment="Left" FontSize="15" Grid.Row="1" Grid.Column="7" VerticalAlignment="Center"/>
+        </Grid>
+
+
+        <local:Editor x:Name="imgEditor" Grid.Row="1" Grid.Column="0" Grid.RowSpan="1" Grid.ColumnSpan="2"/>
+        <Image x:Name="Stop" Visibility="Hidden" Source="/Assets/StopItArnold.png" Grid.Row="1" Grid.Column="0" Grid.RowSpan="1" Grid.ColumnSpan="2"/>
+
+
+        <Grid Name="BottomBar" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="220"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="50"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Background="LightGray" Foreground="White" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Width="40" Height="40" Click="Click_ProductRecall" ToolTip="Send Back To Supervisor">
+                <DockPanel>
+                    <Image Width="25" Height="25" Source="/Assets/ProductRecall.png"/>
+                </DockPanel>
+            </Button>
+            <Button Background="LightGray" Foreground="White" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Width="40" Height="40" Click="Back_Click" ToolTip="Previous Page">
+                <DockPanel>
+                    <Image Width="25" Height="25" Source="/Assets/left-arrow (1).png"/>
+                </DockPanel>
+            </Button>
+            <Button Background="LightGray" Foreground="White" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" Width="40" Height="40" Click="Forward_Click" ToolTip="Next Page">
+                <DockPanel>
+                    <Image Width="25" Height="25" Source="/Assets/right-arrow (3).png"/>
+                </DockPanel>
+            </Button>
+            <Button Name="btnNotes" Background="LightGray" Foreground="White" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="3" VerticalAlignment="Center" Width="40" Height="40" Click="Notes_Click" ToolTip="View Notes">
+                <DockPanel>
+                    <Image Width="35" Height="35" Source="/Assets/Notes.png"/>
+                </DockPanel>
+            </Button>
+
+            <Label Name="LastSave" Content="" FontSize="16" Grid.Row="0" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Normal" Foreground="CadetBlue"/>
+            <Label Name="pg" Content="Page:" FontSize="16" Grid.Row="0" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Label Name="Status" Grid.Row="0" Grid.Column="6" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="12" />
+
+            <Button Background="LightGray" Foreground="White" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="7" VerticalAlignment="Center" Width="40" Height="40" Click="Save_Click" ToolTip="Save Current Page">
+                <DockPanel>
+                    <Image Width="25" Height="25" Source="/Assets/diskette.png"/>
+                </DockPanel>
+            </Button>
+            <Button Background="LightGray" Foreground="White" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="8" VerticalAlignment="Center" Width="40" Height="40" Click="BLT_Insert" ToolTip="Insert BLT Order Files">
+                <DockPanel>
+                    <Image Width="30" Height="35" Source="/Assets/SaveBLT.png"/>
+                </DockPanel>
+            </Button>
+            <Button Background="LightGray" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Grid.Column="9" Width="40" Height="40" Click="Shipping_Clicked" ToolTip="Send To Shipping">
+                <DockPanel>
+                    <Image Width="25" Height="25" Source="/Assets/shipping.png"/>
+                </DockPanel>
+            </Button>
+            
+        </Grid>
+
+    </Grid>
+</UserControl>

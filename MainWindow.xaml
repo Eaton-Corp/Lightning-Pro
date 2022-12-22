@@ -1,0 +1,88 @@
+﻿<Window x:Class="PRL123_Final.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PRL123_Final"
+        xmlns:HamburgerMenu="clr-namespace:HamburgerMenu;assembly=HamburgerMenu"
+        xmlns:viewmodels="clr-namespace:PRL123_Final.ViewModels"
+        xmlns:views="clr-namespace:PRL123_Final.Views"
+        mc:Ignorable="d"
+        Title="Eaton Infinity" Height="550" Width="950" WindowState="Maximized" ResizeMode="CanResize" MinHeight="550" MinWidth="950" Loaded="MainWindow_OnLoaded" ContentRendered="contentRendered"
+        Icon="Assets/bolt.png">
+    <Window.Resources>
+        <DataTemplate x:Name="eatonViewTemplate" DataType="{x:Type viewmodels:EatonViewModel}">
+            <views:Eaton DataContext="{Binding}"/>
+        </DataTemplate>
+        <DataTemplate x:Name="assemblerViewTemplate" DataType="{x:Type viewmodels:AssemblerViewModel}">
+            <views:Assembler DataContext="{Binding}"/>
+        </DataTemplate>
+        <DataTemplate x:Name="settingsViewTemplate" DataType="{x:Type viewmodels:SettingsViewModel}">
+            <views:Settings DataContext="{Binding}"/>
+        </DataTemplate>
+        <DataTemplate x:Name="shippingViewTemplate" DataType="{x:Type viewmodels:ShippingViewModel}">
+            <views:Shipping DataContext="{Binding}"/>
+        </DataTemplate>
+        <DataTemplate x:Name="specialistViewTemplate" DataType="{x:Type viewmodels:SpecialistViewModel}">
+            <views:Specialist DataContext="{Binding}"/>
+        </DataTemplate>
+        <DataTemplate x:Name="supervisorViewTemplate" DataType="{x:Type viewmodels:SupervisorViewModel}">
+            <views:Supervisor DataContext="{Binding}"/>
+        </DataTemplate>
+        <DataTemplate x:Name="analyticsViewTemplate" DataType="{x:Type viewmodels:AnalyticsViewModel}">
+            <views:Analytics DataContext="{Binding}"/>
+        </DataTemplate>
+        <DataTemplate x:Name="MaterialPlanningViewTemplate" DataType="{x:Type viewmodels:MaterialPlanningViewModel}">
+            <views:MaterialPlanning DataContext="{Binding}"/>
+        </DataTemplate>
+        <DataTemplate x:Name="ConfigurationViewTemplate" DataType="{x:Type viewmodels:ConfigurationViewModel}">
+            <views:Configuration DataContext="{Binding}"/>
+        </DataTemplate>
+        <DataTemplate x:Name="CreditsViewTemplate" DataType="{x:Type viewmodels:CreditsViewModel}">
+            <views:Credits DataContext="{Binding}"/>
+        </DataTemplate>
+    </Window.Resources>
+    <Grid >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        
+        <HamburgerMenu:HamburgerMenu  Background="Blue" Grid.RowSpan="8"  MenuIconColor="White" SelectionIndicatorColor="White" MenuItemForeground="White" HorizontalAlignment="Left">
+            <HamburgerMenu:HamburgerMenuItem  Icon="Assets/home.png" Text="Home" Selected="Eaton_Clicked"/>
+            <HamburgerMenu:HamburgerMenuItem Icon="Assets/specialist.png" Text="Specialist" Selected="Specialist_Clicked"/>
+            <HamburgerMenu:HamburgerMenuItem Icon="Assets/supervisor.png" Text="Supervisor" Selected="Supervisor_Clicked"/>
+            <HamburgerMenu:HamburgerMenuItem Icon="Assets/materials.png" Text="Materials" Selected="materialPlanning_Clicked"/>
+            <HamburgerMenu:HamburgerMenuItem Icon="Assets/production.png" Text="Assembler" Selected="Assembler_Clicked"/>
+            <HamburgerMenu:HamburgerMenuItem Icon="Assets/shipping.png" Text="Shipping" Selected="Shipping_Clicked"/>
+            <HamburgerMenu:HamburgerMenuItem Icon="Assets/stats.png" Text="Analytics" Selected="Analytics_Clicked"/>
+            <HamburgerMenu:HamburgerMenuItem Icon="Assets/settings.png" Text="Settings" Selected="Settings_Clicked"/>
+            <HamburgerMenu:HamburgerMenuItem Icon="Assets/Configuration.png" Text="Configure" Selected="Configuration_Clicked"/>
+            <HamburgerMenu:HamburgerMenuItem Icon="Assets/MovieCredits.png" Text="Credits" Selected="Credits_Clicked"/>
+        </HamburgerMenu:HamburgerMenu>
+
+        <Image Grid.Column="2" Grid.Row="3" Grid.ColumnSpan="4"  Grid.RowSpan="2" Stretch="Uniform" Source="/Assets/EatonJPG.jpg"/>
+
+        <TextBlock VerticalAlignment="Bottom" HorizontalAlignment="Left" Grid.Row="7" x:Name="CurrentVersion" Text="v.1.0.0" />
+        <TextBlock Grid.Row="7" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left" Text=""  x:Name="NewVersion"/>
+
+        <ContentControl Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="7" Grid.RowSpan="8" Content="{Binding}"/>
+    </Grid>
+</Window>

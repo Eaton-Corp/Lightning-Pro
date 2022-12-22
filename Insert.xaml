@@ -1,0 +1,219 @@
+﻿<Window x:Class="PRL123_Final.Insert"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PRL123_Final"
+        mc:Ignorable="d"
+        Title="Insert PRL-123" WindowState="Maximized" Height="1000" Width="1600" MinHeight="1000" MinWidth="1600">
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition />
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition MinHeight="30"/>
+            <RowDefinition Height="60"/>
+        </Grid.RowDefinitions>
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="130"/>
+            <ColumnDefinition Width="170"/>
+            <ColumnDefinition Width="130"/>
+            <ColumnDefinition Width="170"/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="90"/>
+                <ColumnDefinition Width="40"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="110"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <ProgressBar Grid.Row="0" Grid.Column="2" Minimum="0"  Maximum="100" Height="25" Visibility="Hidden"  Name="pbStatus" Foreground="Blue"  IsIndeterminate="True"/>
+        </Grid>
+
+        <Image x:Name="ImagePreviewer" Grid.Row="0" Grid.Column="4" Grid.RowSpan="20" Grid.ColumnSpan="3"/>
+        
+        <Grid Grid.Row="0" Grid.Column="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="50" />
+                <ColumnDefinition Width="50"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                
+            </Grid.RowDefinitions>
+            <Button Background="LightGray" Foreground="White"  HorizontalAlignment="Center" Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" Width="40" Height="40" Click="Forward_Click" ToolTip="Next Page">
+                <DockPanel>
+                    <Image Width="25" Height="25" Source="/Assets/right-arrow (3).png"/>
+                </DockPanel>
+            </Button>
+            <Button  Background="LightGray" Foreground="White"  HorizontalAlignment="Center"  Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Width="40" Height="40" Click="Back_Click" ToolTip="Previous Page">
+                <DockPanel>
+                    <Image Width="25" Height="25" Source="/Assets/left-arrow (1).png"/>
+                </DockPanel>
+            </Button>
+        </Grid>
+
+
+        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Button Background="LightGray" Foreground="White"   Grid.Column="0" Grid.Row="0" Width="45" Height="45" Click="Button_Upload" ToolTip="Upload PDF">
+                <DockPanel>
+                    <Image Width="25" Height="25" Source="/Assets/pdf.png"/>
+                </DockPanel>
+            </Button>
+            <Button Background="LightGray" Foreground="White"  Grid.Row="0" Grid.Column="1"   Width="45" Height="45" Click="XML_Upload" ToolTip="Upload XML">
+                <DockPanel>
+                    <Image Width="25" Height="25" Source="/Assets/xml.png"/>
+                </DockPanel>
+            </Button>
+            <Button Background="LightGray"  Grid.Row="0" Grid.Column="2" Click="Insert_Entry" Width="45" Height="45" ToolTip="Insert">
+                <DockPanel>
+                    <Image Width="25" Height="25" Source="/Assets/submit.png"/>
+                </DockPanel>
+            </Button>
+            <Button Background="LightGray" Foreground="White"  Grid.Row="0" Grid.Column="3" Click="Auto_Insert" Width="45" Height="45" ToolTip="Automatic Insertion">
+                <DockPanel>
+                    <Image Width="25" Height="25" Source="/Assets/auto.png"/>
+                </DockPanel>
+            </Button>
+        </Grid>
+
+
+
+
+
+        <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" Grid.RowSpan="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="20"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20"/>
+                <RowDefinition/>
+                <RowDefinition Height="20"/>
+            </Grid.RowDefinitions>
+            <DataGrid x:Name="dg"  CanUserReorderColumns="False" CanUserResizeRows="False" CanUserResizeColumns="False" CanUserAddRows="False" Grid.Row="1" Grid.Column="1" SelectionChanged="Selection_Changed" MouseDoubleClick="DoubleClickInsert"/>
+        </Grid>
+        <Label Content="GO Item:" Grid.Row="4" Grid.Column="0" />
+        <Label Content="GO:" Grid.Row="5" Grid.Column="0"/>
+        <Label Content="Item:" Grid.Row="6" Grid.Column="0"/>
+        <Label Content="Shop Order Interior:" Grid.Row="7" Grid.Column="0"/>
+        <Label Content="Shop Order Box:" Grid.Row="8" Grid.Column="0"/>
+        <Label Content="Shop Order Trim:" Grid.Row="9" Grid.Column="0"/>
+        <Label Content="Customer:" Grid.Row="10" Grid.Column="0"/>
+        <Label Content="End Date:" Grid.Row="11" Grid.Column="0"/>
+        <Label Content="Suffix:" Grid.Row="12" Grid.Column="0"/>
+        <Label Content="Entered Date:" Grid.Row="13" Grid.Column="0"/>
+        <Label Content="Commit Date:" Grid.Row="14" Grid.Column="0"/>
+        <Label Content="Release Date:" Grid.Row="15" Grid.Column="0"/>
+        <Label Content="Start Date:" Grid.Row="16" Grid.Column="0"/>
+        <Label Content="Qty:" Grid.Row="17" Grid.Column="0"/>
+
+        <Label Content="Product ID:" Grid.Row="4" Grid.Column="2"/>
+        <Label Content="Urgency:" Grid.Row="5" Grid.Column="2"/>
+        <Label Content="Designation:" Grid.Row="6" Grid.Column="2"/>
+        <Label Content="Enclosure:" Grid.Row="7" Grid.Column="2"/>
+        <Label Content="N:" Grid.Row="9" Grid.Column="2"/>
+        <Label Content="Xspace used:" Grid.Row="13" Grid.Column="2"/>
+        <Label Content="P:" Grid.Row="11" Grid.Column="2"/>
+        <Label Content="Voltage:" Grid.Row="10" Grid.Column="2"/>
+        <Label Content="MA" Grid.Row="8" Grid.Column="2"/>
+        <Label Content="W:" Grid.Row="12" Grid.Column="2"/>
+        <Label Content="Ground:" Grid.Row="14" Grid.Column="2"/>
+        <Label Content="Hz:" Grid.Row="15" Grid.Column="2"/>
+        <Label Content="Box Catalogue" Grid.Row="16" Grid.Column="2"/>
+        <Label Content="Item Status:" Grid.Row="17" Grid.Column="2"/>
+
+
+
+
+        <CheckBox x:Name="Approve" Content="Approve" Grid.Column="0" Grid.Row="18" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <CheckBox x:Name="BoxFirst" Content="Box Early" Grid.Column="1" Grid.Row="18" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <CheckBox x:Name="AMO" Content="AMO" Grid.Column="2" Grid.Row="18" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <CheckBox x:Name="SpecialCustomer" Content="Special Customer" Grid.Column="3" Grid.Row="18" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+
+        <TextBox x:Name="GO_Item"  TextWrapping="Wrap" Grid.Row="4" Grid.Column="1" Width="160" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBox x:Name="GO1" TextWrapping="Wrap" Grid.Row="5" Grid.Column="1" Width="160" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBox x:Name="Item" TextWrapping="Wrap" Grid.Row="6" Grid.Column="1" Width="160" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBox x:Name="ShopOrder" TextWrapping="Wrap" Grid.Row="7" Grid.Column="1" Width="160" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBox x:Name="ShopOrderBox" TextWrapping="Wrap" Grid.Row="8" Grid.Column="1" Width="160" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBox x:Name="ShopOrderTrim" TextWrapping="Wrap" Grid.Row="9" Grid.Column="1" Width="160" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBox x:Name="Customer" TextWrapping="Wrap" Grid.Row="10" Grid.Column="1" Width="160" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBox x:Name="EndDate" TextWrapping="Wrap" Grid.Row="11" Grid.Column="1" Width="160" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBox x:Name="Suffix" TextWrapping="Wrap" Grid.Row="12" Grid.Column="1" Width="160" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBox x:Name="EnteredDate" TextWrapping="Wrap" Grid.Row="13" Grid.Column="1" Width="160" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBox x:Name="CommitDate" TextWrapping="Wrap" Grid.Row="14" Grid.Column="1" Width="160" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBox x:Name="ReleaseDate" TextWrapping="Wrap" Grid.Row="15" Grid.Column="1" Width="160" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBox x:Name="StartDate" TextWrapping="Wrap" Grid.Row="16" Grid.Column="1" Width="160" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBox x:Name="Qty" TextWrapping="Wrap" Grid.Row="17" Grid.Column="1" Width="160" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+
+
+        <TextBox x:Name="ProductID" TextWrapping="Wrap" Grid.Row="4" Grid.Column="3" Width="160" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <ComboBox Name="Urgency" Grid.Row="5" Grid.Column="3" Width="160" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <ComboBoxItem Content="N"></ComboBoxItem>
+            <ComboBoxItem Content="UP"></ComboBoxItem>
+            <ComboBoxItem Content="UU"></ComboBoxItem>
+            <ComboBoxItem Content="HOLD"></ComboBoxItem>
+        </ComboBox>
+        <TextBox x:Name="Designation" TextWrapping="Wrap" Grid.Row="6" Grid.Column="3" Width="160" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBox x:Name="Enclosure" TextWrapping="Wrap" Grid.Row="7" Grid.Column="3" Width="160" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBox x:Name="Neut" TextWrapping="Wrap" Grid.Row="9" Grid.Column="3" Width="160" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBox x:Name="Xspace" TextWrapping="Wrap" Grid.Row="13" Grid.Column="3" Width="160" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBox x:Name="P" TextWrapping="Wrap" Grid.Row="11" Grid.Column="3" Width="160" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBox x:Name="Voltage" TextWrapping="Wrap" Grid.Row="10" Grid.Column="3" Width="160" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBox x:Name="MA" TextWrapping="Wrap" Grid.Row="8" Grid.Column="3" Width="160" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBox x:Name="W" TextWrapping="Wrap" Grid.Row="12" Grid.Column="3" Width="160" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBox x:Name="Ground" TextWrapping="Wrap" Grid.Row="14" Grid.Column="3" Width="160" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBox x:Name="Hz" TextWrapping="Wrap" Grid.Row="15" Grid.Column="3" Width="160" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBox x:Name="BoxCatalogue" TextWrapping="Wrap" Grid.Row="16" Grid.Column="3" Width="160" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBox x:Name="ItemStatus" TextWrapping="Wrap" Grid.Row="17" Grid.Column="3" Width="160" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+
+
+        <Label x:Name="Status"  Grid.Column="0" Grid.Row="20" FontSize="16" FontWeight="DemiBold" HorizontalAlignment="Left" Foreground="Green" Grid.ColumnSpan="3" />
+
+
+        <Label Name="pg" Content="Page:"  Grid.Column="5" Grid.Row="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+        <Label Content="AMO:"  Grid.Column="0" Grid.Row="19" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+
+        <DataGrid x:Name="AMOdg" CanUserReorderColumns="False" CanUserResizeRows="False" CanUserResizeColumns="False" CanUserAddRows="False" Grid.Row="19" Grid.Column="1" Grid.ColumnSpan="3" ClipboardCopyMode="IncludeHeader"/>
+        
+    </Grid>
+
+</Window>

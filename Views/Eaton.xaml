@@ -1,0 +1,214 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PRL123_Final.Views"
+             xmlns:syncfusion="http://schemas.syncfusion.com/wpf" x:Class="PRL123_Final.Views.Eaton"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" KeyDown="KeyDownClick">
+    <Grid Background="White">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition  />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition Height="60"/>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="5" Stretch="Fill"  Source="/Assets/SpaceWide.jpg"/>
+        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="5"/>
+            </Grid.RowDefinitions>
+            <Label Content="Home" Visibility="Visible" Grid.Row="1" Grid.Column="0" FontWeight="Bold" VerticalAlignment="Bottom" HorizontalAlignment="Left" Foreground="White" FontSize="24" FontFamily="Arial" Opacity="0.75"/>
+        </Grid>
+
+        <DataGrid x:Name="dg" CanUserReorderColumns="False" CanUserResizeRows="False" CanUserResizeColumns="False" CanUserAddRows="False" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="5" Grid.RowSpan="4" SelectionMode="Single" FontSize="15" Padding="10">
+                
+            <DataGrid.CellStyle>
+                <Style TargetType="{x:Type DataGridCell}">
+                    <Style.Triggers>
+                        <!--< The colors indicate urgency: Red = Fast Paid, Orange = Fast Unpaid, LightGray = Normal, Green = Just Have a Good Time Mate />-->
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Foreground" Value="Black"/>
+                        </Trigger>
+                        <DataTrigger Binding="{Binding Urgency}" Value="UP">
+                            <Setter Property="Background" Value="Red" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Urgency}" Value="UU">
+                            <Setter Property="Background" Value="Green" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Urgency}" Value="N">
+                            <Setter Property="Background" Value="LightGray" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Urgency}" Value="HOLD">
+                            <Setter Property="Background" Value="Orange" />
+                        </DataTrigger>
+
+                    </Style.Triggers>
+                </Style>
+                
+            </DataGrid.CellStyle>
+        </DataGrid>
+        
+        
+
+
+        <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Button x:Name="Development" Grid.Column="0" Height="60" Content="In Development"   VerticalAlignment="Bottom"  Background="Blue" Foreground="White" FontWeight="Light" Click="Development_Clicked">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Background" Value="Blue" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border x:Name="Border" Background="{TemplateBinding Background}">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="DarkBlue" TargetName="Border" />
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <Button x:Name="MIComplete"  Grid.Column="1"  Height="60" Content="MI Complete" VerticalAlignment="Bottom"  Foreground="White" FontWeight="Light" Click="MI_Clicked" >
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Background" Value="Blue" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border x:Name="Border" Background="{TemplateBinding Background}">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="DarkBlue" TargetName="Border" />
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <Button x:Name="Production" Grid.Column="2" Height="60" Content="Production" VerticalAlignment="Bottom" Foreground="White" FontWeight="Light" Click="Production_Clicked">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Background" Value="Blue" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border x:Name="Border" Background="{TemplateBinding Background}">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="DarkBlue" TargetName="Border" />
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <Button x:Name="Shipping"  Grid.Column="3" Height="60" Content="Shipping" VerticalAlignment="Bottom" Background="Blue" Foreground="White" FontWeight="Light" Click="Shipping_Clicked">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Background" Value="Blue" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border x:Name="Border" Background="{TemplateBinding Background}">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="DarkBlue" TargetName="Border" />
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
+            </Button>
+        </Grid>
+
+
+        <Grid Grid.Row="1" Grid.Column="3" Grid.RowSpan="1" Grid.ColumnSpan="2" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="10"/>
+            </Grid.RowDefinitions>
+            <Button Name ="PWL123" Grid.Column="4" Content="PRL123" Height="26" Background="Blue" VerticalAlignment="Bottom" Foreground="White" Click="PRL123_Click"/>
+            <Button Name="PWL4"  Grid.Column="3"  Content="PRL4"  Height="26"  Background="Blue" VerticalAlignment="Bottom" Foreground="White" Click="PRL4_Click"  />
+            <Button Name ="PWLCS" Grid.Column="2" Content="CS" Height="26" Background="Blue" VerticalAlignment="Bottom" Foreground="White" />
+            <Button Name="PWLEC"  Grid.Column="1"  Content="EC"  Height="26"  Background="Blue" VerticalAlignment="Bottom" Foreground="White" />
+        </Grid>
+
+        <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="160"/>
+                <ColumnDefinition Width="180"/>
+                <ColumnDefinition Width="75"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="10"/>
+            </Grid.RowDefinitions>
+            <TextBox Name="Search" HorizontalAlignment="Left" Height="25"   Grid.Row="0" TextWrapping="Wrap" Grid.ColumnSpan="2" VerticalAlignment="Bottom" Width="160"/>
+            <ComboBox Name="Field" Grid.Column="1" Height="25" HorizontalAlignment="Center"  Grid.Row="0" VerticalAlignment="Bottom"  Width="150">
+                <ComboBoxItem Content="GO_Item"></ComboBoxItem>
+                <ComboBoxItem Content="GO"></ComboBoxItem>
+                <ComboBoxItem Content="Customer"></ComboBoxItem>
+            </ComboBox>
+            <Button x:Name="SearchButton"  Background="LightGray" Foreground="White" FontFamily="Light" Grid.Column="2" Height="25" HorizontalAlignment="Left" Grid.Row="0" VerticalAlignment="Bottom" Width="75" Click="Search_Click" ToolTip="Search">
+                <DockPanel>
+                    <Image Source="/Assets/magnifying-glass.png"/>
+                </DockPanel>
+            </Button>
+        </Grid>
+
+    </Grid>
+</UserControl>

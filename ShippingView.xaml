@@ -1,0 +1,94 @@
+﻿<Window x:Class="PRL123_Final.ShippingView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PRL123_Final"
+        mc:Ignorable="d"
+        Title="ShippingView" Height="450" Width="800" MinHeight="450" MinWidth="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="280" />
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="280"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Image Name="Bidman" Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        
+        <Grid Grid.Row="0" Grid.Column="0" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+            
+            <Label Content="GO Item:" Grid.Row="0" Grid.Column="0"/>
+            <TextBox Name="GOI" Height="24" Grid.Row="0" Grid.Column="1"/>
+            
+            <Label Content="Page:" Grid.Row="1" Grid.Column="0"/>
+            <TextBox Name="page" Height="24" Grid.Row="1" Grid.Column="1"/>
+
+            <Label Content="Customer" Grid.Row="2" Grid.Column="0"/>
+            <TextBox Name="Customer" Height="24" Grid.Row="2" Grid.Column="1"/>
+
+            <Label Content="ShopOrderBox:" Grid.Row="3" Grid.Column="0"/>
+            <TextBox Name="ShopOrderBox" Height="24"  Grid.Row="3" Grid.Column="1"/>
+            
+            <Label Content="Quanity" Grid.Row="4" Grid.Column="0"/>
+            <TextBox Name="Quantity" Height="24"  Grid.Row="4" Grid.Column="1"/>
+            
+            <Label Content="Urgency" Grid.Row="5" Grid.Column="0"/>
+            <TextBox Name="Urgency" Height="24"  Grid.Row="5" Grid.Column="1"/>
+
+
+            <Grid Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                
+                <Button Background="LightGray" Foreground="White"  HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Width="40" Height="40" Click="Forward_Click" ToolTip="Next Page">
+                    <DockPanel>
+                        <Image Width="25" Height="25" Source="/Assets/right-arrow (3).png"/>
+                    </DockPanel>
+                </Button>
+                <Button  Background="LightGray" Foreground="White"  HorizontalAlignment="Center"  Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Width="40" Height="40" Click="Back_Click" ToolTip="Previous Page">
+                    <DockPanel>
+                        <Image Width="25" Height="25" Source="/Assets/left-arrow (1).png"/>
+                    </DockPanel>
+                </Button>
+                <Button  Background="LightGray" Foreground="White"  Grid.Column="0" HorizontalAlignment="Center"  Grid.Row="1" VerticalAlignment="Center" Width="40"  Click="Print_Click" Height="40" ToolTip="Print Box List">
+                    <DockPanel>
+                        <Image Width="25" Height="25" Source="/Assets/printer.png"/>
+                    </DockPanel>
+                </Button>
+                <Button  Background="LightGray" Foreground="White"  Grid.Column="1" HorizontalAlignment="Center"  Grid.Row="1" VerticalAlignment="Center" Width="40"  Click="Shipped_Click" Height="40" ToolTip="Ship Box">
+                    <DockPanel>
+                        <Image Width="25" Height="25" Source="/Assets/shipping.png"/>
+                    </DockPanel>
+                </Button>
+                <Image Name="Box" Width="80" Height="80" Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            </Grid>
+        </Grid>
+
+        <Label Name="Status" Grid.Row="2" Height="30" VerticalAlignment="Bottom" Grid.Column="0" Foreground="Green"/>
+    </Grid>
+</Window>

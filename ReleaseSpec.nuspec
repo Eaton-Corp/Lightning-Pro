@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>PRL123_Final</id>
+    <version>2.1.0</version>
+    <title>PRL123</title>
+    <authors>Dr. Bartholomew Blank</authors>
+    <license type="expression">MIT</license>
+    <description>PRL 123 App</description>
+    <copyright>None</copyright>
+  </metadata>
+  <files>
+	<file src="bin\Release\*.*" target="lib\net45"/>
+  </files>	
+
+</package>
