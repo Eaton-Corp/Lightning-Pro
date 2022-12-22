@@ -11,13 +11,13 @@ The following repo is used to store and version Lightning Pro app as part of Eat
 
 ## Start Developing
 
-Alright! Alright! Hold your horses noww! You make be excited to get coding, but you gotta set up some configs first.
+Alright! Alright! Hold your horses noww! You must be excited to get coding, but you gotta set up some configs first.
 
 1. Before your able to successfully start ensure that you have the following dependencies installed on your computer.
 - Microsoft Access 32-bit
 - Microsoft Visual Studio 2022 (includes Nuget, C# and WPF)
 
-2. Please open the config located at \Local_Config and change the field to ensure the repository location matches what is your local machines path e.g `{path to repository} = C:\Users\e0637402\Repos` Note: This is the file path for the documenters PC your's will have a different path. 
+2. Please open the config located at \Local_Config and change the field to ensure the repository location matches your local machines path e.g `{path to repository} = C:\Users\e0637402\Repos` Note: This is the file path for the documenters PC your's will have a different path. 
 
 3. Make sure on boot of lightning Pro you select the config file which is stored in this repository under /Local_Config.
 
@@ -42,3 +42,22 @@ Woahh there boi. Before you start adding code willy nilly make sure your branchi
 7. Monitor for issues relating to change.
  
 ## Deployment
+
+Currently lightning Pro is deployed all accross Canada. Essentially there are individual databases that run locally on the network at each location and lightning Pro is updated through a currently manual process. The lightning pro application utilises WPF along with squirrel for deployment. 
+
+Lightning Pro active environments include:
+
+- Test (Used for development and Testing)
+- Blueberry (tier 1 facilities ie Missisauga satellite)
+- Vanilla (tier 2 facilities ie Lachine, Delta, Manitoba)
+- orange (tier 3 facilities ie Milton)
+
+Deployment Ordering goes: Test -> Blueberry -> Vanilla -> Orange
+
+Deployment Steps:
+
+1. Debug the application to ensure the changes that have been made are functional and bug free.
+TODO: Abdullah Finish this documentation
+
+
+
