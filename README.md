@@ -47,7 +47,7 @@ So you wrote your code made your changes and got them merged into master. Now it
 
 1. Ensure that the code in `MainWindow.xaml.cs` is uncommented
 
-`
+``
 private async void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
            
@@ -64,6 +64,7 @@ private async void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
             
         }
 `
+
 2. Update the ReleaseSpec.nuspec file with the updated version number, the author name, and release description. Follow the release naming scheme where small iterations (bug fixes) and changes should be followed by an increase of one to the right most number ie 2.1.1 in this case. Substantial increases such as feature additions should be followed by changes to the middle number ie 2.2.0 and finally major version revisions and overhauls should be followed by version revisions ie 3.0.0.
 
 `<?xml version="1.0" encoding="utf-8"?>
