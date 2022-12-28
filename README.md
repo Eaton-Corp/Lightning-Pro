@@ -45,24 +45,7 @@ Woahh there boi. Before you start adding code willy nilly make sure your branchi
 
 So you wrote your code made your changes and got them merged into master. Now it's time to release your changes to the world. Time to generate some releases. We use squirrel to generate the binaries and the corresponding setup.exe file. 
 
-1. Ensure that the code in `MainWindow.xaml.cs` is uncommented
-
-`
-   private async void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
-         {
-
-             if (isConfigured)
-             {
-                 string releaseFolder = ConfigurationManager.ConnectionStrings["releaseFolder"].ToString();
-                 using (var updateManager = new UpdateManager(releaseFolder))
-                 {
-                     CurrentVersion.Text = $"Current version: {updateManager.CurrentlyInstalledVersion()}";
-                     var releaseEntry = await updateManager.UpdateApp();
-                     NewVersion.Text = $"Update Version: {releaseEntry?.Version.ToString() ?? " "}";
-                 }
-             }
-
-         }
+1. Ensure that the code in `MainWindow.xaml.cs` is uncommented.
 
 2. Update the ReleaseSpec.nuspec file with the updated version number, the author name, and release description. Follow the release naming scheme where small iterations (bug fixes) and changes should be followed by an increase of one to the right most number ie 2.1.1 in this case. Substantial increases such as feature additions should be followed by changes to the middle number ie 2.2.0 and finally major version revisions and overhauls should be followed by version revisions ie 3.0.0. Note: Ensure that your changes to the nuspec file are saved. 
 
@@ -74,7 +57,7 @@ So you wrote your code made your changes and got them merged into master. Now it
 
 Note: `PRL123_Final.2.1.1.nupkg` is the name of the release and `2.1.1` is the revision number and the Release directory is a directory on you local machine which in this case is `"C:\SquirrelReleases"`
 
-5. Now to ensure that everyone is on the same page update the release number on github.
+5. Now to ensure that everyone is on the same page upload the release onto github by creating a new release. Ensure that you upload the new binaries and the setup.exe file onto the github repository. Name the tag as well as the Name of the release after the version number. Ensure you add what changes are included in the release in the description.
 
 ## Deployment
 
