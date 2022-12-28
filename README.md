@@ -23,7 +23,7 @@ Alright! Alright! Hold your horses noww! You must be excited to get coding, but 
 
 4. You should be good to go from here. Happy Coding!!
 
-# Branching Strategy
+## Branching Strategy
 
 Woahh there boi. Before you start adding code willy nilly make sure your branching correctly. 
 
@@ -41,9 +41,49 @@ Woahh there boi. Before you start adding code willy nilly make sure your branchi
 
 7. Monitor for issues relating to change.
  
-## Deployment
+## Release 
 
-Currently lightning Pro is deployed all accross Canada. Essentially there are individual databases that run locally on the network at each location and lightning Pro is updated through a currently manual process. The lightning pro application utilises WPF along with squirrel for deployment. 
+So you wrote your code made your changes and got them merged into master. Now it's time to release your changes to the world. Time to generate some releases. We use squirrel to generate the binaries and the corresponding setup.exe file. 
+
+1. Ensure that the code in `MainWindow.xaml.cs` is uncommented
+
+`
+private async void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
+        {
+           
+            if (isConfigured)
+            {
+                string releaseFolder = ConfigurationManager.ConnectionStrings["releaseFolder"].ToString();
+                using (var updateManager = new UpdateManager(releaseFolder))
+                {
+                    CurrentVersion.Text = $"Current version: {updateManager.CurrentlyInstalledVersion()}";
+                    var releaseEntry = await updateManager.UpdateApp();
+                    NewVersion.Text = $"Update Version: {releaseEntry?.Version.ToString() ?? " "}";
+                }
+            }
+            
+        }
+`
+2. Update the ReleaseSpec.nuspec file with the updated version number, the author name, and release description. Follow the release naming scheme where small iterations (bug fixes) and changes should be followed by an increase of one to the right most number ie 2.1.1 in this case. Substantial increases such as feature additions should be followed by changes to the middle number ie 2.2.0 and finally major version revisions and overhauls should be followed by version revisions ie 3.0.0.
+
+`<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>PRL123_Final</id>
+    <version>2.1.0</version>
+    <title>PRL123</title>
+    <authors>Dr. Bartholomew Blank</authors>
+    <license type="expression">MIT</license>
+    <description>PRL 123 App</description>
+    <copyright>None</copyright>
+  </metadata>
+  <files>
+	<file src="bin\Release\*.*" target="lib\net45"/>
+  </files>	
+
+</package>
+`
+
 
 Lightning Pro active environments include:
 
