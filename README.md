@@ -51,11 +51,7 @@ So you wrote your code made your changes and got them merged into master. Now it
 
 3. Create the nuspec package with the following command: `.\nuget pack ReleaseSpec.nuspec`
 
-4. Now it's time to actually generate your binaries. Use the following command:
-
-`Squirrel --releasify PRL123_Final.2.1.1.nupkg --releaseDir "C:\SquirrelReleases"`
-
-Note: `PRL123_Final.2.1.1.nupkg` is the name of the release and `2.1.1` is the revision number and the Release directory is a directory on you local machine which in this case is `"C:\SquirrelReleases"`
+4. Now it's time to actually generate your binaries. Use the following command: `Squirrel --releasify PRL123_Final.2.1.1.nupkg --releaseDir "C:\SquirrelReleases"` Note: `PRL123_Final.2.1.1.nupkg` is the name of the release and `2.1.1` is the revision number and the Release directory is a directory on you local machine   which in this case is `"C:\SquirrelReleases"`
 
 5. Now to ensure that everyone is on the same page upload the release onto github by creating a new release. Ensure that you upload the new binaries and the setup.exe file onto the github repository. Name the tag as well as the Name of the release after the version number. Ensure you add what changes are included in the release in the description.
 
