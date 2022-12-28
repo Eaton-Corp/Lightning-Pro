@@ -63,30 +63,10 @@ private async void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
             }
             
         }
-`
 
 2. Update the ReleaseSpec.nuspec file with the updated version number, the author name, and release description. Follow the release naming scheme where small iterations (bug fixes) and changes should be followed by an increase of one to the right most number ie 2.1.1 in this case. Substantial increases such as feature additions should be followed by changes to the middle number ie 2.2.0 and finally major version revisions and overhauls should be followed by version revisions ie 3.0.0. Note: Ensure that your changes to the nuspec file are saved. 
 
-`
-<?xml version="1.0" encoding="utf-8"?>
-<package >
-  <metadata>
-    <id>PRL123_Final</id>
-    <version>2.1.0</version> 
-    <title>PRL123</title>
-    <authors>Dr. Bartholomew Blank</authors>
-    <license type="expression">MIT</license>
-    <description>PRL 123 App</description>
-    <copyright>None</copyright>
-  </metadata>
-  <files>
-	<file src="bin\Release\*.*" target="lib\net45"/>
-  </files>	
-</package>
-`
-
 3. Create the nuspec package with the following command: `.\nuget pack ReleaseSpec.nuspec`
-
 
 4. Now it's time to actually generate your binaries. Use the following command:
 
@@ -94,20 +74,11 @@ private async void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
 
 Note: `PRL123_Final.2.1.1.nupkg` is the name of the release and `2.1.1` is the revision number and the Release directory is a directory on you local machine which in this case is `"C:\SquirrelReleases"`
 
+5. Now to ensure that everyone is on the same page update the release number on github.
 
-Lightning Pro active environments include:
+## Deployment
 
-- Test (Used for development and Testing)
-- Blueberry (tier 1 facilities ie Missisauga satellite)
-- Vanilla (tier 2 facilities ie Lachine, Delta, Manitoba)
-- orange (tier 3 facilities ie Milton)
-
-Deployment Ordering goes: Test -> Blueberry -> Vanilla -> Orange
-
-Deployment Steps:
-
-1. Debug the application to ensure the changes that have been made are functional and bug free.
-TODO: Abdullah Finish this documentation
+Once releases are generated next step is to deploy. Steps for that can be found at the [Lightning-Pro-Deploy](https://github.com/Eaton-Corp/Lightning-Pro-Deploy)
 
 
 
