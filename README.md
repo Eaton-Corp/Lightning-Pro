@@ -47,7 +47,7 @@ So you wrote your code made your changes and got them merged into master. Now it
 
 1. Ensure that the code in `MainWindow.xaml.cs` is uncommented
 
-``
+`
 private async void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
            
@@ -65,13 +65,14 @@ private async void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         }
 `
 
-2. Update the ReleaseSpec.nuspec file with the updated version number, the author name, and release description. Follow the release naming scheme where small iterations (bug fixes) and changes should be followed by an increase of one to the right most number ie 2.1.1 in this case. Substantial increases such as feature additions should be followed by changes to the middle number ie 2.2.0 and finally major version revisions and overhauls should be followed by version revisions ie 3.0.0.
+2. Update the ReleaseSpec.nuspec file with the updated version number, the author name, and release description. Follow the release naming scheme where small iterations (bug fixes) and changes should be followed by an increase of one to the right most number ie 2.1.1 in this case. Substantial increases such as feature additions should be followed by changes to the middle number ie 2.2.0 and finally major version revisions and overhauls should be followed by version revisions ie 3.0.0. Note: Ensure that your changes to the nuspec file are saved. 
 
-`<?xml version="1.0" encoding="utf-8"?>
+`
+<?xml version="1.0" encoding="utf-8"?>
 <package >
   <metadata>
     <id>PRL123_Final</id>
-    <version>2.1.0</version>
+    <version>2.1.0</version> 
     <title>PRL123</title>
     <authors>Dr. Bartholomew Blank</authors>
     <license type="expression">MIT</license>
@@ -81,9 +82,17 @@ private async void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
   <files>
 	<file src="bin\Release\*.*" target="lib\net45"/>
   </files>	
-
 </package>
 `
+
+3. Create the nuspec package with the following command: `.\nuget pack ReleaseSpec.nuspec`
+
+
+4. Now it's time to actually generate your binaries. Use the following command:
+
+`Squirrel --releasify PRL123_Final.2.1.1.nupkg --releaseDir "C:\SquirrelReleases"`
+
+Note: `PRL123_Final.2.1.1.nupkg` is the name of the release and `2.1.1` is the revision number and the Release directory is a directory on you local machine which in this case is `"C:\SquirrelReleases"`
 
 
 Lightning Pro active environments include:
