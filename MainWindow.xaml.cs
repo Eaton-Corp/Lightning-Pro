@@ -244,13 +244,13 @@ namespace PRL123_Final
            
             if (isConfigured)
             {
-                string releaseFolder = ConfigurationManager.ConnectionStrings["releaseFolder"].ToString();
+                /*string releaseFolder = ConfigurationManager.ConnectionStrings["releaseFolder"].ToString();
                 using (var updateManager = new UpdateManager(releaseFolder))
                 {
                     CurrentVersion.Text = $"Current version: {updateManager.CurrentlyInstalledVersion()}";
                     var releaseEntry = await updateManager.UpdateApp();
                     NewVersion.Text = $"Update Version: {releaseEntry?.Version.ToString() ?? " "}";
-                }
+                }*/
             }
             
         }

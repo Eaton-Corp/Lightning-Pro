@@ -57,7 +57,8 @@
   <PropertyGroup />
   <PropertyGroup />
   <PropertyGroup>
-    <ApplicationIcon>bolt %281%29.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
@@ -505,9 +506,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\bolt.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="bolt %281%29.ico" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\WorldMap.png" />

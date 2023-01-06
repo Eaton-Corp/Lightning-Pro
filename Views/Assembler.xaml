@@ -115,7 +115,7 @@
                     <RowDefinition />
                 </Grid.RowDefinitions>
                 <CheckBox x:Name="IncLocLeft_CS" Content="IncLocLeft" Grid.Row="0" Grid.Column="0" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                <CheckBox x:Name="IncLocRight" Content="IncLocRight" Grid.Row="0" Grid.Column="1" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <CheckBox x:Name="IncLocRight_CS" Content="IncLocRight" Grid.Row="0" Grid.Column="1" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 <CheckBox x:Name="CrossBus_CS" Content="CrossBus" Grid.Row="1" Grid.Column="0" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 <CheckBox x:Name="OpenBottom_CS" Content="Open Bottom" Grid.Row="1" Grid.Column="1" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 <CheckBox x:Name="ExtendedTop_CS" Content="Extended Top" Grid.Row="2" Grid.Column="0" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>

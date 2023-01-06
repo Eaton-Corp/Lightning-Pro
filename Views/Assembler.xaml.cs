@@ -173,7 +173,7 @@ namespace PRL123_Final.Views
                     else if (Scan.Text.StartsWith("CS-"))       //PWLCS
                     {
                         PRLCS_Set();
-                        getGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], [SpecialCustomer], [AMO], [IncLocLeft], [IncLocRight], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], [PaintedBox], [ThirtyDeepEnclosure], [DNSB], [Complete], [Short], [FilePath], [PageNumber] from [PRLCS] where [GO]='" + Scan.Text.Substring(2, 10) + "' order by [GO_Item],[PageNumber]");
+                        getGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], [SpecialCustomer], [AMO], [IncLocLeft], [IncLocRight], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], [ThirtyDeepEnclosure], [DNSB], [Complete], [Short], [FilePath], [PageNumber] from [PRLCS] where [GO]='" + Scan.Text.Substring(2, 10) + "' order by [GO_Item],[PageNumber]");
 
                     }
                     else if (Scan.Text.StartsWith("EC-"))       //PWLEC
@@ -294,7 +294,6 @@ namespace PRL123_Final.Views
             CrossBusArr = new Boolean[pages];
             OpenBottomArr = new Boolean[pages];
             ExtendedTopArr = new Boolean[pages];
-            PaintedBoxArr = new Boolean[pages];
             ThirtyDeepEnclosureArr = new Boolean[pages];
 
             
@@ -317,20 +316,22 @@ namespace PRL123_Final.Views
                     UrgencyArr[counter] = rb[7].ToString();
 
                     CustomerArr[counter] = rb[8].ToString();
-
                     SpecialCustomerArr[counter] = (Boolean)rb[9];
                     AMOArr[counter] = (Boolean)rb[10];
-                    ServiceEntranceArr[counter] = (Boolean)rb[11];
-                    RatedNeutral200Arr[counter] = (Boolean)rb[12];
-                    PaintedBoxArr[counter] = (Boolean)rb[13];
-                    DNSBArr[counter] = (Boolean)rb[14];
-                    CompleteArr[counter] = (Boolean)rb[15];
-                    ShortArr[counter] = (Boolean)rb[16];
 
-                    FilePath = rb[17].ToString();
+
 
                     if (CurrentProduct == Utility.ProductGroup.PRL123)
                     {
+                        ServiceEntranceArr[counter] = (Boolean)rb[11];
+                        RatedNeutral200Arr[counter] = (Boolean)rb[12];
+                        PaintedBoxArr[counter] = (Boolean)rb[13];
+                        DNSBArr[counter] = (Boolean)rb[14];
+                        CompleteArr[counter] = (Boolean)rb[15];
+                        ShortArr[counter] = (Boolean)rb[16];
+
+                        FilePath = rb[17].ToString();
+
                         //PRL123 Specific
                         BoxEarlyArr[counter] = (Boolean)rb[18];
                         BoxSentArr[counter] = (Boolean)rb[19];
@@ -338,11 +339,37 @@ namespace PRL123_Final.Views
                     }
                     else if (CurrentProduct == Utility.ProductGroup.PRL4)
                     {
+                        ServiceEntranceArr[counter] = (Boolean)rb[11];
+                        RatedNeutral200Arr[counter] = (Boolean)rb[12];
+                        PaintedBoxArr[counter] = (Boolean)rb[13];
+                        DNSBArr[counter] = (Boolean)rb[14];
+                        CompleteArr[counter] = (Boolean)rb[15];
+                        ShortArr[counter] = (Boolean)rb[16];
+
+                        FilePath = rb[17].ToString();
+
                         //PRL4 Specific 
                         DoorOverDistArr[counter] = (Boolean)rb[18];
                         DoorInDoorArr[counter] = (Boolean)rb[19];
 
                         MultiPageNumber[counter] = (int)rb[20];
+                    }
+                    else if(CurrentProduct == Utility.ProductGroup.PRLCS)
+                    {
+                        IncLocLeftArr[counter] = (Boolean)rb[11];
+                        IncLocRightArr[counter] = (Boolean)rb[12];
+                        CrossBusArr[counter] = (Boolean)rb[13];
+                        OpenBottomArr[counter] = (Boolean)rb[14];
+                        ExtendedTopArr[counter] = (Boolean)rb[15];
+                        PaintedBoxArr[counter] = (Boolean)rb[16];
+                        ThirtyDeepEnclosureArr[counter] = (Boolean)rb[17];
+                        DNSBArr[counter] = (Boolean)rb[18];
+                        CompleteArr[counter] = (Boolean)rb[19];
+                        ShortArr[counter] = (Boolean)rb[20];
+
+                        FilePath = rb[21].ToString();
+
+                        MultiPageNumber[counter] = (int)rb[22];
                     }
                     counter++;
                 }
@@ -439,6 +466,22 @@ namespace PRL123_Final.Views
                 Short_4.IsChecked = ShortArr[page];
                 DNSB_4.IsChecked = DNSBArr[page];
             }
+            else if (CurrentProduct == Utility.ProductGroup.PRL4)
+            {
+                IncLocLeft_CS.IsChecked = IncLocLeftArr[page];
+                IncLocRight_CS.IsChecked = IncLocRightArr[page];
+                CrossBus_CS.IsChecked = CrossBusArr[page];
+                OpenBottom_CS.IsChecked = OpenBottomArr[page];
+                ExtendedTop_CS.IsChecked = ExtendedTopArr[page];
+                PaintedBox_CS.IsChecked = PaintedBoxArr[page];
+                ThirtyDeepEnclosure_CS.IsChecked = ThirtyDeepEnclosureArr[page];
+                DNSB_CS.IsChecked = DNSBArr[page];
+                Complete_CS.IsChecked = CompleteArr[page];
+                Short_CS.IsChecked = ShortArr[page];
+                Complete_CS.IsChecked = CompleteArr[page];
+
+            }
+
 
             CurrentImage = getBidman(GOItemsArr[page]);
             imgEditor.loadImage(CurrentImage);
@@ -479,6 +522,10 @@ namespace PRL123_Final.Views
             {
                 getGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], [SpecialCustomer], [AMO], [ServiceEntrance], [RatedNeutral200], [PaintedBox], [DNSB], [Complete], [Short], [FilePath], [DoorOverDist], [DoorInDoor], [PageNumber] from [PRL4] where [GO]='" + GO_Item.Text.Substring(0, 10) + "' order by [GO_Item],[PageNumber]");
 
+            }
+            else if(CurrentProduct == Utility.ProductGroup.PRLCS)
+            {
+                getGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], [SpecialCustomer], [AMO], [IncLocLeft], [IncLocRight], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], [ThirtyDeepEnclosure], [DNSB], [Complete], [Short], [FilePath], [PageNumber] from [PRLCS] where [GO]='" + GO_Item.Text.Substring(0, 10) + "' order by [GO_Item],[PageNumber]");
             }
         }
 
@@ -576,6 +623,10 @@ namespace PRL123_Final.Views
                 {
                     commandStr = "update [PRL4] set [Type]= ?, [Volts]= ?, [Amps]= ?, [Torque]= ?, [Appearance]= ?, [Bus]= ?, [SpecialCustomer]= ?, [AMO]= ?, [ServiceEntrance]= ?, [RatedNeutral200]= ?, [PaintedBox]= ?, [DNSB]= ?, [Complete]= ?, [Short]= ?, [DoorOverDist]= ?, [DoorInDoor]= ? where [GO_Item]='" + GOItemsArr[page] + "'";
                 }
+                else if (CurrentProduct == Utility.ProductGroup.PRLCS)
+                {
+                    commandStr = "update [PRLCS] set [Type]= ?, [Volts]= ?, [Amps]= ?, [Torque]= ?, [Appearance]= ?, [Bus]= ?, [SpecialCustomer]= ?, [AMO]= ?, [IncLocLeft]= ?, [IncLocRight]= ?, [CrossBus]= ?, [OpenBottom]= ?, [ExtendedTop]= ?, [PaintedBox]= ?, [ThirtyDeepEnclosure]= ?, [DNSB]= ?, [Complete]= ?, [Short]= ? where [GO_Item]='" + GOItemsArr[page] + "'";
+                }
                 using (OleDbCommand cmd = new OleDbCommand(commandStr, MainWindow.LPcon))
                 {
                     cmd.Parameters.AddWithValue("Type", Type.Text);
@@ -609,6 +660,19 @@ namespace PRL123_Final.Views
                         cmd.Parameters.AddWithValue("[Short]", Short_4.IsChecked);
                         cmd.Parameters.AddWithValue("[DoorOverDist]", DoorOverDist_4.IsChecked);
                         cmd.Parameters.AddWithValue("[DoorInDoor]", DoorInDoor_4.IsChecked);
+                    }
+                    else if (CurrentProduct == Utility.ProductGroup.PRLCS)
+                    {
+                        cmd.Parameters.AddWithValue("[IncLocLeft]", IncLocLeft_CS.IsChecked);
+                        cmd.Parameters.AddWithValue("[IncLocRight]", IncLocRight_CS.IsChecked);
+                        cmd.Parameters.AddWithValue("[CrossBus]", CrossBus_CS.IsChecked);
+                        cmd.Parameters.AddWithValue("[OpenBottom]", OpenBottom_CS.IsChecked);
+                        cmd.Parameters.AddWithValue("[ExtendedTop]", ExtendedTop_CS.IsChecked);
+                        cmd.Parameters.AddWithValue("[PaintedBox]", PaintedBox_CS.IsChecked);
+                        cmd.Parameters.AddWithValue("[ThirtyDeepEnclosure]", ThirtyDeepEnclosure_CS.IsChecked);
+                        cmd.Parameters.AddWithValue("[DNSB]", DNSB_CS.IsChecked);
+                        cmd.Parameters.AddWithValue("[Complete]", Complete_CS.IsChecked);
+                        cmd.Parameters.AddWithValue("[Short]", Short_CS.IsChecked);
                     }
                     cmd.ExecuteNonQuery();
                 } //end using command
@@ -693,6 +757,11 @@ namespace PRL123_Final.Views
                 {
                     commandStr = "update [PRL4] set [Tracking]='Shipping' where [GO_Item]='" + GO_Item.Text + "'";
                 }
+                else if (CurrentProduct == Utility.ProductGroup.PRLCS)
+                {
+                    commandStr = "update [PRLCS] set [Tracking]='Shipping' where [GO_Item]='" + GO_Item.Text + "'";
+                }
+
                 Utility.executeNonQueryLP(commandStr);
 
                 updateStatus(GO_Item.Text + " SENT TO SHIPPING");
