@@ -45,14 +45,28 @@ namespace PRL123_Final.Views
             {
                 DataTable dt;
                 string query = "";
-                if (CurrentProduct == Utility.ProductGroup.PRL123)
+
+                if (Current_Tab == "Search")
                 {
-                    query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [BoxEarly], [Box Sent], [SpecialCustomer], [ServiceEntrance], [DoubleSection], [PaintedBox], [RatedNeutral200], [DNSB], [Complete], [Short] from [PRL123] where [Tracking]='" + Current_Tab + "'";
+                    search();
+                    return;
                 }
-                else if(CurrentProduct == Utility.ProductGroup.PRL4)
+                else
                 {
-                    query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], [DNSB], [Complete], [Short] from [PRL4] where [Tracking]='" + Current_Tab + "' and [PageNumber] = 0";
+                    if (CurrentProduct == Utility.ProductGroup.PRL123)
+                    {
+                        query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [BoxEarly], [Box Sent], [SpecialCustomer], [ServiceEntrance], [DoubleSection], [PaintedBox], [RatedNeutral200], [DNSB], [Complete], [Short] from [PRL123] where [Tracking]='" + Current_Tab + "'";
+                    }
+                    else if (CurrentProduct == Utility.ProductGroup.PRL4)
+                    {
+                        query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], [DNSB], [Complete], [Short] from [PRL4] where [Tracking]='" + Current_Tab + "' and [PageNumber] = 0";
+                    }
+                    else if (CurrentProduct == Utility.ProductGroup.PRLCS)
+                    {
+                        query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], [ThirtyDeepEnclosure], [DNSB], [Complete], [Short] from [PRLCS] where [Tracking]='" + Current_Tab + "' and [PageNumber] = 0";
+                    }
                 }
+
                 dt = Utility.SearchLP(query);
                 dg.ItemsSource = dt.DefaultView;
             }
@@ -151,9 +165,13 @@ namespace PRL123_Final.Views
             {
                 query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [BoxEarly], [Box Sent], [SpecialCustomer], [ServiceEntrance], [DoubleSection], [PaintedBox], [RatedNeutral200], [DNSB], [Complete], [Short] from [PRL123] where [" + Field.Text + "] like '%" + Search.Text + "%'";
             }
-            else if(CurrentProduct == Utility.ProductGroup.PRL4)
+            else if (CurrentProduct == Utility.ProductGroup.PRL4)
             {
                 query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], [DNSB], [Complete], [Short] from [PRL4] where [" + Field.Text + "] like '%" + Search.Text + "%' and [PageNumber] = 0";
+            }
+            else if (CurrentProduct == Utility.ProductGroup.PRLCS)
+            {
+                query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], [ThirtyDeepEnclosure], [DNSB], [Complete], [Short] from [PRLCS] where [" + Field.Text + "] like '%" + Search.Text + "%' and [PageNumber] = 0";
             }
             dt = Utility.SearchLP(query);
             dg.ItemsSource = dt.DefaultView;
@@ -184,11 +202,17 @@ namespace PRL123_Final.Views
             PRL4_Set();   
         }
 
+        private void PRLCS_Click(object sender, RoutedEventArgs e)
+        {
+            PRLCS_Set();
+        }
+
         private void PRL123_Set()
         {
             CurrentProduct = Utility.ProductGroup.PRL123;
             PWL123.Background = Brushes.DarkBlue;
             PWL4.Background = Brushes.Blue;
+            PWLCS.Background = Brushes.Blue;
             loadGrid();
         }
 
@@ -197,6 +221,16 @@ namespace PRL123_Final.Views
             CurrentProduct = Utility.ProductGroup.PRL4;
             PWL4.Background = Brushes.DarkBlue;
             PWL123.Background = Brushes.Blue;
+            PWLCS.Background = Brushes.Blue;
+            loadGrid();
+        }
+
+        private void PRLCS_Set()
+        {
+            CurrentProduct = Utility.ProductGroup.PRLCS;
+            PWL4.Background = Brushes.Blue;
+            PWL123.Background = Brushes.Blue;
+            PWLCS.Background = Brushes.DarkBlue;
             loadGrid();
         }
     }
