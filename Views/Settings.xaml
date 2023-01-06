@@ -100,7 +100,7 @@
 
                 <Button Name="PWL123" Content="PRL123" Height="28" Width="85" Background="Blue" Foreground="White" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Click="PRL123_Click"/>
                 <Button Name="PWL4" Content="PRL4"  Height="28" Width="85" Background="Blue" Foreground="White" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Click="PRL4_Click"/>
-                <Button Name ="PWLCS" Content="CS" Height="28" Width="85" Background="Blue" Foreground="White" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                <Button Name ="PWLCS" Content="CS" Height="28" Width="85" Background="Blue" Foreground="White" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Click="PRLCS_Click"/>
                 <Button Name="PWLEC" Content="EC"  Height="28" Width="85" Background="Blue" Foreground="White" Grid.Row="4" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" />
 
             </Grid>
