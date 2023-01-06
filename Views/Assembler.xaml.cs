@@ -59,6 +59,14 @@ namespace PRL123_Final.Views
         Boolean[] DoorOverDistArr;
         Boolean[] DoorInDoorArr;
 
+        //PRLCS Specific
+        Boolean[] IncLocLeftArr;
+        Boolean[] IncLocRightArr;
+        Boolean[] CrossBusArr;
+        Boolean[] OpenBottomArr;
+        Boolean[] ExtendedTopArr;
+        Boolean[] ThirtyDeepEnclosureArr;
+
         int[] MultiPageNumber;
         int page;
 
@@ -134,6 +142,23 @@ namespace PRL123_Final.Views
             DNSB.Visibility = Visibility.Hidden;
         }
 
+        private void PRLCS_Set()
+        {
+            CurrentProduct = Utility.ProductGroup.PRLCS;
+            ProductTable = "PRLCS";
+
+            PWL123.Visibility = Visibility.Hidden;
+            PWL4.Visibility = Visibility.Hidden;
+            PWLCS.Visibility = Visibility.Visible;
+            PWLEC.Visibility = Visibility.Hidden;
+
+            checkBoxGridPRL123.Visibility = Visibility.Hidden;
+            checkBoxGridPRL4.Visibility = Visibility.Hidden;
+            checkBoxGridPRLCS.Visibility = Visibility.Visible;
+
+            DNSB.Visibility = Visibility.Hidden;
+        }
+
         private void LoadDataForPage()
         {
             try
@@ -147,6 +172,8 @@ namespace PRL123_Final.Views
                     }
                     else if (Scan.Text.StartsWith("CS-"))       //PWLCS
                     {
+                        PRLCS_Set();
+                        getGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], [SpecialCustomer], [AMO], [IncLocLeft], [IncLocRight], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], [PaintedBox], [ThirtyDeepEnclosure], [DNSB], [Complete], [Short], [FilePath], [PageNumber] from [PRLCS] where [GO]='" + Scan.Text.Substring(2, 10) + "' order by [GO_Item],[PageNumber]");
 
                     }
                     else if (Scan.Text.StartsWith("EC-"))       //PWLEC
@@ -261,6 +288,17 @@ namespace PRL123_Final.Views
             DoorOverDistArr = new Boolean[pages];
             DoorInDoorArr = new Boolean[pages];
 
+            //PRLCS Specific
+            IncLocLeftArr = new Boolean[pages];
+            IncLocRightArr = new Boolean[pages];
+            CrossBusArr = new Boolean[pages];
+            OpenBottomArr = new Boolean[pages];
+            ExtendedTopArr = new Boolean[pages];
+            PaintedBoxArr = new Boolean[pages];
+            ThirtyDeepEnclosureArr = new Boolean[pages];
+
+            
+
             MultiPageNumber = new int[pages];
 
 
@@ -315,6 +353,7 @@ namespace PRL123_Final.Views
 
         private void First_Page()
         {
+
             page = 0;   //all else fails, start at page 0
             for (int i = 0; i < GOItemsArr.Length; i++)
             {
