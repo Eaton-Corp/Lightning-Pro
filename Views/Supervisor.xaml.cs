@@ -74,7 +74,7 @@ namespace PRL123_Final.Views
                     {
                         query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], " +
                             "[Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], " +
-                            "[ServiceEntrance], [IncLocLeft], [IncLocRight], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], " +
+                            "[IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], " +
                             "[PaintedBox], [ThirtyDeepEnclosure], [DNSB], [Complete], [Short] from [PRLCS] where [" + Field.Text + "] " +
                             "like '%" + Search.Text + "%' and [PageNumber] = 0";
                     }
@@ -101,7 +101,7 @@ namespace PRL123_Final.Views
                     {
                         query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim]," +
                             " [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], " +
-                            "[AMO], [SpecialCustomer], [ServiceEntrance], [IncLocLeft], [IncLocRight], [IncLocRight], " +
+                            "[AMO], [SpecialCustomer], [IncLocLeft], [IncLocRight], " +
                             "[CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], [ThirtyDeepEnclosure], [DNSB], " +
                             "[Complete], [Short] from [PRLCS] where [Tracking]='" + Current_Tab + "' and [PageNumber] = 0";
                     }
@@ -546,7 +546,7 @@ namespace PRL123_Final.Views
             {
                 query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim]," +
                             " [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], " +
-                            "[AMO], [SpecialCustomer], [ServiceEntrance], [IncLocLeft], [IncLocRight], [IncLocRight], " +
+                            "[AMO], [SpecialCustomer], [IncLocLeft], [IncLocRight], " +
                             "[CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], [ThirtyDeepEnclosure], [DNSB], " +
                             "[Complete], [Short] from [PRLCS] where [" + Field.Text + "] like '%" + Search.Text + "%' and [PageNumber] = 0";
 

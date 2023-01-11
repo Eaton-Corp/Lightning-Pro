@@ -10,30 +10,32 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="25"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
@@ -47,30 +49,122 @@
         </Grid.ColumnDefinitions>
 
         <Label Content="Edit" FontSize="24" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left"  VerticalAlignment="Top"/>
-        <Label Content="GO Item:" FontSize="16" Grid.Column="0" Grid.Row="1" />
-        <Label Content="GO:" FontSize="16"  Grid.Row="2" Grid.Column="0"/>
-        <Label Content="Shop Order Interior:" FontSize="16"  Grid.Row="3" Grid.Column="0"/>
-        <Label Content="Shop Order Box:" FontSize="16"  Grid.Row="4" Grid.Column="0"/>
-        <Label Content="Shop Order Trim:" FontSize="16"  Grid.Row="5" Grid.Column="0"/>
-        <Label Content="Qty:" FontSize="16"  Grid.Row="6" Grid.Column="0"/>
-        <Label Content="Entered Date:" FontSize="16"  Grid.Row="7" Grid.Column="0"/>
-        <Label Content="Release Date:" FontSize="16"  Grid.Row="8" Grid.Column="0"/>
-        <Label Content="Commit Date:" FontSize="16"  Grid.Row="9" Grid.Column="0"/>
-        <Label Content="Tracking:" FontSize="16"  Grid.Row="10" Grid.Column="0"/>
-        <Label Content="Urgency:" FontSize="16"  Grid.Row="11" Grid.Column="0"/>
-        <Label Content="Product ID:" FontSize="16"  Grid.Row="12" Grid.Column="0"/>
-        <Label Content="Designation:" FontSize="16"  Grid.Row="13" Grid.Column="0"/>
-        <Label Content="Enclosure:" FontSize="16"  Grid.Row="14" Grid.Column="0"/>
-        <Label Content="MA:" FontSize="16"  Grid.Row="15" Grid.Column="0"/>
-        <Label Content="Neut:" FontSize="16"  Grid.Row="16" Grid.Column="0"/>
-        <Label Content="Voltage:" FontSize="16"  Grid.Row="17" Grid.Column="0"/>
-        <Label Content="P:" FontSize="16"  Grid.Row="18" Grid.Column="0"/>
-        <Label Content="W:" FontSize="16"  Grid.Row="19" Grid.Column="0"/>
-        <Label Content="XSpace Used:" FontSize="16"  Grid.Row="20" Grid.Column="0"/>
-        <Label Content="Ground:" FontSize="16"  Grid.Row="21" Grid.Column="0"/>
-        <Label Content="Hz:" FontSize="16"  Grid.Row="22" Grid.Column="0"/>
-        <CheckBox x:Name="SpecialCustomer" Content="Special Customer" Grid.Column="0" Grid.Row="23" Grid.ColumnSpan="2" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <Label Content="Customer:" FontSize="16"  Grid.Row="24" Grid.Column="0"/>
+        <Label Content="GO Item:" FontSize="14" Grid.Column="0" Grid.Row="1" />
+        <Label Content="GO:" FontSize="14"  Grid.Row="2" Grid.Column="0"/>
+        <Label Content="Shop Order Interior:" FontSize="14"  Grid.Row="3" Grid.Column="0"/>
+        <Label Content="Shop Order Box:" FontSize="14"  Grid.Row="4" Grid.Column="0"/>
+        <Label Content="Shop Order Trim:" FontSize="14"  Grid.Row="5" Grid.Column="0"/>
+        <Label Content="Qty:" FontSize="14"  Grid.Row="6" Grid.Column="0"/>
+        <Label Content="Entered Date:" FontSize="14"  Grid.Row="7" Grid.Column="0"/>
+        <Label Content="Release Date:" FontSize="14"  Grid.Row="8" Grid.Column="0"/>
+        <Label Content="Commit Date:" FontSize="14"  Grid.Row="9" Grid.Column="0"/>
+        <Label Content="Tracking:" FontSize="14"  Grid.Row="10" Grid.Column="0"/>
+        <Label Content="Urgency:" FontSize="14"  Grid.Row="11" Grid.Column="0"/>
+        <Label Content="Product ID:" FontSize="14"  Grid.Row="12" Grid.Column="0"/>
+
+
+        <Grid x:Name="PRLCSSchema" Visibility="Hidden" Grid.Row="13" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="14">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="150"/>
+            </Grid.ColumnDefinitions>
+            <Label x:Name="SwitchBoardLabelCS" Content="Switchboard:" FontSize="13"  Grid.Row="0" Grid.Column="0"/>
+            <Label  x:Name="CSAStandardLabelCS" Content="CSAStandard:" FontSize="13"  Grid.Row="1" Grid.Column="0"/>
+            <Label  x:Name="SMCenterLabelCS" Content="SMCenter:" FontSize="13"  Grid.Row="2" Grid.Column="0"/>
+            <Label  x:Name="SectionLabelCS" Content="Section:" FontSize="13"  Grid.Row="3" Grid.Column="0"/>
+            <Label  x:Name="MainBusBarCapacityLabelCS" Content="Main Bus Bar Capacity:" FontSize="13"  Grid.Row="4" Grid.Column="0"/>
+            <Label  x:Name="VoltageLabelCS" Content="Voltage:" FontSize="13"  Grid.Row="5" Grid.Column="0"/>
+            <Label  x:Name="HzLabelCS" Content="Hz:" FontSize="13"  Grid.Row="6" Grid.Column="0"/>
+            <Label x:Name="PLabelCS" Content="P:" FontSize="13"  Grid.Row="7" Grid.Column="0"/>
+            <Label x:Name="WLabelCS" Content="W:" FontSize="13"  Grid.Row="8" Grid.Column="0"/>
+            <Label x:Name="ShortCircuitLabelCS" Content="Short Circuit Rating:" FontSize="13"  Grid.Row="9" Grid.Column="0"/>
+            <Label x:Name="AmpsLabelCS" Content="Amps:" FontSize="13"  Grid.Row="10" Grid.Column="0"/>
+            <Label x:Name="EnclosureLabelCS" Content="Enclosure:" FontSize="13"  Grid.Row="11" Grid.Column="0"/>
+            <CheckBox x:Name="SpecialCustomerCS" Content="Special Customer" Grid.Column="0" Grid.Row="12" Grid.ColumnSpan="2" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Label x:Name="CustomerLabelCS" Content="Customer:" FontSize="14"  Grid.Row="13" Grid.Column="0"/>
+            
+            <TextBox  x:Name="SwitchBoardBoxCS" TextWrapping="Wrap" Grid.Column="1" Grid.Row="0" Height="26" VerticalAlignment="Top"/>
+            <TextBox  x:Name="CSAStandardBoxCS" TextWrapping="Wrap" Grid.Column="1" Grid.Row="1" Height="26" VerticalAlignment="Top"/>
+            <TextBox  x:Name="SMCenterBoxCS" TextWrapping="Wrap" Grid.Column="1" Grid.Row="2" Height="26" VerticalAlignment="Top"/>
+            <TextBox  x:Name="SectionBoxCS" TextWrapping="Wrap" Grid.Column="1" Grid.Row="3" Height="26" VerticalAlignment="Top"/>
+            <TextBox  x:Name="MainBusBarCapacityBoxCS" TextWrapping="Wrap" Grid.Column="1" Grid.Row="4" Height="26" VerticalAlignment="Top"/>
+            <TextBox  x:Name="VoltageBoxCS" TextWrapping="Wrap" Grid.Column="1" Grid.Row="5" Height="26" VerticalAlignment="Top"/>
+            <TextBox  x:Name="HzBoxCS" TextWrapping="Wrap" Grid.Column="1" Grid.Row="6" Height="26" VerticalAlignment="Top"/>
+            <TextBox  x:Name="PBoxCS" TextWrapping="Wrap" Grid.Column="1" Grid.Row="7" Height="26" VerticalAlignment="Top"/>
+            <TextBox  x:Name="WBoxCS" TextWrapping="Wrap" Grid.Column="1" Grid.Row="8" Height="26" VerticalAlignment="Top"/>
+            <TextBox x:Name="ShortCircuitBoxCS" TextWrapping="Wrap" Grid.Column="1" Grid.Row="9" Height="26" VerticalAlignment="Top"/>
+            <TextBox  x:Name="AmpsBoxCS" TextWrapping="Wrap" Grid.Column="1" Grid.Row="10" Height="26" VerticalAlignment="Top"/>
+            <TextBox  x:Name="EnclosureBoxCS" TextWrapping="Wrap" Grid.Column="1" Grid.Row="11" Height="26" VerticalAlignment="Top"/>
+            <TextBox  x:Name="CustomerBoxCS" TextWrapping="Wrap" Grid.Column="1" Grid.Row="13" Height="26" VerticalAlignment="Top"/>
+        </Grid>
+
+        <Grid x:Name="PRL1234Schema" Visibility="Hidden" Grid.Row="13" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="14">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="150"/>
+            </Grid.ColumnDefinitions>
+            <Label  Content="Designation:" FontSize="16"  Grid.Row="0" Grid.Column="0"/>
+            <Label  Content="Enclosure:" FontSize="16"  Grid.Row="1" Grid.Column="0"/>
+            <Label  Content="MA:" FontSize="16"  Grid.Row="2" Grid.Column="0"/>
+            <Label  Content="Neut:" FontSize="16"  Grid.Row="3" Grid.Column="0"/>
+            <Label  Content="Voltage:" FontSize="16"  Grid.Row="4" Grid.Column="0"/>
+            <Label  Content="P:" FontSize="16"  Grid.Row="5" Grid.Column="0"/>
+            <Label  Content="W:" FontSize="16"  Grid.Row="6" Grid.Column="0"/>
+            <Label  Content="XSpace Used:" FontSize="16"  Grid.Row="7" Grid.Column="0"/>
+            <Label  Content="Ground:" FontSize="16"  Grid.Row="8" Grid.Column="0"/>
+            <Label  Content="Hz:" FontSize="16"  Grid.Row="9" Grid.Column="0"/>
+            <CheckBox  x:Name="SpecialCustomer" Content="Special Customer" Grid.Column="0" Grid.Row="10" Grid.ColumnSpan="2" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Label  Content="Customer:" FontSize="14"  Grid.Row="11" Grid.Column="0"/>
+
+            <TextBox  x:Name="DesignationBox" TextWrapping="Wrap" Grid.Column="1" Grid.Row="13" Height="26" VerticalAlignment="Top"/>
+            <TextBox  x:Name="EnclosureBox" TextWrapping="Wrap" Grid.Column="1" Grid.Row="14" Height="26" VerticalAlignment="Top"/>
+            <TextBox  x:Name="MABox" TextWrapping="Wrap" Grid.Column="1" Grid.Row="15" Height="26" VerticalAlignment="Top"/>
+            <TextBox  x:Name="NeutBox" TextWrapping="Wrap" Grid.Column="1" Grid.Row="16" Height="26" VerticalAlignment="Top"/>
+            <TextBox  x:Name="VoltageBox" TextWrapping="Wrap" Grid.Column="1" Grid.Row="17" Height="26" VerticalAlignment="Top"/>
+            <TextBox  x:Name="PBox" TextWrapping="Wrap" Grid.Column="1" Grid.Row="18" Height="26" VerticalAlignment="Top"/>
+            <TextBox  x:Name="WBox" TextWrapping="Wrap" Grid.Column="1" Grid.Row="19" Height="26" VerticalAlignment="Top"/>
+            <TextBox  x:Name="XSpaceUsedBox" TextWrapping="Wrap" Grid.Column="1" Grid.Row="20" Height="26" VerticalAlignment="Top"/>
+            <TextBox  x:Name="GroundBox" TextWrapping="Wrap" Grid.Column="1" Grid.Row="21" Height="26" VerticalAlignment="Top"/>
+            <TextBox  x:Name="HzBox" TextWrapping="Wrap" Grid.Column="1" Grid.Row="22" Height="26" VerticalAlignment="Top"/>
+            <TextBox  x:Name="Customer" TextWrapping="Wrap" Grid.Column="1" Grid.Row="24" Height="26" VerticalAlignment="Top"/>
+        </Grid>
+        
+        
+
+        
+
+
+
 
 
         <TextBox x:Name="GO_Item" TextWrapping="Wrap"  Grid.Row="1" Grid.Column="1" Height="26" VerticalAlignment="Top"/>
@@ -90,20 +184,8 @@
             <ComboBoxItem Content="HOLD"></ComboBoxItem>
         </ComboBox>
         <TextBox x:Name="ProductIDBox" TextWrapping="Wrap" Grid.Column="1" Grid.Row="12" Height="26" VerticalAlignment="Top"/>
-        <TextBox x:Name="DesignationBox" TextWrapping="Wrap" Grid.Column="1" Grid.Row="13" Height="26" VerticalAlignment="Top"/>
-        <TextBox x:Name="EnclosureBox" TextWrapping="Wrap" Grid.Column="1" Grid.Row="14" Height="26" VerticalAlignment="Top"/>
-        <TextBox x:Name="MABox" TextWrapping="Wrap" Grid.Column="1" Grid.Row="15" Height="26" VerticalAlignment="Top"/>
-        <TextBox x:Name="NeutBox" TextWrapping="Wrap" Grid.Column="1" Grid.Row="16" Height="26" VerticalAlignment="Top"/>
-        <TextBox x:Name="VoltageBox" TextWrapping="Wrap" Grid.Column="1" Grid.Row="17" Height="26" VerticalAlignment="Top"/>
-        <TextBox x:Name="PBox" TextWrapping="Wrap" Grid.Column="1" Grid.Row="18" Height="26" VerticalAlignment="Top"/>
-        <TextBox x:Name="WBox" TextWrapping="Wrap" Grid.Column="1" Grid.Row="19" Height="26" VerticalAlignment="Top"/>
-        <TextBox x:Name="XSpaceUsedBox" TextWrapping="Wrap" Grid.Column="1" Grid.Row="20" Height="26" VerticalAlignment="Top"/>
-        <TextBox x:Name="GroundBox" TextWrapping="Wrap" Grid.Column="1" Grid.Row="21" Height="26" VerticalAlignment="Top"/>
-        <TextBox x:Name="HzBox" TextWrapping="Wrap" Grid.Column="1" Grid.Row="22" Height="26" VerticalAlignment="Top"/>
-        <TextBox x:Name="Customer" TextWrapping="Wrap" Grid.Column="1" Grid.Row="24" Height="26" VerticalAlignment="Top"/>
 
-
-        <Grid x:Name="checkBoxGridPRL123" Visibility="Hidden" Grid.Row="25" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="1">
+        <Grid x:Name="checkBoxGridPRL123" Visibility="Hidden" Grid.Row="27" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
@@ -129,7 +211,7 @@
         </Grid>
 
 
-        <Grid x:Name="checkBoxGridPRL4" Visibility="Hidden" Grid.Row="25" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="1">
+        <Grid x:Name="checkBoxGridPRL4" Visibility="Hidden" Grid.Row="27" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
@@ -153,11 +235,38 @@
             <CheckBox x:Name="DNSB_4" Content="DNSB" Grid.Row="4" Grid.Column="0" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Grid>
 
+        <Grid Visibility="Hidden" x:Name="checkBoxGridPRLCS" Grid.Row="27" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="25"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <CheckBox x:Name="AMO_CS" Content="AMO" Grid.Row="0" Grid.Column="0" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <CheckBox x:Name="IncLocLeft_CS" Content="IncLocLeft" Grid.Row="0" Grid.Column="1" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <CheckBox x:Name="IncLocRight_CS" Content="IncLocRight" Grid.Row="1" Grid.Column="0" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <CheckBox x:Name="CrossBus_CS" Content="Cross Bus" Grid.Row="1" Grid.Column="1" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <CheckBox x:Name="OpenBottom_CS" Content="Open Bottom" Grid.Row="2" Grid.Column="0" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <CheckBox x:Name="ExtendedTop_CS" Content="Extended Top" Grid.Row="2" Grid.Column="1" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <CheckBox x:Name="PaintedBox_CS" Content="PaintedBox" Grid.Row="3" Grid.Column="0" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <CheckBox x:Name="ThirtyDeepEnc_CS" Content="Thirty Deep Enc" Grid.Row="3" Grid.Column="1" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <CheckBox x:Name="DNSB_CS" Content="DNSB" Grid.Row="4" Grid.Column="0" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <CheckBox x:Name="Complete_CS" Content="Complete" Grid.Row="5" Grid.Column="0" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <CheckBox x:Name="Short_CS" Content="Short" Grid.Row="5" Grid.Column="1" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Grid>
+
         <Label x:Name="Status" Grid.Column="0" Grid.Row="26" Grid.ColumnSpan="2" VerticalAlignment="Center"/>
 
-        <ImageEditor:Editor x:Name="imgEditor" Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="4" Grid.RowSpan="26"/>
+        <ImageEditor:Editor x:Name="imgEditor" Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="4" Grid.RowSpan="28"/>
 
-        <Grid Grid.Row="26" Grid.Column="2" Grid.ColumnSpan="4">
+        <Grid Grid.Row="28" Grid.Column="2" Grid.ColumnSpan="4">
             <Grid.RowDefinitions>
                 <RowDefinition/>
             </Grid.RowDefinitions>

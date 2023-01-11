@@ -195,13 +195,16 @@ namespace PRL123_Final.Views
 
         static string SpecialCustomer;
         static string AMO;
-        static string ServiceEntrance;
-        static string RatedNeutral200;
         static string PaintedBox;
         static string DNSB;
         static string Complete;
         static string Short;
         static string Notes;
+
+        //PRL123/PRL4 only
+        static string ServiceEntrance;
+        static string RatedNeutral200;
+        
 
         //PRL123 Specific
         static string BoxEarlyInfo;
@@ -211,6 +214,14 @@ namespace PRL123_Final.Views
         //PRL4 Specific 
         static string DoorOverDist;
         static string DoorInDoor;
+
+        //PRLCS Specific
+        static string IncLocLeft;
+        static string IncLocRight;
+        static string CrossBus;
+        static string OpenBottom;
+        static string ExtendedTop;
+        static string ThirtyDeepEnclosure;
 
         static string type;
         static string volts;
@@ -222,30 +233,22 @@ namespace PRL123_Final.Views
         static string productSpecialist;
 
 
-        //PRLCS Specific
-        static string IncLocLeft;
-        static string IncLocRight;
-        static string CrossBus;
-        static string OpenBottom;
-        static string ExtendedTop;
-        static string ThirtyDeepEnclosure;
-
-
-
         //from getCSAinfo()
-        //PRL4/123
-        static string Designation;
-        static string Enclosure;
-        static string N;
-        static string XSpaceUsed;
-        static string MA;
+
         static string Voltage;
         static string P;
         static string W;
-        static string Ground;
         static string Hz;
+        static string Enclosure;
         static string ProductID;
 
+        //PRL4/123 only
+        static string Designation;
+        static string N;
+        static string XSpaceUsed;
+        static string MA;
+        static string Ground;
+        
         //PRLCS
         static string SwitchBoard;
         static string CSAStandard;
@@ -254,6 +257,7 @@ namespace PRL123_Final.Views
         static string MainBusBarCapacity;
         static string ShortCircuitRating;
         static string Amps;
+
 
         private void RegularShippingProcess(string GoItem)
         {
@@ -306,18 +310,20 @@ namespace PRL123_Final.Views
 
         private void getDataFromLPDB(string GOI)
         {
-            string query = "";
+            //base query for all similar fields 
+            string query = "select [GO_Item], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Urgency], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Catalogue], [ProductSpecialist], [SpecialCustomer], [AMO], [PaintedBox], [DNSB], [Complete], [Short], [Notes], ";
+            
             if (CurrentProduct == Utility.ProductGroup.PRL123)
             {
-                query = "select [GO_Item], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Urgency], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Catalogue], [ProductSpecialist], [SpecialCustomer], [AMO], [ServiceEntrance], [RatedNeutral200], [PaintedBox], [DNSB], [Complete], [Short], [Notes], [BoxEarly], [Box Sent], [DoubleSection] from [PRL123] where [GO_Item]='" + GOI + "'";
+                query += "[ServiceEntrance], [RatedNeutral200], [BoxEarly], [Box Sent], [DoubleSection] from [PRL123] where [GO_Item]='" + GOI + "'";
             }
             else if (CurrentProduct == Utility.ProductGroup.PRL4)
             {
-                query = "select [GO_Item], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Urgency], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Catalogue], [ProductSpecialist], [SpecialCustomer], [AMO], [ServiceEntrance], [RatedNeutral200], [PaintedBox], [DNSB], [Complete], [Short], [Notes], [DoorOverDist], [DoorInDoor] from [PRL4] where [GO_Item]='" + GOI + "' and [PageNumber]=0";
+                query += "[ServiceEntrance], [RatedNeutral200], [DoorOverDist], [DoorInDoor] from [PRL4] where [GO_Item]='" + GOI + "' and [PageNumber]=0";
             }
             else if(CurrentProduct == Utility.ProductGroup.PRLCS)
             {
-                query = "select [GO_Item], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Urgency], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Catalogue], [ProductSpecialist], [SpecialCustomer], [AMO], [IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [ThirtyDeepEnclosure], [PaintedBox], [DNSB], [Complete], [Short], [Notes], [DoorOverDist], [DoorInDoor] from [PRL4] where [GO_Item]='" + GOI + "' and [PageNumber]=0";
+                query += "[IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [ThirtyDeepEnclosure] from [PRLCS] where [GO_Item]='" + GOI + "' and [PageNumber]=0";
             }
 
             DataTableReader dtr = Utility.loadData(query);
@@ -347,18 +353,17 @@ namespace PRL123_Final.Views
 
                     SpecialCustomer = dtr[18].ToString();
                     AMO = dtr[19].ToString();
-                   
+                    PaintedBox = dtr[20].ToString();
+                    DNSB = dtr[21].ToString();
+                    Complete = dtr[22].ToString();
+                    Short = dtr[23].ToString();
+                    Notes = dtr[24].ToString();
 
                     if (CurrentProduct == Utility.ProductGroup.PRL123)
                     {
-                        ServiceEntrance = dtr[20].ToString();
-                        RatedNeutral200 = dtr[21].ToString();
-                        PaintedBox = dtr[22].ToString();
-                        DNSB = dtr[23].ToString();
-                        Complete = dtr[24].ToString();
-                        Short = dtr[25].ToString();
-                        Notes = dtr[26].ToString();
-
+                        ServiceEntrance = dtr[25].ToString();
+                        RatedNeutral200 = dtr[26].ToString();
+                
                         //PRL123 Specific
                         BoxEarlyInfo = dtr[27].ToString();
                         BoxSent = dtr[28].ToString();
@@ -366,13 +371,8 @@ namespace PRL123_Final.Views
                     }
                     else if (CurrentProduct == Utility.ProductGroup.PRL4)
                     {
-                        ServiceEntrance = dtr[20].ToString();
-                        RatedNeutral200 = dtr[21].ToString();
-                        PaintedBox = dtr[22].ToString();
-                        DNSB = dtr[23].ToString();
-                        Complete = dtr[24].ToString();
-                        Short = dtr[25].ToString();
-                        Notes = dtr[26].ToString();
+                        ServiceEntrance = dtr[25].ToString();
+                        RatedNeutral200 = dtr[26].ToString();
 
                         //PRL4 Specific 
                         DoorOverDist = dtr[27].ToString();
@@ -380,19 +380,13 @@ namespace PRL123_Final.Views
                     }
                     else if(CurrentProduct == Utility.ProductGroup.PRLCS) 
                     {
-                        IncLocLeft = dtr[20].ToString();
-                        IncLocRight = dtr[21].ToString();
-                        CrossBus = dtr[22].ToString();
-                        OpenBottom = dtr[23].ToString();
-                        ExtendedTop = dtr[24].ToString();
-                        ThirtyDeepEnclosure = dtr[25].ToString();
-
-                        PaintedBox = dtr[25].ToString();
-                        DNSB = dtr[26].ToString();
-                        Complete = dtr[27].ToString();
-                        Short = dtr[28].ToString();
-                        Notes = dtr[29].ToString();
-
+                        //PRLCS Specific
+                        IncLocLeft = dtr[25].ToString();
+                        IncLocRight = dtr[26].ToString();
+                        CrossBus = dtr[27].ToString();
+                        OpenBottom = dtr[28].ToString();
+                        ExtendedTop = dtr[29].ToString();
+                        ThirtyDeepEnclosure = dtr[30].ToString();
                     }
                 }
             }
@@ -430,10 +424,11 @@ namespace PRL123_Final.Views
                         Voltage = values[8].ToString();
                         Hz = values[9].ToString();
                         P = values[10].ToString();
-                        ShortCircuitRating = values[11].ToString();
-                        Amps = values[12].ToString();
-                        Enclosure = values[13].ToString();
-                        ProductID = values[15].ToString();
+                        W = values[11].ToString();
+                        ShortCircuitRating = values[12].ToString();
+                        Amps = values[13].ToString();
+                        Enclosure = values[14].ToString();
+                        ProductID = values[16].ToString();
                     }
                 }
             }
@@ -541,11 +536,13 @@ namespace PRL123_Final.Views
                 "Volts: " + volts, "Amps: " + amps, "Torque: " + torque, "Appearance: " + appearance, "Bus: " + bus, "Catalogue: " + catalogue,
                 "Product Specialist: " + productSpecialist, "FilePath: " + pdfDirectory," ", "AMO: " + AMO, "Special Customer: " + SpecialCustomer,
                 "IncLocLeft: " + IncLocLeft,"IncLocRight: " + IncLocRight,"CrossBus: " + CrossBus,"OpenBottom: " + OpenBottom,"ExtendedTop: " + ExtendedTop,
-                "PaintedBox: " + PaintedBox, "ThirtyDeepEnclosure: " + ThirtyDeepEnclosure,"DNSB: " + DNSB, "Complete: " + Complete, "Short: " + Short," ", "Designation: " + Designation,
-                "Enclosure: " + Enclosure, "N: " + N, "X Space Used: " + XSpaceUsed, "MA: " + MA, "Voltage: " + Voltage, "P: " + P, "W: " + W,
-                "Ground: " + Ground, "Hz: " + Hz," ", "Notes: " + Notes };
+                "PaintedBox: " + PaintedBox, "ThirtyDeepEnclosure: " + ThirtyDeepEnclosure,"DNSB: " + DNSB, "Complete: " + Complete, "Short: " + Short," ",
+                "SwitchBoard: " + SwitchBoard, "CSAStandard: " + CSAStandard, "SMCenter: " + SMCenter, "Section: " + Section, "MainBusBarCapacity: " + MainBusBarCapacity,
+                "Voltage: " + Voltage, "Hz: " + Hz, "P: " + P, "W: " + W, "ShortCircuitRating: " + ShortCircuitRating, "Amps: " + Amps, "Enclosure: " + Enclosure,
+                " ", "Notes: " + Notes };
             Utility.WriteLinesToTXT(lines, documentPath);
         }
+        
 
         private void PRL123_Click(object sender, RoutedEventArgs e)
         {
