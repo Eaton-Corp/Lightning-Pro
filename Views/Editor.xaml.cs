@@ -328,7 +328,7 @@ namespace PRL123_Final.Views
             double width = img.Width / border.ActualWidth;
 
             double height = img.Height / border.ActualHeight;
-            double divisor = 0.0;
+            double divisor;
             if (width <= height)
             {
                 divisor = height;

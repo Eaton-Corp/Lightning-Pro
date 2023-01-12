@@ -39,7 +39,7 @@
             </Grid.RowDefinitions>
             <Button Name="PWL123" Content="PRL123" Grid.Column="3" Grid.Row="0" Background="Blue" VerticalAlignment="Bottom" Foreground="White" Click="PRL123_Click"/>
             <Button Name="PWL4" Content="PRL4" Grid.Column="2" Grid.Row="0" Background="Blue" VerticalAlignment="Bottom" Foreground="White" Click="PRL4_Click"/>
-            <Button Name="PWLCS" Content="CS" Grid.Column="1" Grid.Row="0" Background="Blue" VerticalAlignment="Bottom" Foreground="White"/>
+            <Button Name="PWLCS" Content="CS" Grid.Column="1" Grid.Row="0" Background="Blue" VerticalAlignment="Bottom" Foreground="White" Click="PRLCS_Click"/>
             <Button Name="PWLEC" Content="EC" Grid.Column="0" Grid.Row="0" Background="Blue" VerticalAlignment="Bottom" Foreground="White"/>
         </Grid>
         

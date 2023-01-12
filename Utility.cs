@@ -839,22 +839,12 @@ namespace PRL123_Final
 
 
         // The following is used to get the GO# given the ID#
-        public static string IDtoGO(int ID, ProductGroup CurrentProduct)
+        public static string IDtoGO(int ID, string ProductTable)
         {
-            DataTable dt;
-            string query = "";
+            string query = "select [GO] from [" + ProductTable + "] where [ID]=" + ID.ToString();
             string output = "";
 
-            if (CurrentProduct == ProductGroup.PRL123)
-            {
-                query = "select [GO] from [PRL123] where [ID]=" + ID.ToString();
-            }
-            else if (CurrentProduct == ProductGroup.PRL4)
-            {
-                query = "select [GO] from [PRL4] where [ID]=" + ID.ToString();
-            }
-            dt = SearchLP(query);
-            using (DataTableReader dtr = new DataTableReader(dt))
+            using (DataTableReader dtr = loadData(query))
             {
                 while (dtr.Read())
                 {

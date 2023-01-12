@@ -253,7 +253,7 @@ namespace PRL123_Final.Views
             {
                 if (Selected != -1)
                 {
-                    SR sf = new SR(Selected, CurrentProduct);
+                    SR sf = new SR(Selected, CurrentProduct, ProductTable);
                     sf.Show();
                 }
             }

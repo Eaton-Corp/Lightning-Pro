@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\E0700507\DrBartholomewBlankAllWorkCoop\Ralla\PRL123Application\PRL123_Final\obj\Debug\
+C:\Users\E0700507\DrBartholomewBlankAllWorkCoop\Ralla\Repos\Lightning-Pro\obj\Debug\
 PRL123_Final
 none
 false
 DEBUG;TRACE
-C:\Users\E0700507\DrBartholomewBlankAllWorkCoop\Ralla\PRL123Application\PRL123_Final\App.xaml
-251865751516
+C:\Users\E0700507\DrBartholomewBlankAllWorkCoop\Ralla\Repos\Lightning-Pro\App.xaml
+25-149503234
 
-44495358062
-50-1630741353
-AMOCheckList.xaml;AMOList.xaml;Edit.xaml;InsertPRL4.xaml;Insert.xaml;MainWindow.xaml;NotesWindow.xaml;PrintLabels.xaml;PrintPage.xaml;PrintShopPackagePage.xaml;PrintTracking.xaml;ShippingView.xaml;SR.xaml;Views\Analytics.xaml;Views\Assembler.xaml;Views\Configuration.xaml;Views\Credits.xaml;Views\Eaton.xaml;Views\Editor.xaml;Views\MaterialCards.xaml;Views\MaterialPlanning.xaml;Views\Settings.xaml;Views\Shipping.xaml;Views\Specialist.xaml;Views\Supervisor.xaml;
+42427563442
+50-876274851
+AMOList.xaml;Edit.xaml;InsertPRL4.xaml;Insert.xaml;InsertPRLCS.xaml;MainWindow.xaml;NotesWindow.xaml;PrintLabels.xaml;PrintPage.xaml;PrintShopPackagePage.xaml;PrintTracking.xaml;ShippingView.xaml;SR.xaml;Views\Analytics.xaml;Views\Assembler.xaml;Views\Configuration.xaml;Views\Credits.xaml;Views\Eaton.xaml;Views\Editor.xaml;Views\MaterialCards.xaml;Views\MaterialPlanning.xaml;Views\Settings.xaml;Views\Shipping.xaml;Views\Specialist.xaml;Views\Supervisor.xaml;
 
-True
+False
 
