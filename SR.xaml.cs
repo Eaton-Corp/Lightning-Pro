@@ -18,22 +18,20 @@ namespace PRL123_Final
         string CommitDate = "";
         string ProductSpecialist = "";
         Utility.ProductGroup CurrentProduct;
-        string ProductTable;
 
-        public SR(int ID, Utility.ProductGroup Product, string ProdTable)
+
+        public SR(int ID, Utility.ProductGroup Product)
         {
             InitializeComponent();
             
             Id = ID;
             CurrentProduct = Product;
-            ProductTable = ProdTable;
-
 
             string reportSourceSR = ConfigurationManager.ConnectionStrings["imagesFolder"].ToString() + "SR.png";
             Uri image = new Uri(reportSourceSR, UriKind.RelativeOrAbsolute);
             BitmapImage img = new BitmapImage(image);
 
-            string GO = Utility.IDtoGO(Id, ProductTable);
+            string GO = Utility.IDtoGO(Id,CurrentProduct);
             getCommitAndSpecialist();
 
             DrawingVisual drawingVisual = new DrawingVisual();
@@ -49,10 +47,6 @@ namespace PRL123_Final
             {
                 QRCode = Utility.GenerateQRCode("4-" + GO);
             }
-            else if (CurrentProduct == Utility.ProductGroup.PRLCS)
-            {
-                QRCode = Utility.GenerateQRCode("CS-" + GO);
-            }
 
             drawingContext.DrawImage(QRCode, new Rect(1200, 1650, QRCode.Width/2, QRCode.Height/2));
 
@@ -67,9 +61,9 @@ namespace PRL123_Final
             {
                 getGOs("select [GO_Item] from [PRL123] where [GO]='" + GO + "' and Tracking='Production'", drawingContext);
             }
-            else
+            else if (CurrentProduct == Utility.ProductGroup.PRL4)
             {
-                getGOs("select [GO_Item] from [" + ProductTable + "] where [GO]='" + GO + "' and Tracking='Production' and [PageNumber]=0", drawingContext);
+                getGOs("select [GO_Item] from [PRL4] where [GO]='" + GO + "' and Tracking='Production' AND [PageNumber]=0", drawingContext);
             }
 
             drawingContext.Close();
@@ -84,8 +78,19 @@ namespace PRL123_Final
       
         private void getCommitAndSpecialist()
         {
-            string query = "select [CommitDate], [ProductSpecialist] from [" + ProductTable + "] where [ID]=" + Id.ToString();
-            using (DataTableReader dtr = Utility.loadData(query))
+            DataTable dt;
+            string query = "";
+
+            if (CurrentProduct == Utility.ProductGroup.PRL123)
+            {
+                query = "select [CommitDate], [ProductSpecialist] from [PRL123] where [ID]=" + Id.ToString();
+            }
+            else if (CurrentProduct == Utility.ProductGroup.PRL4)
+            {
+                query = "select [CommitDate], [ProductSpecialist] from [PRL4] where [ID]=" + Id.ToString();
+            }
+            dt = Utility.SearchLP(query);
+            using (DataTableReader dtr = new DataTableReader(dt))
             {
                 while (dtr.Read())
                 {
@@ -105,7 +110,10 @@ namespace PRL123_Final
         {
             int y = 280;
 
-            using (DataTableReader dtr = Utility.loadData(query))
+            DataTable dt;
+            dt = Utility.SearchLP(query);
+
+            using (DataTableReader dtr = new DataTableReader(dt))
             {
                 while (dtr.Read())
                 {

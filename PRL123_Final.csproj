@@ -182,6 +182,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AMOCheckList.xaml.cs">
+      <DependentUpon>AMOCheckList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="AMOList.xaml.cs">
       <DependentUpon>AMOList.xaml</DependentUpon>
     </Compile>
@@ -193,9 +196,6 @@
     </Compile>
     <Compile Include="Insert.xaml.cs">
       <DependentUpon>Insert.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="InsertPRLCS.xaml.cs">
-      <DependentUpon>InsertPRLCS.xaml</DependentUpon>
     </Compile>
     <Compile Include="NotesWindow.xaml.cs">
       <DependentUpon>NotesWindow.xaml</DependentUpon>
@@ -266,6 +266,10 @@
       <DependentUpon>Supervisor.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ZoomBorder.cs" />
+    <Page Include="AMOCheckList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="AMOList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -281,10 +285,6 @@
     <Page Include="Insert.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="InsertPRLCS.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -376,6 +376,8 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\GOItem.cs" />
+    <Compile Include="Models\MSSEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -36,7 +36,6 @@ namespace PRL123_Final.Views
         string Current_Tab;
 
         Utility.ProductGroup CurrentProduct;
-        string ProductTable;
 
         public Supervisor()
         {
@@ -57,25 +56,56 @@ namespace PRL123_Final.Views
                 string query = "";
                 if (Current_Tab == "Search")
                 {
-                    search();
-                    return;
+                    if (CurrentProduct == Utility.ProductGroup.PRL123)
+                    {
+                        query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], " +
+                            "[Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [BoxEarly], " +
+                            "[Box Sent], [SpecialCustomer], [ServiceEntrance], [DoubleSection], [PaintedBox], [RatedNeutral200], " +
+                            "[DNSB], [Complete], [Short] from [PRL123] where [" + Field.Text + "] like '%" + Search.Text + "%'";
+                    }
+                    else if (CurrentProduct == Utility.ProductGroup.PRL4)
+                    {
+                        query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], " +
+                            "[Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], " +
+                            "[ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], [DNSB], [Complete], " +
+                            "[Short] from [PRL4] where [" + Field.Text + "] like '%" + Search.Text + "%' and [PageNumber] = 0";
+                    }
+                    else if (CurrentProduct == Utility.ProductGroup.PRLCS)
+                    {
+                        query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], " +
+                            "[Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], " +
+                            "[IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], " +
+                            "[PaintedBox], [ThirtyDeepEnclosure], [DNSB], [Complete], [Short] from [PRLCS] where [" + Field.Text + "] " +
+                            "like '%" + Search.Text + "%' and [PageNumber] = 0";
+                    }
                 }
                 else
                 {
                     if (CurrentProduct == Utility.ProductGroup.PRL123)
                     {
-                        query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [BoxEarly], [Box Sent], [SpecialCustomer], [ServiceEntrance], [DoubleSection], [PaintedBox], [RatedNeutral200], [DNSB], [Complete], [Short] from [PRL123] where [Tracking]='" + Current_Tab + "'";
+                        query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], " +
+                            "[ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], " +
+                            "[CommitDate], [Tracking], [Urgency], [AMO], [BoxEarly], [Box Sent], " +
+                            "[SpecialCustomer], [ServiceEntrance], [DoubleSection], [PaintedBox], " +
+                            "[RatedNeutral200], [DNSB], [Complete], [Short] from [PRL123] where [Tracking]='" + Current_Tab + "'";
                     }
                     else if (CurrentProduct == Utility.ProductGroup.PRL4)
                     {
-                        query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], [DNSB], [Complete], [Short] from [PRL4] where [Tracking]='" + Current_Tab + "' and [PageNumber] = 0";
+                        query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], " +
+                            "[Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], " +
+                            "[Urgency], [AMO], [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], " +
+                            "[DoorOverDist], [DoorInDoor], [DNSB], [Complete], [Short] from " +
+                            "[PRL4] where [Tracking]='" + Current_Tab + "' and [PageNumber] = 0";
                     }
                     else if (CurrentProduct == Utility.ProductGroup.PRLCS)
                     {
-                        query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], [ThirtyDeepEnclosure], [DNSB], [Complete], [Short] from [PRLCS] where [Tracking]='" + Current_Tab + "' and [PageNumber] = 0";
+                        query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim]," +
+                            " [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], " +
+                            "[AMO], [SpecialCustomer], [IncLocLeft], [IncLocRight], " +
+                            "[CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], [ThirtyDeepEnclosure], [DNSB], " +
+                            "[Complete], [Short] from [PRLCS] where [Tracking]='" + Current_Tab + "' and [PageNumber] = 0";
                     }
                 }
-
                 dt = Utility.SearchLP(query);
                 dg.ItemsSource = dt.DefaultView;
             }
@@ -167,7 +197,6 @@ namespace PRL123_Final.Views
         private void PRL123_Set()
         {
             CurrentProduct = Utility.ProductGroup.PRL123;
-            ProductTable = "PRL123";
             PWL123.Background = System.Windows.Media.Brushes.DarkBlue;
             PWL4.Background = System.Windows.Media.Brushes.Blue;
             PWLCS.Background = System.Windows.Media.Brushes.Blue;
@@ -177,7 +206,6 @@ namespace PRL123_Final.Views
         private void PRL4_Set()
         {
             CurrentProduct = Utility.ProductGroup.PRL4;
-            ProductTable = "PRL4";
             PWL4.Background = System.Windows.Media.Brushes.DarkBlue;
             PWL123.Background = System.Windows.Media.Brushes.Blue;
             PWLCS.Background = System.Windows.Media.Brushes.Blue;
@@ -187,9 +215,8 @@ namespace PRL123_Final.Views
         private void PRLCS_Set()
         {
             CurrentProduct = Utility.ProductGroup.PRLCS;
-            ProductTable = "PRLCS";
-            PWL4.Background = System.Windows.Media.Brushes.Blue;
             PWL123.Background = System.Windows.Media.Brushes.Blue;
+            PWL4.Background = System.Windows.Media.Brushes.Blue;
             PWLCS.Background = System.Windows.Media.Brushes.DarkBlue;
             loadGrid();
         }
@@ -253,7 +280,7 @@ namespace PRL123_Final.Views
             {
                 if (Selected != -1)
                 {
-                    SR sf = new SR(Selected, CurrentProduct, ProductTable);
+                    SR sf = new SR(Selected, CurrentProduct);
                     sf.Show();
                 }
             }
@@ -311,15 +338,19 @@ namespace PRL123_Final.Views
             List<string> termsList = new List<string>();
 
             DataTable dt;
-            string query;
+            string query = "";
 
             if (CurrentProduct == Utility.ProductGroup.PRL123)
             {
                 query = "select [GO_Item] from [PRL123] where [GO]='" + GO + "' and [Tracking]='Production'";       //can print labels after supervisor approves
             }
-            else 
+            else if (CurrentProduct == Utility.ProductGroup.PRL4)
             {
-                query = "select [GO_Item] from [" + ProductTable + "] where [GO]='" + GO + "' and [Tracking]='Production' and [PageNumber] = 0";
+                query = "select [GO_Item] from [PRL4] where [GO]='" + GO + "' and [Tracking]='Production' and [PageNumber] = 0";
+            }
+            else if (CurrentProduct == Utility.ProductGroup.PRLCS)
+            {
+                query = "select [GO_Item] from [PRLCS] where [GO]='" + GO + "' and [Tracking]='Production' and [PageNumber] = 0";
             }
             dt = Utility.SearchLP(query);
             using (DataTableReader dtr = new DataTableReader(dt))
@@ -331,7 +362,6 @@ namespace PRL123_Final.Views
             } //end using reader
             return termsList;
         }
-
 
 
         private void Click_Approve(object sender, RoutedEventArgs e)
@@ -359,13 +389,13 @@ namespace PRL123_Final.Views
                         updateStatus(SelectedGO + " SUCCESSFULLY APPROVED");
                     }
                 }
-                else
+                else if (CurrentProduct == Utility.ProductGroup.PRL4)
                 {
                     if (MultipleSelected.Count > 1)
                     {
                         foreach (string goItem in MultipleSelectedGO)
                         {
-                            string query = "update [" + ProductTable + "] set [Tracking]='Production' where [GO_Item]='" + goItem + "'";
+                            string query = "update [PRL4] set [Tracking]='Production' where [GO_Item]='" + goItem + "'";
                             Utility.executeNonQueryLP(query);
                         }
                         loadGrid();
@@ -373,7 +403,28 @@ namespace PRL123_Final.Views
                     }
                     else
                     {
-                        string query = "update [" + ProductTable + "] set [Tracking]='Production' where [GO_Item]='" + SelectedGO + "'";
+                        string query = "update [PRL4] set [Tracking]='Production' where [GO_Item]='" + SelectedGO + "'";
+                        Utility.executeNonQueryLP(query);
+
+                        loadGrid();
+                        updateStatus(SelectedGO + " SUCCESSFULLY APPROVED");
+                    }
+                }
+                else if (CurrentProduct == Utility.ProductGroup.PRLCS)
+                {
+                    if (MultipleSelected.Count > 1)
+                    {
+                        foreach (string goItem in MultipleSelectedGO)
+                        {
+                            string query = "update [PRLCS] set [Tracking]='Production' where [GO_Item]='" + goItem + "'";
+                            Utility.executeNonQueryLP(query);
+                        }
+                        loadGrid();
+                        updateStatus("MULTIPLE SUCCESSFULLY APPROVED");
+                    }
+                    else
+                    {
+                        string query = "update [PRLCS] set [Tracking]='Production' where [GO_Item]='" + SelectedGO + "'";
                         Utility.executeNonQueryLP(query);
 
                         loadGrid();
@@ -382,9 +433,6 @@ namespace PRL123_Final.Views
                 }
             }
         }
-
-
-
 
         private void Click_ProductRecall(object sender, RoutedEventArgs e)
         {
@@ -411,13 +459,13 @@ namespace PRL123_Final.Views
                         updateStatus(SelectedGO + " RECALLED");
                     }
                 }
-                else
+                else if (CurrentProduct == Utility.ProductGroup.PRL4)
                 {
                     if (MultipleSelected.Count > 1)
                     {
                         foreach (string goItem in MultipleSelectedGO)
                         {
-                            string query = "update [" + ProductTable + "] set [Tracking]='MIComplete' where [GO_Item]='" + goItem + "'";
+                            string query = "update [PRL4] set [Tracking]='MIComplete' where [GO_Item]='" + goItem + "'";
                             Utility.executeNonQueryLP(query);
                         }
                         loadGrid();
@@ -425,7 +473,28 @@ namespace PRL123_Final.Views
                     }
                     else
                     {
-                        string query = "update [" + ProductTable + "] set [Tracking]='MIComplete' where [GO_Item]='" + SelectedGO + "'";
+                        string query = "update [PRL4] set [Tracking]='MIComplete' where [GO_Item]='" + SelectedGO + "'";
+                        Utility.executeNonQueryLP(query);
+
+                        loadGrid();
+                        updateStatus(SelectedGO + " RECALLED");
+                    }
+                }
+                else if (CurrentProduct == Utility.ProductGroup.PRLCS)
+                {
+                    if (MultipleSelected.Count > 1)
+                    {
+                        foreach (string goItem in MultipleSelectedGO)
+                        {
+                            string query = "update [PRLCS] set [Tracking]='MIComplete' where [GO_Item]='" + goItem + "'";
+                            Utility.executeNonQueryLP(query);
+                        }
+                        loadGrid();
+                        updateStatus("MULTIPLE SUCCESSFULLY RECALLED");
+                    }
+                    else
+                    {
+                        string query = "update [PRLCS] set [Tracking]='MIComplete' where [GO_Item]='" + SelectedGO + "'";
                         Utility.executeNonQueryLP(query);
 
                         loadGrid();
@@ -434,7 +503,6 @@ namespace PRL123_Final.Views
                 }
             }
         }
-
 
 
         private void Search_Click(object sender, RoutedEventArgs e)
@@ -468,11 +536,20 @@ namespace PRL123_Final.Views
             }
             else if (CurrentProduct == Utility.ProductGroup.PRL4)
             {
-                query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], [DNSB], [Complete], [Short] from [PRL4] where [" + Field.Text + "] like '%" + Search.Text + "%' and [PageNumber] = 0";
+                query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim]," +
+                    " [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency]," +
+                    " [AMO], [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist]," +
+                    " [DoorInDoor], [DNSB], [Complete], [Short] from [PRL4]" +
+                    " where [" + Field.Text + "] like '%" + Search.Text + "%' and [PageNumber] = 0";
             }
             else if (CurrentProduct == Utility.ProductGroup.PRLCS)
             {
-                query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], [ThirtyDeepEnclosure], [DNSB], [Complete], [Short] from [PRLCS] where [" + Field.Text + "] like '%" + Search.Text + "%' and [PageNumber] = 0";
+                query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim]," +
+                            " [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], " +
+                            "[AMO], [SpecialCustomer], [IncLocLeft], [IncLocRight], " +
+                            "[CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], [ThirtyDeepEnclosure], [DNSB], " +
+                            "[Complete], [Short] from [PRLCS] where [" + Field.Text + "] like '%" + Search.Text + "%' and [PageNumber] = 0";
+
             }
             dt = Utility.SearchLP(query);
             dg.ItemsSource = dt.DefaultView;

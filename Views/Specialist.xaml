@@ -82,7 +82,7 @@
             </Grid.RowDefinitions>
             <Button Name="PWL123" Grid.Column="4" Content="PRL123" Height="26" Background="Blue" VerticalAlignment="Bottom" Foreground="White" Click="PRL123_Click"/>
             <Button Name="PWL4" Grid.Column="3"  Content="PRL4"  Height="26"  Background="Blue" VerticalAlignment="Bottom" Foreground="White" Click="PRL4_Click" />
-            <Button Name ="PWLCS" Grid.Column="2" Content="CS" Height="26" Background="Blue" VerticalAlignment="Bottom" Foreground="White" Click="PRLCS_Click" />
+            <Button Name ="PWLCS" Grid.Column="2" Content="CS" Height="26" Background="Blue" VerticalAlignment="Bottom" Foreground="White" />
             <Button Name="PWLEC"  Grid.Column="1"  Content="EC"  Height="26"  Background="Blue" VerticalAlignment="Bottom" Foreground="White" />
         </Grid> 
 

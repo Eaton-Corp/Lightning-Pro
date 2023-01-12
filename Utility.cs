@@ -17,6 +17,7 @@ using System.Text;
 using System.Diagnostics;
 using System.Configuration;
 using System.Threading.Tasks;
+using System.ComponentModel.Composition;
 
 namespace PRL123_Final
 {
@@ -114,6 +115,10 @@ namespace PRL123_Final
             {
                 query = "select * from [CSALabel] where [GO_Item]='" + GOItem + "'";
             }
+            else if(CurrentProduct == ProductGroup.PRLCS)
+            {
+                query = "select * from [CSALabelPRLCS] where [GO_Item]='" + GOItem + "'"; 
+            }
             DataTableReader dtr = loadData(query);
             return dtr;
         }
@@ -125,6 +130,10 @@ namespace PRL123_Final
             if (CurrentProduct == ProductGroup.PRL123 || CurrentProduct == ProductGroup.PRL4)
             {
                 command = "delete * from [CSALabel] where [GO_Item]='" + GoItem + "'";
+            }
+            else if(CurrentProduct == ProductGroup.PRLCS)
+            {
+                command = "delete * from [CSALabelPRLCS] where [GO_Item]='" + GoItem + "'";
             }
             executeNonQueryLP(command);
         }
@@ -247,7 +256,6 @@ namespace PRL123_Final
                 BitmapEncoder enc = new BmpBitmapEncoder();
                 enc.Frames.Add(BitmapFrame.Create(bitmapImage));
                 enc.Save(outStream);
-
                 return new System.Drawing.Bitmap(outStream);
             }
         }
@@ -314,8 +322,6 @@ namespace PRL123_Final
         }
 
 
-
-
         // The following is used to convert png/jpg sourceFile to pdf destinationFile 
         public static void ConvertImageToPdf(string srcFilename, string dstFilename)
         {
@@ -358,7 +364,7 @@ namespace PRL123_Final
                     return true;        //every other product group will have imageFilePath
                 }
                 //else it must be a ProductGroup.123
-                Boolean hasImageFilePath = !string.IsNullOrEmpty(getImageFilePath(GO_Item, ProductGroup.PRL123, 0));
+                Boolean hasImageFilePath = !string.IsNullOrEmpty(getImageFilePath(GO_Item, ProductGroup.PRL123, 0)); //TODO: Need to figure out integration with CS --> Ask Ralla
                 return hasImageFilePath;
             }
             catch
@@ -384,6 +390,10 @@ namespace PRL123_Final
                 {
                     command = "update [PRL4] set [LastSave]='" + updateTime + "' where [GO_Item]='" + GO_Item + "' and [PageNumber]=" + pgNumber.ToString();
                 }
+                else if (currentProduct == ProductGroup.PRLCS)
+                {
+                    command = "update [PRLCS] set [LastSave]='" + updateTime + "' where [GO_Item]='" + GO_Item + "' and [PageNumber]=" + pgNumber.ToString();
+                }
                 executeNonQueryLP(command);
             }
             catch
@@ -406,6 +416,10 @@ namespace PRL123_Final
                 else if (currentProduct == ProductGroup.PRL4)
                 {
                     query = "select [LastSave] from [PRL4] where [GO_Item]='" + GO_Item + "' and [PageNumber]=" + pgNumber.ToString();
+                }
+                else if(currentProduct == ProductGroup.PRLCS)
+                {
+                    query = "select [LastSave] from [PRLCS] where [GO_Item]='" + GO_Item + "' and [PageNumber]=" + pgNumber.ToString();
                 }
                 using (DataTableReader dtr = loadData(query))
                 {
@@ -480,6 +494,10 @@ namespace PRL123_Final
                 {
                     query = "select [ImageFilePath] from [PRL4] where [GO_Item]='" + GO_Item + "' and [PageNumber]=" + pgNumber.ToString();
                 }
+                else if(currentProduct == ProductGroup.PRLCS)
+                {
+                    query = "select [ImageFilePath] from [PRLCS] where [GO_Item]='" + GO_Item + "' and [PageNumber]=" + pgNumber.ToString();
+                }
                 dt = SearchLP(query);
                 using (DataTableReader dtr = new DataTableReader(dt))
                 {
@@ -535,6 +553,10 @@ namespace PRL123_Final
             {
                 query = "select [FilePath] from [PRL4] where [GO_Item]='" + SelectedGO + "' AND [PageNumber]=0";
             }
+            else if (CurrentProduct == ProductGroup.PRLCS)
+            {
+                query = "select [FilePath] from [PRLCS] where [GO_Item]='" + SelectedGO + "' AND [PageNumber]=0";
+            }
             dt = SearchLP(query);
             using (DataTableReader dtr = new DataTableReader(dt))
             {
@@ -576,11 +598,22 @@ namespace PRL123_Final
 
                     Boolean SpecialCustomer = false;
                     Boolean AMO = false;
-                    Boolean ServiceEntrance = false;
                     Boolean PaintedBox = false;
+
+                    //PRL
+                    Boolean ServiceEntrance = false;
                     Boolean RatedNeutral200 = false;
                     Boolean DoorOverDist = false;
                     Boolean DoorInDoor = false;
+                    
+                    //PRLCS Checklist
+                    Boolean IncLocLeft = false;
+                    Boolean IncLocRight = false;
+                    Boolean CrossBus = false;
+                    Boolean OpenBottom = false;
+                    Boolean ExtendedTop = false;
+                    Boolean ThirtyDeepEncolsure = false;
+                    
                     Boolean DNSB = false;
                     Boolean Complete = false;
                     Boolean Short = false;
@@ -603,44 +636,94 @@ namespace PRL123_Final
                     {
                         query = "select [ShopOrderInterior],[ShopOrderBox],[ShopOrderTrim],[Customer],[Quantity],[EnteredDate],[ReleaseDate],[CommitDate],[Tracking],[Urgency],[SpecialCustomer],[AMO],[ServiceEntrance],[PaintedBox],[RatedNeutral200],[DoorOverDist],[DoorInDoor],[DNSB],[Complete],[Short],[Type],[Volts],[Amps],[Torque],[Appearance],[Bus],[Catalogue],[ProductSpecialist],[FilePath],[ImageFilePath],[PageNumber] from [PRL4] where [GO_Item]='" + SelectedGO + "' order by [GO_Item],[PageNumber]";
                     }
+                    else if(CurrentProduct == ProductGroup.PRLCS)
+                    {
+                        query = "select [ShopOrderInterior],[ShopOrderBox],[ShopOrderTrim],[Customer],[Quantity],[EnteredDate],[ReleaseDate],[CommitDate],[Tracking],[Urgency],[SpecialCustomer],[AMO],[IncLocLeft],[IncLocRight],[CrossBus],[OpenBottom],[ExtendedTop],[PaintedBox],[ThirtyDeepEnclosure],[DNSB],[Complete],[Short],[Type],[Volts],[Amps],[Torque],[Appearance],[Bus],[Catalogue],[ProductSpecialist],[FilePath],[ImageFilePath],[PageNumber] from [PRLCS] where [GO_Item]='" + SelectedGO + "' order by [GO_Item],[PageNumber]";
+                    }
                     using (DataTableReader dtr = loadData(query))
                     {
                         while (dtr.Read())
                         {
-                            SOInterior = dtr[0].ToString();
-                            SOBox = dtr[1].ToString();
-                            SOTrim = dtr[2].ToString();
-                            Customer = dtr[3].ToString();
-                            Quantity = dtr[4].ToString();
-                            EnterDate = dtr[5].ToString();
-                            ReleaseDate = dtr[6].ToString();
-                            CommitDate = dtr[7].ToString();
-                            Tracking = dtr[8].ToString();
-                            Urgency = dtr[9].ToString();
+                           
+                            if(CurrentProduct == ProductGroup.PRL4)
+                            {
+                                SOInterior = dtr[0].ToString();
+                                SOBox = dtr[1].ToString();
+                                SOTrim = dtr[2].ToString();
+                                Customer = dtr[3].ToString();
+                                Quantity = dtr[4].ToString();
+                                EnterDate = dtr[5].ToString();
+                                ReleaseDate = dtr[6].ToString();
+                                CommitDate = dtr[7].ToString();
+                                Tracking = dtr[8].ToString();
+                                Urgency = dtr[9].ToString();
 
-                            SpecialCustomer = (Boolean)dtr[10];
-                            AMO = (Boolean)dtr[11];
-                            ServiceEntrance = (Boolean)dtr[12];
-                            PaintedBox = (Boolean)dtr[13];
-                            RatedNeutral200 = (Boolean)dtr[14];
-                            DoorOverDist = (Boolean)dtr[15];
-                            DoorInDoor = (Boolean)dtr[16];
-                            DNSB = (Boolean)dtr[17];
-                            Complete = (Boolean)dtr[18];
-                            Short = (Boolean)dtr[19];
+                                SpecialCustomer = (Boolean)dtr[10];
+                                AMO = (Boolean)dtr[11];
 
-                            type = dtr[20].ToString();
-                            volts = dtr[21].ToString();
-                            amps = dtr[22].ToString();
-                            torque = dtr[23].ToString();
-                            appearance = dtr[24].ToString();
-                            bus = dtr[25].ToString();
-                            catalogue = dtr[26].ToString();
-                            prodSpecialist = dtr[27].ToString();
+                                ServiceEntrance = (Boolean)dtr[12];
+                                PaintedBox = (Boolean)dtr[13];
+                                RatedNeutral200 = (Boolean)dtr[14];
+                                DoorOverDist = (Boolean)dtr[15];
+                                DoorInDoor = (Boolean)dtr[16];
+                                DNSB = (Boolean)dtr[17];
+                                Complete = (Boolean)dtr[18];
+                                Short = (Boolean)dtr[19];
 
-                            pdfFilepath = dtr[28].ToString();
-                            imageFilepath = dtr[29].ToString();
-                            pageNumber = (int)dtr[30];
+                                type = dtr[20].ToString();
+                                volts = dtr[21].ToString();
+                                amps = dtr[22].ToString();
+                                torque = dtr[23].ToString();
+                                appearance = dtr[24].ToString();
+                                bus = dtr[25].ToString();
+                                catalogue = dtr[26].ToString();
+                                prodSpecialist = dtr[27].ToString();
+
+                                pdfFilepath = dtr[28].ToString();
+                                imageFilepath = dtr[29].ToString();
+                                pageNumber = (int)dtr[30];
+                            }
+                            else if(CurrentProduct == ProductGroup.PRLCS)
+                            {
+                                SOInterior = dtr[0].ToString();
+                                SOBox = dtr[1].ToString();
+                                SOTrim = dtr[2].ToString();
+                                Customer = dtr[3].ToString();
+                                Quantity = dtr[4].ToString();
+                                EnterDate = dtr[5].ToString();
+                                ReleaseDate = dtr[6].ToString();
+                                CommitDate = dtr[7].ToString();
+                                Tracking = dtr[8].ToString();
+                                Urgency = dtr[9].ToString();
+
+                                SpecialCustomer = (Boolean)dtr[10];
+                                AMO = (Boolean)dtr[11];
+                                IncLocLeft = (Boolean)dtr[12];
+                                IncLocRight = (Boolean)dtr[13];
+                                CrossBus = (Boolean)dtr[14];
+                                OpenBottom = (Boolean)dtr[15];
+                                ExtendedTop = (Boolean)dtr[16];
+                                PaintedBox = (Boolean)dtr[17];
+                                ThirtyDeepEncolsure = (Boolean)dtr[18];
+
+                                DNSB = (Boolean)dtr[18];
+                                Complete = (Boolean)dtr[19];
+                                Short = (Boolean)dtr[20];
+
+                                type = dtr[21].ToString();
+                                volts = dtr[22].ToString();
+                                amps = dtr[23].ToString();
+                                torque = dtr[24].ToString();
+                                appearance = dtr[25].ToString();
+                                bus = dtr[26].ToString();
+                                catalogue = dtr[27].ToString();
+                                prodSpecialist = dtr[28].ToString();
+
+                                pdfFilepath = dtr[29].ToString();
+                                imageFilepath = dtr[30].ToString();
+                                pageNumber = (int)dtr[31];
+                            }
+                            
                         }
                     }
                     pageNumber += 1;
@@ -651,6 +734,10 @@ namespace PRL123_Final
                     if (CurrentProduct == ProductGroup.PRL4)
                     {
                         command = "INSERT INTO [PRL4]([GO_Item],[GO],[ShopOrderInterior],[ShopOrderBox],[ShopOrderTrim],[Customer],[Quantity],[EnteredDate],[ReleaseDate],[CommitDate],[Tracking],[Urgency],[SpecialCustomer],[AMO],[ServiceEntrance],[PaintedBox],[RatedNeutral200],[DoorOverDist],[DoorInDoor],[DNSB],[Complete],[Short],[Type],[Volts],[Amps],[Torque],[Appearance],[Bus],[Catalogue],[ProductSpecialist],[FilePath],[ImageFilePath],[PageNumber]) VALUES('" + insertGOI + "','" + insertGO + "','" + SOInterior + "','" + SOBox + "','" + SOTrim + "','" + Customer + "','" + Quantity + "','" + EnterDate + "','" + ReleaseDate + "','" + CommitDate + "','" + Tracking + "','" + Urgency + "'," + SpecialCustomer.ToString() + "," + AMO.ToString() + "," + ServiceEntrance.ToString() + "," + PaintedBox.ToString() + "," + RatedNeutral200.ToString() + "," + DoorOverDist.ToString() + "," + DoorInDoor.ToString() + "," + DNSB.ToString() + "," + Complete.ToString() + "," + Short.ToString() + ",'" + type + "','" + volts + "','" + amps + "','" + torque + "','" + appearance + "','" + bus + "','" + catalogue + "','" + prodSpecialist + "','" + pdfFilepath + "','" + imageFilepath + "'," + pageNumber.ToString() + ")";
+                    }
+                    else if(CurrentProduct == ProductGroup.PRLCS)
+                    {
+                        command = "INSERT INTO [PRLCS]([GO_Item],[GO],[ShopOrderInterior],[ShopOrderBox],[ShopOrderTrim],[Customer],[Quantity],[EnteredDate],[ReleaseDate],[CommitDate],[Tracking],[Urgency],[SpecialCustomer],[AMO],[IncLocLeft],[IncLocRight],[CrossBus],[OpenBottom],[ExtendedTop],[PaintedBox],[ThirtyDeppEnclosure],[DNSB],[Complete],[Short],[Type],[Volts],[Amps],[Torque],[Appearance],[Bus],[Catalogue],[ProductSpecialist],[FilePath],[ImageFilePath],[PageNumber]) VALUES('" + insertGOI + "','" + insertGO + "','" + SOInterior + "','" + SOBox + "','" + SOTrim + "','" + Customer + "','" + Quantity + "','" + EnterDate + "','" + ReleaseDate + "','" + CommitDate + "','" + Tracking + "','" + Urgency + "'," + SpecialCustomer.ToString() + "," + AMO.ToString() + "," + ServiceEntrance.ToString() + "," + PaintedBox.ToString() + "," + RatedNeutral200.ToString() + "," + DoorOverDist.ToString() + "," + DoorInDoor.ToString() + "," + DNSB.ToString() + "," + Complete.ToString() + "," + Short.ToString() + ",'" + type + "','" + volts + "','" + amps + "','" + torque + "','" + appearance + "','" + bus + "','" + catalogue + "','" + prodSpecialist + "','" + pdfFilepath + "','" + imageFilepath + "'," + pageNumber.ToString() + ")";
                     }
                     executeNonQueryLP(command);
 
@@ -839,12 +926,26 @@ namespace PRL123_Final
 
 
         // The following is used to get the GO# given the ID#
-        public static string IDtoGO(int ID, string ProductTable)
+        public static string IDtoGO(int ID, ProductGroup CurrentProduct)
         {
-            string query = "select [GO] from [" + ProductTable + "] where [ID]=" + ID.ToString();
+            DataTable dt;
+            string query = "";
             string output = "";
 
-            using (DataTableReader dtr = loadData(query))
+            if (CurrentProduct == ProductGroup.PRL123)
+            {
+                query = "select [GO] from [PRL123] where [ID]=" + ID.ToString();
+            }
+            else if (CurrentProduct == ProductGroup.PRL4)
+            {
+                query = "select [GO] from [PRL4] where [ID]=" + ID.ToString();
+            }
+            else if (CurrentProduct == ProductGroup.PRLCS)
+            {
+                query = "select [GO] from [PRLCS] where [ID]=" + ID.ToString();
+            }
+                dt = SearchLP(query);
+            using (DataTableReader dtr = new DataTableReader(dt))
             {
                 while (dtr.Read())
                 {
@@ -953,6 +1054,10 @@ namespace PRL123_Final
                 else if (CurrentProduct == ProductGroup.PRL4)
                 {
                     query = "select [GO_Item] from [PRL4] where [GO_Item]='" + GO_Item + "' and [PageNumber]=0";
+                }
+                else if (CurrentProduct == ProductGroup.PRLCS)
+                {
+                    query = "select [GO_Item] from [PRLCS] where [GO_Item]='" + GO_Item + "' and [PageNumber]=0";
                 }
                 using (DataTableReader dtr = loadData(query))
                 {

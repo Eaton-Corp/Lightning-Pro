@@ -177,7 +177,7 @@ namespace PRL123_Final
                 Utility.executeNonQueryLP(command);
                 Status.Content = GOI.Text + " TUBS SUCCESSFULLY SHIPPED";
 
-                CurrentShippingWindow.PRL123_Set();
+
                 string query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [Catalogue], [AMO], [BoxEarly], [Box Sent], [SpecialCustomer], [ServiceEntrance], [DoubleSection], [PaintedBox], [RatedNeutral200], [DNSB], [Complete], [Short] from [PRL123] where [BoxEarly]=True and [Box Sent]=False";
                 CurrentShippingWindow.LoadGrid(query);
                 CurrentShippingWindow.Current_Tab = "Ship Early";

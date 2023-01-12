@@ -55,8 +55,7 @@ namespace PRL123_Final
             InitializeComponent();
 
             //Command to delete the automatic configuration file on local computer
-            //Normally should be commented out
-            //if (File.Exists(localConfigFilePath)) File.Delete(localConfigFilePath);
+            if (File.Exists(localConfigFilePath)) File.Delete(localConfigFilePath);
 
             isConfigured = checkConfigured();
 
@@ -242,17 +241,17 @@ namespace PRL123_Final
         
         private async void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
-           /*
+           
             if (isConfigured)
             {
-                string releaseFolder = ConfigurationManager.ConnectionStrings["releaseFolder"].ToString();
+                /*string releaseFolder = ConfigurationManager.ConnectionStrings["releaseFolder"].ToString();
                 using (var updateManager = new UpdateManager(releaseFolder))
                 {
                     CurrentVersion.Text = $"Current version: {updateManager.CurrentlyInstalledVersion()}";
                     var releaseEntry = await updateManager.UpdateApp();
                     NewVersion.Text = $"Update Version: {releaseEntry?.Version.ToString() ?? " "}";
-                }
-            }*/
+                }*/
+            }
             
         }
 
