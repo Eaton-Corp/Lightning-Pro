@@ -294,7 +294,7 @@ namespace PRL123_Final.Views
 
                         // sf.Show();      Don't need to show the xaml page to print labels
                     }
-                    else 
+                    else
                     {
                         MessageBox.Show("Approve Jobs For Production Before Printing All Labels");
                     }
@@ -317,7 +317,7 @@ namespace PRL123_Final.Views
             {
                 query = "select [GO_Item] from [PRL123] where [GO]='" + GO + "' and [Tracking]='Production'";       //can print labels after supervisor approves
             }
-            else 
+            else
             {
                 query = "select [GO_Item] from [" + ProductTable + "] where [GO]='" + GO + "' and [Tracking]='Production' and [PageNumber] = 0";
             }
@@ -546,7 +546,7 @@ namespace PRL123_Final.Views
         {
             if (Selected != -1)
             {
-                Utility.AccessFolderGO(GOnum); 
+                Utility.AccessFolderGO(GOnum);
             }
         }
 

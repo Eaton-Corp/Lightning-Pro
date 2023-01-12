@@ -102,6 +102,29 @@
                 <CheckBox x:Name="Complete_4" Content="Complete" Grid.Row="3" Grid.Column="0" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 <CheckBox x:Name="Short_4" Content="Short" Grid.Row="3" Grid.Column="1" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             </Grid>
+            <Grid x:Name="checkBoxGridPRLCS" Visibility="Visible" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Grid.RowSpan="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <CheckBox x:Name="IncLocLeft_CS" Content="IncLocLeft" Grid.Row="0" Grid.Column="0" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <CheckBox x:Name="IncLocRight_CS" Content="IncLocRight" Grid.Row="0" Grid.Column="1" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <CheckBox x:Name="CrossBus_CS" Content="CrossBus" Grid.Row="1" Grid.Column="0" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <CheckBox x:Name="OpenBottom_CS" Content="Open Bottom" Grid.Row="1" Grid.Column="1" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <CheckBox x:Name="ExtendedTop_CS" Content="Extended Top" Grid.Row="2" Grid.Column="0" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <CheckBox x:Name="PaintedBox_CS" Content="Painted Box" Grid.Row="2" Grid.Column="1" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <CheckBox x:Name="ThirtyDeepEnclosure_CS" Content="Thirty Deep Enclosure" Grid.Row="3" Grid.Column="0" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <CheckBox x:Name="DNSB_CS" Content="DNSB" Grid.Row="3" Grid.Column="1" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <CheckBox x:Name="Complete_CS" Content="Complete" Grid.Row="4" Grid.Column="1" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <CheckBox x:Name="Short_CS" Content="Short" Grid.Row="4" Grid.Column="0" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            </Grid>
         </Grid>
 
         <Grid x:Name="AssemblerData" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="1" Grid.RowSpan="1">

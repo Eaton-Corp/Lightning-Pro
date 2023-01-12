@@ -33,7 +33,7 @@ namespace PRL123_Final
 
         //single instance of connection to Master Database
         public static OleDbConnection Mcon = new OleDbConnection(ConfigurationManager.ConnectionStrings["MasterDB"].ToString());
-        
+
         private void ConnectLPdatabase()
         {
             LPcon.Open();
@@ -60,10 +60,10 @@ namespace PRL123_Final
 
             isConfigured = checkConfigured();
 
-            if (isConfigured) 
+            if (isConfigured)
             {
                 Views.Configuration.SetProductNames();
-                
+
                 ConnectLPdatabase();
                 ConnectMasterDatabase();
             }
@@ -77,7 +77,7 @@ namespace PRL123_Final
                 {
                     automaticConfiguration();
                 }
-                else 
+                else
                 {
                     DataContext = new ConfigurationViewModel();
                     MessageBox.Show("Please upload the provided configuration file for your location.", "Configuration Required", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -91,15 +91,15 @@ namespace PRL123_Final
         }
 
 
-        private bool checkConfigured() 
+        private bool checkConfigured()
         {
-            if(string.IsNullOrEmpty(ConfigurationManager.ConnectionStrings["Location"].ToString()) || string.IsNullOrEmpty(ConfigurationManager.ConnectionStrings["MasterDB"].ToString()) || string.IsNullOrEmpty(ConfigurationManager.ConnectionStrings["LPdatabase"].ToString()) || string.IsNullOrEmpty(ConfigurationManager.ConnectionStrings["orderFiles"].ToString()) || string.IsNullOrEmpty(ConfigurationManager.ConnectionStrings["imagesFolder"].ToString()) || string.IsNullOrEmpty(ConfigurationManager.ConnectionStrings["releaseFolder"].ToString()) || string.IsNullOrEmpty(ConfigurationManager.ConnectionStrings["locationAddress"].ToString()) || string.IsNullOrEmpty(ConfigurationManager.ConnectionStrings["productNameList"].ToString()) || string.IsNullOrEmpty(ConfigurationManager.ConnectionStrings["specialCustomersList"].ToString()) )
+            if (string.IsNullOrEmpty(ConfigurationManager.ConnectionStrings["Location"].ToString()) || string.IsNullOrEmpty(ConfigurationManager.ConnectionStrings["MasterDB"].ToString()) || string.IsNullOrEmpty(ConfigurationManager.ConnectionStrings["LPdatabase"].ToString()) || string.IsNullOrEmpty(ConfigurationManager.ConnectionStrings["orderFiles"].ToString()) || string.IsNullOrEmpty(ConfigurationManager.ConnectionStrings["imagesFolder"].ToString()) || string.IsNullOrEmpty(ConfigurationManager.ConnectionStrings["releaseFolder"].ToString()) || string.IsNullOrEmpty(ConfigurationManager.ConnectionStrings["locationAddress"].ToString()) || string.IsNullOrEmpty(ConfigurationManager.ConnectionStrings["productNameList"].ToString()) || string.IsNullOrEmpty(ConfigurationManager.ConnectionStrings["specialCustomersList"].ToString()))
             {
                 return false;
             }
-            else 
+            else
             {
-                return true; 
+                return true;
             }
         }
 
@@ -130,7 +130,7 @@ namespace PRL123_Final
 
                 MessageBox.Show("Please restart the application to allow for the updates to take place.", "Successfully Configured", MessageBoxButton.OK, MessageBoxImage.Information);
             }
-            catch 
+            catch
             {
                 MessageBox.Show("Failed trying to automatically configure application using Config.txt saved locally.", "Unable to Complete Automatic Configuration", MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -239,23 +239,24 @@ namespace PRL123_Final
 
 
         //Uncomment this code for Releases
-        
+
         private async void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
-           /*
-            if (isConfigured)
-            {
-                string releaseFolder = ConfigurationManager.ConnectionStrings["releaseFolder"].ToString();
-                using (var updateManager = new UpdateManager(releaseFolder))
-                {
-                    CurrentVersion.Text = $"Current version: {updateManager.CurrentlyInstalledVersion()}";
-                    var releaseEntry = await updateManager.UpdateApp();
-                    NewVersion.Text = $"Update Version: {releaseEntry?.Version.ToString() ?? " "}";
-                }
-            }*/
-            
+            /*
+             if (isConfigured)
+             {
+                 string releaseFolder = ConfigurationManager.ConnectionStrings["releaseFolder"].ToString();
+                 using (var updateManager = new UpdateManager(releaseFolder))
+                 {
+                     CurrentVersion.Text = $"Current version: {updateManager.CurrentlyInstalledVersion()}";
+                     var releaseEntry = await updateManager.UpdateApp();
+                     NewVersion.Text = $"Update Version: {releaseEntry?.Version.ToString() ?? " "}";
+                 }
+             }*/
+
         }
 
 
     }
+
 }
