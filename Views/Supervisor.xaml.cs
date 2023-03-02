@@ -269,8 +269,16 @@ namespace PRL123_Final.Views
             {
                 if (Selected != -1)
                 {
-                    PrintPage sf = new PrintPage(SelectedGO, CurrentProduct);
-                    sf.Show();
+                    if(CurrentProduct == Utility.ProductGroup.PRLCS)
+                    {
+                        PrintPageCS sf = new PrintPageCS(SelectedGO, CurrentProduct);
+                        sf.Show();
+                    }
+                    else
+                    {
+                        PrintPage sf = new PrintPage(SelectedGO, CurrentProduct);
+                        sf.Show();
+                    }
                 }
             }
             catch
@@ -290,9 +298,17 @@ namespace PRL123_Final.Views
 
                     if (termsList.Count > 0)
                     {
-                        PrintLabels sf = new PrintLabels(termsList, CurrentProduct);
+                        if(CurrentProduct == Utility.ProductGroup.PRLCS)
+                        {
+                            PrintLabelsCS sf = new PrintLabelsCS(termsList, CurrentProduct);
+                            sf.Show();
+                        }
+                        else
+                        {
+                            PrintLabels sf = new PrintLabels(termsList, CurrentProduct);
 
-                        // sf.Show();      Don't need to show the xaml page to print labels
+                            // sf.Show();      Don't need to show the xaml page to print labels
+                        }
                     }
                     else
                     {

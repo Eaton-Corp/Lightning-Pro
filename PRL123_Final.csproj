@@ -203,8 +203,14 @@
     <Compile Include="PrintLabels.xaml.cs">
       <DependentUpon>PrintLabels.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PrintLabelsCS.xaml.cs">
+      <DependentUpon>PrintLabelsCS.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PrintPage.xaml.cs">
       <DependentUpon>PrintPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PrintPageCS.xaml.cs">
+      <DependentUpon>PrintPageCS.xaml</DependentUpon>
     </Compile>
     <Compile Include="PrintShopPackagePage.xaml.cs">
       <DependentUpon>PrintShopPackagePage.xaml</DependentUpon>
@@ -306,9 +312,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="PrintLabelsCS.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="PrintPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PrintPageCS.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PrintShopPackagePage.xaml">
       <SubType>Designer</SubType>
@@ -634,6 +648,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\Notes.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\CS_CSALabel.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

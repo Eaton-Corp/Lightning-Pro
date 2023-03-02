@@ -36,6 +36,20 @@ namespace PRL123_Final
     /// </summary>
     public partial class InsertPRLCS : Window
     {
+        //waffle code for insert PRLCS to test all other features 
+        //GOOD ENOUGH TO POPULATE THE DATABASE WITH A TEST JOB
+
+
+
+        //TESTING PRLCS INSERT PROCEDURE:
+        //  1. CLICK THE SEARCH BUTTON
+        //  2. UPLOAD THE PDF QUICKPRINT FOR PRLCS GO --> CLKI004103
+        //  3. MATCH LINE ITEMS TO PDF PAGES AND INSERT
+
+
+
+
+
 
         //text version of image array
         string[] ImagesInText;
@@ -270,11 +284,15 @@ namespace PRL123_Final
                     for (int i = 0; i < parsePDF.Length; i++)
                     {
 
-                        if ((parsePDF[i].Contains("PRL4")) && (!parsePDF[i].Contains("Detail Bill")))
+                        if ((parsePDF[i].Contains("003") || parsePDF[i].Contains("004") || parsePDF[i].Contains("005")) && (!parsePDF[i].Contains("Detail Bill")) && (!parsePDF[i].Contains("001")) && (!parsePDF[i].Contains("002"))) 
                         {
                             amountOfPages++;
                         }
-
+                        
+                        //if ((parsePDF[i].Contains("Switchboards")) && (parsePDF[i].Contains("CustAppr")) && (parsePDF[i].Contains("003") || parsePDF[i].Contains("004") || parsePDF[i].Contains("005")) && (parsePDF[i].Contains("CLKI004103")) && (!parsePDF[i].Contains("Detail Bill")))
+                        //{
+                        //    amountOfPages++;
+                        //}
                     }
 
                     pages = new int[amountOfPages];
@@ -283,12 +301,17 @@ namespace PRL123_Final
                     for (int i = 0; i < parsePDF.Length; i++)
                     {
 
-
-                        if ((parsePDF[i].Contains("PRL4")) && (!parsePDF[i].Contains("Detail Bill")))
+                        if ((parsePDF[i].Contains("003") || parsePDF[i].Contains("004") || parsePDF[i].Contains("005")) && (!parsePDF[i].Contains("Detail Bill")) && (!parsePDF[i].Contains("001")) && (!parsePDF[i].Contains("002")))
                         {
                             pages[counter] = i;
                             counter++;
                         }
+
+                        //if ((parsePDF[i].Contains("Switchboards")) && (parsePDF[i].Contains("CustAppr")) && (parsePDF[i].Contains("003") || parsePDF[i].Contains("004") || parsePDF[i].Contains("005")) && (parsePDF[i].Contains("CLKI004103")) && (!parsePDF[i].Contains("Detail Bill")))
+                        //{
+                        //    pages[counter] = i;
+                        //    counter++;
+                        //}
 
                     }
 
@@ -453,14 +476,6 @@ namespace PRL123_Final
 
 
 
-
-
-
-
-
-
-
-
         private void Forward_Click(object sender, RoutedEventArgs e)
         {
             if (PDFLoaded == true)
@@ -506,6 +521,16 @@ namespace PRL123_Final
 
 
 
+
+
+
+
+
+
+
+        //UNUSED CODE FOR TESTING
+
+
         private void InsertXmlData()
         {
             Designation.Text = DesignationArr[XMLpage];
@@ -524,20 +549,20 @@ namespace PRL123_Final
 
         private void Forward_ClickXML(object sender, RoutedEventArgs e)
         {
-            if ((XMLpage < DesignationArr.Length - 1) && (XmlUploaded))
-            {
-                XMLpage += 1;
-                InsertXmlData();
-            }
+            //if ((XMLpage < DesignationArr.Length - 1) && (XmlUploaded))
+            //{
+            //    XMLpage += 1;
+            //    InsertXmlData();
+            //}
         }
 
         private void Back_ClickXML(object sender, RoutedEventArgs e)
         {
-            if ((XMLpage != 0) && (XmlUploaded))
-            {
-                XMLpage -= 1;
-                InsertXmlData();
-            }
+            //if ((XMLpage != 0) && (XmlUploaded))
+            //{
+            //    XMLpage -= 1;
+            //    InsertXmlData();
+            //}
         }
 
         int XMLpage;
@@ -562,65 +587,65 @@ namespace PRL123_Final
 
         private async void XML_Upload(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                Microsoft.Win32.OpenFileDialog ofg = new Microsoft.Win32.OpenFileDialog();
-                ofg.Filter = "Image files|*.XML;*.tif|All files|*.*";
-                bool? response = ofg.ShowDialog();
+            //try
+            //{
+            //    Microsoft.Win32.OpenFileDialog ofg = new Microsoft.Win32.OpenFileDialog();
+            //    ofg.Filter = "Image files|*.XML;*.tif|All files|*.*";
+            //    bool? response = ofg.ShowDialog();
 
-                if (response == true)           //if the user selects a file and clicks OK
-                {
-                    Task<int> ShowProgressBar = TurnOnStatusBar();
-                    int result = await ShowProgressBar;
-
-
-                    //loads the xml into xDoc using the filepath
-                    string filepath = ofg.FileName;
-                    XmlDocument xDoc = new XmlDocument();
-                    xDoc.Load(filepath);
+            //    if (response == true)           //if the user selects a file and clicks OK
+            //    {
+            //        Task<int> ShowProgressBar = TurnOnStatusBar();
+            //        int result = await ShowProgressBar;
 
 
-                    //get the GO number
-                    XmlNodeList name = xDoc.GetElementsByTagName("OrderInfo");
-                    string outputQuery = name[0].FirstChild.OuterXml.Substring(22, 10);
-                    SearchBox.Text = outputQuery;
+            //        //loads the xml into xDoc using the filepath
+            //        string filepath = ofg.FileName;
+            //        XmlDocument xDoc = new XmlDocument();
+            //        xDoc.Load(filepath);
 
-                    loadGrid("select * from [tblOrderStatus] where [Prod Group] in " + Utility.GetProductNameListInString(Views.Configuration.PRL4names) + " and [GO]='" + SearchBox.Text + "'");
 
-                    //each node is a line item
-                    XmlNodeList BMConfiguredLineItemNodes = xDoc.GetElementsByTagName("BMConfiguredLineItem");
+            //        //get the GO number
+            //        XmlNodeList name = xDoc.GetElementsByTagName("OrderInfo");
+            //        string outputQuery = name[0].FirstChild.OuterXml.Substring(22, 10);
+            //        SearchBox.Text = outputQuery;
 
-                    int NumberOfLineItems = BMConfiguredLineItemNodes.Count;
+            //        loadGrid("select * from [tblOrderStatus] where [Prod Group] in " + Utility.GetProductNameListInString(Views.Configuration.PRL4names) + " and [GO]='" + SearchBox.Text + "'");
 
-                    DesignationArr = new string[NumberOfLineItems];
-                    MAArr = new string[NumberOfLineItems];
-                    VoltageArr = new string[NumberOfLineItems];
-                    Parr = new string[NumberOfLineItems];
-                    Warr = new string[NumberOfLineItems];
-                    GroundArr = new string[NumberOfLineItems];
-                    HzArr = new string[NumberOfLineItems];
-                    EnclosureArr = new string[NumberOfLineItems];
-                    XSpaceUsedArr = new string[NumberOfLineItems];
-                    Narr = new string[NumberOfLineItems];
-                    GoItemXmlArr = new string[NumberOfLineItems];
+            //        //each node is a line item
+            //        XmlNodeList BMConfiguredLineItemNodes = xDoc.GetElementsByTagName("BMConfiguredLineItem");
 
-                    XMLpage = 0;
+            //        int NumberOfLineItems = BMConfiguredLineItemNodes.Count;
 
-                    GetXmlData(BMConfiguredLineItemNodes);       //Here is the heavy XML code
+            //        DesignationArr = new string[NumberOfLineItems];
+            //        MAArr = new string[NumberOfLineItems];
+            //        VoltageArr = new string[NumberOfLineItems];
+            //        Parr = new string[NumberOfLineItems];
+            //        Warr = new string[NumberOfLineItems];
+            //        GroundArr = new string[NumberOfLineItems];
+            //        HzArr = new string[NumberOfLineItems];
+            //        EnclosureArr = new string[NumberOfLineItems];
+            //        XSpaceUsedArr = new string[NumberOfLineItems];
+            //        Narr = new string[NumberOfLineItems];
+            //        GoItemXmlArr = new string[NumberOfLineItems];
 
-                    InsertXmlData();
+            //        XMLpage = 0;
 
-                    XmlUploaded = true;
+            //        GetXmlData(BMConfiguredLineItemNodes);       //Here is the heavy XML code
 
-                    pbStatus.Visibility = Visibility.Hidden;
-                    Status.Content = "XML SUCCESSFULLY UPLOADED";
-                }
-            }
-            catch
-            {
-                pbStatus.Visibility = Visibility.Hidden;
-                MessageBox.Show("Error Occurred Uploading XML");
-            }
+            //        InsertXmlData();
+
+            //        XmlUploaded = true;
+
+            //        pbStatus.Visibility = Visibility.Hidden;
+            //        Status.Content = "XML SUCCESSFULLY UPLOADED";
+            //    }
+            //}
+            //catch
+            //{
+            //    pbStatus.Visibility = Visibility.Hidden;
+            //    MessageBox.Show("Error Occurred Uploading XML");
+            //}
         }
 
 
@@ -1019,16 +1044,17 @@ namespace PRL123_Final
 
 
 
+
+
+
+
         private void loadGrid(string query)
         {
             DataTable dt = Utility.SearchMasterDB(query);
             dg.ItemsSource = dt.DefaultView;
             Urgency.Text = "N";     //default to normal urgency
-            ProductID.Text = "Pow-R-Line4";   //always PRL4
+            ProductID.Text = "Pow-R-LineCS";   //always PRLCS
         }
-
-
-
 
 
 
@@ -1062,10 +1088,7 @@ namespace PRL123_Final
 
 
 
-
-
-
-
+        //MAIN BRUNT OF TESTING CODE
 
 
         private int getFirstPageIndex()
@@ -1082,7 +1105,7 @@ namespace PRL123_Final
 
         private void Insert_Entry(object sender, RoutedEventArgs e)
         {
-            if (Utility.isDuplicate(GO_Item.Text, Utility.ProductGroup.PRL4) == false)
+            if (Utility.isDuplicate(GO_Item.Text, Utility.ProductGroup.PRLCS) == false)
             {
                 int amountOfPages = 0;
                 int firstPageIndex = getFirstPageIndex();
@@ -1154,8 +1177,8 @@ namespace PRL123_Final
                 Utility.SaveImageToPdf(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(PathPDF.Text), GO_Item.Text + "_" + pgNumStr + "_CONSTR.pdf"), img);
                 Utility.SaveBitmapAsPNGinImages(PathIMAGE.Text + "_" + Item.Text + "_" + pgNumStr + ".png", img);
 
+                string StrInsertCommand = "Insert into PRLCS ([GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], [ThirtyDeepEnclosure], [FilePath], [ProductSpecialist], [PageNumber], [ImageFilePath]) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-                string StrInsertCommand = "Insert into PRL4 (GO_Item, [GO], ShopOrderInterior, ShopOrderBox, ShopOrderTrim, Customer, Quantity, Tracking, Urgency, [AMO], [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], ReleaseDate, CommitDate, EnteredDate, FilePath, ProductSpecialist, PageNumber, ImageFilePath) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 using (OleDbCommand InsertCommand = new OleDbCommand(StrInsertCommand, MainWindow.LPcon))
                 {
                     InsertCommand.Parameters.AddWithValue("GO_Item", GO_Item.Text);
@@ -1165,30 +1188,28 @@ namespace PRL123_Final
                     InsertCommand.Parameters.AddWithValue("ShopOrderTrim", ShopOrderTrim.Text);
                     InsertCommand.Parameters.AddWithValue("Customer", Customer.Text);
                     InsertCommand.Parameters.AddWithValue("Quantity", Qty.Text);
+                    InsertCommand.Parameters.AddWithValue("EnteredDate", EnteredDate.Text);
+                    InsertCommand.Parameters.AddWithValue("ReleaseDate", ReleaseDate.Text);
+                    InsertCommand.Parameters.AddWithValue("CommitDate", CommitDate.Text);
                     InsertCommand.Parameters.AddWithValue("Tracking", Tracking);
                     InsertCommand.Parameters.AddWithValue("Urgency", Urgency.Text);
 
-                    InsertCommand.Parameters.AddWithValue("[AMO]", AMO.IsChecked);
+                    InsertCommand.Parameters.AddWithValue("[AMO]", true);
+                    InsertCommand.Parameters.AddWithValue("[SpecialCustomer]", false);
+                    InsertCommand.Parameters.AddWithValue("[IncLocLeft]", true);
+                    InsertCommand.Parameters.AddWithValue("[IncLocRight]", false);
+                    InsertCommand.Parameters.AddWithValue("[CrossBus]", true);
+                    InsertCommand.Parameters.AddWithValue("[OpenBottom]", true);
+                    InsertCommand.Parameters.AddWithValue("[ExtendedTop]", false);
+                    InsertCommand.Parameters.AddWithValue("[PaintedBox]", true);
+                    InsertCommand.Parameters.AddWithValue("[ThirtyDeepEnclosure]", false);
 
-                    InsertCommand.Parameters.AddWithValue("[SpecialCustomer]", (Boolean)isSpecialCustomer);
-
-                    InsertCommand.Parameters.AddWithValue("[ServiceEntrance]", (Boolean)isServiceEntrance);
-                    InsertCommand.Parameters.AddWithValue("[PaintedBox]", (Boolean)PaintedBox);
-                    InsertCommand.Parameters.AddWithValue("[RatedNeutral200]", (Boolean)RatedNeutral200);
-                    InsertCommand.Parameters.AddWithValue("[DoorOverDist]", (Boolean)DoorOverDistribution);
-                    InsertCommand.Parameters.AddWithValue("[DoorInDoor]", (Boolean)DoorInDoor);
-
-
-                    InsertCommand.Parameters.AddWithValue("ReleaseDate", ReleaseDate.Text);
-                    InsertCommand.Parameters.AddWithValue("CommitDate", CommitDate.Text);
-                    InsertCommand.Parameters.AddWithValue("EnteredDate", ReleaseDate.Text);
                     InsertCommand.Parameters.AddWithValue("FilePath", PathPDF.Text);
-                    //MessageBox.Show(PathPDF.Text);
                     InsertCommand.Parameters.AddWithValue("ProductSpecialist", ProductSpecialist);
-                    //InsertCommand.Parameters.AddWithValue("Suffix", Suffix.Text);
                     InsertCommand.Parameters.AddWithValue("PageNumber", pageNumber);
                     InsertCommand.Parameters.AddWithValue("ImageFilePath", PathIMAGE.Text + "_" + Item.Text + "_" + pgNumStr + ".png");
                     InsertCommand.ExecuteNonQuery();
+
                 }//end using command
 
             }
@@ -1216,7 +1237,7 @@ namespace PRL123_Final
 
                 if ((pageNumber - firstPgIndex) == 0) //first page
                 {
-                    LoadAllBooleanValues(firstPgIndex);
+                    //LoadAllBooleanValues(firstPgIndex);
                     Utility.SaveImageToPdf(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(PathPDF.Text), GO_Item.Text + "_" + pgNumStr + "_CONSTR.pdf"), (BitmapImage)image[pageNumber]);
                     Utility.SaveBitmapAsPNGinImages(PathIMAGE.Text + "_" + Item.Text + "_" + pgNumStr + ".png", (BitmapImage)image[pageNumber]);
                 }
@@ -1226,7 +1247,9 @@ namespace PRL123_Final
                     Utility.SaveBitmapAsPNGinImages(PathIMAGE.Text + "_" + Item.Text + "_" + pgNumStr + ".png", (BitmapImage)image[pageNumber]);
                 }
 
-                string StrInsertCommand = "Insert into PRL4 (GO_Item, [GO], ShopOrderInterior, ShopOrderBox, ShopOrderTrim, Customer, Quantity, Tracking, Urgency, [AMO], [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], ReleaseDate, CommitDate, EnteredDate, FilePath, ProductSpecialist, PageNumber, ImageFilePath) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+                string StrInsertCommand = "Insert into PRLCS ([GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], [ThirtyDeepEnclosure], [FilePath], [ProductSpecialist], [PageNumber], [ImageFilePath]) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                
                 using (OleDbCommand InsertCommand = new OleDbCommand(StrInsertCommand, MainWindow.LPcon))
                 {
                     InsertCommand.Parameters.AddWithValue("GO_Item", GO_Item.Text);
@@ -1236,52 +1259,53 @@ namespace PRL123_Final
                     InsertCommand.Parameters.AddWithValue("ShopOrderTrim", ShopOrderTrim.Text);
                     InsertCommand.Parameters.AddWithValue("Customer", Customer.Text);
                     InsertCommand.Parameters.AddWithValue("Quantity", Qty.Text);
+                    InsertCommand.Parameters.AddWithValue("EnteredDate", EnteredDate.Text);
+                    InsertCommand.Parameters.AddWithValue("ReleaseDate", ReleaseDate.Text);
+                    InsertCommand.Parameters.AddWithValue("CommitDate", CommitDate.Text);
                     InsertCommand.Parameters.AddWithValue("Tracking", Tracking);
                     InsertCommand.Parameters.AddWithValue("Urgency", Urgency.Text);
 
-                    InsertCommand.Parameters.AddWithValue("[AMO]", AMO.IsChecked);
+                    InsertCommand.Parameters.AddWithValue("[AMO]", true);
+                    InsertCommand.Parameters.AddWithValue("[SpecialCustomer]", false);
+                    InsertCommand.Parameters.AddWithValue("[IncLocLeft]", true);
+                    InsertCommand.Parameters.AddWithValue("[IncLocRight]", false);
+                    InsertCommand.Parameters.AddWithValue("[CrossBus]", true);
+                    InsertCommand.Parameters.AddWithValue("[OpenBottom]", true);
+                    InsertCommand.Parameters.AddWithValue("[ExtendedTop]", false);
+                    InsertCommand.Parameters.AddWithValue("[PaintedBox]", true);
+                    InsertCommand.Parameters.AddWithValue("[ThirtyDeepEnclosure]", false);
 
-                    InsertCommand.Parameters.AddWithValue("[SpecialCustomer]", (Boolean)isSpecialCustomer);
-
-                    InsertCommand.Parameters.AddWithValue("[ServiceEntrance]", (Boolean)isServiceEntrance);
-                    InsertCommand.Parameters.AddWithValue("[PaintedBox]", (Boolean)PaintedBox);
-                    InsertCommand.Parameters.AddWithValue("[RatedNeutral200]", (Boolean)RatedNeutral200);
-                    InsertCommand.Parameters.AddWithValue("[DoorOverDist]", (Boolean)DoorOverDistribution);
-                    InsertCommand.Parameters.AddWithValue("[DoorInDoor]", (Boolean)DoorInDoor);
-
-
-                    InsertCommand.Parameters.AddWithValue("ReleaseDate", ReleaseDate.Text);
-                    InsertCommand.Parameters.AddWithValue("CommitDate", CommitDate.Text);
-                    InsertCommand.Parameters.AddWithValue("EnteredDate", ReleaseDate.Text);
                     InsertCommand.Parameters.AddWithValue("FilePath", PathPDF.Text);
-                    //MessageBox.Show(PathPDF.Text);
                     InsertCommand.Parameters.AddWithValue("ProductSpecialist", ProductSpecialist);
-                    //InsertCommand.Parameters.AddWithValue("Suffix", Suffix.Text);
                     InsertCommand.Parameters.AddWithValue("PageNumber", pageNumber - firstPgIndex);
                     InsertCommand.Parameters.AddWithValue("ImageFilePath", PathIMAGE.Text + "_" + Item.Text + "_" + pgNumStr + ".png");
+
                     InsertCommand.ExecuteNonQuery();
                 }//end using command
 
 
                 if ((pageNumber - firstPgIndex) == 0)
                 {
-                    string command = "insert into CSALabel ([GONumber], ItemNumber, Designation, [MA], Voltage, [P], [W], ground, [Hz], GO_Item, ProductID, Enclosure, XSpaceUsed, [N]) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    string command = "insert into CSALabelPRLCS ([GONumber], [ItemNumber], [SwitchBoardTitle], [CSAStandard], [SMCenter], [Section], [MainBusBarCapacity], [Voltage], [Hz], [P], [W], [ShortCircuitRating], [Amps], [Enclosure], [GO_Item], [ProductID]) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    
                     using (OleDbCommand InsertCSA = new OleDbCommand(command, MainWindow.LPcon))
                     {
                         InsertCSA.Parameters.AddWithValue("[GONumber]", GO1.Text);
-                        InsertCSA.Parameters.AddWithValue("ItemNumber", Item.Text);
-                        InsertCSA.Parameters.AddWithValue("Designation", Designation.Text);
-                        InsertCSA.Parameters.AddWithValue("[MA]", MA.Text);
-                        InsertCSA.Parameters.AddWithValue("Voltage", Voltage.Text);
-                        InsertCSA.Parameters.AddWithValue("[P]", P.Text);
-                        InsertCSA.Parameters.AddWithValue("[W]", W.Text);
-                        InsertCSA.Parameters.AddWithValue("ground", Ground.Text);
-                        InsertCSA.Parameters.AddWithValue("[Hz]", Hz.Text);
-                        InsertCSA.Parameters.AddWithValue("GO_Item", GO_Item.Text);
-                        InsertCSA.Parameters.AddWithValue("ProductID", ProductID.Text);
-                        InsertCSA.Parameters.AddWithValue("Enclosure", Enclosure.Text);
-                        InsertCSA.Parameters.AddWithValue("XSpaceUsed", Xspace.Text);
-                        InsertCSA.Parameters.AddWithValue("[N]", Neut.Text);
+                        InsertCSA.Parameters.AddWithValue("[ItemNumber]", Item.Text);
+                        InsertCSA.Parameters.AddWithValue("[SwitchBoardTitle]", "SWITCHBOARD UNIT SOUS STATION");
+                        InsertCSA.Parameters.AddWithValue("[CSAStandard]", "C22.2 No.244");
+                        InsertCSA.Parameters.AddWithValue("[SMCenter]", "LL47168");
+                        InsertCSA.Parameters.AddWithValue("[Section]", "2 OF 3");
+                        InsertCSA.Parameters.AddWithValue("[MainBusBarCapacity]", "1200A");
+                        InsertCSA.Parameters.AddWithValue("[Voltage]", "600Y/347V");
+                        InsertCSA.Parameters.AddWithValue("[Hz]", "60Hz");
+                        InsertCSA.Parameters.AddWithValue("[P]", "3Ph");
+                        InsertCSA.Parameters.AddWithValue("[W]", "4W");
+                        InsertCSA.Parameters.AddWithValue("[ShortCircuitRating]", "50kA");
+                        InsertCSA.Parameters.AddWithValue("[Amps]", "600");
+                        InsertCSA.Parameters.AddWithValue("[Enclosure]", "TYPE 1 SPRINKLERED");
+                        InsertCSA.Parameters.AddWithValue("[GO_Item]", GO_Item.Text);
+                        InsertCSA.Parameters.AddWithValue("[ProductID]", ProductID.Text);
 
                         InsertCSA.ExecuteNonQuery();
                     }//end using command  
@@ -1298,10 +1322,29 @@ namespace PRL123_Final
 
 
 
+
+
+
+
+
+
+
+
+
         private void Search_GOs(object sender, RoutedEventArgs e)
         {
-            loadGrid("select * from [tblOrderStatus] where [Prod Group] in " + Utility.GetProductNameListInString(Views.Configuration.PRL4names) + " and [GO]='" + SearchBox.Text + "'");
+            loadGrid("select * from [tblOrderStatus] where [Prod Group] in " + Utility.GetProductNameListInString(Views.Configuration.PRLCSnames) + " and [GO Item]='CLKI004103-003' OR [GO Item]='CLKI004103-004' OR [GO Item]='CLKI004103-005'");
         }
+
+
+
+
+
+
+
+
+
+
 
         private void Pg1_Click(object sender, RoutedEventArgs e)
         {

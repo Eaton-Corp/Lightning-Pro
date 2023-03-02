@@ -141,7 +141,7 @@ namespace PRL123_Final
                     "[EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [Customer], " +
                     "[SpecialCustomer], [AMO], [IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop],[PaintedBox], " +
                     "[ThirtyDeepEnclosure], [DNSB], [Complete], [Short], [FilePath], [PageNumber] " +
-                    "from [PRL4] where [GO]='" + current_ID.Substring(0, 10) + "' order by [GO_Item],[PageNumber]");
+                    "from [PRLCS] where [GO]='" + current_ID.Substring(0, 10) + "' order by [GO_Item],[PageNumber]");
             }
         }
 
@@ -331,10 +331,10 @@ namespace PRL123_Final
                                 Hz[counter] = rcsa[9].ToString();
                                 P[counter] = rcsa[10].ToString();
                                 W[counter] = rcsa[11].ToString();
-                                ShortCircuitRating[counter] = rcsa[11].ToString();
-                                Amps[counter] = rcsa[12].ToString();
-                                Enclosure[counter] = rcsa[13].ToString();
-                                ProductID[counter] = rcsa[15].ToString();
+                                ShortCircuitRating[counter] = rcsa[12].ToString();
+                                Amps[counter] = rcsa[13].ToString();
+                                Enclosure[counter] = rcsa[14].ToString();
+                                ProductID[counter] = rcsa[16].ToString();
                             }
                         }
                     }
@@ -646,7 +646,14 @@ namespace PRL123_Final
                     cmd.Parameters.AddWithValue("Quantity", Quantity.Text);
                     cmd.Parameters.AddWithValue("Tracking", Tracking.Text);
                     cmd.Parameters.AddWithValue("Urgency", Urgency.Text);
-                    cmd.Parameters.AddWithValue("Customer", Customer.Text);
+                    if (CurrentProduct == Utility.ProductGroup.PRLCS)
+                    {
+                        cmd.Parameters.AddWithValue("Customer", CustomerBoxCS.Text);
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue("Customer", Customer.Text);
+                    }
                     cmd.Parameters.AddWithValue("[SpecialCustomer]", SpecialCustomer.IsChecked);
 
                     if (CurrentProduct == Utility.ProductGroup.PRL123)
@@ -676,7 +683,7 @@ namespace PRL123_Final
                     }
                     else if(CurrentProduct == Utility.ProductGroup.PRLCS)
                     {
-                        cmd.Parameters.AddWithValue("[SpecialCustomer]", SpecialCustomer.IsChecked);
+                        
                         cmd.Parameters.AddWithValue("[AMO]", AMO_CS.IsChecked);
                         cmd.Parameters.AddWithValue("[IncLocLeft]", IncLocLeft_CS.IsChecked);
                         cmd.Parameters.AddWithValue("[IncLocRight]", IncLocRight_CS.IsChecked);
@@ -685,9 +692,9 @@ namespace PRL123_Final
                         cmd.Parameters.AddWithValue("[ExtendedTop]", ExtendedTop_CS.IsChecked);
                         cmd.Parameters.AddWithValue("[PaintedBox]", PaintedBox_CS.IsChecked);
                         cmd.Parameters.AddWithValue("[ThirtyDeepEnclosure]", ThirtyDeepEnc_CS.IsChecked);
-                        cmd.Parameters.AddWithValue("[DNSB]", DNSB.IsChecked);
-                        cmd.Parameters.AddWithValue("[Complete]", Complete.IsChecked);
-                        cmd.Parameters.AddWithValue("[Short]", Short.IsChecked);
+                        cmd.Parameters.AddWithValue("[DNSB]", DNSB_CS.IsChecked);
+                        cmd.Parameters.AddWithValue("[Complete]", Complete_CS.IsChecked);
+                        cmd.Parameters.AddWithValue("[Short]", Short_CS.IsChecked);
                     }
                     cmd.ExecuteNonQuery();
                 } //end using command
@@ -717,11 +724,11 @@ namespace PRL123_Final
                 }
                 else if(CurrentProduct == Utility.ProductGroup.PRLCS)
                 {
-                    string commandCSA = "update [CSALabelPRLCS] set [SwitchBoard]= ?, [CSAStandard]= ?, [SMCenter]= ?, [Section]= ?, [MainBusBarCapacity]= ?, " +
-                        "[Voltage]= ?, [Hz]= ?, [P]= ?, [W]= ?, [ShortCircuitRating]= ?, [Amps]= ?, [Enclosure]= ?, [Customer]= ? where [GO_Item]='" + current_ID + "'";
+                    string commandCSA = "update [CSALabelPRLCS] set [SwitchBoardTitle]= ?, [CSAStandard]= ?, [SMCenter]= ?, [Section]= ?, [MainBusBarCapacity]= ?, " +
+                        "[Voltage]= ?, [Hz]= ?, [P]= ?, [W]= ?, [ShortCircuitRating]= ?, [Amps]= ?, [Enclosure]= ? where [GO_Item]='" + current_ID + "'";
                     using (OleDbCommand UpdateCSACommand = new OleDbCommand(commandCSA, MainWindow.LPcon))
                     {
-                        UpdateCSACommand.Parameters.AddWithValue("[SwitchBoard]", SwitchBoardBoxCS.Text);
+                        UpdateCSACommand.Parameters.AddWithValue("[SwitchBoardTitle]", SwitchBoardBoxCS.Text);
                         UpdateCSACommand.Parameters.AddWithValue("[CSAStandard]", CSAStandardBoxCS.Text);
                         UpdateCSACommand.Parameters.AddWithValue("[SMCenter]", SMCenterBoxCS.Text);
                         UpdateCSACommand.Parameters.AddWithValue("[Section]", SectionBoxCS.Text);
@@ -733,8 +740,6 @@ namespace PRL123_Final
                         UpdateCSACommand.Parameters.AddWithValue("[ShortCircuitRating]", ShortCircuitBoxCS.Text);
                         UpdateCSACommand.Parameters.AddWithValue("[Amps]", AmpsBoxCS.Text);
                         UpdateCSACommand.Parameters.AddWithValue("[Enclosure]", EnclosureBoxCS.Text);
-                        UpdateCSACommand.Parameters.AddWithValue("[Customer]", CustomerBoxCS.Text);
-
                         UpdateCSACommand.ExecuteNonQuery();
                     } //end using command
                 }
@@ -845,10 +850,8 @@ namespace PRL123_Final
                 }
                 else if(CurrentProduct == Utility.ProductGroup.PRLCS)
                 {
-                    commandStr = "update [PRLcs] set [ShopOrderInterior] = ?,[ShopOrderBox] = ?,[ShopOrderTrim] = ?,[Quantity] = ?,[EnteredDate] = ?,[ReleaseDate] = ?,[CommitDate] = ?,[Customer] = ? where [GO_Item]='" + GO_Item.Text + "'";
-
+                    commandStr = "update [PRLCS] set [ShopOrderInterior] = ?,[ShopOrderBox] = ?,[ShopOrderTrim] = ?,[Quantity] = ?,[EnteredDate] = ?,[ReleaseDate] = ?,[CommitDate] = ?,[Customer] = ? where [GO_Item]='" + GO_Item.Text + "'";
                 }
-
                 using (OleDbCommand cmd = new OleDbCommand(commandStr, MainWindow.LPcon))
                 {
                     cmd.Parameters.AddWithValue("[ShopOrderInterior]", SOI);

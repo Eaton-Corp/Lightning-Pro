@@ -402,3 +402,9 @@ C:\Users\e0637402\Repos\Lightning-Pro\obj\Debug\PRL123_Final.csproj.GenerateReso
 C:\Users\e0637402\Repos\Lightning-Pro\obj\Debug\PRL123_Final.csproj.CoreCompileInputs.cache
 C:\Users\e0637402\Repos\Lightning-Pro\obj\Debug\PRL123_Final.csproj.CopyComplete
 >>>>>>> origin/main
+C:\Users\e0637402\Repos\Lightning-Pro\obj\Debug\InsertPRLCS.g.cs
+C:\Users\e0637402\Repos\Lightning-Pro\obj\Debug\InsertPRLCS.baml
+C:\Users\e0637402\Repos\Lightning-Pro\obj\Debug\PrintLabelsCS.g.cs
+C:\Users\e0637402\Repos\Lightning-Pro\obj\Debug\PrintLabelsCS.baml
+C:\Users\e0637402\Repos\Lightning-Pro\obj\Debug\PrintPageCS.g.cs
+C:\Users\e0637402\Repos\Lightning-Pro\obj\Debug\PrintPageCS.baml

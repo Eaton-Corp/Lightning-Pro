@@ -163,17 +163,24 @@ namespace PRL123_Final.Views
         {
             try
             {
-                if (Scan.Text != "" && (((Scan.Text.Length >= 15 || Scan.Text.Length == 10) && !Scan.Text.StartsWith("4-") && !Scan.Text.StartsWith("CS-") && !Scan.Text.StartsWith("EC-")) || ((Scan.Text.Length >= 17 || Scan.Text.Length == 12) && Scan.Text.StartsWith("4-"))))
+                //if (Scan.Text != "" && (((Scan.Text.Length >= 15 || Scan.Text.Length == 10) && !Scan.Text.StartsWith("4-") && !Scan.Text.StartsWith("CS-") && !Scan.Text.StartsWith("EC-")) || ((Scan.Text.Length >= 17 || Scan.Text.Length == 12) && Scan.Text.StartsWith("4-"))))
+                if(Scan.Text != "")
                 {
                     if (Scan.Text.StartsWith("4-"))     //PWL4
                     {
                         PRL4_Set();
-                        getGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], [SpecialCustomer], [AMO], [ServiceEntrance], [RatedNeutral200], [PaintedBox], [DNSB], [Complete], [Short], [FilePath], [DoorOverDist], [DoorInDoor], [PageNumber] from [PRL4] where [GO]='" + Scan.Text.Substring(2, 10) + "' order by [GO_Item],[PageNumber]");
+                        getGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], " +
+                            "[SpecialCustomer], [AMO], [ServiceEntrance], [RatedNeutral200], [PaintedBox], [DNSB], [Complete], " +
+                            "[Short], [FilePath], [DoorOverDist], [DoorInDoor], [PageNumber] from [PRL4] where [GO]='" +
+                            Scan.Text.Substring(2, 10) + "' order by [GO_Item],[PageNumber]");
                     }
                     else if (Scan.Text.StartsWith("CS-"))       //PWLCS
                     {
                         PRLCS_Set();
-                        getGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], [SpecialCustomer], [AMO], [IncLocLeft], [IncLocRight], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], [ThirtyDeepEnclosure], [DNSB], [Complete], [Short], [FilePath], [PageNumber] from [PRLCS] where [GO]='" + Scan.Text.Substring(2, 10) + "' order by [GO_Item],[PageNumber]");
+                        getGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer]," +
+                            " [SpecialCustomer], [AMO], [IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom]," +
+                            " [ExtendedTop], [PaintedBox], [ThirtyDeepEnclosure], [DNSB], [Complete], [Short], [FilePath]," +
+                            " [PageNumber] from [PRLCS] where [GO]='" + Scan.Text.Substring(3, 10) + "' order by [GO_Item],[PageNumber]");
 
                     }
                     else if (Scan.Text.StartsWith("EC-"))       //PWLEC
@@ -183,7 +190,10 @@ namespace PRL123_Final.Views
                     else            //PWL123
                     {
                         PRL123_Set();
-                        getGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], [SpecialCustomer], [AMO], [ServiceEntrance], [RatedNeutral200], [PaintedBox], [DNSB], [Complete], [Short], [FilePath], [BoxEarly], [Box Sent], [DoubleSection] from [PRL123] where [GO]='" + Scan.Text.Substring(0, 10) + "' order by [GO_Item]");
+                        getGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], " +
+                            "[SpecialCustomer], [AMO], [ServiceEntrance], [RatedNeutral200], [PaintedBox], [DNSB], [Complete], " +
+                            "[Short], [FilePath], [BoxEarly], [Box Sent], [DoubleSection] from [PRL123] where [GO]='" +
+                            Scan.Text.Substring(0, 10) + "' order by [GO_Item]");
                     }
 
                     if (SuccessPull == true)
@@ -516,16 +526,25 @@ namespace PRL123_Final.Views
         {
             if (CurrentProduct == Utility.ProductGroup.PRL123)
             {
-                getGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], [SpecialCustomer], [AMO], [ServiceEntrance], [RatedNeutral200], [PaintedBox], [DNSB], [Complete], [Short], [FilePath], [BoxEarly], [Box Sent], [DoubleSection] from [PRL123] where [GO]='" + GO_Item.Text.Substring(0, 10) + "' order by [GO_Item]");
+                getGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], " +
+                    "[SpecialCustomer], [AMO], [ServiceEntrance], [RatedNeutral200], [PaintedBox], [DNSB], [Complete], [Short], " +
+                    "[FilePath], [BoxEarly], [Box Sent], [DoubleSection] from [PRL123] where [GO]='" + 
+                    GO_Item.Text.Substring(0, 10) + "' order by [GO_Item]");
             }
             else if (CurrentProduct == Utility.ProductGroup.PRL4)
             {
-                getGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], [SpecialCustomer], [AMO], [ServiceEntrance], [RatedNeutral200], [PaintedBox], [DNSB], [Complete], [Short], [FilePath], [DoorOverDist], [DoorInDoor], [PageNumber] from [PRL4] where [GO]='" + GO_Item.Text.Substring(0, 10) + "' order by [GO_Item],[PageNumber]");
+                getGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], " +
+                    "[SpecialCustomer], [AMO], [ServiceEntrance], [RatedNeutral200], [PaintedBox], [DNSB], [Complete], " +
+                    "[Short], [FilePath], [DoorOverDist], [DoorInDoor], [PageNumber] from [PRL4] where [GO]='" + 
+                    GO_Item.Text.Substring(0, 10) + "' order by [GO_Item],[PageNumber]");
 
             }
             else if(CurrentProduct == Utility.ProductGroup.PRLCS)
             {
-                getGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], [SpecialCustomer], [AMO], [IncLocLeft], [IncLocRight], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], [ThirtyDeepEnclosure], [DNSB], [Complete], [Short], [FilePath], [PageNumber] from [PRLCS] where [GO]='" + GO_Item.Text.Substring(0, 10) + "' order by [GO_Item],[PageNumber]");
+                getGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], " +
+                    "[SpecialCustomer], [AMO], [IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], " +
+                    "[PaintedBox], [ThirtyDeepEnclosure], [DNSB], [Complete], [Short], [FilePath], [PageNumber] from " +
+                    "[PRLCS] where [GO]='" + GO_Item.Text.Substring(0, 10) + "' order by [GO_Item],[PageNumber]");
             }
         }
 
@@ -617,15 +636,21 @@ namespace PRL123_Final.Views
                 string commandStr = "";
                 if (CurrentProduct == Utility.ProductGroup.PRL123)
                 {
-                    commandStr = "update [PRL123] set [Type]= ?, [Volts]= ?, [Amps]= ?, [Torque]= ?, [Appearance]= ?, [Bus]= ?, [SpecialCustomer]= ?, [AMO]= ?, [ServiceEntrance]= ?, [RatedNeutral200]= ?, [PaintedBox]= ?, [DNSB]= ?, [Complete]= ?, [Short]= ?, [BoxEarly]= ?, [Box Sent]= ?, [DoubleSection]= ? where [GO_Item]='" + GOItemsArr[page] + "'";
+                    commandStr = "update [PRL123] set [Type]= ?, [Volts]= ?, [Amps]= ?, [Torque]= ?, [Appearance]= ?, [Bus]= ?, [SpecialCustomer]= ?, [AMO]= ?, " +
+                        "[ServiceEntrance]= ?, [RatedNeutral200]= ?, [PaintedBox]= ?, [DNSB]= ?, [Complete]= ?, [Short]= ?, [BoxEarly]= ?, [Box Sent]= ?, " +
+                        "[DoubleSection]= ? where [GO_Item]='" + GOItemsArr[page] + "'";
                 }
                 else if (CurrentProduct == Utility.ProductGroup.PRL4)
                 {
-                    commandStr = "update [PRL4] set [Type]= ?, [Volts]= ?, [Amps]= ?, [Torque]= ?, [Appearance]= ?, [Bus]= ?, [SpecialCustomer]= ?, [AMO]= ?, [ServiceEntrance]= ?, [RatedNeutral200]= ?, [PaintedBox]= ?, [DNSB]= ?, [Complete]= ?, [Short]= ?, [DoorOverDist]= ?, [DoorInDoor]= ? where [GO_Item]='" + GOItemsArr[page] + "'";
+                    commandStr = "update [PRL4] set [Type]= ?, [Volts]= ?, [Amps]= ?, [Torque]= ?, [Appearance]= ?, [Bus]= ?, [SpecialCustomer]= ?, [AMO]= ?, " +
+                        "[ServiceEntrance]= ?, [RatedNeutral200]= ?, [PaintedBox]= ?, [DNSB]= ?, [Complete]= ?, [Short]= ?, [DoorOverDist]= ?, " +
+                        "[DoorInDoor]= ? where [GO_Item]='" + GOItemsArr[page] + "'";
                 }
                 else if (CurrentProduct == Utility.ProductGroup.PRLCS)
                 {
-                    commandStr = "update [PRLCS] set [Type]= ?, [Volts]= ?, [Amps]= ?, [Torque]= ?, [Appearance]= ?, [Bus]= ?, [SpecialCustomer]= ?, [AMO]= ?, [IncLocLeft]= ?, [IncLocRight]= ?, [CrossBus]= ?, [OpenBottom]= ?, [ExtendedTop]= ?, [PaintedBox]= ?, [ThirtyDeepEnclosure]= ?, [DNSB]= ?, [Complete]= ?, [Short]= ? where [GO_Item]='" + GOItemsArr[page] + "'";
+                    commandStr = "update [PRLCS] set [Type]= ?, [Volts]= ?, [Amps]= ?, [Torque]= ?, [Appearance]= ?, [Bus]= ?, [SpecialCustomer]= ?, [AMO]= ?, " +
+                        "[IncLocLeft]= ?, [IncLocRight]= ?, [CrossBus]= ?, [OpenBottom]= ?, [ExtendedTop]= ?, [PaintedBox]= ?, [ThirtyDeepEnclosure]= ?, " +
+                        "[DNSB]= ?, [Complete]= ?, [Short]= ? where [GO_Item]='" + GOItemsArr[page] + "'";
                 }
                 using (OleDbCommand cmd = new OleDbCommand(commandStr, MainWindow.LPcon))
                 {
