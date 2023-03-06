@@ -1,9 +1,0 @@
-Mississauga
-Provider = Microsoft.ACE.OLEDB.12.0; Mode=16; OLE DB Services = -1; Data Source = C:\Users\E0637402\Repos\Lightning-Pro\Local_Databases\MSS_Database\MSS_DATABASE_BE.accdb;Persist Security Info = False;
-Provider = Microsoft.ACE.OLEDB.12.0; Mode=16; OLE DB Services = -1; Data Source = C:\Users\E0637402\Repos\Lightning-Pro\Local_Databases\PRL123Databases\LightningProDatabase.accdb;Persist Security Info = False;
-C:\Users\E0637402\Repos\Lightning-Pro\LocalOrderFiles
-C:\Users\E0637402\Repos\Lightning-Pro\Images\
-\\misonsfp01\Satellite\PRL123Program\FinalRelease
-Eaton Industries (Canada) Company - MSS/2025 Meadowvale Blvd., Unit 1/MISSISSAUGA, L5N 5N1/MSS
-PRL123/PRL4/PRLCS/EC
-VAUGHAN ELECTRICAL/WESCO
