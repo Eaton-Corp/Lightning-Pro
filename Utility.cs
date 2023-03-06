@@ -80,6 +80,44 @@ namespace PRL123_Final
             }
         }
 
+        public static string searchQueryGenerator(ProductGroup CurrentProduct, string FieldText, string SearchText)
+        {
+            string query = "";
+            if (CurrentProduct == ProductGroup.PRL123)
+            {
+                if (FieldText == "ShopOrder")
+                {
+                    query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [BoxEarly], [Box Sent], [SpecialCustomer], [ServiceEntrance], [DoubleSection], [PaintedBox], [RatedNeutral200], [DNSB], [Complete], [Short] from [PRL123] where ShopOrderInterior like '%" + SearchText + "%' OR ShopOrderTrim like '%" + SearchText + "%' OR ShopOrderBox like '%" + SearchText + "%'";
+                }
+                else
+                {
+                    query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [BoxEarly], [Box Sent], [SpecialCustomer], [ServiceEntrance], [DoubleSection], [PaintedBox], [RatedNeutral200], [DNSB], [Complete], [Short] from [PRL123] where " + FieldText + " like '%" + SearchText + "%'";
+                }
+            }
+            else if (CurrentProduct == Utility.ProductGroup.PRL4)
+            {
+                if (FieldText == "ShopOrder")
+                {
+                    query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], [DNSB], [Complete], [Short] from [PRL4] where ShopOrderInterior like '%" + SearchText + "%' OR ShopOrderTrim like '%" + SearchText + "%' OR ShopOrderBox like '%" + SearchText + "%'";
+                }
+                else
+                {
+                    query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], [DNSB], [Complete], [Short] from [PRL4] where [" + FieldText + "] like '%" + SearchText + "%' and [PageNumber] = 0";
+                }
+            }
+            else if (CurrentProduct == Utility.ProductGroup.PRLCS)
+            {
+                if (FieldText == "ShopOrder")
+                {
+                    query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], [ThirtyDeepEnclosure], [DNSB], [Complete], [Short] from [PRLCS] where ShopOrderInterior like '%" + SearchText + "%' OR ShopOrderTrim like '%" + SearchText + "%' OR ShopOrderBox like '%" + SearchText + "%'";
+                }
+                else
+                {
+                    query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], [ThirtyDeepEnclosure], [DNSB], [Complete], [Short] from [PRLCS] where [" + FieldText + "] like '%" + SearchText + "%' and [PageNumber] = 0";
+                }
+            }
+            return query;
+        }
 
         // The following is used to ExecuteNonQueries from LPdatabase 
         public static void executeNonQueryLP(string command)      

@@ -8,6 +8,6 @@
         Title="CSA NamePlate Records" Height="450" Width="800" MinHeight="450" MinWidth="800">
     <Grid>
         <DataGrid Name="dg" CanUserReorderColumns="False" CanUserResizeRows="False" CanUserResizeColumns="False" CanUserAddRows="True" Margin="45,25,62,49"/>
-        <Button Background="Blue" Foreground="White" Content="Save" HorizontalAlignment="Right" VerticalAlignment="Top" Width="105" Height="30" Click="Click_Save" Margin="0,400,5,0"/>
+        <Button Background="Blue" Foreground="White" Content="Save" HorizontalAlignment="Right" VerticalAlignment="Top" Width="105" Height="30"  Margin="0,400,5,0"/>
     </Grid>
 </Window>
