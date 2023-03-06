@@ -435,6 +435,13 @@ namespace PRL123_Final.Views
 
 
 
+        private void Open_Records(object sender, RoutedEventArgs e)
+        {
+            CSArecords sf = new CSArecords();
+            sf.Show();
+        }
+
+
 
 
 

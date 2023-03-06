@@ -16,6 +16,7 @@ using System.Linq;
 using System.Text;
 using System.Diagnostics;
 using System.Configuration;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.ComponentModel.Composition;
 
@@ -1174,6 +1175,48 @@ namespace PRL123_Final
             return output;
         }
 
+
+
+        // The following is used to get the max voltage given the full voltage string
+        public static string getMaxVoltage(string fullVoltage)
+        {
+            if (string.IsNullOrEmpty(fullVoltage))
+            {
+                return "";
+            }
+            else 
+            {
+                if (fullVoltage.Contains("/"))
+                {
+                    string[] voltages = fullVoltage.Split('/'); 
+                    string voltage1 = getNumberInString(voltages[0]);
+                    string voltage2 = getNumberInString(voltages[1]);
+
+                    if (Int32.Parse(voltage1) > Int32.Parse(voltage2))
+                    {
+                        return voltage1;
+                    }
+                    else 
+                    {
+                        return voltage2;
+                    }
+                }
+                else 
+                {
+                    return getNumberInString(fullVoltage);
+                }
+            }
+        }
+
+
+        // The following is used to extract a number from a specified string
+        public static string getNumberInString(string strSource)
+        {
+            string[] numbers;
+            numbers = Regex.Split(strSource, @"\D+");
+
+            return numbers[0];
+        }
 
 
         // The following is used to truncate a source string given a start string and an end string

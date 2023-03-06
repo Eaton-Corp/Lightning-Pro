@@ -470,6 +470,13 @@ namespace PRL123_Final.Views
         }
 
 
+        private void Open_Records(object sender, RoutedEventArgs e)
+        {
+            CSArecords sf = new CSArecords();
+            sf.Show();
+        }
+
+
         private void Click_FindFolder(object sender, RoutedEventArgs e)
         {
             if (Selected != -1)

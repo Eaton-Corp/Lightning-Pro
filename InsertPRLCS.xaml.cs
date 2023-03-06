@@ -95,11 +95,13 @@ namespace PRL123_Final
 
 
         Boolean isSpecialCustomer = false;
-        Boolean DoorInDoor = false;
-        Boolean DoorOverDistribution = false;
-        Boolean isServiceEntrance = false;
-        Boolean PaintedBox = false;
-        Boolean RatedNeutral200 = false;
+        Boolean isIncLocLeft = false;
+        Boolean isIncLocRight = false;
+        Boolean isOpenBottom = false;
+        Boolean isExtendedTop = false;
+        Boolean isPaintedBox = false;
+
+
 
 
         //quickly written code
@@ -117,77 +119,80 @@ namespace PRL123_Final
         }
 
 
-        private void IsDoorInDoor(int index)
+        private void IsIncLocLeft(int index)
         {
-            if (ImagesInText[index].Contains("Door-in-Door"))
+            if (ImagesInText[index].Contains("Incoming Location: Left"))
             {
-                DoorInDoor = true;
+                isIncLocLeft = true;
             }
             else
             {
-                DoorInDoor = false;
+                isIncLocLeft = false;
             }
         }
 
-        private void IsDoorOverDistribution(int index)
+        private void IsIncLocRight(int index)
         {
-            if (ImagesInText[index].Contains("Door over Devices"))
+            if (ImagesInText[index].Contains("Incoming Location: Right"))
             {
-                DoorOverDistribution = true;
+                isIncLocRight = true;
             }
             else
             {
-                DoorOverDistribution = false;
+                isIncLocRight = false;
             }
         }
 
 
-        private void IsServiceEntrance(int index)
+        private void IsOpenBottom(int index)
         {
-            if (ImagesInText[index].Contains("Service Entrance"))
+            if (ImagesInText[index].Contains("OPEN BOTTOM") || ImagesInText[index].Contains("Open Bottom"))
             {
-                isServiceEntrance = true;
+                isOpenBottom = true;
             }
             else
             {
-                isServiceEntrance = false;
+                isOpenBottom = false;
             }
         }
+
+        private void IsExtendedTop(int index)
+        {
+            if (ImagesInText[index].Contains("Sprinklerproof") || ImagesInText[index].Contains("SPRINKLERPROOF") || ImagesInText[index].Contains("sprinklerproof"))
+            {
+                isExtendedTop = true;
+            }
+            else
+            {
+                isExtendedTop = false;
+            }
+        }
+
 
         private void IsPaintedBox(int index)
         {
-            if (ImagesInText[index].Contains("Box Finish"))
+            if (ImagesInText[index].Contains("Paint ") || ImagesInText[index].Contains("PAINT ") || ImagesInText[index].Contains("paint "))
             {
-                PaintedBox = true;
+                isPaintedBox = true;
             }
             else
             {
-                PaintedBox = false;
+                isPaintedBox = false;
             }
         }
 
-        private void IsRatedNeutral(int index)
-        {
-            if (ImagesInText[index].Contains("200% Rated Neutral"))
-            {
-                RatedNeutral200 = true;
-            }
-            else
-            {
-                RatedNeutral200 = false;
-            }
-        }
+
 
 
         //call this before inserting boolean values 
         private void LoadAllBooleanValues(int index)
         {
             IsSpecialCustomer();
-            IsDoorInDoor(index);
-            IsDoorOverDistribution(index);
-            IsServiceEntrance(index);
+            IsIncLocLeft(index);
+            IsIncLocRight(index);
+            IsOpenBottom(index);
+            IsExtendedTop(index);
             IsPaintedBox(index);
-            IsRatedNeutral(index);
         }
 
 
@@ -269,12 +274,29 @@ namespace PRL123_Final
                     int amountOfPages = 0;
                     for (int i = 0; i < parsePDF.Length; i++)
                     {
-
-                        if ((parsePDF[i].Contains("PRL4")) && (!parsePDF[i].Contains("Detail Bill")))
+                        if ((parsePDF[i].Contains("Canadian Pow-R-Line CS")) && (!parsePDF[i].Contains("Detail Bill")))
                         {
-                            amountOfPages++;
+                            if ((parsePDF[i].Contains("1 of 2"))) 
+                            {
+                                amountOfPages += 2;
+                            }
+                            else if ((parsePDF[i].Contains("1 of 3")))
+                            {
+                                amountOfPages += 3;
+                            }
+                            else if ((parsePDF[i].Contains("1 of 4")))
+                            {
+                                amountOfPages += 4;
+                            }
+                            else if ((parsePDF[i].Contains("1 of 5")))
+                            {
+                                amountOfPages += 5;
+                            }
+                            else 
+                            {
+                                amountOfPages++;
+                            }
                         }
-
                     }
 
                     pages = new int[amountOfPages];
@@ -282,15 +304,46 @@ namespace PRL123_Final
                     int counter = 0;
                     for (int i = 0; i < parsePDF.Length; i++)
                     {
-
-
-                        if ((parsePDF[i].Contains("PRL4")) && (!parsePDF[i].Contains("Detail Bill")))
+                        if ((parsePDF[i].Contains("Canadian Pow-R-Line CS")) && (!parsePDF[i].Contains("Detail Bill")))
                         {
-                            pages[counter] = i;
-                            counter++;
+                            if ((parsePDF[i].Contains("1 of 2")))
+                            {
+                                pages[counter] = i;
+                                pages[counter+1] = i+1;
+                                counter+=2;
+                            }
+                            else if ((parsePDF[i].Contains("1 of 3")))
+                            {
+                                pages[counter] = i;
+                                pages[counter + 1] = i + 1;
+                                pages[counter + 2] = i + 2;
+                                counter += 3;
+                            }
+                            else if ((parsePDF[i].Contains("1 of 4")))
+                            {
+                                pages[counter] = i;
+                                pages[counter + 1] = i + 1;
+                                pages[counter + 2] = i + 2;
+                                pages[counter + 3] = i + 3;
+                                counter += 4;
+                            }
+                            else if ((parsePDF[i].Contains("1 of 5")))
+                            {
+                                pages[counter] = i;
+                                pages[counter + 1] = i + 1;
+                                pages[counter + 2] = i + 2;
+                                pages[counter + 3] = i + 3;
+                                pages[counter + 4] = i + 4;
+                                counter += 5;
+                            }
+                            else
+                            {
+                                pages[counter] = i;
+                                counter++;
+                            }
                         }
-
                     }
+
 
                     BitmapSource[] allImages = Utility.ConvertPDFToImage(filepath);
 
@@ -298,7 +351,6 @@ namespace PRL123_Final
                     for (int i = 0; i < pages.Length; i++)
                     {
                         image[i] = allImages[pages[i]];
-
                     }
 
                     //get text version of image array
@@ -310,7 +362,6 @@ namespace PRL123_Final
 
 
                     page = 0;
-
 
 
                     try
@@ -497,34 +548,299 @@ namespace PRL123_Final
                 }
                 updateSlider();
             }
-
         }
 
 
 
 
+
+        //Need to figure out the following for each line item structure
+
+        //Swtichboard Title
+        //CSAStandard
+        //CSAFooter
+        //Section
+
+        Structure[] LineItemStructuresArr;
+        int NumOfStructrues;
+
+        public class Structure
+        {
+            private bool isWireWay;
+            private bool hasFSMCs;
+
+            private string SwitchboardTitle;
+            private string CSAStandard;
+            private string CSAFooter;
+            private string Section;
+
+
+            public Structure()
+            {
+            }
+
+            public void setWireWay(bool wireway)
+            {
+                this.isWireWay = wireway;
+            }
+
+            public bool getWireWay()
+            {
+                return this.isWireWay;
+            }
+
+
+            public void setFSMCs(bool FSMCs)
+            {
+                this.hasFSMCs = FSMCs;
+            }
+
+            public bool getFSMCs()
+            {
+                return this.hasFSMCs;
+            }
+
+            public void setCSA244() 
+            { 
+                SwitchboardTitle = "SWITCHBOARD UNIT/SOUS STATION";
+                CSAStandard = "CSA STANDARD C22.2 No.244 / SERIE CSA No.244";
+                CSAFooter = "SWITCHBOARD UNIT/TABLEAUX DE CONTROLE/LL47168";
+            }
+
+            public void setCSA229()
+            {
+                SwitchboardTitle = "SWITCHBOARD METER CENTER/TABLEAUX DE COMMUTATION ET DE/MESURAGE";
+                CSAStandard = "CSA STANDARD C22.2 No.229 / SERIE CSA No.229";
+                CSAFooter = "SWITCHING AND METERING CENTER/TABLEAUX DE COMMUTATION ET DE/MESURAGE/LR47167";
+            }
+
+            public void setCSA31()
+            {
+                SwitchboardTitle = "SWITCHGEAR UNIT/APPAREIL DE COMMUTATION";
+                CSAStandard = "CSA STANDARD C22.2 No.31 / SERIE CSA No.31";
+                CSAFooter = "SWITCHGEAR UNIT/APPAREIL DE COMMUTATION/LL47168";
+            }
+
+            public string getSwitchboardTitle()
+            {
+                return this.SwitchboardTitle;
+            }
+            public string getCSAStandard()
+            {
+                return this.CSAStandard;
+            }
+            public string getCSAFooter()
+            {
+                return this.CSAFooter;
+            }
+
+
+            public void setSection(string section)
+            {
+                this.Section = section;
+            }
+
+            public string getSection()
+            {
+                return this.Section;
+            }
+        }
+
+
+
+
+        //given the first page PDF of the line item, handle structures algorithm
+        private void HandleStructures(int firstPage)
+        {
+            int NumOfPages = 0;
+            if ((ImagesInText[firstPage].Contains("1 of 2")))
+            {
+                NumOfPages += 2;
+            }
+            else if ((ImagesInText[firstPage].Contains("1 of 3")))
+            {
+                NumOfPages += 3;
+            }
+            else if ((ImagesInText[firstPage].Contains("1 of 4")))
+            {
+                NumOfPages += 4;
+            }
+            else if ((ImagesInText[firstPage].Contains("1 of 5")))
+            {
+                NumOfPages += 5;
+            }
+            else
+            {
+                NumOfPages++;
+            }
+
+
+            bool LineItemHas90degWireway;
+            if (ImagesInText[firstPage].Contains("90 deg C Wire Way") || ImagesInText[firstPage].Contains("90 deg rated wireway") || ImagesInText[firstPage].Contains("90 deg"))
+            {
+                LineItemHas90degWireway = true;
+            }
+            else
+            {
+                LineItemHas90degWireway = false;
+            }
+
+            NumOfStructrues = Int32.Parse(Utility.getBetween(ImagesInText[firstPage + 1], "Total of ", " Structures"));
+            LineItemStructuresArr = new Structure[NumOfStructrues];
+
+
+            int IndexOfStructureInformation = 0;
+            for (int i = firstPage; i < (firstPage+NumOfPages); i++) 
+            {
+                if ((ImagesInText[i].Contains("Switchboard Units Information")))
+                {
+                    IndexOfStructureInformation = i;
+                }
+            }
+
+
+            //get information for each structure in an array
+            List<string> PageAsArray = new List<string>();
+            int index = IndexOfStructureInformation-1;
+            do
+            {
+                index++;
+                string[] intermediatePageAsArray = ImagesInText[index].Split('\n');
+                foreach (string line in intermediatePageAsArray) 
+                {
+                    if (line.Contains("PREPARED BY DATE"))
+                    {
+                        break;
+                    }
+                    else 
+                    {
+                        PageAsArray.Add(line);
+                    }                   
+                }
+            } while (!ImagesInText[index].Contains(NumOfPages.ToString() + " of " + NumOfPages.ToString()));
+
+
+
+            string[] StructureInformation = new string[NumOfStructrues];
+            int currentStructure = 0;
+            do
+            { 
+                currentStructure++;
+
+                string description = "";
+
+                int IndexOfStructure = 0;
+                int IndexOfNextStructure = 0;
+
+                for (int i = 0; i < PageAsArray.Count; i++)
+                {
+                    if (PageAsArray[i].Equals(currentStructure.ToString())) 
+                    {
+                        IndexOfStructure = i;
+                    }
+                    if (currentStructure == NumOfStructrues)
+                    {
+                        IndexOfNextStructure = PageAsArray.Count - 1;
+                    }
+                    else 
+                    {
+                        if (PageAsArray[i].Equals((currentStructure + 1).ToString()))
+                        {
+                            IndexOfNextStructure = i;
+                            break;
+                        }
+                    }
+                }
+
+                if ((IndexOfNextStructure - IndexOfStructure) <= 1) 
+                {
+                    StructureInformation[currentStructure - 1] = description;
+                    break;
+                }
+
+
+                for (int i = IndexOfStructure + 1; i < IndexOfNextStructure; i++)
+                {
+                    description += PageAsArray[i];
+                }
+
+                StructureInformation[currentStructure - 1] = description;
+
+            } while ( currentStructure < NumOfStructrues);
+
+
+
+            for (int i = 0; i < NumOfStructrues; i++)
+            {
+                Structure CurrentStructure = new Structure();
+
+                CurrentStructure.setSection("Section " + (i+1).ToString() + " of " + NumOfStructrues.ToString());
+
+                if (string.IsNullOrEmpty(StructureInformation[i]))
+                {
+                    CurrentStructure.setWireWay(true);
+                }
+                else 
+                {
+                    CurrentStructure.setWireWay(false);
+                }
+
+                if (StructureInformation[i].Contains("FSMC"))
+                {
+                    CurrentStructure.setFSMCs(true);
+                }
+                else
+                {
+                    CurrentStructure.setFSMCs(false);
+                }
+
+                if (CurrentStructure.getWireWay())
+                {
+                    if (LineItemHas90degWireway)
+                    {
+                        CurrentStructure.setCSA31();
+                    }
+                    else
+                    {
+                        CurrentStructure.setCSA244();
+                    }
+                }
+                else 
+                {
+                    if (CurrentStructure.getFSMCs())
+                    {
+                        CurrentStructure.setCSA229();
+                    }
+                    else
+                    {
+                        CurrentStructure.setCSA244();
+                    }
+                }
+
+                LineItemStructuresArr[i] = CurrentStructure;
+            }
+
+        }
 
 
 
         private void InsertXmlData()
         {
-            Designation.Text = DesignationArr[XMLpage];
-            MA.Text = MAArr[XMLpage];
+            ManBusBarCpacity.Text = MainBusBarCapacityArr[XMLpage];
             Voltage.Text = VoltageArr[XMLpage];
-            P.Text = Parr[XMLpage];
-            W.Text = Warr[XMLpage];
-            Ground.Text = GroundArr[XMLpage];
-            Hz.Text = HzArr[XMLpage];
+            Hertz.Text = HzArr[XMLpage];
+            Pbox.Text = Parr[XMLpage];
+            Wbox.Text = Warr[XMLpage];
+            shortCircRating.Text = ShortCircuitRatingArr[XMLpage];
+            Amps.Text = AmpsArr[XMLpage];
             Enclosure.Text = EnclosureArr[XMLpage];
-            Xspace.Text = XSpaceUsedArr[XMLpage];
-            Neut.Text = Narr[XMLpage];
-            GOItemXML.Text = GoItemXmlArr[XMLpage];
+            GoItemXML.Text = GoItemXmlArr[XMLpage];
         }
 
 
         private void Forward_ClickXML(object sender, RoutedEventArgs e)
         {
-            if ((XMLpage < DesignationArr.Length - 1) && (XmlUploaded))
+            if ((XMLpage < MainBusBarCapacityArr.Length - 1) && (XmlUploaded))
             {
                 XMLpage += 1;
                 InsertXmlData();
@@ -544,16 +860,14 @@ namespace PRL123_Final
 
         Boolean XmlUploaded = false;
 
-        string[] DesignationArr;
-        string[] MAArr;
+        string[] MainBusBarCapacityArr;
         string[] VoltageArr;
+        string[] HzArr;
         string[] Parr;
         string[] Warr;
-        string[] GroundArr;
-        string[] HzArr;
+        string[] ShortCircuitRatingArr;
+        string[] AmpsArr;
         string[] EnclosureArr;
-        string[] XSpaceUsedArr;
-        string[] Narr;
 
         string[] GoItemXmlArr;
 
@@ -585,24 +899,30 @@ namespace PRL123_Final
                     string outputQuery = name[0].FirstChild.OuterXml.Substring(22, 10);
                     SearchBox.Text = outputQuery;
 
-                    loadGrid("select * from [tblOrderStatus] where [Prod Group] in " + Utility.GetProductNameListInString(Views.Configuration.PRL4names) + " and [GO]='" + SearchBox.Text + "'");
+                    loadGrid("select * from [tblOrderStatus] where [Prod Group] in " + Utility.GetProductNameListInString(Views.Configuration.PRLCSnames) + " and [GO]='" + SearchBox.Text + "'");
 
                     //each node is a line item
                     XmlNodeList BMConfiguredLineItemNodes = xDoc.GetElementsByTagName("BMConfiguredLineItem");
 
-                    int NumberOfLineItems = BMConfiguredLineItemNodes.Count;
-
-                    DesignationArr = new string[NumberOfLineItems];
-                    MAArr = new string[NumberOfLineItems];
+                    int NumberOfLineItems = 0;
+                    foreach (XmlNode lineItemNode in BMConfiguredLineItemNodes)
+                    {
+                        if (lineItemNode.OuterXml.ToString().Contains("Pow-R-Line CS") || lineItemNode.OuterXml.ToString().Contains("PRLCS"))
+                        {
+                            NumberOfLineItems++;
+                        }
+                    }
+             
+                    MainBusBarCapacityArr = new string[NumberOfLineItems];
                     VoltageArr = new string[NumberOfLineItems];
+                    HzArr = new string[NumberOfLineItems];
                     Parr = new string[NumberOfLineItems];
                     Warr = new string[NumberOfLineItems];
-                    GroundArr = new string[NumberOfLineItems];
-                    HzArr = new string[NumberOfLineItems];
+                    ShortCircuitRatingArr = new string[NumberOfLineItems];
+                    AmpsArr = new string[NumberOfLineItems];
                     EnclosureArr = new string[NumberOfLineItems];
-                    XSpaceUsedArr = new string[NumberOfLineItems];
-                    Narr = new string[NumberOfLineItems];
                     GoItemXmlArr = new string[NumberOfLineItems];
+
 
                     XMLpage = 0;
 
@@ -630,22 +950,16 @@ namespace PRL123_Final
         {
             try
             {
-                string Enc = "";
-                Boolean CatalogFound = false;
                 int i = 0;
                 foreach (XmlNode lineItemNode in BMConfiguredLineItemNodes)
                 {
-                    if (lineItemNode.OuterXml.ToString().Contains("Pow-R-Line4") || lineItemNode.OuterXml.ToString().Contains("PRL4"))
+                    if (lineItemNode.OuterXml.ToString().Contains("Pow-R-Line CS") || lineItemNode.OuterXml.ToString().Contains("PRLCS"))
                     {
                         XmlNodeList childLineItemNodes = lineItemNode.ChildNodes;
                         string GO = "";
                         string itemNum = "";
                         foreach (XmlNode childNode in childLineItemNodes)
                         {
-                            if (childNode.OuterXml.ToString().Contains("\"Designations\""))
-                            {
-                                DesignationArr[i] = Utility.getBetween(childNode.OuterXml.ToString(), "V=\"", "\"");
-                            }
                             if (childNode.OuterXml.ToString().Contains("\"GONumber\""))
                             {
                                 GO = Utility.getBetween(childNode.OuterXml.ToString(), "V=\"", "\"");
@@ -662,347 +976,175 @@ namespace PRL123_Final
                         XmlNode MainMaterialLineItemNode = lineItemNode.SelectSingleNode("BMLineItem");
                         //Main Description
                         string line = MainMaterialLineItemNode.FirstChild.OuterXml.ToString();
-                        //Main CatalogNumber
-                        string line2 = MainMaterialLineItemNode.FirstChild.NextSibling.OuterXml.ToString();
-                        string V = "nothing";
+                        ShortCircuitRatingArr[i] = Utility.getBetween(line, "Rating: ", "kA,");
 
-                        XmlNode MaterialLineItemsNode = lineItemNode.SelectSingleNode("BMLineItems");     //node with all list of materials for line item
-                        XmlNodeList MaterialListNodes = MaterialLineItemsNode.ChildNodes;
+                        MainBusBarCapacityArr[i] = Utility.getNumberInString(Utility.getBetween(line, "-Wire, ", ","));
 
-                        int flag200 = 0;
-                        foreach (XmlNode BMLineItem in MaterialListNodes)
+                        if (line.Contains("1-Phase"))
                         {
-                            if (BMLineItem.OuterXml.ToString().Contains("200% Rated Neutral"))
-                            {
-                                flag200 = 1;
-                            }
-                            else
-                            {
-                                flag200 = 0;
-                            }
+                            Parr[i] = "1";
+                        }
+                        else if (line.Contains("2-Phase"))
+                        {
+                            Parr[i] = "2";
+                        }
+                        else if (line.Contains("3-Phase"))
+                        {
+                            Parr[i] = "3";
+                        }
+                        else if (line.Contains("4-Phase"))
+                        {
+                            Parr[i] = "4";
+                        }
+                        else 
+                        {
+                            Parr[i] = "-";
                         }
 
 
-                        if (line.Contains("208Y/120V"))
+                        if (line.Contains("1-Wire"))
                         {
-                            V = "208Y/120V 3Ph 4W";
-                            VoltageArr[i] = "208Y/120V AC/CA";
-                            Parr[i] = "3";
+                            Warr[i] = "1";
+                        }
+                        else if (line.Contains("2-Wire"))
+                        {
+                            Warr[i] = "2";
+                        }
+                        else if (line.Contains("3-Wire"))
+                        {
+                            Warr[i] = "3";
+                        }
+                        else if (line.Contains("4-Wire"))
+                        {
                             Warr[i] = "4";
-                            GroundArr[i] = "False";
-                            HzArr[i] = "60";
+                        }
+                        else
+                        {
+                            Warr[i] = "-";
+                        }
 
+
+                        if (line.Contains("480Y/277V"))
+                        {
+                            VoltageArr[i] = "480Y/277V";
+                            HzArr[i] = "60";
+                        }
+                        else if (line.Contains("208Y/120V"))
+                        {
+                            VoltageArr[i] = "208Y/120V";
+                            HzArr[i] = "60";
                         }
                         else if (line.Contains("120/240V"))
                         {
-                            V = "120/240V 1Ph 3W";
-                            VoltageArr[i] = "120 / 240V AC/CA";
-                            Parr[i] = "1";
-                            Warr[i] = "3";
-                            GroundArr[i] = "False";
+                            VoltageArr[i] = "120/240V";
                             HzArr[i] = "60";
                         }
                         else if (line.Contains("600Y/347V"))
                         {
-                            V = "600Y/347V 3Ph 4W";
-                            VoltageArr[i] = "600Y/347V AC/CA";
-                            Parr[i] = "3";
-                            Warr[i] = "4";
-                            GroundArr[i] = "False";
+                            VoltageArr[i] = "600Y/347V";
+                            HzArr[i] = "60";
+                        }
+                        else if (line.Contains("415/240V"))
+                        {
+                            VoltageArr[i] = "415/240V";
+                            HzArr[i] = "60";
+                        }
+                        else if (line.Contains("380/220V"))
+                        {
+                            VoltageArr[i] = "380/220V";
+                            HzArr[i] = "60";
+                        }
+                        else if (line.Contains("220/127V"))
+                        {
+                            VoltageArr[i] = "220/127V";
+                            HzArr[i] = "60";
+                        }
+                        else if (line.Contains("125V DC"))
+                        {
+                            VoltageArr[i] = "125V DC";
+                            HzArr[i] = "-";
+                        }
+                        else if (line.Contains("250V DC"))
+                        {
+                            VoltageArr[i] = "250V DC";
+                            HzArr[i] = "-";
+                        }
+                        else if (line.Contains("600V DC"))
+                        {
+                            VoltageArr[i] = "600V DC";
+                            HzArr[i] = "-";
+                        }
+                        else if (line.Contains("220V"))
+                        {
+                            VoltageArr[i] = "220V";
+                            HzArr[i] = "60";
+                        }
+                        else if (line.Contains("380V"))
+                        {
+                            VoltageArr[i] = "380V";
+                            HzArr[i] = "60";
+                        }
+                        else if (line.Contains("415V"))
+                        {
+                            VoltageArr[i] = "415V";
                             HzArr[i] = "60";
                         }
                         else if (line.Contains("600V"))
                         {
-                            V = "600V 3Ph 3W";
-                            VoltageArr[i] = "600V AC/CA";
-                            Parr[i] = "3";
-                            Warr[i] = "3";
-                            GroundArr[i] = "False";
-                            HzArr[i] = "60";
-                        }
-                        else if (line.Contains("480Y/277V"))
-                        {
-                            V = "480Y/277V 3Ph 4W";
-                            VoltageArr[i] = "480Y/277V AC/CA";
-                            Parr[i] = "3";
-                            Warr[i] = "4";
-                            GroundArr[i] = "False";
+                            VoltageArr[i] = "600V";
                             HzArr[i] = "60";
                         }
                         else if (line.Contains("480V"))
                         {
-                            V = "480V 3Ph 3W";
-                            VoltageArr[i] = "480V AC/CA";
-                            Parr[i] = "3";
-                            Warr[i] = "3";
-                            GroundArr[i] = "False";
+                            VoltageArr[i] = "480V";
                             HzArr[i] = "60";
                         }
                         else if (line.Contains("240V"))
                         {
-                            V = "240V 3Ph 3W";
-                            VoltageArr[i] = "240V AC/CA";
-                            Parr[i] = "3";
-                            Warr[i] = "3";
-                            GroundArr[i] = "False";
+                            VoltageArr[i] = "240V";
                             HzArr[i] = "60";
                         }
-                        else if (line.Contains("125/250V DC"))
+                        else
                         {
-                            V = "125/250V DC 3W";
-                            VoltageArr[i] = "125/250V DC";
-                            Parr[i] = "DC";
-                            Warr[i] = "3";
-                            GroundArr[i] = "False";
-                            HzArr[i] = "-";
-                        }
-                        else if (line.Contains("125V DC") && line.Contains("2W Grounded"))
-                        {
-                            V = "125V DC 2W Grounded";
-                            VoltageArr[i] = "125V DC";
-                            Parr[i] = "DC";
-                            Warr[i] = "2";
-                            GroundArr[i] = "True";
-                            HzArr[i] = "-";
-                        }
-                        else if (line.Contains("125V DC") && line.Contains("2W Ungrounded"))
-                        {
-                            V = "125V DC 2W Ungrounded";
-                            VoltageArr[i] = "125V DC";
-                            Parr[i] = "DC";
-                            Warr[i] = "2";
-                            GroundArr[i] = "False";
-                            HzArr[i] = "-";
-                        }
-                        else if (line.Contains("250V DC") && line.Contains("2W Grounded"))
-                        {
-                            V = "250V DC 2W Grounded";
-                            VoltageArr[i] = "250V DC";
-                            Parr[i] = "DC";
-                            Warr[i] = "2";
-                            GroundArr[i] = "True";
-                            HzArr[i] = "-";
-                        }
-                        else if (line.Contains("250V DC") && line.Contains("2W Ungrounded"))
-                        {
-                            V = "250V DC 2W Ungrounded";
-                            VoltageArr[i] = "250V DC";
-                            Parr[i] = "DC";
-                            Warr[i] = "2";
-                            GroundArr[i] = "False";
-                            HzArr[i] = "-";
-                        }
-                        else if (line.Contains("600V DC") && line.Contains("2W Grounded"))
-                        {
-                            V = "600V DC 2W Grounded";
-                            VoltageArr[i] = "600V DC";
-                            Parr[i] = "DC";
-                            Warr[i] = "2";
-                            GroundArr[i] = "True";
-                            HzArr[i] = "-";
-                        }
-                        else if (line.Contains("416/240V  AC/CA"))
-                        {
-                            V = "416/240V 3Ph 4W";
-                            VoltageArr[i] = "416/240V";
-                            Parr[i] = "3";
-                            Warr[i] = "4";
-                            GroundArr[i] = "False";
-                            HzArr[i] = "60";
-                        }
-                        else if (line.Contains("600V DC") && line.Contains("2W Ungrounded"))
-                        {
-                            V = "240/120V 3Ph 4W A HiLeg";
-                            VoltageArr[i] = "600V DC";
-                            Parr[i] = "DC";
-                            Warr[i] = "2";
-                            GroundArr[i] = "False";
-                            HzArr[i] = "-";
+                            VoltageArr[i] = "";
+                            HzArr[i] = "";
                         }
 
 
-
-                        if (line.Contains("Enclosure"))
+                        if (line.Contains("Type 1") || line.Contains("Type1") || line.Contains("TYPE 1") || line.Contains("TYPE1"))
                         {
-                            if (line.Contains("TYPE1"))
-                            {
-                                EnclosureArr[i] = "TYPE1";
-                            }
-                            else if (line.Contains("SPRINKLERPROOF"))
-                            {
-                                EnclosureArr[i] = "SPRINKLERPROOF";
-                            }
-                            else if (line.Contains("TYPE12") && (line.Contains("TYPE4X") == false))
-                            {
-                                EnclosureArr[i] = "TYPE12";
-                            }
-                            else if (line.Contains("TYPE3R"))
-                            {
-                                EnclosureArr[i] = "TYPE3R";
-                            }
-                            else if (line.Contains("TYPE4") && (line.Contains("TYPE4X") == false))
-                            {
-                                EnclosureArr[i] = "TYPE4";
-                            }
-                            else if (line.Contains("TYPE4X"))
-                            {
-                                EnclosureArr[i] = "TYPE4X";
-                            }
-                            else
-                            {
-                                EnclosureArr[i] = "No Box";
-                            }
+                            EnclosureArr[i] = "TYPE 1";
                         }
-
-
-
-                        if (line.Contains("100A"))
+                        else if (line.Contains("Sprinklerproof") || line.Contains("SPRINKLERPROOF"))
                         {
-                            if ((line.Contains("4W") || line.Contains("3W")) && line.Contains("DC") == false)
-                            {
-                                Narr[i] = "100A";
-                            }
-                            MAArr[i] = "100A";
+                            EnclosureArr[i] = "TYPE 1 SPRINKLERED";
                         }
-                        else if (line.Contains("225A"))
+                        else if (line.Contains("Type 2") || line.Contains("Type2") || line.Contains("TYPE 2") || line.Contains("TYPE2"))
                         {
-                            if ((line.Contains("4W") || line.Contains("3W")) && line.Contains("DC") == false)
-                            {
-                                Narr[i] = "225A";
-                            }
-                            MAArr[i] = "225A";
+                            EnclosureArr[i] = "TYPE 2";
                         }
-                        else if (line.Contains("250A"))
+                        else if (line.Contains("Type 4X") || line.Contains("Type4X") || line.Contains("TYPE 4X") || line.Contains("TYPE4X"))
                         {
-                            if (line.Contains("4W") && line.Contains("DC") == false)
-                            {
-                                Narr[i] = "250A";
-                            }
-                            MAArr[i] = "250A";
+                            EnclosureArr[i] = "TYPE 4X";
                         }
-                        else if (line.Contains("400A"))
+                        else if (line.Contains("Type 3R") || line.Contains("Type3R") || line.Contains("TYPE 3R") || line.Contains("TYPE3R"))
                         {
-                            if ((line.Contains("4W") || line.Contains("3W")) && line.Contains("DC") == false)
-                            {
-                                Narr[i] = "400A";
-                            }
-                            MAArr[i] = "400A";
+                            EnclosureArr[i] = "TYPE 3R";
                         }
-                        else if (line.Contains("600A"))
+                        else if (line.Contains("Type 4") || line.Contains("Type4") || line.Contains("TYPE 4") || line.Contains("TYPE4"))
                         {
-                            if (line.Contains("4W") && line.Contains("DC") == false)
-                            {
-                                Narr[i] = "600A";
-                            }
-                            MAArr[i] = "600A";
+                            EnclosureArr[i] = "TYPE 4";
                         }
-                        else if (line.Contains("800A"))
+                        else if (line.Contains("Type 12") || line.Contains("Type12") || line.Contains("TYPE 12") || line.Contains("TYPE12"))
                         {
-                            if ((line.Contains("4W") || line.Contains("3W")) && line.Contains("DC") == false)
-                            {
-                                Narr[i] = "800A";
-                            }
-                            MAArr[i] = "800A";
-                        }
-                        else if (line.Contains("1200A"))
-                        {
-                            if ((line.Contains("4W") || line.Contains("3W")) && line.Contains("DC") == false)
-                            {
-                                Narr[i] = "1200A";
-                            }
-                            MAArr[i] = "1200A";
-                        }
-
-
-
-                        if (line.Contains("Ungrounded"))
-                        {
-                            Narr[i] = "-";
-                            Parr[i] = "-";
-                            HzArr[i] = "-";
-                        }
-
-
-
-                        if (line.Contains("Max X-Space for Branch Devices:"))
-                        {
-                            XSpaceUsedArr[i] = Utility.getBetween(line, "Max X-Space for Branch Devices: ", "\"");
-                            CatalogFound = true;
+                            EnclosureArr[i] = "TYPE 12";
                         }
                         else
                         {
-                            if (line2.Contains("CatalogNumber") && CatalogFound == false)
-                            {
-                                XSpaceUsedArr[i] = Utility.getBetween(line2, "-", "\"");
-                                CatalogFound = true;
-                            }
+                            EnclosureArr[i] = "";
                         }
 
-
-                        if (V.Contains("Grounded"))
-                        {
-                            GroundArr[i] = "True";
-                        }
-                        else
-                        {
-                            GroundArr[i] = "False";
-                        }
-
-
-
-                        if (flag200 == 1)
-                        {
-                            if (!Narr[i].Equals("-") && !string.IsNullOrEmpty(Narr[i]))
-                            {
-                                Narr[i] = (Int32.Parse(Regex.Replace(Narr[i], "[^0-9]", "")) * 2).ToString() + "A";
-                            }
-                        }
-
-
-
-
-                        foreach (XmlNode BMLineItem in MaterialListNodes)
-                        {
-                            if (BMLineItem.FirstChild.OuterXml.ToString().Contains("Enclosure"))
-                            {
-                                Enc = BMLineItem.FirstChild.OuterXml.ToString();
-                            }
-                        }
-
-
-
-                        if (Enc.Contains("Type 12") && (Enc.Contains("TYPE 4X") == false))
-                        {
-                            EnclosureArr[i] = "TYPE12";
-                        }
-                        else if (Enc.Contains("SPRINKLERPROOF"))
-                        {
-                            EnclosureArr[i] = "SPRINKLERPROOF";
-                        }
-                        else if (Enc.Contains("Type 1"))
-                        {
-                            EnclosureArr[i] = "TYPE1";
-                        }
-                        else if (Enc.Contains("Type 2"))
-                        {
-                            EnclosureArr[i] = "TYPE2";
-                        }
-                        else if (Enc.Contains("Type 3R"))
-                        {
-                            EnclosureArr[i] = "TYPE3R";
-                        }
-                        else if (Enc.Contains("Type 4X"))
-                        {
-                            EnclosureArr[i] = "TYPE4X";
-                        }
-                        else if (Enc.Contains("Type 4") && (Enc.Contains("TYPE 4X") == false))
-                        {
-                            EnclosureArr[i] = "TYPE4";
-                        }
-                        else
-                        {
-                            EnclosureArr[i] = "No Box";
-                        }
+                        AmpsArr[i] = Utility.getMaxVoltage(VoltageArr[i]);
 
                         i++;
                     }
@@ -1019,12 +1161,19 @@ namespace PRL123_Final
 
 
 
+
+
+
+
+
+
+
         private void loadGrid(string query)
         {
             DataTable dt = Utility.SearchMasterDB(query);
             dg.ItemsSource = dt.DefaultView;
             Urgency.Text = "N";     //default to normal urgency
-            ProductID.Text = "Pow-R-Line4";   //always PRL4
+            ProductID.Text = "Pow-R-LineCS";   //always PRL-CS
         }
 
 
@@ -1053,13 +1202,12 @@ namespace PRL123_Final
                 CommitDate.Text = row["Commit Date"].ToString();
                 EnteredDate.Text = row["Entered Date"].ToString();
                 Urgency.Text = "N";
+                ProductID.Text = "Pow-R-LineCS";   //always PRL-CS
                 Status.Content = GO_Item.Text + " SELECTED";
                 ProductSpecialist = row["Product Specialist"].ToString();
                 jobName.Text = row["Job Name"].ToString();
             }
-
         }
-
 
 
 
@@ -1082,7 +1230,7 @@ namespace PRL123_Final
 
         private void Insert_Entry(object sender, RoutedEventArgs e)
         {
-            if (Utility.isDuplicate(GO_Item.Text, Utility.ProductGroup.PRL4) == false)
+            if (Utility.isDuplicate(GO_Item.Text, Utility.ProductGroup.PRLCS) == false)
             {
                 int amountOfPages = 0;
                 int firstPageIndex = getFirstPageIndex();
@@ -1155,7 +1303,7 @@ namespace PRL123_Final
                 Utility.SaveBitmapAsPNGinImages(PathIMAGE.Text + "_" + Item.Text + "_" + pgNumStr + ".png", img);
 
 
-                string StrInsertCommand = "Insert into PRL4 (GO_Item, [GO], ShopOrderInterior, ShopOrderBox, ShopOrderTrim, Customer, Quantity, Tracking, Urgency, [AMO], [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], ReleaseDate, CommitDate, EnteredDate, FilePath, ProductSpecialist, PageNumber, ImageFilePath) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                string StrInsertCommand = "Insert into PRLCS ([GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], [ThirtyDeepEnclosure], [FilePath], [ProductSpecialist], [PageNumber], [ImageFilePath]) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 using (OleDbCommand InsertCommand = new OleDbCommand(StrInsertCommand, MainWindow.LPcon))
                 {
                     InsertCommand.Parameters.AddWithValue("GO_Item", GO_Item.Text);
@@ -1165,29 +1313,28 @@ namespace PRL123_Final
                     InsertCommand.Parameters.AddWithValue("ShopOrderTrim", ShopOrderTrim.Text);
                     InsertCommand.Parameters.AddWithValue("Customer", Customer.Text);
                     InsertCommand.Parameters.AddWithValue("Quantity", Qty.Text);
+                    InsertCommand.Parameters.AddWithValue("EnteredDate", EnteredDate.Text);
+                    InsertCommand.Parameters.AddWithValue("ReleaseDate", ReleaseDate.Text);
+                    InsertCommand.Parameters.AddWithValue("CommitDate", CommitDate.Text);
                     InsertCommand.Parameters.AddWithValue("Tracking", Tracking);
                     InsertCommand.Parameters.AddWithValue("Urgency", Urgency.Text);
 
+                    //can use checkbox.isChecked option if you cannot do it automatically
                     InsertCommand.Parameters.AddWithValue("[AMO]", AMO.IsChecked);
-
                     InsertCommand.Parameters.AddWithValue("[SpecialCustomer]", (Boolean)isSpecialCustomer);
+                    InsertCommand.Parameters.AddWithValue("[IncLocLeft]", (Boolean)isIncLocLeft);
+                    InsertCommand.Parameters.AddWithValue("[IncLocRight]", (Boolean)isIncLocRight);
+                    InsertCommand.Parameters.AddWithValue("[CrossBus]", CrossBus.IsChecked);
+                    InsertCommand.Parameters.AddWithValue("[OpenBottom]", (Boolean)isOpenBottom);
+                    InsertCommand.Parameters.AddWithValue("[ExtendedTop]", (Boolean)isExtendedTop);
+                    InsertCommand.Parameters.AddWithValue("[PaintedBox]", (Boolean)isPaintedBox);
+                    InsertCommand.Parameters.AddWithValue("[ThirtyDeepEnclosure]", ThirtyDeepEnclosure.IsChecked);
 
-                    InsertCommand.Parameters.AddWithValue("[ServiceEntrance]", (Boolean)isServiceEntrance);
-                    InsertCommand.Parameters.AddWithValue("[PaintedBox]", (Boolean)PaintedBox);
-                    InsertCommand.Parameters.AddWithValue("[RatedNeutral200]", (Boolean)RatedNeutral200);
-                    InsertCommand.Parameters.AddWithValue("[DoorOverDist]", (Boolean)DoorOverDistribution);
-                    InsertCommand.Parameters.AddWithValue("[DoorInDoor]", (Boolean)DoorInDoor);
-
-
-                    InsertCommand.Parameters.AddWithValue("ReleaseDate", ReleaseDate.Text);
-                    InsertCommand.Parameters.AddWithValue("CommitDate", CommitDate.Text);
-                    InsertCommand.Parameters.AddWithValue("EnteredDate", ReleaseDate.Text);
                     InsertCommand.Parameters.AddWithValue("FilePath", PathPDF.Text);
-                    //MessageBox.Show(PathPDF.Text);
                     InsertCommand.Parameters.AddWithValue("ProductSpecialist", ProductSpecialist);
-                    //InsertCommand.Parameters.AddWithValue("Suffix", Suffix.Text);
                     InsertCommand.Parameters.AddWithValue("PageNumber", pageNumber);
                     InsertCommand.Parameters.AddWithValue("ImageFilePath", PathIMAGE.Text + "_" + Item.Text + "_" + pgNumStr + ".png");
+
                     InsertCommand.ExecuteNonQuery();
                 }//end using command
 
@@ -1217,6 +1364,7 @@ namespace PRL123_Final
                 if ((pageNumber - firstPgIndex) == 0) //first page
                 {
                     LoadAllBooleanValues(firstPgIndex);
+                    HandleStructures(firstPgIndex);
                     Utility.SaveImageToPdf(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(PathPDF.Text), GO_Item.Text + "_" + pgNumStr + "_CONSTR.pdf"), (BitmapImage)image[pageNumber]);
                     Utility.SaveBitmapAsPNGinImages(PathIMAGE.Text + "_" + Item.Text + "_" + pgNumStr + ".png", (BitmapImage)image[pageNumber]);
                 }
@@ -1226,7 +1374,7 @@ namespace PRL123_Final
                     Utility.SaveBitmapAsPNGinImages(PathIMAGE.Text + "_" + Item.Text + "_" + pgNumStr + ".png", (BitmapImage)image[pageNumber]);
                 }
 
-                string StrInsertCommand = "Insert into PRL4 (GO_Item, [GO], ShopOrderInterior, ShopOrderBox, ShopOrderTrim, Customer, Quantity, Tracking, Urgency, [AMO], [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], ReleaseDate, CommitDate, EnteredDate, FilePath, ProductSpecialist, PageNumber, ImageFilePath) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                string StrInsertCommand = "Insert into PRLCS ([GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], [ThirtyDeepEnclosure], [FilePath], [ProductSpecialist], [PageNumber], [ImageFilePath]) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 using (OleDbCommand InsertCommand = new OleDbCommand(StrInsertCommand, MainWindow.LPcon))
                 {
                     InsertCommand.Parameters.AddWithValue("GO_Item", GO_Item.Text);
@@ -1236,55 +1384,60 @@ namespace PRL123_Final
                     InsertCommand.Parameters.AddWithValue("ShopOrderTrim", ShopOrderTrim.Text);
                     InsertCommand.Parameters.AddWithValue("Customer", Customer.Text);
                     InsertCommand.Parameters.AddWithValue("Quantity", Qty.Text);
+                    InsertCommand.Parameters.AddWithValue("EnteredDate", EnteredDate.Text);
+                    InsertCommand.Parameters.AddWithValue("ReleaseDate", ReleaseDate.Text);
+                    InsertCommand.Parameters.AddWithValue("CommitDate", CommitDate.Text);
                     InsertCommand.Parameters.AddWithValue("Tracking", Tracking);
                     InsertCommand.Parameters.AddWithValue("Urgency", Urgency.Text);
 
+                    //can use checkbox.isChecked option if you cannot do it automatically
                     InsertCommand.Parameters.AddWithValue("[AMO]", AMO.IsChecked);
-
                     InsertCommand.Parameters.AddWithValue("[SpecialCustomer]", (Boolean)isSpecialCustomer);
+                    InsertCommand.Parameters.AddWithValue("[IncLocLeft]", (Boolean)isIncLocLeft);
+                    InsertCommand.Parameters.AddWithValue("[IncLocRight]", (Boolean)isIncLocRight);
+                    InsertCommand.Parameters.AddWithValue("[CrossBus]", CrossBus.IsChecked);
+                    InsertCommand.Parameters.AddWithValue("[OpenBottom]", (Boolean)isOpenBottom);
+                    InsertCommand.Parameters.AddWithValue("[ExtendedTop]", (Boolean)isExtendedTop);
+                    InsertCommand.Parameters.AddWithValue("[PaintedBox]", (Boolean)isPaintedBox);
+                    InsertCommand.Parameters.AddWithValue("[ThirtyDeepEnclosure]", ThirtyDeepEnclosure.IsChecked);
 
-                    InsertCommand.Parameters.AddWithValue("[ServiceEntrance]", (Boolean)isServiceEntrance);
-                    InsertCommand.Parameters.AddWithValue("[PaintedBox]", (Boolean)PaintedBox);
-                    InsertCommand.Parameters.AddWithValue("[RatedNeutral200]", (Boolean)RatedNeutral200);
-                    InsertCommand.Parameters.AddWithValue("[DoorOverDist]", (Boolean)DoorOverDistribution);
-                    InsertCommand.Parameters.AddWithValue("[DoorInDoor]", (Boolean)DoorInDoor);
-
-
-                    InsertCommand.Parameters.AddWithValue("ReleaseDate", ReleaseDate.Text);
-                    InsertCommand.Parameters.AddWithValue("CommitDate", CommitDate.Text);
-                    InsertCommand.Parameters.AddWithValue("EnteredDate", ReleaseDate.Text);
                     InsertCommand.Parameters.AddWithValue("FilePath", PathPDF.Text);
-                    //MessageBox.Show(PathPDF.Text);
                     InsertCommand.Parameters.AddWithValue("ProductSpecialist", ProductSpecialist);
-                    //InsertCommand.Parameters.AddWithValue("Suffix", Suffix.Text);
                     InsertCommand.Parameters.AddWithValue("PageNumber", pageNumber - firstPgIndex);
                     InsertCommand.Parameters.AddWithValue("ImageFilePath", PathIMAGE.Text + "_" + Item.Text + "_" + pgNumStr + ".png");
+
                     InsertCommand.ExecuteNonQuery();
                 }//end using command
 
 
+
                 if ((pageNumber - firstPgIndex) == 0)
                 {
-                    string command = "insert into CSALabel ([GONumber], ItemNumber, Designation, [MA], Voltage, [P], [W], ground, [Hz], GO_Item, ProductID, Enclosure, XSpaceUsed, [N]) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                    using (OleDbCommand InsertCSA = new OleDbCommand(command, MainWindow.LPcon))
+                    string command = "insert into CSALabelPRLCS ([GONumber], [ItemNumber], [SwitchBoardTitle], [CSAStandard], [SMCenter], [Section], [MainBusBarCapacity], [Voltage], [Hz], [P], [W], [ShortCircuitRating], [Amps], [Enclosure], [GO_Item], [ProductID]) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    for (int i = 0; i < NumOfStructrues; i++) 
                     {
-                        InsertCSA.Parameters.AddWithValue("[GONumber]", GO1.Text);
-                        InsertCSA.Parameters.AddWithValue("ItemNumber", Item.Text);
-                        InsertCSA.Parameters.AddWithValue("Designation", Designation.Text);
-                        InsertCSA.Parameters.AddWithValue("[MA]", MA.Text);
-                        InsertCSA.Parameters.AddWithValue("Voltage", Voltage.Text);
-                        InsertCSA.Parameters.AddWithValue("[P]", P.Text);
-                        InsertCSA.Parameters.AddWithValue("[W]", W.Text);
-                        InsertCSA.Parameters.AddWithValue("ground", Ground.Text);
-                        InsertCSA.Parameters.AddWithValue("[Hz]", Hz.Text);
-                        InsertCSA.Parameters.AddWithValue("GO_Item", GO_Item.Text);
-                        InsertCSA.Parameters.AddWithValue("ProductID", ProductID.Text);
-                        InsertCSA.Parameters.AddWithValue("Enclosure", Enclosure.Text);
-                        InsertCSA.Parameters.AddWithValue("XSpaceUsed", Xspace.Text);
-                        InsertCSA.Parameters.AddWithValue("[N]", Neut.Text);
+                        using (OleDbCommand InsertCSA = new OleDbCommand(command, MainWindow.LPcon))
+                        {
+                            InsertCSA.Parameters.AddWithValue("[GONumber]", GO1.Text);
+                            InsertCSA.Parameters.AddWithValue("[ItemNumber]", Item.Text);
+                            InsertCSA.Parameters.AddWithValue("[SwitchBoardTitle]", LineItemStructuresArr[i].getSwitchboardTitle());
+                            InsertCSA.Parameters.AddWithValue("[CSAStandard]", LineItemStructuresArr[i].getCSAStandard());
+                            InsertCSA.Parameters.AddWithValue("[SMCenter]", LineItemStructuresArr[i].getCSAFooter());
+                            InsertCSA.Parameters.AddWithValue("[Section]", LineItemStructuresArr[i].getSection());
+                            InsertCSA.Parameters.AddWithValue("[MainBusBarCapacity]", ManBusBarCpacity.Text);
+                            InsertCSA.Parameters.AddWithValue("[Voltage]", Voltage.Text);
+                            InsertCSA.Parameters.AddWithValue("[Hz]", Hertz.Text);
+                            InsertCSA.Parameters.AddWithValue("[P]", Pbox.Text);
+                            InsertCSA.Parameters.AddWithValue("[W]", Wbox.Text);
+                            InsertCSA.Parameters.AddWithValue("[ShortCircuitRating]", shortCircRating.Text);
+                            InsertCSA.Parameters.AddWithValue("[Amps]", Amps.Text);
+                            InsertCSA.Parameters.AddWithValue("[Enclosure]", Enclosure.Text);
+                            InsertCSA.Parameters.AddWithValue("[GO_Item]", GO_Item.Text);
+                            InsertCSA.Parameters.AddWithValue("[ProductID]", ProductID.Text);
 
-                        InsertCSA.ExecuteNonQuery();
-                    }//end using command  
+                            InsertCSA.ExecuteNonQuery();
+                        }//end using command 
+                    }
                 }
 
                 Status.Content = GO_Item.Text + " SUCCESSFULLY INSERTED";
@@ -1300,7 +1453,7 @@ namespace PRL123_Final
 
         private void Search_GOs(object sender, RoutedEventArgs e)
         {
-            loadGrid("select * from [tblOrderStatus] where [Prod Group] in " + Utility.GetProductNameListInString(Views.Configuration.PRL4names) + " and [GO]='" + SearchBox.Text + "'");
+            loadGrid("select * from [tblOrderStatus] where [Prod Group] in " + Utility.GetProductNameListInString(Views.Configuration.PRLCSnames) + " and [GO]='" + SearchBox.Text + "'");
         }
 
         private void Pg1_Click(object sender, RoutedEventArgs e)

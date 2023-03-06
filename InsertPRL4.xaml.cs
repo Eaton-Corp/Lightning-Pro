@@ -593,7 +593,14 @@ namespace PRL123_Final
                     //each node is a line item
                     XmlNodeList BMConfiguredLineItemNodes = xDoc.GetElementsByTagName("BMConfiguredLineItem");
 
-                    int NumberOfLineItems = BMConfiguredLineItemNodes.Count;
+                    int NumberOfLineItems = 0;
+                    foreach (XmlNode lineItemNode in BMConfiguredLineItemNodes)
+                    {
+                        if (lineItemNode.OuterXml.ToString().Contains("Pow-R-Line4") || lineItemNode.OuterXml.ToString().Contains("PRL4"))
+                        {
+                            NumberOfLineItems++;
+                        }
+                    }
 
                     DesignationArr = new string[NumberOfLineItems];
                     MAArr = new string[NumberOfLineItems];

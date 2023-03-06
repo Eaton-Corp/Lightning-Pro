@@ -188,6 +188,7 @@
                 <ColumnDefinition Width="160"/>
                 <ColumnDefinition Width="180"/>
                 <ColumnDefinition Width="75"/>
+                <ColumnDefinition Width="40"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
@@ -206,6 +207,11 @@
                     <Image Source="/Assets/magnifying-glass.png"/>
                 </DockPanel>
             </Button>
+            <Button  Background="LightGray" Foreground="White" Grid.Column="3" HorizontalAlignment="Center" Grid.Row="0" VerticalAlignment="Bottom" Width="25" Click="Open_Records" Height="25" ToolTip="View CSA Records">
+                <DockPanel>
+                    <Image Width="18" Height="18" Source="/Assets/CSArecords.png"/>
+                </DockPanel>
+            </Button>            
         </Grid>
 
        
@@ -272,7 +278,7 @@
             </Button>
             <Button  Background="LightGray" Foreground="White" Grid.Column="11" Height="40" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Top" Width="40" Click="Click_Approve" ToolTip="Approve">
                 <DockPanel>
-                    <Image Width="25" Height="25" Source="/Assets/check.png"/>
+                    <Image Width="25" Height="25" Source="/Assets/ApproveArrow.png"/>
                 </DockPanel>
             </Button>
 

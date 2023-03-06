@@ -185,6 +185,9 @@
     <Compile Include="AMOList.xaml.cs">
       <DependentUpon>AMOList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CSArecords.xaml.cs">
+      <DependentUpon>CSArecords.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Edit.xaml.cs">
       <DependentUpon>Edit.xaml</DependentUpon>
     </Compile>
@@ -205,6 +208,9 @@
     </Compile>
     <Compile Include="PrintPage.xaml.cs">
       <DependentUpon>PrintPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PrintPageCS.xaml.cs">
+      <DependentUpon>PrintPageCS.xaml</DependentUpon>
     </Compile>
     <Compile Include="PrintShopPackagePage.xaml.cs">
       <DependentUpon>PrintShopPackagePage.xaml</DependentUpon>
@@ -270,6 +276,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="CSArecords.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Edit.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -309,6 +319,10 @@
     <Page Include="PrintPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PrintPageCS.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PrintShopPackagePage.xaml">
       <SubType>Designer</SubType>
@@ -634,6 +648,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\Notes.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\ApproveArrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\CSArecords.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -243,6 +243,9 @@ namespace PRL123_Final
                     if (XMLLoaded == true)
                     {
                         loadXML(page);
+                        string GOIkey = GOnum + " " + currentItemNum;
+                        FindImageIndex(GOIkey);
+                        ImagePreviewer.Source = image[ImagePage];
                     }
                     PDFLoaded = true;
                     pbStatus.Visibility = Visibility.Hidden;
@@ -314,7 +317,7 @@ namespace PRL123_Final
                         }
                     }
 
-
+                    
                     if (!Contains)
                     {
                         Directory.CreateDirectory(file.FullName + @"\Communication");
@@ -355,7 +358,26 @@ namespace PRL123_Final
         }
 
 
-      
+
+        //new function POWELL ERROR
+        private void FindImageIndex(string GoItemKey) 
+        {
+            int i;
+            for (i = 0; i < ImagesInText.Length; i++)
+            {
+                if (ImagesInText[i].Contains(GoItemKey))
+                {
+                    ImagePage = i;
+                    break;
+                }
+            }
+        }
+
+
+        string currentItemNum;
+        int ImagePage;
+
+        //new function POWELL ERROR
         private void Forward_Click(object sender, RoutedEventArgs e)
         {
             if (XMLLoaded == true && PDFLoaded == true)
@@ -363,13 +385,16 @@ namespace PRL123_Final
                 if (page < image.Length - 1)
                 {
                     page += 1;
-                    ImagePreviewer.Source = image[page];
+                    loadXML(page);
+                    string GOIkey = GOnum + " " + currentItemNum;
+                    FindImageIndex(GOIkey);
+                    ImagePreviewer.Source = image[ImagePage];
                 }
                 pg.Content = "Page:" + (page + 1).ToString() + "/" + image.Length.ToString();
-                loadXML(page);
             }
         }
 
+        //new function POWELL ERROR
         private void Back_Click(object sender, RoutedEventArgs e)
         {
             if (XMLLoaded == true && PDFLoaded == true)
@@ -377,12 +402,44 @@ namespace PRL123_Final
                 if (page != 0)
                 {
                     page -= 1;
-                    ImagePreviewer.Source = image[page];
+                    loadXML(page);
+                    string GOIkey = GOnum + " " + currentItemNum;
+                    FindImageIndex(GOIkey);
+                    ImagePreviewer.Source = image[ImagePage];
                 }
                 pg.Content = "Page:" + (page + 1).ToString() + "/" + image.Length.ToString();
-                loadXML(page);
             }
         }
+
+        //private void Forward_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (XMLLoaded == true && PDFLoaded == true)
+        //    {
+        //        if (page < image.Length - 1)
+        //        {
+        //            page += 1;
+        //            ImagePreviewer.Source = image[page];
+        //        }
+        //        pg.Content = "Page:" + (page + 1).ToString() + "/" + image.Length.ToString();
+        //        loadXML(page);
+        //    }
+        //}
+
+
+
+        //private void Back_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (XMLLoaded == true && PDFLoaded == true)
+        //    {
+        //        if (page != 0)
+        //        {
+        //            page -= 1;
+        //            ImagePreviewer.Source = image[page];
+        //        }
+        //        pg.Content = "Page:" + (page + 1).ToString() + "/" + image.Length.ToString();
+        //        loadXML(page);
+        //    }
+        //}
 
 
 
@@ -468,6 +525,9 @@ namespace PRL123_Final
                     if (PDFLoaded == true)
                     {
                         loadXML(page);
+                        string GOIkey = GOnum + " " + currentItemNum;
+                        FindImageIndex(GOIkey);
+                        ImagePreviewer.Source = image[ImagePage];
                     }
 
                     XMLLoaded = true;
@@ -621,7 +681,8 @@ namespace PRL123_Final
                         else
                         {
                             Item.Text = itemNumber;
-                        }                       
+                        }
+                        currentItemNum = Item.Text;
                     }
 
                     int flag200 = 1;
@@ -1074,8 +1135,8 @@ namespace PRL123_Final
                             Tracking = "InDevelopment";
                         }
 
-                        Utility.SaveImageToPdf(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(strPathPDF), GO_Item.Text + "_CONSTR.pdf"), (BitmapImage)image[page]);
-                        Utility.SaveBitmapAsPNGinImages(strPathImage + "_" + Item.Text + ".png", (BitmapImage)image[page]);
+                        Utility.SaveImageToPdf(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(strPathPDF), GO_Item.Text + "_CONSTR.pdf"), (BitmapImage)image[ImagePage]);
+                        Utility.SaveBitmapAsPNGinImages(strPathImage + "_" + Item.Text + ".png", (BitmapImage)image[ImagePage]);
 
                         string commandStr = "";
                         if (hasDates)
@@ -2000,7 +2061,8 @@ namespace PRL123_Final
                     }
                     else
                     {
-                            string commandText = "select * from [tblOrderStatus] where [Prod Group] in " + Utility.GetProductNameListInString(Views.Configuration.PRL123names) + " and [GO]='" + GOnum + "'";
+                           
+                            string commandText = "select [GO Item],[GO],[Item],[Suffix],[Shop Order],[Shop Order B],[Shop Order T],[Customer],[Qty],[Entered Date],[Release Date],[Commit Date],[Product Specialist] from [tblOrderStatus] where [Prod Group] in " + Utility.GetProductNameListInString(Views.Configuration.PRL123names) + " and [GO]='" + GOnum + "'";
                             using (OleDbCommand cmd = new OleDbCommand(commandText, MainWindow.Mcon))
                             {
                                 for (int i = 0; i < pages.Length; i++)
@@ -2018,14 +2080,14 @@ namespace PRL123_Final
                                                 Item.Text = rd[2].ToString();
                                                 Suffix.Text = rd[3].ToString();
                                                 ShopOrder.Text = rd[4].ToString();
-                                                ShopOrderTrim.Text = rd[5].ToString();
-                                                ShopOrderBox.Text = rd[6].ToString();
+                                                ShopOrderBox.Text = rd[5].ToString();
+                                                ShopOrderTrim.Text = rd[6].ToString();
                                                 Customer.Text = rd[7].ToString();
-                                                Qty.Text = rd[12].ToString();
-                                                ReleaseDate.Text = rd[15].ToString();
-                                                CommitDate.Text = rd[24].ToString();
-                                                EnteredDate.Text = rd[14].ToString();
-                                                ProductSpecialist = rd[37].ToString();
+                                                Qty.Text = rd[8].ToString();
+                                                EnteredDate.Text = rd[9].ToString();
+                                                ReleaseDate.Text = rd[10].ToString();
+                                                CommitDate.Text = rd[11].ToString();
+                                                ProductSpecialist = rd[12].ToString();
                                                 Urgency.Text = "N";
                                             }
                                         }
@@ -2081,8 +2143,8 @@ namespace PRL123_Final
                             Tracking = "InDevelopment";
                         }
 
-                        Utility.SaveImageToPdf(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(strPathPDF), GO_Item.Text + "_CONSTR.pdf"), (BitmapImage)image[page]);
-                        Utility.SaveBitmapAsPNGinImages(strPathImage + "_" + Item.Text + ".png", (BitmapImage)image[page]);
+                        Utility.SaveImageToPdf(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(strPathPDF), GO_Item.Text + "_CONSTR.pdf"), (BitmapImage)image[ImagePage]);
+                        Utility.SaveBitmapAsPNGinImages(strPathImage + "_" + Item.Text + ".png", (BitmapImage)image[ImagePage]);
 
 
                         string commandStr = "insert into PRL123 (GO_Item, [GO], ShopOrderInterior, ShopOrderBox, ShopOrderTrim, Customer, Quantity, Tracking, Urgency, BoxEarly, [AMO], [SpecialCustomer], [ServiceEntrance], [DoubleSection], [PaintedBox], [RatedNeutral200], ReleaseDate, CommitDate, EnteredDate, FilePath, ProductSpecialist, Catalogue, ImageFilePath) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";

@@ -191,13 +191,14 @@
                 <ColumnDefinition Width="160"/>
                 <ColumnDefinition Width="180"/>
                 <ColumnDefinition Width="75"/>
+                <ColumnDefinition Width="40"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="10"/>
             </Grid.RowDefinitions>
-            <TextBox Name="Search" HorizontalAlignment="Left" Height="25"   Grid.Row="0" TextWrapping="Wrap" Grid.ColumnSpan="2" VerticalAlignment="Bottom" Width="160"/>
+            <TextBox Name="Search" HorizontalAlignment="Left" Height="25" Grid.Row="0" TextWrapping="Wrap" Grid.ColumnSpan="2" VerticalAlignment="Bottom" Width="160"/>
             <ComboBox Name="Field" Grid.Column="1" Height="25" HorizontalAlignment="Center"  Grid.Row="0" VerticalAlignment="Bottom"  Width="150">
                 <ComboBoxItem Content="GO_Item"></ComboBoxItem>
                 <ComboBoxItem Content="GO"></ComboBoxItem>
@@ -206,6 +207,11 @@
             <Button x:Name="SearchButton"  Background="LightGray" Foreground="White" FontFamily="Light" Grid.Column="2" Height="25" HorizontalAlignment="Left" Grid.Row="0" VerticalAlignment="Bottom" Width="75" Click="Search_Click" ToolTip="Search">
                 <DockPanel>
                     <Image Source="/Assets/magnifying-glass.png"/>
+                </DockPanel>
+            </Button>
+            <Button  Background="LightGray" Foreground="White" Grid.Column="3" HorizontalAlignment="Center" Grid.Row="0" VerticalAlignment="Bottom" Width="25" Click="Open_Records" Height="25" ToolTip="View CSA Records">
+                <DockPanel>
+                    <Image Width="18" Height="18" Source="/Assets/CSArecords.png"/>
                 </DockPanel>
             </Button>
         </Grid>

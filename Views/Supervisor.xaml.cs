@@ -29,6 +29,7 @@ namespace PRL123_Final.Views
         int Selected = -1;      //autonumber ID of job item + used as a checking variable
         string SelectedGO;
         string GOnum;
+        string customer;
 
         List<int> MultipleSelected;             //autonumber ID's of job items
         List<string> MultipleSelectedGO;
@@ -232,6 +233,7 @@ namespace PRL123_Final.Views
                 Selected = row["ID"];
                 SelectedGO = row["GO_Item"];
                 GOnum = row["GO"];
+                customer = row["Customer"];
                 updateStatus(SelectedGO + " SELECTED");
             }
         }
@@ -269,8 +271,16 @@ namespace PRL123_Final.Views
             {
                 if (Selected != -1)
                 {
-                    PrintPage sf = new PrintPage(SelectedGO, CurrentProduct);
-                    sf.Show();
+                    if (CurrentProduct == Utility.ProductGroup.PRL123 || CurrentProduct == Utility.ProductGroup.PRL4)
+                    {
+                        PrintPage sf = new PrintPage(SelectedGO, CurrentProduct);
+                        sf.Show();
+                    }
+                    else if (CurrentProduct == Utility.ProductGroup.PRLCS) 
+                    {
+                        PrintPageCS sf = new PrintPageCS(SelectedGO, customer);       //only one input of SelectedGO indicates only a single line item needs to be printed
+                        //sf.Show();        Don't need to show the xaml page to print label for CS
+                    }
                 }
             }
             catch
@@ -290,10 +300,18 @@ namespace PRL123_Final.Views
 
                     if (termsList.Count > 0)
                     {
-                        PrintLabels sf = new PrintLabels(termsList, CurrentProduct);
-
-                        // sf.Show();      Don't need to show the xaml page to print labels
+                        if (CurrentProduct == Utility.ProductGroup.PRL123 || CurrentProduct == Utility.ProductGroup.PRL4)
+                        {
+                            PrintLabels sf = new PrintLabels(termsList, CurrentProduct);
+                            //sf.Show();      Don't need to show the xaml page to print labels
+                        }
+                        else if (CurrentProduct == Utility.ProductGroup.PRLCS)
+                        {
+                            PrintPageCS sf = new PrintPageCS(termsList, customer);   //different input parameter indicates all line items in production need to be printed
+                            //sf.Show();        Don't need to show the xaml page to print multiple labels for CS
+                        }
                     }
+                    
                     else
                     {
                         MessageBox.Show("Approve Jobs For Production Before Printing All Labels");
@@ -548,6 +566,13 @@ namespace PRL123_Final.Views
             {
                 Utility.AccessFolderGO(GOnum);
             }
+        }
+
+
+        private void Open_Records(object sender, RoutedEventArgs e)
+        {
+            CSArecords sf = new CSArecords();
+            sf.Show();
         }
 
     }

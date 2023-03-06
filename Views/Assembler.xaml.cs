@@ -122,6 +122,7 @@ namespace PRL123_Final.Views
 
             checkBoxGridPRL123.Visibility = Visibility.Visible;
             checkBoxGridPRL4.Visibility = Visibility.Hidden;
+            checkBoxGridPRLCS.Visibility = Visibility.Hidden;
 
             DNSB.Visibility = Visibility.Visible;
         }
@@ -138,6 +139,7 @@ namespace PRL123_Final.Views
 
             checkBoxGridPRL123.Visibility = Visibility.Hidden;
             checkBoxGridPRL4.Visibility = Visibility.Visible;
+            checkBoxGridPRLCS.Visibility = Visibility.Hidden;
 
             DNSB.Visibility = Visibility.Hidden;
         }
@@ -163,7 +165,7 @@ namespace PRL123_Final.Views
         {
             try
             {
-                if (Scan.Text != "" && (((Scan.Text.Length >= 15 || Scan.Text.Length == 10) && !Scan.Text.StartsWith("4-") && !Scan.Text.StartsWith("CS-") && !Scan.Text.StartsWith("EC-")) || ((Scan.Text.Length >= 17 || Scan.Text.Length == 12) && Scan.Text.StartsWith("4-"))))
+                if (Scan.Text != "" && (((Scan.Text.Length >= 15 || Scan.Text.Length == 10) && !Scan.Text.StartsWith("4-") && !Scan.Text.StartsWith("CS-") && !Scan.Text.StartsWith("EC-")) || ((Scan.Text.Length >= 17 || Scan.Text.Length == 12) && Scan.Text.StartsWith("4-")) || ((Scan.Text.Length >= 17 || Scan.Text.Length == 13) && Scan.Text.StartsWith("CS-"))))
                 {
                     if (Scan.Text.StartsWith("4-"))     //PWL4
                     {
@@ -173,7 +175,7 @@ namespace PRL123_Final.Views
                     else if (Scan.Text.StartsWith("CS-"))       //PWLCS
                     {
                         PRLCS_Set();
-                        getGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], [SpecialCustomer], [AMO], [IncLocLeft], [IncLocRight], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], [ThirtyDeepEnclosure], [DNSB], [Complete], [Short], [FilePath], [PageNumber] from [PRLCS] where [GO]='" + Scan.Text.Substring(2, 10) + "' order by [GO_Item],[PageNumber]");
+                        getGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], [SpecialCustomer], [AMO], [IncLocLeft], [IncLocRight], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], [ThirtyDeepEnclosure], [DNSB], [Complete], [Short], [FilePath], [PageNumber] from [PRLCS] where [GO]='" + Scan.Text.Substring(3, 10) + "' order by [GO_Item],[PageNumber]");
 
                     }
                     else if (Scan.Text.StartsWith("EC-"))       //PWLEC
@@ -380,11 +382,10 @@ namespace PRL123_Final.Views
 
         private void First_Page()
         {
-
             page = 0;   //all else fails, start at page 0
             for (int i = 0; i < GOItemsArr.Length; i++)
             {
-                if (Scan.Text == GOItemsArr[i])
+                if (Scan.Text.Contains(GOItemsArr[i]))
                 {
                     page = i;
                     break;
