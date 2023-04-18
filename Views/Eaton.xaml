@@ -210,7 +210,7 @@
                     <Image Source="/Assets/magnifying-glass.png"/>
                 </DockPanel>
             </Button>
-            <Button  Background="LightGray" Foreground="White" Grid.Column="3" HorizontalAlignment="Center" Grid.Row="0" VerticalAlignment="Bottom" Width="25" Click="Open_Records" Height="25" ToolTip="View CSA Records">
+            <Button Background="LightGray" Foreground="White" Grid.Column="3" HorizontalAlignment="Center" Grid.Row="0" VerticalAlignment="Bottom" Width="25" Click="Open_Records" Height="25" ToolTip="View CSA Records">
                 <DockPanel>
                     <Image Width="18" Height="18" Source="/Assets/CSArecords.png"/>
                 </DockPanel>

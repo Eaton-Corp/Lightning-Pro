@@ -164,11 +164,126 @@ namespace PRL123_Final.Views
         }
 
 
+
+        public class DateGOIPairs
+        {
+            private string GOI;
+            private DateTime? CommitDate;
+
+            public DateGOIPairs(string GoItem) 
+            { 
+                GOI = GoItem;
+                CommitDate = null;
+            }
+
+            public string Get_GOI()
+            {
+                return this.GOI;
+            }
+
+            public void Set_CommitDate(DateTime? cDate)
+            {
+                this.CommitDate = cDate;
+            }
+
+            public DateTime? Get_CommitDate()
+            {
+                return this.CommitDate;
+            }
+        }
+
+
+        List<DateGOIPairs> DateGOIPairsList;
+
+        private async void Update_Commits(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (MessageBox.Show("You Are About To Update All Commit Dates of Jobs in LightningPro.\nWould You Like To Proceed?", "Confirm",
+                      MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                {
+                    Task<int> ShowProgressBar = TurnOnStatus();
+                    int result = await ShowProgressBar;
+
+                    getDates(Utility.ProductGroup.PRL123,"PRL123");
+                    getDates(Utility.ProductGroup.PRL4,"PRL4");
+                    getDates(Utility.ProductGroup.PRLCS,"PRLCS");
+
+                    Status.Content = "COMMIT DATES SUCCESSFULLY UPDATED ";
+                }
+            }
+            catch
+            {
+                Status.Content = "UPDATE ERROR ";
+                MessageBox.Show("Error Updated Commit Dates");
+            }
+        }
+
+
+
         private async Task<int> TurnOnStatus()
         {
             Status.Content = "PROCESSING ... ";
             await Task.Delay(500);
             return 1;
+        }
+
+
+
+        private void getDates(Utility.ProductGroup currProd, string currTable) 
+        {
+            DateGOIPairsList = new List<DateGOIPairs>();
+
+            //populate DateGOIPairsList with all GO Items
+
+            string commandStr;
+            if (currProd == Utility.ProductGroup.PRL123)
+            {
+                commandStr = "select [GO_Item] from [" + currTable + "]";
+            }
+            else
+            {
+                commandStr = "select [GO_Item] from [" + currTable + "] where [PageNumber] = 0";
+            }
+           
+            DataTable dt = Utility.SearchLP(commandStr);
+            using (DataTableReader dtr = new DataTableReader(dt))
+            {
+                while (dtr.Read())
+                {
+                    DateGOIPairsList.Add(new DateGOIPairs(dtr[0].ToString()));
+                }
+            }
+
+
+            //pair the new Commit Dates to the GO Items in DateGOIPairsList
+
+            for (int i = 0; i < DateGOIPairsList.Count; i++) 
+            {
+                using (DataTableReader dtr = Utility.loadData("select [Commit Date] from [tblOrderStatus] where [GO Item]='" + DateGOIPairsList[i].Get_GOI() + "'"))
+                {
+                    while (dtr.Read())
+                    {
+                        DateTime? cDate = string.IsNullOrEmpty(dtr[0].ToString()) ? null : (DateTime?)Convert.ToDateTime(dtr[0].ToString());
+                        DateGOIPairsList[i].Set_CommitDate(cDate);
+                    }
+                }
+            }
+
+
+            //update Commit Dates in LP database
+
+            string updateStr;
+            for (int i = 0; i < DateGOIPairsList.Count; i++)
+            {
+                updateStr = "update [" + currTable + "] set [CommitDate] = ? where [GO_Item]='" + DateGOIPairsList[i].Get_GOI() + "'";
+                using (OleDbCommand cmd = new OleDbCommand(updateStr, MainWindow.LPcon))
+                {
+                    if (DateGOIPairsList[i].Get_CommitDate() == null) cmd.Parameters.AddWithValue("[CommitDate]", DBNull.Value); else cmd.Parameters.AddWithValue("[CommitDate]", DateGOIPairsList[i].Get_CommitDate());
+                    cmd.ExecuteNonQuery();
+                } //end using command
+            }
+
         }
 
 

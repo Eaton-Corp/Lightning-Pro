@@ -252,8 +252,8 @@ namespace PRL123_Final
                      var releaseEntry = await updateManager.UpdateApp();
                      NewVersion.Text = $"Update Version: {releaseEntry?.Version.ToString() ?? " "}";
                  }
-             }*/
-
+             }
+            */
         }
 
 

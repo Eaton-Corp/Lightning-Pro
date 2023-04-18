@@ -1313,9 +1313,16 @@ namespace PRL123_Final
                     InsertCommand.Parameters.AddWithValue("ShopOrderTrim", ShopOrderTrim.Text);
                     InsertCommand.Parameters.AddWithValue("Customer", Customer.Text);
                     InsertCommand.Parameters.AddWithValue("Quantity", Qty.Text);
-                    InsertCommand.Parameters.AddWithValue("EnteredDate", EnteredDate.Text);
-                    InsertCommand.Parameters.AddWithValue("ReleaseDate", ReleaseDate.Text);
-                    InsertCommand.Parameters.AddWithValue("CommitDate", CommitDate.Text);
+
+                    if (string.IsNullOrEmpty(EnteredDate.Text)) InsertCommand.Parameters.AddWithValue("EnteredDate", DBNull.Value); else InsertCommand.Parameters.AddWithValue("EnteredDate", EnteredDate.Text);
+                    if (string.IsNullOrEmpty(ReleaseDate.Text)) InsertCommand.Parameters.AddWithValue("ReleaseDate", DBNull.Value); else InsertCommand.Parameters.AddWithValue("ReleaseDate", ReleaseDate.Text);
+                    if (string.IsNullOrEmpty(CommitDate.Text)) InsertCommand.Parameters.AddWithValue("CommitDate", DBNull.Value); else InsertCommand.Parameters.AddWithValue("CommitDate", CommitDate.Text);
+
+
+                    //InsertCommand.Parameters.AddWithValue("EnteredDate", EnteredDate.Text);
+                    //InsertCommand.Parameters.AddWithValue("ReleaseDate", ReleaseDate.Text);
+                    //InsertCommand.Parameters.AddWithValue("CommitDate", CommitDate.Text);
+
                     InsertCommand.Parameters.AddWithValue("Tracking", Tracking);
                     InsertCommand.Parameters.AddWithValue("Urgency", Urgency.Text);
 
@@ -1384,9 +1391,16 @@ namespace PRL123_Final
                     InsertCommand.Parameters.AddWithValue("ShopOrderTrim", ShopOrderTrim.Text);
                     InsertCommand.Parameters.AddWithValue("Customer", Customer.Text);
                     InsertCommand.Parameters.AddWithValue("Quantity", Qty.Text);
-                    InsertCommand.Parameters.AddWithValue("EnteredDate", EnteredDate.Text);
-                    InsertCommand.Parameters.AddWithValue("ReleaseDate", ReleaseDate.Text);
-                    InsertCommand.Parameters.AddWithValue("CommitDate", CommitDate.Text);
+
+                    if (string.IsNullOrEmpty(EnteredDate.Text)) InsertCommand.Parameters.AddWithValue("EnteredDate", DBNull.Value); else InsertCommand.Parameters.AddWithValue("EnteredDate", EnteredDate.Text);
+                    if (string.IsNullOrEmpty(ReleaseDate.Text)) InsertCommand.Parameters.AddWithValue("ReleaseDate", DBNull.Value); else InsertCommand.Parameters.AddWithValue("ReleaseDate", ReleaseDate.Text);
+                    if (string.IsNullOrEmpty(CommitDate.Text)) InsertCommand.Parameters.AddWithValue("CommitDate", DBNull.Value); else InsertCommand.Parameters.AddWithValue("CommitDate", CommitDate.Text);
+
+
+                    //InsertCommand.Parameters.AddWithValue("EnteredDate", EnteredDate.Text);
+                    //InsertCommand.Parameters.AddWithValue("ReleaseDate", ReleaseDate.Text);
+                    //InsertCommand.Parameters.AddWithValue("CommitDate", CommitDate.Text);
+
                     InsertCommand.Parameters.AddWithValue("Tracking", Tracking);
                     InsertCommand.Parameters.AddWithValue("Urgency", Urgency.Text);
 

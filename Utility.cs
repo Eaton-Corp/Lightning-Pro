@@ -80,44 +80,6 @@ namespace PRL123_Final
             }
         }
 
-        public static string searchQueryGenerator(ProductGroup CurrentProduct, string FieldText, string SearchText)
-        {
-            string query = "";
-            if (CurrentProduct == ProductGroup.PRL123)
-            {
-                if (FieldText == "ShopOrder")
-                {
-                    query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [BoxEarly], [Box Sent], [SpecialCustomer], [ServiceEntrance], [DoubleSection], [PaintedBox], [RatedNeutral200], [DNSB], [Complete], [Short] from [PRL123] where ShopOrderInterior like '%" + SearchText + "%' OR ShopOrderTrim like '%" + SearchText + "%' OR ShopOrderBox like '%" + SearchText + "%'";
-                }
-                else
-                {
-                    query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [BoxEarly], [Box Sent], [SpecialCustomer], [ServiceEntrance], [DoubleSection], [PaintedBox], [RatedNeutral200], [DNSB], [Complete], [Short] from [PRL123] where " + FieldText + " like '%" + SearchText + "%'";
-                }
-            }
-            else if (CurrentProduct == Utility.ProductGroup.PRL4)
-            {
-                if (FieldText == "ShopOrder")
-                {
-                    query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], [DNSB], [Complete], [Short] from [PRL4] where ShopOrderInterior like '%" + SearchText + "%' OR ShopOrderTrim like '%" + SearchText + "%' OR ShopOrderBox like '%" + SearchText + "%'";
-                }
-                else
-                {
-                    query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], [DNSB], [Complete], [Short] from [PRL4] where [" + FieldText + "] like '%" + SearchText + "%' and [PageNumber] = 0";
-                }
-            }
-            else if (CurrentProduct == Utility.ProductGroup.PRLCS)
-            {
-                if (FieldText == "ShopOrder")
-                {
-                    query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], [ThirtyDeepEnclosure], [DNSB], [Complete], [Short] from [PRLCS] where ShopOrderInterior like '%" + SearchText + "%' OR ShopOrderTrim like '%" + SearchText + "%' OR ShopOrderBox like '%" + SearchText + "%'";
-                }
-                else
-                {
-                    query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], [ThirtyDeepEnclosure], [DNSB], [Complete], [Short] from [PRLCS] where [" + FieldText + "] like '%" + SearchText + "%' and [PageNumber] = 0";
-                }
-            }
-            return query;
-        }
 
         // The following is used to ExecuteNonQueries from LPdatabase 
         public static void executeNonQueryLP(string command)      
@@ -144,7 +106,7 @@ namespace PRL123_Final
             DataTableReader dtr = new DataTableReader(dt);
             return dtr;
         }
-
+        
 
         // The following is used to return a DataTableReader with the CSAValues for a GOItem
         public static DataTableReader getCSAValues(string GOItem, ProductGroup CurrentProduct)
@@ -177,6 +139,46 @@ namespace PRL123_Final
             executeNonQueryLP(command);
         }
 
+
+        // The following is used to generate LP search queries for different field texts
+        public static string searchQueryGenerator(ProductGroup CurrentProduct, string FieldText, string SearchText)
+        {
+            string query = "";
+            if (CurrentProduct == ProductGroup.PRL123)
+            {
+                if (FieldText == "ShopOrder")
+                {
+                    query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [BoxEarly], [Box Sent], [SpecialCustomer], [ServiceEntrance], [DoubleSection], [PaintedBox], [RatedNeutral200], [DNSB], [Complete], [Short], [LabelsPrinted] from [PRL123] where ShopOrderInterior like '%" + SearchText + "%' OR ShopOrderTrim like '%" + SearchText + "%' OR ShopOrderBox like '%" + SearchText + "%'";
+                }
+                else
+                {
+                    query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [BoxEarly], [Box Sent], [SpecialCustomer], [ServiceEntrance], [DoubleSection], [PaintedBox], [RatedNeutral200], [DNSB], [Complete], [Short], [LabelsPrinted] from [PRL123] where " + FieldText + " like '%" + SearchText + "%'";
+                }
+            }
+            else if (CurrentProduct == Utility.ProductGroup.PRL4)
+            {
+                if (FieldText == "ShopOrder")
+                {
+                    query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], [DNSB], [Complete], [Short], [LabelsPrinted] from [PRL4] where [PageNumber] = 0 and ShopOrderInterior like '%" + SearchText + "%' OR [PageNumber] = 0 and ShopOrderTrim like '%" + SearchText + "%' OR [PageNumber] = 0 and ShopOrderBox like '%" + SearchText + "%'";
+                }
+                else
+                {
+                    query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], [DNSB], [Complete], [Short], [LabelsPrinted] from [PRL4] where [" + FieldText + "] like '%" + SearchText + "%' and [PageNumber] = 0";
+                }
+            }
+            else if (CurrentProduct == Utility.ProductGroup.PRLCS)
+            {
+                if (FieldText == "ShopOrder")
+                {
+                    query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], [ThirtyDeepEnclosure], [DNSB], [Complete], [Short], [LabelsPrinted] from [PRLCS] where [PageNumber] = 0 and ShopOrderInterior like '%" + SearchText + "%' OR [PageNumber] = 0 and ShopOrderTrim like '%" + SearchText + "%' OR [PageNumber] = 0 and ShopOrderBox like '%" + SearchText + "%'";
+                }
+                else
+                {
+                    query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], [ThirtyDeepEnclosure], [DNSB], [Complete], [Short], [LabelsPrinted] from [PRLCS] where [" + FieldText + "] like '%" + SearchText + "%' and [PageNumber] = 0";
+                }
+            }
+            return query;
+        }
 
 
         // The following is used to convert RenderTargetBitmap to BitmapImage 
@@ -515,6 +517,80 @@ namespace PRL123_Final
 
 
 
+        // The following is used to determine if the labels for a GOItem have already been printed
+        public static Boolean haveLabelsPrinted(string GO_Item, string ProductTable)
+        {
+            try
+            {
+                string query = "select [LabelsPrinted] from [" + ProductTable + "] where [GO_Item]='" + GO_Item + "'";
+                using (DataTableReader dtr = loadData(query))
+                {
+                    while (dtr.Read())
+                    {
+                        if ((Boolean)dtr[0]) 
+                        {
+                            return true;
+                        }
+                    }
+                } //end using reader
+            }
+            catch
+            {
+                MessageBox.Show("An Error Occurred Trying To Check LabelsPrinted");
+            }
+            return false;
+        }
+
+
+        // The following is used to determine if all the labels for a GO Number have already been printed
+        public static Boolean haveAllLabelsPrinted(string GO_Num, string ProductTable)
+        {
+            try
+            {
+                string query = "select [LabelsPrinted] from [" + ProductTable + "] where [GO]='" + GO_Num + "' and [Tracking]='Production'";
+                DataTable dt = SearchLP(query);
+                
+                int NumRows = dt.Rows.Count;
+                int Counter = 0;
+                
+                if (NumRows > 0) 
+                {
+                    using (DataTableReader dtr = new DataTableReader(dt))
+                    {
+                        while (dtr.Read())
+                        {
+                            if ((Boolean)dtr[0])
+                            {
+                                Counter++;
+                            }
+                        }
+                    } //end using reader
+                    if (Counter >= NumRows) return true;
+                }
+            }
+            catch
+            {
+                MessageBox.Show("An Error Occurred Trying To Check If AllLabelsPrinted");
+            }
+            return false;
+        }
+
+
+        // The following is used when the labels for a GOItem have been printed
+        public static void LabelPrinted(string GO_Item, string ProductTable)
+        {
+            try
+            {
+                string command = "update [" + ProductTable + "] set [LabelsPrinted]=TRUE where [GO_Item]='" + GO_Item + "'";
+                executeNonQueryLP(command);
+            }
+            catch
+            {
+                MessageBox.Show("An Error Occurred Trying To Update LabelsPrinted");
+            }
+        }
+
+
 
         // The following is used to get the ImageFilePath
         public static string getImageFilePath(string GO_Item, ProductGroup currentProduct, int pgNumber)
@@ -639,7 +715,7 @@ namespace PRL123_Final
                     Boolean AMO = false;
                     Boolean PaintedBox = false;
 
-                    //PRL
+                    //PRL4 Specific
                     Boolean ServiceEntrance = false;
                     Boolean RatedNeutral200 = false;
                     Boolean DoorOverDist = false;
@@ -669,114 +745,87 @@ namespace PRL123_Final
                     string pdfFilepath = "";
                     string imageFilepath = "";
                     int pageNumber = 0;
+                    
+                    string notes = "";
+                    Boolean LabelsPrinted = false;
 
                     string query = "";
                     if (CurrentProduct == ProductGroup.PRL4)
                     {
-                        query = "select [ShopOrderInterior],[ShopOrderBox],[ShopOrderTrim],[Customer],[Quantity],[EnteredDate],[ReleaseDate],[CommitDate],[Tracking],[Urgency],[SpecialCustomer],[AMO],[ServiceEntrance],[PaintedBox],[RatedNeutral200],[DoorOverDist],[DoorInDoor],[DNSB],[Complete],[Short],[Type],[Volts],[Amps],[Torque],[Appearance],[Bus],[Catalogue],[ProductSpecialist],[FilePath],[ImageFilePath],[PageNumber] from [PRL4] where [GO_Item]='" + SelectedGO + "' order by [GO_Item],[PageNumber]";
+                        query = "select [ShopOrderInterior],[ShopOrderBox],[ShopOrderTrim],[Customer],[Quantity],[EnteredDate],[ReleaseDate],[CommitDate],[Tracking],[Urgency],[SpecialCustomer],[AMO],[PaintedBox],[DNSB],[Complete],[Short],[Type],[Volts],[Amps],[Torque],[Appearance],[Bus],[Catalogue],[ProductSpecialist],[FilePath],[ImageFilePath],[PageNumber],[Notes],[LabelsPrinted],[ServiceEntrance],[RatedNeutral200],[DoorOverDist],[DoorInDoor] from [PRL4] where [GO_Item]='" + SelectedGO + "' order by [GO_Item],[PageNumber]";
                     }
                     else if(CurrentProduct == ProductGroup.PRLCS)
-                    {
-                        query = "select [ShopOrderInterior],[ShopOrderBox],[ShopOrderTrim],[Customer],[Quantity],[EnteredDate],[ReleaseDate],[CommitDate],[Tracking],[Urgency],[SpecialCustomer],[AMO],[IncLocLeft],[IncLocRight],[CrossBus],[OpenBottom],[ExtendedTop],[PaintedBox],[ThirtyDeepEnclosure],[DNSB],[Complete],[Short],[Type],[Volts],[Amps],[Torque],[Appearance],[Bus],[Catalogue],[ProductSpecialist],[FilePath],[ImageFilePath],[PageNumber] from [PRLCS] where [GO_Item]='" + SelectedGO + "' order by [GO_Item],[PageNumber]";
+                    {                        
+                        query = "select [ShopOrderInterior],[ShopOrderBox],[ShopOrderTrim],[Customer],[Quantity],[EnteredDate],[ReleaseDate],[CommitDate],[Tracking],[Urgency],[SpecialCustomer],[AMO],[PaintedBox],[DNSB],[Complete],[Short],[Type],[Volts],[Amps],[Torque],[Appearance],[Bus],[Catalogue],[ProductSpecialist],[FilePath],[ImageFilePath],[PageNumber],[Notes],[LabelsPrinted],[IncLocLeft],[IncLocRight],[CrossBus],[OpenBottom],[ExtendedTop],[ThirtyDeepEnclosure] from [PRLCS] where [GO_Item]='" + SelectedGO + "' order by [GO_Item],[PageNumber]";
                     }
                     using (DataTableReader dtr = loadData(query))
                     {
                         while (dtr.Read())
                         {
-                           
-                            if(CurrentProduct == ProductGroup.PRL4)
+                            SOInterior = dtr[0].ToString();
+                            SOBox = dtr[1].ToString();
+                            SOTrim = dtr[2].ToString();
+                            Customer = dtr[3].ToString();
+                            Quantity = dtr[4].ToString();
+                            EnterDate = dtr[5].ToString();
+                            ReleaseDate = dtr[6].ToString();
+                            CommitDate = dtr[7].ToString();
+                            Tracking = dtr[8].ToString();
+                            Urgency = dtr[9].ToString();
+
+                            SpecialCustomer = (Boolean)dtr[10];
+                            AMO = (Boolean)dtr[11];
+                            PaintedBox = (Boolean)dtr[12];
+                            DNSB = (Boolean)dtr[13];
+                            Complete = (Boolean)dtr[14];
+                            Short = (Boolean)dtr[15];
+
+                            type = dtr[16].ToString();
+                            volts = dtr[17].ToString();
+                            amps = dtr[18].ToString();
+                            torque = dtr[19].ToString();
+                            appearance = dtr[20].ToString();
+                            bus = dtr[21].ToString();
+                            catalogue = dtr[22].ToString();
+                            prodSpecialist = dtr[23].ToString();
+
+                            pdfFilepath = dtr[24].ToString();
+                            imageFilepath = dtr[25].ToString();
+                            pageNumber = (int)dtr[26];
+
+                            notes = dtr[27].ToString();
+                            LabelsPrinted = (Boolean)dtr[28];
+
+                            if (CurrentProduct == ProductGroup.PRL4)
                             {
-                                SOInterior = dtr[0].ToString();
-                                SOBox = dtr[1].ToString();
-                                SOTrim = dtr[2].ToString();
-                                Customer = dtr[3].ToString();
-                                Quantity = dtr[4].ToString();
-                                EnterDate = dtr[5].ToString();
-                                ReleaseDate = dtr[6].ToString();
-                                CommitDate = dtr[7].ToString();
-                                Tracking = dtr[8].ToString();
-                                Urgency = dtr[9].ToString();
-
-                                SpecialCustomer = (Boolean)dtr[10];
-                                AMO = (Boolean)dtr[11];
-
-                                ServiceEntrance = (Boolean)dtr[12];
-                                PaintedBox = (Boolean)dtr[13];
-                                RatedNeutral200 = (Boolean)dtr[14];
-                                DoorOverDist = (Boolean)dtr[15];
-                                DoorInDoor = (Boolean)dtr[16];
-                                DNSB = (Boolean)dtr[17];
-                                Complete = (Boolean)dtr[18];
-                                Short = (Boolean)dtr[19];
-
-                                type = dtr[20].ToString();
-                                volts = dtr[21].ToString();
-                                amps = dtr[22].ToString();
-                                torque = dtr[23].ToString();
-                                appearance = dtr[24].ToString();
-                                bus = dtr[25].ToString();
-                                catalogue = dtr[26].ToString();
-                                prodSpecialist = dtr[27].ToString();
-
-                                pdfFilepath = dtr[28].ToString();
-                                imageFilepath = dtr[29].ToString();
-                                pageNumber = (int)dtr[30];
+                                ServiceEntrance = (Boolean)dtr[29];
+                                RatedNeutral200 = (Boolean)dtr[30];
+                                DoorOverDist = (Boolean)dtr[31];
+                                DoorInDoor = (Boolean)dtr[32];
                             }
                             else if(CurrentProduct == ProductGroup.PRLCS)
                             {
-                                SOInterior = dtr[0].ToString();
-                                SOBox = dtr[1].ToString();
-                                SOTrim = dtr[2].ToString();
-                                Customer = dtr[3].ToString();
-                                Quantity = dtr[4].ToString();
-                                EnterDate = dtr[5].ToString();
-                                ReleaseDate = dtr[6].ToString();
-                                CommitDate = dtr[7].ToString();
-                                Tracking = dtr[8].ToString();
-                                Urgency = dtr[9].ToString();
-
-                                SpecialCustomer = (Boolean)dtr[10];
-                                AMO = (Boolean)dtr[11];
-                                IncLocLeft = (Boolean)dtr[12];
-                                IncLocRight = (Boolean)dtr[13];
-                                CrossBus = (Boolean)dtr[14];
-                                OpenBottom = (Boolean)dtr[15];
-                                ExtendedTop = (Boolean)dtr[16];
-                                PaintedBox = (Boolean)dtr[17];
-                                ThirtyDeepEncolsure = (Boolean)dtr[18];
-
-                                DNSB = (Boolean)dtr[18];
-                                Complete = (Boolean)dtr[19];
-                                Short = (Boolean)dtr[20];
-
-                                type = dtr[21].ToString();
-                                volts = dtr[22].ToString();
-                                amps = dtr[23].ToString();
-                                torque = dtr[24].ToString();
-                                appearance = dtr[25].ToString();
-                                bus = dtr[26].ToString();
-                                catalogue = dtr[27].ToString();
-                                prodSpecialist = dtr[28].ToString();
-
-                                pdfFilepath = dtr[29].ToString();
-                                imageFilepath = dtr[30].ToString();
-                                pageNumber = (int)dtr[31];
-                            }
-                            
+                                IncLocLeft = (Boolean)dtr[29];
+                                IncLocRight = (Boolean)dtr[30];
+                                CrossBus = (Boolean)dtr[31];
+                                OpenBottom = (Boolean)dtr[32];
+                                ExtendedTop = (Boolean)dtr[33];
+                                ThirtyDeepEncolsure = (Boolean)dtr[34];                          
+                            }                            
                         }
                     }
+
                     pageNumber += 1;
                     imageFilepath = System.IO.Path.GetFullPath(System.IO.Path.Combine(imageFilepath, @"..\" + SelectedGO.Substring(0, 10) + "_" + SelectedGO.Substring(11, SelectedGO.Length - 11) + "_" + pageNumber.ToString() + ".png"));
-
 
                     string command = "";
                     if (CurrentProduct == ProductGroup.PRL4)
                     {
-                        command = "INSERT INTO [PRL4]([GO_Item],[GO],[ShopOrderInterior],[ShopOrderBox],[ShopOrderTrim],[Customer],[Quantity],[EnteredDate],[ReleaseDate],[CommitDate],[Tracking],[Urgency],[SpecialCustomer],[AMO],[ServiceEntrance],[PaintedBox],[RatedNeutral200],[DoorOverDist],[DoorInDoor],[DNSB],[Complete],[Short],[Type],[Volts],[Amps],[Torque],[Appearance],[Bus],[Catalogue],[ProductSpecialist],[FilePath],[ImageFilePath],[PageNumber]) VALUES('" + insertGOI + "','" + insertGO + "','" + SOInterior + "','" + SOBox + "','" + SOTrim + "','" + Customer + "','" + Quantity + "','" + EnterDate + "','" + ReleaseDate + "','" + CommitDate + "','" + Tracking + "','" + Urgency + "'," + SpecialCustomer.ToString() + "," + AMO.ToString() + "," + ServiceEntrance.ToString() + "," + PaintedBox.ToString() + "," + RatedNeutral200.ToString() + "," + DoorOverDist.ToString() + "," + DoorInDoor.ToString() + "," + DNSB.ToString() + "," + Complete.ToString() + "," + Short.ToString() + ",'" + type + "','" + volts + "','" + amps + "','" + torque + "','" + appearance + "','" + bus + "','" + catalogue + "','" + prodSpecialist + "','" + pdfFilepath + "','" + imageFilepath + "'," + pageNumber.ToString() + ")";
+                        command = "INSERT INTO [PRL4]([GO_Item],[GO],[ShopOrderInterior],[ShopOrderBox],[ShopOrderTrim],[Customer],[Quantity],[EnteredDate],[ReleaseDate],[CommitDate],[Tracking],[Urgency],[SpecialCustomer],[AMO],[ServiceEntrance],[PaintedBox],[RatedNeutral200],[DoorOverDist],[DoorInDoor],[DNSB],[Complete],[Short],[Type],[Volts],[Amps],[Torque],[Appearance],[Bus],[Catalogue],[ProductSpecialist],[FilePath],[ImageFilePath],[PageNumber],[Notes],[LabelsPrinted]) VALUES('" + insertGOI + "','" + insertGO + "','" + SOInterior + "','" + SOBox + "','" + SOTrim + "','" + Customer + "','" + Quantity + "','" + EnterDate + "','" + ReleaseDate + "','" + CommitDate + "','" + Tracking + "','" + Urgency + "'," + SpecialCustomer.ToString() + "," + AMO.ToString() + "," + ServiceEntrance.ToString() + "," + PaintedBox.ToString() + "," + RatedNeutral200.ToString() + "," + DoorOverDist.ToString() + "," + DoorInDoor.ToString() + "," + DNSB.ToString() + "," + Complete.ToString() + "," + Short.ToString() + ",'" + type + "','" + volts + "','" + amps + "','" + torque + "','" + appearance + "','" + bus + "','" + catalogue + "','" + prodSpecialist + "','" + pdfFilepath + "','" + imageFilepath + "'," + pageNumber.ToString() + ",'" + notes + "'," + LabelsPrinted.ToString() + ")";
                     }
                     else if(CurrentProduct == ProductGroup.PRLCS)
                     {
-                        command = "INSERT INTO [PRLCS]([GO_Item],[GO],[ShopOrderInterior],[ShopOrderBox],[ShopOrderTrim],[Customer],[Quantity],[EnteredDate],[ReleaseDate],[CommitDate],[Tracking],[Urgency],[SpecialCustomer],[AMO],[IncLocLeft],[IncLocRight],[CrossBus],[OpenBottom],[ExtendedTop],[PaintedBox],[ThirtyDeppEnclosure],[DNSB],[Complete],[Short],[Type],[Volts],[Amps],[Torque],[Appearance],[Bus],[Catalogue],[ProductSpecialist],[FilePath],[ImageFilePath],[PageNumber]) VALUES('" + insertGOI + "','" + insertGO + "','" + SOInterior + "','" + SOBox + "','" + SOTrim + "','" + Customer + "','" + Quantity + "','" + EnterDate + "','" + ReleaseDate + "','" + CommitDate + "','" + Tracking + "','" + Urgency + "'," + SpecialCustomer.ToString() + "," + AMO.ToString() + "," + ServiceEntrance.ToString() + "," + PaintedBox.ToString() + "," + RatedNeutral200.ToString() + "," + DoorOverDist.ToString() + "," + DoorInDoor.ToString() + "," + DNSB.ToString() + "," + Complete.ToString() + "," + Short.ToString() + ",'" + type + "','" + volts + "','" + amps + "','" + torque + "','" + appearance + "','" + bus + "','" + catalogue + "','" + prodSpecialist + "','" + pdfFilepath + "','" + imageFilepath + "'," + pageNumber.ToString() + ")";
+                        command = "INSERT INTO [PRLCS]([GO_Item],[GO],[ShopOrderInterior],[ShopOrderBox],[ShopOrderTrim],[Customer],[Quantity],[EnteredDate],[ReleaseDate],[CommitDate],[Tracking],[Urgency],[SpecialCustomer],[AMO],[IncLocLeft],[IncLocRight],[CrossBus],[OpenBottom],[ExtendedTop],[PaintedBox],[ThirtyDeepEnclosure],[DNSB],[Complete],[Short],[Type],[Volts],[Amps],[Torque],[Appearance],[Bus],[Catalogue],[ProductSpecialist],[FilePath],[ImageFilePath],[PageNumber],[Notes],[LabelsPrinted]) VALUES('" + insertGOI + "','" + insertGO + "','" + SOInterior + "','" + SOBox + "','" + SOTrim + "','" + Customer + "','" + Quantity + "','" + EnterDate + "','" + ReleaseDate + "','" + CommitDate + "','" + Tracking + "','" + Urgency + "'," + SpecialCustomer.ToString() + "," + AMO.ToString() + "," + IncLocLeft.ToString() + "," + IncLocRight.ToString() + "," + CrossBus.ToString() + "," + OpenBottom.ToString() + "," + ExtendedTop.ToString() + "," + PaintedBox.ToString() + "," + ThirtyDeepEncolsure.ToString() + "," + DNSB.ToString() + "," + Complete.ToString() + "," + Short.ToString() + ",'" + type + "','" + volts + "','" + amps + "','" + torque + "','" + appearance + "','" + bus + "','" + catalogue + "','" + prodSpecialist + "','" + pdfFilepath + "','" + imageFilepath + "'," + pageNumber.ToString() + ",'" + notes + "'," + LabelsPrinted.ToString() + ")";
                     }
                     executeNonQueryLP(command);
 

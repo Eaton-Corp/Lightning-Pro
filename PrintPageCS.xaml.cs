@@ -52,6 +52,7 @@ namespace PRL123_Final
             if (accessPrintDialog.ShowDialog() == true)
             {
                 LabelRender(GOI);
+                Utility.LabelPrinted(GOI, "PRLCS");
             }
         }
 
@@ -75,6 +76,7 @@ namespace PRL123_Final
                 for (var i = 0; i < All_GOs.Count; i++)
                 {
                     LabelRender(All_GOs[i]);
+                    Utility.LabelPrinted(All_GOs[i], "PRLCS");
                 }
             }
         }

@@ -234,8 +234,8 @@
 
 
         <!--<Hidden Text Boxs to store value in .Text/>-->
-        <TextBox x:Name="GO" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="1" Grid.Column="4" Grid.Row="1"/>
-        <TextBox x:Name="jobName" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="1" Grid.Column="4" Grid.Row="1"/>
+        <TextBox x:Name="GO" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="1" Grid.Column="4" Grid.Row="17"/>
+        <TextBox x:Name="jobName" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="1" Grid.Column="4" Grid.Row="17"/>
 
         <Label Name="pg" Content="Page:"  Grid.Column="5" Grid.Row="21" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 

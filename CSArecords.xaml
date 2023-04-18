@@ -5,9 +5,38 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PRL123_Final"
         mc:Ignorable="d"
-        Title="CSA NamePlate Records" Height="450" Width="800" MinHeight="450" MinWidth="800">
+        Title="CSA NamePlate Records" Height="450" Width="800" MinHeight="450" MinWidth="800" ResizeMode="NoResize" KeyDown="KeyDownClick">
     <Grid>
-        <DataGrid Name="dg" CanUserReorderColumns="False" CanUserResizeRows="False" CanUserResizeColumns="False" CanUserAddRows="True" Margin="45,25,62,49"/>
-        <Button Background="Blue" Foreground="White" Content="Save" HorizontalAlignment="Right" VerticalAlignment="Top" Width="105" Height="30"  Margin="0,400,5,0"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="45"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="30"/>
+                <ColumnDefinition Width="180"/>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="250"/>
+                <ColumnDefinition Width="250"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <Label Name="status" Content="" Foreground="Green" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="0" Grid.Column="1"/>
+
+            <Label Content="Series Number :  " HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="2"/>
+            <TextBox Name="seriesNumber" HorizontalAlignment="Left" VerticalAlignment="Center" Height="23" TextWrapping="Wrap" Width="250" Grid.Row="0" Grid.Column="3"/>
+
+            <Button Background="Blue" Grid.Column="4" Grid.Row="0" Foreground="White" Click="Save_Clicked" Content="Save" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center" Width="170" Height="30"/>
+
+        </Grid>
+
+        <DataGrid Name="dg" Grid.Column="0" Grid.Row="0" SelectionChanged="Selection_Changed" CanUserReorderColumns="False" CanUserResizeRows="False" CanUserResizeColumns="False" CanUserAddRows="False" Margin="30,25,30,10"/>
     </Grid>
+
 </Window>

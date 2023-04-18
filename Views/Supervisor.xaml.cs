@@ -65,15 +65,15 @@ namespace PRL123_Final.Views
                 {
                     if (CurrentProduct == Utility.ProductGroup.PRL123)
                     {
-                        query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [BoxEarly], [Box Sent], [SpecialCustomer], [ServiceEntrance], [DoubleSection], [PaintedBox], [RatedNeutral200], [DNSB], [Complete], [Short] from [PRL123] where [Tracking]='" + Current_Tab + "'";
+                        query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [BoxEarly], [Box Sent], [SpecialCustomer], [ServiceEntrance], [DoubleSection], [PaintedBox], [RatedNeutral200], [DNSB], [Complete], [Short], [LabelsPrinted] from [PRL123] where [Tracking]='" + Current_Tab + "'";
                     }
                     else if (CurrentProduct == Utility.ProductGroup.PRL4)
                     {
-                        query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], [DNSB], [Complete], [Short] from [PRL4] where [Tracking]='" + Current_Tab + "' and [PageNumber] = 0";
+                        query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], [DNSB], [Complete], [Short], [LabelsPrinted] from [PRL4] where [Tracking]='" + Current_Tab + "' and [PageNumber] = 0";
                     }
                     else if (CurrentProduct == Utility.ProductGroup.PRLCS)
                     {
-                        query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], [ThirtyDeepEnclosure], [DNSB], [Complete], [Short] from [PRLCS] where [Tracking]='" + Current_Tab + "' and [PageNumber] = 0";
+                        query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], [ThirtyDeepEnclosure], [DNSB], [Complete], [Short], [LabelsPrinted] from [PRLCS] where [Tracking]='" + Current_Tab + "' and [PageNumber] = 0";
                     }
                 }
 
@@ -198,16 +198,19 @@ namespace PRL123_Final.Views
         private void PRL123_Click(object sender, RoutedEventArgs e)
         {
             PRL123_Set();
+            Selected = -1;
         }
 
         private void PRL4_Click(object sender, RoutedEventArgs e)
         {
             PRL4_Set();
+            Selected = -1;
         }
 
         private void PRLCS_Click(object sender, RoutedEventArgs e)
         {
             PRLCS_Set();
+            Selected = -1;
         }
 
 
@@ -271,9 +274,18 @@ namespace PRL123_Final.Views
             {
                 if (Selected != -1)
                 {
+                    if (Utility.haveLabelsPrinted(SelectedGO,ProductTable))
+                    {
+                        if (MessageBox.Show("The labels for the GO Item have already been printed.\nWould you like to print them again?", "Confirm",
+                        MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
+                        {
+                            return;
+                        }
+                    }
+
                     if (CurrentProduct == Utility.ProductGroup.PRL123 || CurrentProduct == Utility.ProductGroup.PRL4)
                     {
-                        PrintPage sf = new PrintPage(SelectedGO, CurrentProduct);
+                        PrintPage sf = new PrintPage(SelectedGO, CurrentProduct, ProductTable);
                         sf.Show();
                     }
                     else if (CurrentProduct == Utility.ProductGroup.PRLCS) 
@@ -295,14 +307,23 @@ namespace PRL123_Final.Views
             try
             {
                 if (Selected != -1)
-                {
+                {                    
+                    if (Utility.haveAllLabelsPrinted(GOnum, ProductTable))
+                    {
+                        if (MessageBox.Show("All labels for the GO Number have already been printed.\nWould you like to print them again?", "Confirm",
+                        MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
+                        {
+                            return;
+                        }
+                    }
+
                     List<string> termsList = getGOs(GOnum);
 
                     if (termsList.Count > 0)
                     {
                         if (CurrentProduct == Utility.ProductGroup.PRL123 || CurrentProduct == Utility.ProductGroup.PRL4)
                         {
-                            PrintLabels sf = new PrintLabels(termsList, CurrentProduct);
+                            PrintLabels sf = new PrintLabels(termsList, CurrentProduct, ProductTable);
                             //sf.Show();      Don't need to show the xaml page to print labels
                         }
                         else if (CurrentProduct == Utility.ProductGroup.PRLCS)
@@ -311,7 +332,6 @@ namespace PRL123_Final.Views
                             //sf.Show();        Don't need to show the xaml page to print multiple labels for CS
                         }
                     }
-                    
                     else
                     {
                         MessageBox.Show("Approve Jobs For Production Before Printing All Labels");

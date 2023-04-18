@@ -31,13 +31,15 @@ namespace PRL123_Final
         string GO;
         System.Windows.Controls.Image im;
         Utility.ProductGroup CurrentProduct;
+        string ProductTbl;
 
-        public PrintPage(string GO_Item, Utility.ProductGroup Product)
+        public PrintPage(string GO_Item, Utility.ProductGroup Product, string ProductTable)
         {
             InitializeComponent();
 
             GO = GO_Item;
             CurrentProduct = Product;
+            ProductTbl = ProductTable;
 
             CSALabel.Source = LabelRender(GO);
         }
@@ -49,6 +51,8 @@ namespace PRL123_Final
             {
                 myPrintDialog.PrintTicket.PageOrientation = PageOrientation.Landscape;
                 myPrintDialog.PrintVisual(im, "Image Print");
+
+                Utility.LabelPrinted(GO, ProductTbl);
             }
         }
 

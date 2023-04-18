@@ -36,6 +36,7 @@ namespace PRL123_Final
         string[] CommitDateArr;
         string[] TrackingArr;
         string[] UrgencyArr;
+        string[] SpecialistArr;
         string[] CustomerArr;
 
         string FilePath;
@@ -63,20 +64,24 @@ namespace PRL123_Final
         //PRLCS Specific
         Boolean[] IncLocLeftArr;
         Boolean[] IncLocRightArr;
-        Boolean[] CrossBusArr;
         Boolean[] OpenBottomArr;
         Boolean[] ExtendedTopArr;
+        Boolean[] CrossBusArr;
         Boolean[] ThirtyDeepEnclosureArr;
 
         //PRLCS Labels
-        string[] Switchboard;
-        string[] CSAStandard;
-        string[] SMCenter;
-        string[] Section;
-        string[] MainBusBarCapacity;
-        string[] ShortCircuitRating;
-        string[] Amps;
-
+        string[] SwitchboardCS;
+        string[] CSAStandardCS;
+        string[] SMCenterCS;
+        string[] SectionCS;
+        string[] MainBusBarCapacityCS;
+        string[] VoltageCS;
+        string[] HzCS;
+        string[] PhaseCS;
+        string[] WireCS;
+        string[] ShortCircuitRatingCS;
+        string[] MaxVoltsCS;
+        string[] EnclosureCS;
 
         //PRL123 or PRL4
         string[] ProductID;
@@ -122,7 +127,7 @@ namespace PRL123_Final
             if (CurrentProduct == Utility.ProductGroup.PRL123)
             {
                 getGOs("select [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Quantity], " +
-                    "[EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [Customer], " +
+                    "[EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [ProductSpecialist], [Customer], " +
                     "[SpecialCustomer], [AMO], [ServiceEntrance], [RatedNeutral200], [PaintedBox], " +
                     "[DNSB], [Complete], [Short], [FilePath], [BoxEarly], [Box Sent], [DoubleSection] " +
                     "from [PRL123] where [GO]='" + current_ID.Substring(0, 10) + "' order by [GO_Item]");
@@ -130,7 +135,7 @@ namespace PRL123_Final
             else if (CurrentProduct == Utility.ProductGroup.PRL4)
             {
                 getGOs("select [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Quantity], " +
-                    "[EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [Customer], " +
+                    "[EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [ProductSpecialist], [Customer], " +
                     "[SpecialCustomer], [AMO], [ServiceEntrance], [RatedNeutral200], [PaintedBox], " +
                     "[DNSB], [Complete], [Short], [FilePath], [DoorOverDist], [DoorInDoor], [PageNumber] " +
                     "from [PRL4] where [GO]='" + current_ID.Substring(0, 10) + "' order by [GO_Item],[PageNumber]");
@@ -138,10 +143,10 @@ namespace PRL123_Final
             else if(CurrentProduct == Utility.ProductGroup.PRLCS)
             {
                 getGOs("select [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Quantity], " +
-                    "[EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [Customer], " +
-                    "[SpecialCustomer], [AMO], [IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop],[PaintedBox], " +
+                    "[EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [ProductSpecialist], [Customer], " +
+                    "[SpecialCustomer], [AMO], [IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], " +
                     "[ThirtyDeepEnclosure], [DNSB], [Complete], [Short], [FilePath], [PageNumber] " +
-                    "from [PRL4] where [GO]='" + current_ID.Substring(0, 10) + "' order by [GO_Item],[PageNumber]");
+                    "from [PRLCS] where [GO]='" + current_ID.Substring(0, 10) + "' order by [GO_Item],[PageNumber]");
             }
         }
 
@@ -175,6 +180,7 @@ namespace PRL123_Final
             CommitDateArr = new string[pages];
             TrackingArr = new string[pages];
             UrgencyArr = new string[pages];
+            SpecialistArr = new string[pages];
             CustomerArr = new string[pages];
 
             SpecialCustomerArr = new Boolean[pages];
@@ -203,14 +209,6 @@ namespace PRL123_Final
             ExtendedTopArr = new Boolean[pages];
             ThirtyDeepEnclosureArr = new Boolean[pages];
 
-            //PRLCS Labels
-            Switchboard = new string[pages];
-            CSAStandard = new string[pages];
-            SMCenter = new string[pages];
-            Section = new string[pages];
-            MainBusBarCapacity = new string[pages];
-            ShortCircuitRating = new string[pages];
-            Amps = new string[pages];
 
             //PRL4 and PRL123 Labels
             ProductID = new string[pages];
@@ -244,60 +242,62 @@ namespace PRL123_Final
                     CommitDateArr[counter] = rb[8].ToString();
                     TrackingArr[counter] = rb[9].ToString();
                     UrgencyArr[counter] = rb[10].ToString();
-                    CustomerArr[counter] = rb[11].ToString();
+                    SpecialistArr[counter] = rb[11].ToString();
+                    CustomerArr[counter] = rb[12].ToString();
 
-                    SpecialCustomerArr[counter] = (Boolean)rb[12];
-                    AMOArr[counter] = (Boolean)rb[13];
-                    
+                    SpecialCustomerArr[counter] = (Boolean)rb[13];
+                    AMOArr[counter] = (Boolean)rb[14];
 
                     if (CurrentProduct == Utility.ProductGroup.PRL123)
                     {
-                        ServiceEntranceArr[counter] = (Boolean)rb[14];
-                        RatedNeutral200Arr[counter] = (Boolean)rb[15];
-                        PaintedBoxArr[counter] = (Boolean)rb[16];
-                        DNSBArr[counter] = (Boolean)rb[17];
-                        CompleteArr[counter] = (Boolean)rb[18];
-                        ShortArr[counter] = (Boolean)rb[19];
+                        ServiceEntranceArr[counter] = (Boolean)rb[15];
+                        RatedNeutral200Arr[counter] = (Boolean)rb[16];
+                        PaintedBoxArr[counter] = (Boolean)rb[17];
+                        DNSBArr[counter] = (Boolean)rb[18];
+                        CompleteArr[counter] = (Boolean)rb[19];
+                        ShortArr[counter] = (Boolean)rb[20];
 
-                        FilePath = rb[20].ToString();
+                        FilePath = rb[21].ToString();
 
                         //PRL123 Specific
-                        BoxEarlyArr[counter] = (Boolean)rb[21];
-                        BoxSentArr[counter] = (Boolean)rb[22];
-                        DoubleSectionArr[counter] = (Boolean)rb[23];
+                        BoxEarlyArr[counter] = (Boolean)rb[22];
+                        BoxSentArr[counter] = (Boolean)rb[23];
+                        DoubleSectionArr[counter] = (Boolean)rb[24];
                     }
                     else if (CurrentProduct == Utility.ProductGroup.PRL4)
                     {
-                        ServiceEntranceArr[counter] = (Boolean)rb[14];
-                        RatedNeutral200Arr[counter] = (Boolean)rb[15];
-                        PaintedBoxArr[counter] = (Boolean)rb[16];
-                        DNSBArr[counter] = (Boolean)rb[17];
-                        CompleteArr[counter] = (Boolean)rb[18];
-                        ShortArr[counter] = (Boolean)rb[19];
+                        ServiceEntranceArr[counter] = (Boolean)rb[15];
+                        RatedNeutral200Arr[counter] = (Boolean)rb[16];
+                        PaintedBoxArr[counter] = (Boolean)rb[17];
+                        DNSBArr[counter] = (Boolean)rb[18];
+                        CompleteArr[counter] = (Boolean)rb[19];
+                        ShortArr[counter] = (Boolean)rb[20];
 
-                        FilePath = rb[20].ToString();
+                        FilePath = rb[21].ToString();
+
                         //PRL4 Specific 
-                        DoorOverDistArr[counter] = (Boolean)rb[21];
-                        DoorInDoorArr[counter] = (Boolean)rb[22];
+                        DoorOverDistArr[counter] = (Boolean)rb[22];
+                        DoorInDoorArr[counter] = (Boolean)rb[23];
 
-                        pgNumber[counter] = (int)rb[23];
+                        pgNumber[counter] = (int)rb[24];
                     }
                     else if(CurrentProduct == Utility.ProductGroup.PRLCS)
                     {
-                        IncLocLeftArr[counter] = (Boolean)rb[14];
-                        IncLocRightArr[counter] = (Boolean)rb[15];
-                        CrossBusArr[counter] = (Boolean)rb[16];
-                        OpenBottomArr[counter] = (Boolean)rb[17];
-                        ExtendedTopArr[counter] = (Boolean)rb[18];
-                        PaintedBoxArr[counter] = (Boolean)rb[19];
-                        ThirtyDeepEnclosureArr[counter] = (Boolean)rb[20];
-                        DNSBArr[counter] = (Boolean)rb[21];
-                        CompleteArr[counter] = (Boolean)rb[22];
-                        ShortArr[counter] = (Boolean)rb[23];
+                        IncLocLeftArr[counter] = (Boolean)rb[15];
+                        IncLocRightArr[counter] = (Boolean)rb[16];
+                        CrossBusArr[counter] = (Boolean)rb[17];
+                        OpenBottomArr[counter] = (Boolean)rb[18];
+                        ExtendedTopArr[counter] = (Boolean)rb[19];
+                        PaintedBoxArr[counter] = (Boolean)rb[20];
+                        ThirtyDeepEnclosureArr[counter] = (Boolean)rb[21];
+                        DNSBArr[counter] = (Boolean)rb[22];
+                        CompleteArr[counter] = (Boolean)rb[23];
+                        ShortArr[counter] = (Boolean)rb[24];
                         
+                        FilePath = rb[25].ToString();
+                        pgNumber[counter] = (int)rb[26];
 
-                        FilePath = rb[24].ToString();
-                        pgNumber[counter] = (int)rb[25];
+                        ProductID[counter] = "Pow - R - LineCS";
                     }
 
                     DataTableReader rcsa = Utility.getCSAValues(GOItemArr[counter], CurrentProduct);
@@ -306,7 +306,7 @@ namespace PRL123_Final
                     {
                         while (rcsa.Read())
                         {
-                            if(CurrentProduct == Utility.ProductGroup.PRL123 || CurrentProduct == Utility.ProductGroup.PRL4)
+                            if (CurrentProduct == Utility.ProductGroup.PRL123 || CurrentProduct == Utility.ProductGroup.PRL4)
                             {
                                 ProductID[counter] = rcsa[14].ToString();
                                 Designation[counter] = rcsa[3].ToString();
@@ -320,28 +320,14 @@ namespace PRL123_Final
                                 Ground[counter] = rcsa[11].ToString();
                                 Hz[counter] = rcsa[12].ToString();
                             }
-                            else if(CurrentProduct == Utility.ProductGroup.PRLCS)
-                            {
-                                Switchboard[counter] = rcsa[3].ToString();
-                                CSAStandard[counter] = rcsa[4].ToString();
-                                SMCenter[counter] = rcsa[5].ToString();
-                                Section[counter] = rcsa[6].ToString();
-                                MainBusBarCapacity[counter] = rcsa[7].ToString();
-                                Voltage[counter] = rcsa[8].ToString();
-                                Hz[counter] = rcsa[9].ToString();
-                                P[counter] = rcsa[10].ToString();
-                                W[counter] = rcsa[11].ToString();
-                                ShortCircuitRating[counter] = rcsa[11].ToString();
-                                Amps[counter] = rcsa[12].ToString();
-                                Enclosure[counter] = rcsa[13].ToString();
-                                ProductID[counter] = rcsa[15].ToString();
-                            }
+                            else { break; }
                         }
                     }
                     counter++;
                 }
             }
         }
+
 
         private void Update_Page()
         {
@@ -356,8 +342,113 @@ namespace PRL123_Final
         }
 
 
+
+
+        private void CSBack_ClickXML(object sender, RoutedEventArgs e)
+        {
+            if (CSlabelsPage != 0)
+            {
+                CSlabelsPage -= 1;
+                CSPageData();
+            }
+            LabelsPage.Content = "Label: " + (CSlabelsPage + 1).ToString() + "/" + SwitchboardCS.Length.ToString();
+        }
+
+        private void CSForward_ClickXML(object sender, RoutedEventArgs e)
+        {
+            if (CSlabelsPage < SwitchboardCS.Length - 1)
+            {
+                CSlabelsPage += 1;
+                CSPageData();
+            }
+            LabelsPage.Content = "Label: " + (CSlabelsPage + 1).ToString() + "/" + SwitchboardCS.Length.ToString();
+        }
+
+
+        int CSlabelsPage;
+        private void GetLabelDataCS()
+        {
+            DataTableReader tcsa = Utility.getCSAValues(GOItemArr[page], CurrentProduct);
+            DataTableReader rcsa = Utility.getCSAValues(GOItemArr[page], CurrentProduct);
+
+            var counter = 0;
+            int NumLabels = 0;
+
+            //using the first DataTableReader
+            using (tcsa)
+            {
+                while (tcsa.Read())
+                {
+                    NumLabels++;            //get the number of labels
+                }
+            }
+
+            //PRLCS Labels
+            SwitchboardCS = new string[NumLabels];
+            CSAStandardCS = new string[NumLabels];
+            SMCenterCS = new string[NumLabels];
+            SectionCS = new string[NumLabels];
+            MainBusBarCapacityCS = new string[NumLabels];
+            VoltageCS = new string[NumLabels];
+            HzCS = new string[NumLabels];
+            PhaseCS = new string[NumLabels];
+            WireCS = new string[NumLabels];
+            ShortCircuitRatingCS = new string[NumLabels];
+            MaxVoltsCS = new string[NumLabels];
+            EnclosureCS = new string[NumLabels];
+
+
+            using (rcsa)
+            {
+                while (rcsa.Read())
+                {
+                    SwitchboardCS[counter] = rcsa[3].ToString();
+                    CSAStandardCS[counter] = rcsa[4].ToString();
+                    SMCenterCS[counter] = rcsa[5].ToString();
+                    SectionCS[counter] = rcsa[6].ToString();
+                    MainBusBarCapacityCS[counter] = rcsa[7].ToString();
+                    VoltageCS[counter] = rcsa[8].ToString();
+                    HzCS[counter] = rcsa[9].ToString();
+                    PhaseCS[counter] = rcsa[10].ToString();
+                    WireCS[counter] = rcsa[11].ToString();
+                    ShortCircuitRatingCS[counter] = rcsa[12].ToString();
+                    MaxVoltsCS[counter] = rcsa[13].ToString();
+                    EnclosureCS[counter] = rcsa[14].ToString();
+
+                    counter++;
+                }
+            }
+            CSlabelsPage = 0;
+        }
+
+        private void CSPageData() 
+        {
+            SwitchBoardBoxCS.Text = SwitchboardCS[CSlabelsPage];
+            CSAStandardBoxCS.Text = CSAStandardCS[CSlabelsPage];
+            SMCenterBoxCS.Text = SMCenterCS[CSlabelsPage];
+            SectionBoxCS.Text = SectionCS[CSlabelsPage];
+            MainBusBarCapacityBoxCS.Text = MainBusBarCapacityCS[CSlabelsPage];
+            VoltageBoxCS.Text = VoltageCS[CSlabelsPage];
+            HzBoxCS.Text = HzCS[CSlabelsPage];
+            PBoxCS.Text = PhaseCS[CSlabelsPage];
+            WBoxCS.Text = WireCS[CSlabelsPage];
+            ShortCircuitBoxCS.Text = ShortCircuitRatingCS[CSlabelsPage];
+            MaxVoltsBoxCS.Text = MaxVoltsCS[CSlabelsPage];
+            EnclosureBoxCS.Text = EnclosureCS[CSlabelsPage];
+
+            LabelsPage.Content = "Label: " + (CSlabelsPage + 1).ToString() + "/" + SwitchboardCS.Length.ToString();
+        }
+
+
+        string OldGOI = "";
         private void PageData()
         {
+            if (CurrentProduct == Utility.ProductGroup.PRLCS && OldGOI.ToUpper() != GOItemArr[page].ToUpper()) 
+            {
+                GetLabelDataCS();
+                OldGOI = GOItemArr[page];
+            }
+
             GO_Item.Text = GOItemArr[page];
             GO.Text = GOArr[page];
             ShopOrderInterior.Text = SOIArr[page];
@@ -370,6 +461,9 @@ namespace PRL123_Final
             Tracking.Text = TrackingArr[page];
             Urgency.Text = UrgencyArr[page];
             ProductIDBox.Text = ProductID[page];
+            SpecialistBox.Text = SpecialistArr[page]; 
+            SpecialCustomer.IsChecked = SpecialCustomerArr[page];
+            Customer.Text = CustomerArr[page];
 
             if (CurrentProduct == Utility.ProductGroup.PRL123 || CurrentProduct == Utility.ProductGroup.PRL4)
             {
@@ -383,25 +477,10 @@ namespace PRL123_Final
                 XSpaceUsedBox.Text = XSpaceUsed[page];
                 GroundBox.Text = Ground[page];
                 HzBox.Text = Hz[page];
-                SpecialCustomer.IsChecked = SpecialCustomerArr[page];
-                Customer.Text = CustomerArr[page];
             }
             else if(CurrentProduct == Utility.ProductGroup.PRLCS)
             {
-                SwitchBoardBoxCS.Text = Switchboard[page];
-                CSAStandardBoxCS.Text = CSAStandard[page];
-                SMCenterBoxCS.Text = SMCenter[page];
-                SectionBoxCS.Text = Section[page];
-                MainBusBarCapacityBoxCS.Text = MainBusBarCapacity[page];
-                VoltageBoxCS.Text = Voltage[page];
-                HzBoxCS.Text = Hz[page];
-                PBoxCS.Text = P[page];
-                WBoxCS.Text = W[page];
-                ShortCircuitBoxCS.Text = ShortCircuitRating[page];
-                AmpsBoxCS.Text = Amps[page];
-                EnclosureBoxCS.Text = Enclosure[page];
-                SpecialCustomer.IsChecked = SpecialCustomerArr[page];
-                CustomerBoxCS.Text = CustomerArr[page];
+                CSPageData();
             }
 
             if (string.IsNullOrEmpty(Utility.getNotes(GO_Item.Text, ProductTable))) btnNotes.Background = System.Windows.Media.Brushes.LightGray; else btnNotes.Background = System.Windows.Media.Brushes.Blue;
@@ -618,25 +697,23 @@ namespace PRL123_Final
                 if (CurrentProduct == Utility.ProductGroup.PRL123)
                 {
                     commandStr = "update [PRL123] set [ShopOrderInterior]= ?, [ShopOrderBox]= ?, [ShopOrderTrim]= ?, [Quantity]= ?, " +
-                        "[Tracking]= ?, [Urgency]= ?, [Customer]= ?, [SpecialCustomer]= ?, [AMO]= ?, [ServiceEntrance]= ?, " +
+                        "[Tracking]= ?, [Urgency]= ?, [ProductSpecialist] = ?, [Customer]= ?, [SpecialCustomer]= ?, [AMO]= ?, [ServiceEntrance]= ?, " +
                         "[RatedNeutral200]= ?, [PaintedBox]= ?, [DNSB]= ?, [Complete]= ?, [Short]= ?, [BoxEarly]= ?, [Box Sent]= ?, " +
                         "[DoubleSection]= ? where [GO_Item]='" + current_ID + "'";
                 }
                 else if (CurrentProduct == Utility.ProductGroup.PRL4)
                 {
                     commandStr = "update [PRL4] set [ShopOrderInterior]= ?, [ShopOrderBox]= ?, [ShopOrderTrim]= ?, [Quantity]= ?, " +
-                        "[Tracking]= ?, [Urgency]= ?, [Customer]= ?, [SpecialCustomer]= ?, [AMO]= ?, [ServiceEntrance]= ?, " +
+                        "[Tracking]= ?, [Urgency]= ?, [ProductSpecialist] = ?, [Customer]= ?, [SpecialCustomer]= ?, [AMO]= ?, [ServiceEntrance]= ?, " +
                         "[RatedNeutral200]= ?, [PaintedBox]= ?, [DNSB]= ?, [Complete]= ?, [Short]= ?, [DoorOverDist]= ?, " +
                         "[DoorInDoor]= ? where [GO_Item]='" + current_ID + "'";
                 }
                 else if (CurrentProduct == Utility.ProductGroup.PRLCS)
                 {
                     commandStr = "update [PRLCS] set [ShopOrderInterior]= ?, [ShopOrderBox]= ?, [ShopOrderTrim]= ?, [Quantity]= ?, " +
-                    "[Tracking]= ?, [Urgency]= ?, [Customer]= ?, " +
-                    "[SpecialCustomer]= ?, [AMO]= ?, [IncLocLeft]= ?, [IncLocRight]= ?, [CrossBus]= ?, [OpenBottom]= ?, " +
-                    "[ExtendedTop]= ?,[PaintedBox]= ?, " +
-                    "[ThirtyDeepEnclosure]= ?, [DNSB]= ?, [Complete]= ?, [Short] = ?" +
-                    "where [GO_Item]='" + current_ID + "'";
+                        "[Tracking]= ?, [Urgency]= ?, [ProductSpecialist] = ?, [Customer]= ?, [SpecialCustomer]= ?, [AMO]= ?, [IncLocLeft]= ?, "+ 
+                        "[IncLocRight]= ?, [CrossBus]= ?, [OpenBottom]= ?, [ExtendedTop]= ?, [PaintedBox]= ?, [ThirtyDeepEnclosure]= ?, [DNSB]= ?, " +
+                        "[Complete]= ?, [Short] = ? where [GO_Item]='" + current_ID + "'";
                 }
                 using (OleDbCommand cmd = new OleDbCommand(commandStr, MainWindow.LPcon))
                 {
@@ -646,6 +723,7 @@ namespace PRL123_Final
                     cmd.Parameters.AddWithValue("Quantity", Quantity.Text);
                     cmd.Parameters.AddWithValue("Tracking", Tracking.Text);
                     cmd.Parameters.AddWithValue("Urgency", Urgency.Text);
+                    cmd.Parameters.AddWithValue("ProductSpecialist", SpecialistBox.Text);
                     cmd.Parameters.AddWithValue("Customer", Customer.Text);
                     cmd.Parameters.AddWithValue("[SpecialCustomer]", SpecialCustomer.IsChecked);
 
@@ -676,7 +754,6 @@ namespace PRL123_Final
                     }
                     else if(CurrentProduct == Utility.ProductGroup.PRLCS)
                     {
-                        cmd.Parameters.AddWithValue("[SpecialCustomer]", SpecialCustomer.IsChecked);
                         cmd.Parameters.AddWithValue("[AMO]", AMO_CS.IsChecked);
                         cmd.Parameters.AddWithValue("[IncLocLeft]", IncLocLeft_CS.IsChecked);
                         cmd.Parameters.AddWithValue("[IncLocRight]", IncLocRight_CS.IsChecked);
@@ -685,9 +762,9 @@ namespace PRL123_Final
                         cmd.Parameters.AddWithValue("[ExtendedTop]", ExtendedTop_CS.IsChecked);
                         cmd.Parameters.AddWithValue("[PaintedBox]", PaintedBox_CS.IsChecked);
                         cmd.Parameters.AddWithValue("[ThirtyDeepEnclosure]", ThirtyDeepEnc_CS.IsChecked);
-                        cmd.Parameters.AddWithValue("[DNSB]", DNSB.IsChecked);
-                        cmd.Parameters.AddWithValue("[Complete]", Complete.IsChecked);
-                        cmd.Parameters.AddWithValue("[Short]", Short.IsChecked);
+                        cmd.Parameters.AddWithValue("[DNSB]", DNSB_CS.IsChecked);
+                        cmd.Parameters.AddWithValue("[Complete]", Complete_CS.IsChecked);
+                        cmd.Parameters.AddWithValue("[Short]", Short_CS.IsChecked);
                     }
                     cmd.ExecuteNonQuery();
                 } //end using command
@@ -717,34 +794,32 @@ namespace PRL123_Final
                 }
                 else if(CurrentProduct == Utility.ProductGroup.PRLCS)
                 {
-                    string commandCSA = "update [CSALabelPRLCS] set [SwitchBoard]= ?, [CSAStandard]= ?, [SMCenter]= ?, [Section]= ?, [MainBusBarCapacity]= ?, " +
-                        "[Voltage]= ?, [Hz]= ?, [P]= ?, [W]= ?, [ShortCircuitRating]= ?, [Amps]= ?, [Enclosure]= ?, [Customer]= ? where [GO_Item]='" + current_ID + "'";
+                    string commandCSA = "update [CSALabelPRLCS] set [SwitchBoardTitle]= ?, [CSAStandard]= ?, [SMCenter]= ?, [MainBusBarCapacity]= ?, " +
+                        "[Voltage]= ?, [Hz]= ?, [P]= ?, [W]= ?, [ShortCircuitRating]= ?, [Amps]= ?, [Enclosure]= ? where [GO_Item]='" + current_ID + "' and [Section]='" + SectionBoxCS.Text + "'";
                     using (OleDbCommand UpdateCSACommand = new OleDbCommand(commandCSA, MainWindow.LPcon))
                     {
                         UpdateCSACommand.Parameters.AddWithValue("[SwitchBoard]", SwitchBoardBoxCS.Text);
                         UpdateCSACommand.Parameters.AddWithValue("[CSAStandard]", CSAStandardBoxCS.Text);
                         UpdateCSACommand.Parameters.AddWithValue("[SMCenter]", SMCenterBoxCS.Text);
-                        UpdateCSACommand.Parameters.AddWithValue("[Section]", SectionBoxCS.Text);
                         UpdateCSACommand.Parameters.AddWithValue("[MainBusBarCapacity]", MainBusBarCapacityBoxCS.Text);
                         UpdateCSACommand.Parameters.AddWithValue("[Voltage]", VoltageBoxCS.Text);
                         UpdateCSACommand.Parameters.AddWithValue("[Hz]", HzBoxCS.Text);
                         UpdateCSACommand.Parameters.AddWithValue("[P]", PBoxCS.Text);
                         UpdateCSACommand.Parameters.AddWithValue("[W]", WBoxCS.Text);
                         UpdateCSACommand.Parameters.AddWithValue("[ShortCircuitRating]", ShortCircuitBoxCS.Text);
-                        UpdateCSACommand.Parameters.AddWithValue("[Amps]", AmpsBoxCS.Text);
+                        UpdateCSACommand.Parameters.AddWithValue("[Amps]", MaxVoltsBoxCS.Text);
                         UpdateCSACommand.Parameters.AddWithValue("[Enclosure]", EnclosureBoxCS.Text);
-                        UpdateCSACommand.Parameters.AddWithValue("[Customer]", CustomerBoxCS.Text);
 
                         UpdateCSACommand.ExecuteNonQuery();
                     } //end using command
                 }
-                
+
             }
             catch
             {
                 MessageBox.Show("An Error Occurred Trying To SaveData");
             }
-        }
+}
 
 
         private void savePDF()
@@ -834,20 +909,8 @@ namespace PRL123_Final
                     }
                 }
 
-                string commandStr = "";
-                if (CurrentProduct == Utility.ProductGroup.PRL123)
-                {
-                    commandStr = "update [PRL123] set [ShopOrderInterior] = ?,[ShopOrderBox] = ?,[ShopOrderTrim] = ?,[Quantity] = ?,[EnteredDate] = ?,[ReleaseDate] = ?,[CommitDate] = ?,[Customer] = ? where [GO_Item]='" + GO_Item.Text + "'";
-                }
-                else if (CurrentProduct == Utility.ProductGroup.PRL4) 
-                {
-                    commandStr = "update [PRL4] set [ShopOrderInterior] = ?,[ShopOrderBox] = ?,[ShopOrderTrim] = ?,[Quantity] = ?,[EnteredDate] = ?,[ReleaseDate] = ?,[CommitDate] = ?,[Customer] = ? where [GO_Item]='" + GO_Item.Text + "'";
-                }
-                else if(CurrentProduct == Utility.ProductGroup.PRLCS)
-                {
-                    commandStr = "update [PRLcs] set [ShopOrderInterior] = ?,[ShopOrderBox] = ?,[ShopOrderTrim] = ?,[Quantity] = ?,[EnteredDate] = ?,[ReleaseDate] = ?,[CommitDate] = ?,[Customer] = ? where [GO_Item]='" + GO_Item.Text + "'";
+                string commandStr = "update [" + ProductTable + "] set [ShopOrderInterior] = ?,[ShopOrderBox] = ?,[ShopOrderTrim] = ?,[Quantity] = ?,[EnteredDate] = ?,[ReleaseDate] = ?,[CommitDate] = ?,[Customer] = ? where [GO_Item]='" + GO_Item.Text + "'";
 
-                }
 
                 using (OleDbCommand cmd = new OleDbCommand(commandStr, MainWindow.LPcon))
                 {
@@ -901,18 +964,24 @@ namespace PRL123_Final
             if (CurrentProduct == Utility.ProductGroup.PRL123)
             {
                 checkBoxGridPRL123.Visibility = Visibility.Visible;
+                checkBoxGridPRL4.Visibility = Visibility.Hidden;
                 PRL1234Schema.Visibility = Visibility.Visible;
+                PRLCSSchema.Visibility = Visibility.Hidden;
                 ProductTable = "PRL123";
             }
             else if (CurrentProduct == Utility.ProductGroup.PRL4)
             {
+                checkBoxGridPRL123.Visibility = Visibility.Hidden;
                 checkBoxGridPRL4.Visibility = Visibility.Visible;
                 PRL1234Schema.Visibility = Visibility.Visible;
+                PRLCSSchema.Visibility = Visibility.Hidden;
                 ProductTable = "PRL4";
             }
             else if (CurrentProduct == Utility.ProductGroup.PRLCS)
             {
-                checkBoxGridPRLCS.Visibility = Visibility.Visible;
+                checkBoxGridPRL123.Visibility = Visibility.Hidden;
+                checkBoxGridPRL4.Visibility = Visibility.Hidden;
+                PRL1234Schema.Visibility = Visibility.Hidden;
                 PRLCSSchema.Visibility = Visibility.Visible;
                 ProductTable = "PRLCS";
             }

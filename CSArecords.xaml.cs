@@ -13,6 +13,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Data.OleDb;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Windows.Controls.Primitives;
 
 namespace PRL123_Final
 {
@@ -21,111 +24,60 @@ namespace PRL123_Final
     /// </summary>
     public partial class CSArecords : Window
     {
+        int selected = -1;
+        
         public CSArecords()
         {
             InitializeComponent();
 
+            loadGrid();
+        }
+
+        private void loadGrid() 
+        {
             string query = "select * from [CSANamePlateRecord259P075H01]";
             DataTable dt = Utility.SearchLP(query);
             dg.ItemsSource = dt.DefaultView;
-
-            //loadGrid3();
         }
 
 
-        //private void loadGrid3() 
-        //{
-        //    DataSet ds = new DataSet();
-        //    OleDbDataAdapter adapter = new OleDbDataAdapter("select * from [CSANamePlateRecord259P075H01]", MainWindow.LPcon);
-        //    adapter.Fill(ds, "CSANamePlateRecord259P075H01");
+        private void Selection_Changed(object sender, SelectionChangedEventArgs e)
+        {
+            DataGrid gd = (DataGrid)sender;
+            if (gd.SelectedItem != null)
+            {
+                dynamic row = gd.SelectedItem;
+                selected = row["ID"];
 
-        //}
-
-
-
-        //public CustomerDataProvider()
-        //{
-        //    NorthwindDataSet dataset = new NorthwindDataSet();
-
-        //    adapter = new CustomersTableAdapter();
-        //    adapter.Fill(dataset.Customers);
-
-        //    dataset.Customers.CustomersRowChanged +=
-        //        new NorthwindDataSet.CustomersRowChangeEventHandler(CustomersRowModified);
-        //    dataset.Customers.CustomersRowDeleted +=
-        //        new NorthwindDataSet.CustomersRowChangeEventHandler(CustomersRowModified);
-        //}
-
-        //void CustomersRowModified(object sender, NorthwindDataSet.CustomersRowChangeEvent e)
-        //{
-        //    adapter.Update(dataset.Customers);
-        //}
+                status.Content = selected.ToString() + " Selected";
+            }
+        }
 
 
+        private void SaveEdit() 
+        {
+            if (selected != -1) 
+            {
+                string commandStr = "update [CSANamePlateRecord259P075H01] set [Series Number]='" + seriesNumber.Text + "' where [ID]=" + selected.ToString();
+                Utility.executeNonQueryLP(commandStr);
 
+                status.Content = selected.ToString() + ": Series # Saved";
+                loadGrid();
+            }
+        }
 
+        private void Save_Clicked(object sender, RoutedEventArgs e)
+        {
+            SaveEdit();
+        }
 
-
-        //private void loadGrid()
-        //{
-        //    string query = "select * from [CSANamePlateRecord259P075H01]";
-        //    DataTable dt = Utility.SearchLP(query);
-        //    dg.ItemsSource = dt.DefaultView;
-        //}
-
-
-        ////string query = "select * from [CSANamePlateRecord259P075H01]";
-        //DataTable dt = Utility.SearchLP("select * from [CSANamePlateRecord259P075H01]");
-
-        //OleDbDataAdapter adapter = new OleDbDataAdapter("select * from [CSANamePlateRecord259P075H01]", MainWindow.LPcon);
-        //DataSet ds = new DataSet();
-        //private void loadGrid2()
-        //{
-            
-        //    //DataSet ds = new DataSet();
-        //    adapter.Fill(ds, "myPath");
-        //    dg.DataContext = ds;
-
-           
-
-
-        //    //OleDbCommandBuilder builder = new OleDbCommandBuilder(adapter);
-        //    //adapter.UpdateCommand = builder.GetUpdateCommand();
-        //    //adapter.Update(ds);
-
-        //}
-
-
-        //private void Click_Save(object sender, RoutedEventArgs e)
-        //{
-           
-        //    OleDbCommandBuilder builder = new OleDbCommandBuilder(adapter);
-        //    adapter.UpdateCommand = builder.GetUpdateCommand();
-        //    adapter.Update(ds, "dt");
-        //}
-
-
-
-
-
-        ////public CustomerDataProvider()
-        ////{
-        ////    NorthwindDataSet dataset = new NorthwindDataSet();
-
-        ////    adapter = new CustomersTableAdapter();
-        ////    adapter.Fill(dataset.Customers);
-
-        ////    dataset.Customers.CustomersRowChanged +=
-        ////        new NorthwindDataSet.CustomersRowChangeEventHandler(CustomersRowModified);
-        ////    dataset.Customers.CustomersRowDeleted +=
-        ////        new NorthwindDataSet.CustomersRowChangeEventHandler(CustomersRowModified);
-        ////}
-
-        ////void CustomersRowModified(object sender, NorthwindDataSet.CustomersRowChangeEvent e)
-        ////{
-        ////    adapter.Update(dataset.Customers);
-        ////}
-
+        private void KeyDownClick(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                SaveEdit();
+            }
+        }
 
     }
 }

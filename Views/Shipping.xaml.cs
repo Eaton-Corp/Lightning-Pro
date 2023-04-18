@@ -176,15 +176,15 @@ namespace PRL123_Final.Views
             {
                 if (CurrentProduct == Utility.ProductGroup.PRL123)
                 {
-                    query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [BoxEarly], [Box Sent], [SpecialCustomer], [ServiceEntrance], [DoubleSection], [PaintedBox], [RatedNeutral200], [DNSB], [Complete], [Short] from [PRL123] where [Tracking]='Shipping'";
+                    query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [BoxEarly], [Box Sent], [SpecialCustomer], [ServiceEntrance], [DoubleSection], [PaintedBox], [RatedNeutral200], [DNSB], [Complete], [Short], [LabelsPrinted] from [PRL123] where [Tracking]='Shipping'";
                 }
                 else if (CurrentProduct == Utility.ProductGroup.PRL4)
                 {
-                    query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], [DNSB], [Complete], [Short] from [PRL4] where [Tracking]='Shipping' and [PageNumber] = 0";
+                    query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], [DNSB], [Complete], [Short], [LabelsPrinted] from [PRL4] where [Tracking]='Shipping' and [PageNumber] = 0";
                 }
                 else if (CurrentProduct == Utility.ProductGroup.PRLCS)
                 {
-                    query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], [ThirtyDeepEnclosure], [DNSB], [Complete], [Short] from [PRLCS] where [Tracking]='Shipping' and [PageNumber] = 0";
+                    query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], [ThirtyDeepEnclosure], [DNSB], [Complete], [Short], [LabelsPrinted] from [PRLCS] where [Tracking]='Shipping' and [PageNumber] = 0";
                 }
             }
             dt = Utility.SearchLP(query);
@@ -194,15 +194,18 @@ namespace PRL123_Final.Views
         private void PRL123_Click(object sender, RoutedEventArgs e)
         {
             PRL123_Set();
+            Refresh();
         }
 
         private void PRL4_Click(object sender, RoutedEventArgs e)
         {
             PRL4_Set();
+            Refresh();
         }
         private void PRLCS_Click(object sender, RoutedEventArgs e)
         {
             PRLCS_Set();
+            Refresh();
         }
 
         public void PRL123_Set()
@@ -291,7 +294,7 @@ namespace PRL123_Final.Views
             {
                 if (CurrentProduct == Utility.ProductGroup.PRL123)
                 {
-                    string query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [Catalogue], [AMO], [BoxEarly], [Box Sent], [SpecialCustomer], [ServiceEntrance], [DoubleSection], [PaintedBox], [RatedNeutral200], [DNSB], [Complete], [Short] from [PRL123] where [BoxEarly]=True and [Box Sent]=False";
+                    string query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [Catalogue], [AMO], [BoxEarly], [Box Sent], [SpecialCustomer], [ServiceEntrance], [DoubleSection], [PaintedBox], [RatedNeutral200], [DNSB], [Complete], [Short], [LabelsPrinted] from [PRL123] where [BoxEarly]=True and [Box Sent]=False";
                     LoadGrid(query);
                     Current_Tab = "Ship Early";
                     ButtonColorChanges();
@@ -807,7 +810,7 @@ namespace PRL123_Final.Views
                 "IncLocLeft: " + IncLocLeft,"IncLocRight: " + IncLocRight,"CrossBus: " + CrossBus,"OpenBottom: " + OpenBottom,"ExtendedTop: " + ExtendedTop,
                 "PaintedBox: " + PaintedBox, "ThirtyDeepEnclosure: " + ThirtyDeepEnclosure,"DNSB: " + DNSB, "Complete: " + Complete, "Short: " + Short," ",
                 "SwitchBoard: " + SwitchBoard, "CSAStandard: " + CSAStandard, "SMCenter: " + SMCenter, "Section: " + Section, "MainBusBarCapacity: " + MainBusBarCapacity,
-                "Voltage: " + Voltage, "Hz: " + Hz, "P: " + P, "W: " + W, "ShortCircuitRating: " + ShortCircuitRating, "Amps: " + Amps, "Enclosure: " + Enclosure,
+                "Voltage: " + Voltage, "Hz: " + Hz, "P: " + P, "W: " + W, "ShortCircuitRating: " + ShortCircuitRating, "Max Volts: " + Amps, "Enclosure: " + Enclosure,
                 " ", "Notes: " + Notes };
             Utility.WriteLinesToTXT(lines, documentPath);
         }
@@ -844,17 +847,22 @@ namespace PRL123_Final.Views
             }
             else 
             {
-                InfoLoaded = false;
-                GOI.Text = "";
-                Urgency.Content = "";
-                pg.Content = "";
-                Interior.Source = null;
-                Box.Source = null;
-                Trim.Source = null;
+                Refresh();
             }
         }
 
-
+        private void Refresh() 
+        {
+            InfoLoaded = false;
+            SuccessPull = false;
+            BoxSelected = false;
+            GOI.Text = "";
+            Urgency.Content = null;
+            pg.Content = "";
+            Interior.Source = null;
+            Box.Source = null;
+            Trim.Source = null;
+        }
 
 
     }
