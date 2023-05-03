@@ -54,8 +54,7 @@ namespace PRL123_Final
         {
             InitializeComponent();
 
-            //Command to delete the automatic configuration file on local computer
-            //Normally should be commented out
+            //Command to delete the automatic configuration file on local computer - Normally should be commented out
             //if (File.Exists(localConfigFilePath)) File.Delete(localConfigFilePath);
 
             isConfigured = checkConfigured();
