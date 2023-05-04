@@ -752,7 +752,7 @@ namespace PRL123_Final.Views
         {
             if (GO_Item.Text != "")
             {
-                AMOList sf = new AMOList(GO_Item.Text.Substring(0, 10));
+                AMOList sf = new AMOList(GO_Item.Text);
                 sf.Show();
             }
         }
