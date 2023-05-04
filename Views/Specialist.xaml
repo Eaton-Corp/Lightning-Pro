@@ -42,8 +42,6 @@
         <DataGrid x:Name="dg" CanUserReorderColumns="False" CanUserResizeRows="False" CanUserResizeColumns="False" CanUserAddRows="False" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="5" Grid.RowSpan="4" SelectionMode="Extended" FontSize="15" Padding="10" SelectionChanged="Selection_Changed">
 
             <DataGrid.CellStyle>
-
-
                 <Style TargetType="{x:Type DataGridCell}">
                     <Style.Triggers>
                         <!--< The colors indicate urgency: Red = Fast Paid, Orange = Fast Unpaid, LightGray = Normal, Green = Just Have a Good Time Mate />-->
