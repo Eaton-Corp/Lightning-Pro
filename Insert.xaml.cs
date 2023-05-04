@@ -452,7 +452,7 @@ namespace PRL123_Final
 
         private async void XML_Upload(object sender, RoutedEventArgs e)
         {
-            try 
+            try
             {
                 Microsoft.Win32.OpenFileDialog ofg = new Microsoft.Win32.OpenFileDialog();
                 ofg.Filter = "Image files|*.XML;*.tif|All files|*.*";
@@ -540,7 +540,7 @@ namespace PRL123_Final
                 pbStatus.Visibility = Visibility.Hidden;
                 MessageBox.Show("Error Occurred Uploading XML");
             }
-        }
+}
 
 
 
@@ -1978,7 +1978,7 @@ namespace PRL123_Final
                         {
                             if (statuses[n] == info.AMO)
                             {
-                                AMOreport = AMOreport + partslist[n].Get_partName() + ": " + partslist[n].Get_Amount().ToString() + ": " + statuses[n].ToString() + ": " + EnableOrDisable[i] + ": " + Description[i] + "\n";
+                                AMOreport = AMOreport + partslist[n].Get_partName() + ": " + partslist[n].Get_Amount().ToString() + ": " + statuses[n].ToString() + ": " + EnableOrDisable[n] + ": " + Description[n] + "\n";
                             }
                         }
                 }
@@ -1988,7 +1988,7 @@ namespace PRL123_Final
                         {
                             if (statuses[n] == info.KanbanSpike)
                             {
-                                AMOreport = AMOreport + partslist[n].Get_partName() + ": " + partslist[n].Get_Amount().ToString() + ": " + statuses[n].ToString() + ": " + EnableOrDisable[i] + ": " + Description[i] + "\n";
+                                AMOreport = AMOreport + partslist[n].Get_partName() + ": " + partslist[n].Get_Amount().ToString() + ": " + statuses[n].ToString() + ": " + EnableOrDisable[n] + ": " + Description[n] + "\n";
                             }
                         }
                 }
@@ -1998,7 +1998,7 @@ namespace PRL123_Final
                         {
                             if (statuses[n] == info.None)
                             {
-                                AMOreport = AMOreport + partslist[n].Get_partName() + ": " + partslist[n].Get_Amount().ToString() + ": " + statuses[n].ToString() + ": " + EnableOrDisable[i] + ": " + Description[i] + "\n";
+                                AMOreport = AMOreport + partslist[n].Get_partName() + ": " + partslist[n].Get_Amount().ToString() + ": " + statuses[n].ToString() + ": " + EnableOrDisable[n] + ": " + Description[n] + "\n";
                             }
                         }
                 }
