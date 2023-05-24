@@ -38,7 +38,7 @@
             <Label Content="Supervisor" Visibility="Visible" Grid.Row="1" Grid.Column="0" FontWeight="Bold" VerticalAlignment="Bottom" HorizontalAlignment="Left" Foreground="White" FontSize="24" FontFamily="Arial" Opacity="0.75"/>
         </Grid>
 
-        <DataGrid x:Name="dg" CanUserReorderColumns="False" CanUserResizeRows="False" CanUserResizeColumns="False" CanUserAddRows="False" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="5" Grid.RowSpan="4" SelectionMode="Extended" FontSize="15" Padding="10" SelectionChanged="Selection_Changed">
+        <DataGrid x:Name="dg" Loaded="DG_Loaded" CanUserReorderColumns="False" CanUserResizeRows="False" CanUserResizeColumns="False" CanUserAddRows="False" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="5" Grid.RowSpan="4" SelectionMode="Extended" FontSize="15" Padding="10" SelectionChanged="Selection_Changed">
             <DataGrid.CellStyle>
                 <Style TargetType="{x:Type DataGridCell}">
                     <Style.Triggers>
@@ -60,6 +60,21 @@
                     </Style.Triggers>
                 </Style>
             </DataGrid.CellStyle>
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Path=Notes}" Header="Job Notes" MaxWidth="77">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="Background" Value="CornflowerBlue"/>
+                            <Style.Triggers>
+                                <Trigger Property="Text" Value="">
+                                    <Setter Property="Background" Value="LightGray"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+            </DataGrid.Columns>
         </DataGrid>
 
 
