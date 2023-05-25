@@ -8,7 +8,7 @@
         xmlns:viewmodels="clr-namespace:PRL123_Final.ViewModels"
         xmlns:views="clr-namespace:PRL123_Final.Views"
         mc:Ignorable="d"
-        Title="Eaton Infinity" Height="550" Width="950" WindowState="Maximized" ResizeMode="CanResize" MinHeight="550" MinWidth="950" Loaded="MainWindow_OnLoaded" ContentRendered="contentRendered"
+        Title="LightningPRO" Height="550" Width="950" WindowState="Maximized" ResizeMode="CanResize" MinHeight="550" MinWidth="950" Loaded="MainWindow_OnLoaded" ContentRendered="contentRendered"
         Icon="Assets/bolt.png">
     <Window.Resources>
         <DataTemplate x:Name="eatonViewTemplate" DataType="{x:Type viewmodels:EatonViewModel}">
