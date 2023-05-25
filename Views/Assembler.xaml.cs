@@ -165,6 +165,7 @@ namespace PRL123_Final.Views
         {
             try
             {
+                if (Utility.IsDigitsOnly(Scan.Text)) OrderNumToGOI();
                 if (Scan.Text != "" && (((Scan.Text.Length >= 15 || Scan.Text.Length == 10) && !Scan.Text.StartsWith("4-") && !Scan.Text.ToUpper().StartsWith("CS-") && !Scan.Text.ToUpper().StartsWith("EC-")) || ((Scan.Text.Length >= 17 || Scan.Text.Length == 12) && Scan.Text.StartsWith("4-")) || ((Scan.Text.Length >= 17 || Scan.Text.Length == 13) && Scan.Text.ToUpper().StartsWith("CS-"))))
                 {
                     if (Scan.Text.StartsWith("4-"))     //PWL4
@@ -228,6 +229,25 @@ namespace PRL123_Final.Views
             }
         }
 
+        private void OrderNumToGOI() 
+        { 
+            string query = "SELECT [PRL123.GO_Item] AS [GO_Item], '' AS Source FROM [PRL123] where [ShopOrderInterior] = '" + Scan.Text + "' OR [ShopOrderTrim] = '" + Scan.Text + "' OR [ShopOrderBox] = '" + Scan.Text + "' UNION SELECT [PRL4.GO_Item] AS [GO_Item],'4-' AS Source FROM [PRL4] where [ShopOrderInterior] = '" + Scan.Text + "' OR [ShopOrderTrim] = '" + Scan.Text + "' OR [ShopOrderBox] = '" + Scan.Text + "' UNION SELECT [PRLCS.GO_Item] AS [GO_Item], 'CS-' AS Source FROM [PRLCS] where [ShopOrderInterior] = '" + Scan.Text + "' OR [ShopOrderTrim] = '" + Scan.Text + "' OR [ShopOrderBox] = '" + Scan.Text + "'";
+            DataTableReader rd = Utility.loadData(query);
+            if (rd.HasRows == false)
+            {
+                return;
+            }
+            string goi = "", prefix = "";
+            using (rd)
+            {
+                while (rd.Read())
+                {
+                    goi = rd[0].ToString();
+                    prefix = rd[1].ToString();          
+                }
+            }
+            Scan.Text = prefix + goi;
+        }
 
 
         //gets non-image data
