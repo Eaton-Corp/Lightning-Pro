@@ -82,7 +82,7 @@ namespace LightningPRO
 
 
         // The following is used to ExecuteNonQueries from LPdatabase 
-        public static void executeNonQueryLP(string command)      
+        public static void ExecuteNonQueryLP(string command)
         {
             try
             {
@@ -99,7 +99,7 @@ namespace LightningPRO
 
 
         // The following is used to return a DataTableReader for any query from LPdatabase
-        public static DataTableReader loadData(string query)
+        public static DataTableReader LoadData(string query)
         {
             DataTable dt;
             dt = SearchLP(query);
@@ -109,7 +109,7 @@ namespace LightningPRO
         
 
         // The following is used to return a DataTableReader with the CSAValues for a GOItem
-        public static DataTableReader getCSAValues(string GOItem, ProductGroup CurrentProduct)
+        public static DataTableReader GetCSAValues(string GOItem, ProductGroup CurrentProduct)
         {
             string query = "";
             if (CurrentProduct == ProductGroup.PRL123 || CurrentProduct == ProductGroup.PRL4)
@@ -120,7 +120,7 @@ namespace LightningPRO
             {
                 query = "select * from [CSALabelPRLCS] where [GO_Item]='" + GOItem + "'"; 
             }
-            DataTableReader dtr = loadData(query);
+            DataTableReader dtr = LoadData(query);
             return dtr;
         }
 
@@ -136,12 +136,12 @@ namespace LightningPRO
             {
                 command = "delete * from [CSALabelPRLCS] where [GO_Item]='" + GoItem + "'";
             }
-            executeNonQueryLP(command);
+            ExecuteNonQueryLP(command);
         }
 
 
         // The following is used to generate LP search queries for different field texts
-        public static string searchQueryGenerator(ProductGroup CurrentProduct, string FieldText, string SearchText)
+        public static string SearchQueryGenerator(ProductGroup CurrentProduct, string FieldText, string SearchText)
         {
             string query = "";
             if (CurrentProduct == ProductGroup.PRL123)
@@ -323,8 +323,10 @@ namespace LightningPRO
         // The following is used to convert BitmapImage to byte[] array
         public static byte[] ImageToByte(BitmapImage imageSource)
         {
-            var encoder = new JpegBitmapEncoder();
-            encoder.QualityLevel = 100;
+            var encoder = new JpegBitmapEncoder
+            {
+                QualityLevel = 100
+            };
             encoder.Frames.Add(BitmapFrame.Create(imageSource));
 
             using (var ms = new MemoryStream())
@@ -396,7 +398,7 @@ namespace LightningPRO
         // The following is used to check if OLD/NEW job
         // -> OLD = saves image as binary & saves to root in order files
         // -> New = saves ImageFilePath & saves to PDF Storage in order files
-        public static Boolean hasImageFilePath(string GO_Item, ProductGroup currentProduct)
+        public static Boolean HasImageFilePath(string GO_Item, ProductGroup currentProduct)
         {
             try
             {
@@ -405,7 +407,7 @@ namespace LightningPRO
                     return true;        //every other product group will have imageFilePath
                 }
                 //else it must be a ProductGroup.123
-                Boolean hasImageFilePath = !string.IsNullOrEmpty(getImageFilePath(GO_Item, ProductGroup.PRL123, 0)); //TODO: Need to figure out integration with CS --> Ask Ralla
+                Boolean hasImageFilePath = !string.IsNullOrEmpty(GetImageFilePath(GO_Item, ProductGroup.PRL123, 0)); //TODO: Need to figure out integration with CS --> Ask Ralla
                 return hasImageFilePath;
             }
             catch
@@ -417,7 +419,7 @@ namespace LightningPRO
 
 
         // The following is used to update the LastSave of an image edit
-        public static void updateLastSave(string GO_Item, ProductGroup currentProduct, int pgNumber) 
+        public static void UpdateLastSave(string GO_Item, ProductGroup currentProduct, int pgNumber)
         {
             try
             {
@@ -435,7 +437,7 @@ namespace LightningPRO
                 {
                     command = "update [PRLCS] set [LastSave]='" + updateTime + "' where [GO_Item]='" + GO_Item + "' and [PageNumber]=" + pgNumber.ToString();
                 }
-                executeNonQueryLP(command);
+                ExecuteNonQueryLP(command);
             }
             catch
             {
@@ -444,7 +446,7 @@ namespace LightningPRO
         }
 
         // The following is used to get the time of the LastSave of an image edit
-        public static string getLastSave(string GO_Item, ProductGroup currentProduct, int pgNumber)
+        public static string GetLastSave(string GO_Item, ProductGroup currentProduct, int pgNumber)
         {
             string output = "";
             try
@@ -462,7 +464,7 @@ namespace LightningPRO
                 {
                     query = "select [LastSave] from [PRLCS] where [GO_Item]='" + GO_Item + "' and [PageNumber]=" + pgNumber.ToString();
                 }
-                using (DataTableReader dtr = loadData(query))
+                using (DataTableReader dtr = LoadData(query))
                 {
                     while (dtr.Read())
                     {
@@ -479,12 +481,12 @@ namespace LightningPRO
 
 
         // The following is used to get the Notes related to a GOItem
-        public static void updateNotes(string GO_Item, string ProductTable, string NewNote)
+        public static void UpdateNotes(string GO_Item, string ProductTable, string NewNote)
         {
             try
             {
                 string command = "update [" + ProductTable + "] set [Notes]='" + NewNote + "' where [GO_Item]='" + GO_Item + "'";
-                executeNonQueryLP(command);
+                ExecuteNonQueryLP(command);
             }
             catch
             {
@@ -494,13 +496,13 @@ namespace LightningPRO
 
 
         // The following is used to get the Notes related to a GOItem
-        public static string getNotes(string GO_Item, string ProductTable)
+        public static string GetNotes(string GO_Item, string ProductTable)
         {
             string output = "";
             try
             {
                 string query = "select [Notes] from [" + ProductTable + "] where [GO_Item]='" + GO_Item + "'";
-                using (DataTableReader dtr = loadData(query))
+                using (DataTableReader dtr = LoadData(query))
                 {
                     while (dtr.Read())
                     {
@@ -518,12 +520,12 @@ namespace LightningPRO
 
 
         // The following is used to determine if the labels for a GOItem have already been printed
-        public static Boolean haveLabelsPrinted(string GO_Item, string ProductTable)
+        public static bool HaveLabelsPrinted(string GO_Item, string ProductTable)
         {
             try
             {
                 string query = "select [LabelsPrinted] from [" + ProductTable + "] where [GO_Item]='" + GO_Item + "'";
-                using (DataTableReader dtr = loadData(query))
+                using (DataTableReader dtr = LoadData(query))
                 {
                     while (dtr.Read())
                     {
@@ -543,7 +545,7 @@ namespace LightningPRO
 
 
         // The following is used to determine if all the labels for a GO Number have already been printed
-        public static Boolean haveAllLabelsPrinted(string GO_Num, string ProductTable)
+        public static Boolean HaveAllLabelsPrinted(string GO_Num, string ProductTable)
         {
             try
             {
@@ -582,7 +584,7 @@ namespace LightningPRO
             try
             {
                 string command = "update [" + ProductTable + "] set [LabelsPrinted]=TRUE where [GO_Item]='" + GO_Item + "'";
-                executeNonQueryLP(command);
+                ExecuteNonQueryLP(command);
             }
             catch
             {
@@ -593,7 +595,7 @@ namespace LightningPRO
 
 
         // The following is used to get the ImageFilePath
-        public static string getImageFilePath(string GO_Item, ProductGroup currentProduct, int pgNumber)
+        public static string GetImageFilePath(string GO_Item, ProductGroup currentProduct, int pgNumber)
         {
             string output = "";
             try
@@ -631,12 +633,12 @@ namespace LightningPRO
 
         
         // The following is used to retrieve the binary Bidman --> ONLY EXISTS FOR PRL123
-        public static BitmapImage retrieveBinaryBidman(string GO_Item)
+        public static BitmapImage RetrieveBinaryBidman(string GO_Item)
         {
             BitmapImage img = new BitmapImage();
             try
             {
-                DataTableReader rd = loadData("select [Bidman] from [PRL123] where [GO_Item]='" + GO_Item + "'");
+                DataTableReader rd = LoadData("select [Bidman] from [PRL123] where [GO_Item]='" + GO_Item + "'");
                 using (rd)
                 {
                     while (rd.Read())
@@ -654,7 +656,7 @@ namespace LightningPRO
 
 
         // The following is used to get the Directory for the BLT & CONSTR feature
-        public static string getDirectoryForOrderFiles(string SelectedGO, ProductGroup CurrentProduct)
+        public static string GetDirectoryForOrderFiles(string SelectedGO, ProductGroup CurrentProduct)
         {
             DataTable dt;
             string query = "";
@@ -688,12 +690,14 @@ namespace LightningPRO
 
 
         // The following is used for the AddToShopPackage feature
-        public static int executeAddToShopPack(string SelectedGO, ProductGroup CurrentProduct) 
+        public static int ExecuteAddToShopPack(string SelectedGO, ProductGroup CurrentProduct)
         {
             try
             {
-                Microsoft.Win32.OpenFileDialog ofg = new Microsoft.Win32.OpenFileDialog();
-                ofg.Filter = "png files (*.png)|*.png|jpg files (*.jpg)|*.jpg|pdf files (*.pdf)|*.pdf";
+                Microsoft.Win32.OpenFileDialog ofg = new Microsoft.Win32.OpenFileDialog
+                {
+                    Filter = "png files (*.png)|*.png|jpg files (*.jpg)|*.jpg|pdf files (*.pdf)|*.pdf"
+                };
                 bool? response = ofg.ShowDialog();
 
                 if (response == true)           //if the user selects a file and clicks OK
@@ -758,7 +762,7 @@ namespace LightningPRO
                     {                        
                         query = "select [ShopOrderInterior],[ShopOrderBox],[ShopOrderTrim],[Customer],[Quantity],[EnteredDate],[ReleaseDate],[CommitDate],[Tracking],[Urgency],[SpecialCustomer],[AMO],[PaintedBox],[DNSB],[Complete],[Short],[Type],[Volts],[Amps],[Torque],[Appearance],[Bus],[Catalogue],[ProductSpecialist],[FilePath],[ImageFilePath],[PageNumber],[Notes],[LabelsPrinted],[IncLocLeft],[IncLocRight],[CrossBus],[OpenBottom],[ExtendedTop],[ThirtyDeepEnclosure] from [PRLCS] where [GO_Item]='" + SelectedGO + "' order by [GO_Item],[PageNumber]";
                     }
-                    using (DataTableReader dtr = loadData(query))
+                    using (DataTableReader dtr = LoadData(query))
                     {
                         while (dtr.Read())
                         {
@@ -827,7 +831,7 @@ namespace LightningPRO
                     {
                         command = "INSERT INTO [PRLCS]([GO_Item],[GO],[ShopOrderInterior],[ShopOrderBox],[ShopOrderTrim],[Customer],[Quantity],[EnteredDate],[ReleaseDate],[CommitDate],[Tracking],[Urgency],[SpecialCustomer],[AMO],[IncLocLeft],[IncLocRight],[CrossBus],[OpenBottom],[ExtendedTop],[PaintedBox],[ThirtyDeepEnclosure],[DNSB],[Complete],[Short],[Type],[Volts],[Amps],[Torque],[Appearance],[Bus],[Catalogue],[ProductSpecialist],[FilePath],[ImageFilePath],[PageNumber],[Notes],[LabelsPrinted]) VALUES('" + insertGOI + "','" + insertGO + "','" + SOInterior + "','" + SOBox + "','" + SOTrim + "','" + Customer + "','" + Quantity + "','" + EnterDate + "','" + ReleaseDate + "','" + CommitDate + "','" + Tracking + "','" + Urgency + "'," + SpecialCustomer.ToString() + "," + AMO.ToString() + "," + IncLocLeft.ToString() + "," + IncLocRight.ToString() + "," + CrossBus.ToString() + "," + OpenBottom.ToString() + "," + ExtendedTop.ToString() + "," + PaintedBox.ToString() + "," + ThirtyDeepEncolsure.ToString() + "," + DNSB.ToString() + "," + Complete.ToString() + "," + Short.ToString() + ",'" + type + "','" + volts + "','" + amps + "','" + torque + "','" + appearance + "','" + bus + "','" + catalogue + "','" + prodSpecialist + "','" + pdfFilepath + "','" + imageFilepath + "'," + pageNumber.ToString() + ",'" + notes + "'," + LabelsPrinted.ToString() + ")";
                     }
-                    executeNonQueryLP(command);
+                    ExecuteNonQueryLP(command);
 
 
                     string filepath = ofg.FileName;
@@ -863,12 +867,14 @@ namespace LightningPRO
 
 
         // The following is used for the feature CONSTR insert
-        public static int executeCONSTRinsert(string SelectedGO, string pdfDirectory, ProductGroup currentProduct)
+        public static int ExecuteCONSTRinsert(string SelectedGO, string pdfDirectory, ProductGroup currentProduct)
         {
             try
             {
-                Microsoft.Win32.OpenFileDialog ofg = new Microsoft.Win32.OpenFileDialog();
-                ofg.Filter = "png files (*.png)|*.png|jpg files (*.jpg)|*.jpg|pdf files (*.pdf)|*.pdf|All files (*.*)|*.*";
+                Microsoft.Win32.OpenFileDialog ofg = new Microsoft.Win32.OpenFileDialog
+                {
+                    Filter = "png files (*.png)|*.png|jpg files (*.jpg)|*.jpg|pdf files (*.pdf)|*.pdf|All files (*.*)|*.*"
+                };
                 bool? response = ofg.ShowDialog();
 
                 if (response == true)           //if the user selects a file and clicks OK
@@ -877,7 +883,7 @@ namespace LightningPRO
 
                     string fileExtenstion = System.IO.Path.GetExtension(filepath);
                     string newPath;
-                    if (hasImageFilePath(SelectedGO, currentProduct))
+                    if (HasImageFilePath(SelectedGO, currentProduct))
                     {
                         newPath = System.IO.Path.GetFullPath(System.IO.Path.Combine(pdfDirectory, @"..\"));  //one folder back from pdfDirectory
                     }
@@ -924,12 +930,14 @@ namespace LightningPRO
 
 
         // The following is used for the feature BLT insert
-        public static int executeBLTinsert(string SelectedGO, string pdfDirectory, ProductGroup currentProduct)
+        public static int ExecuteBLTinsert(string SelectedGO, string pdfDirectory, ProductGroup currentProduct)
         {
             try
             {
-                Microsoft.Win32.OpenFileDialog ofg = new Microsoft.Win32.OpenFileDialog();
-                ofg.Filter = "png files (*.png)|*.png|jpg files (*.jpg)|*.jpg|pdf files (*.pdf)|*.pdf|All files (*.*)|*.*";
+                Microsoft.Win32.OpenFileDialog ofg = new Microsoft.Win32.OpenFileDialog
+                {
+                    Filter = "png files (*.png)|*.png|jpg files (*.jpg)|*.jpg|pdf files (*.pdf)|*.pdf|All files (*.*)|*.*"
+                };
                 bool? response = ofg.ShowDialog();
 
                 if (response == true)           //if the user selects a file and clicks OK
@@ -938,7 +946,7 @@ namespace LightningPRO
 
                     string fileExtenstion = System.IO.Path.GetExtension(filepath);
                     string newPath;
-                    if (hasImageFilePath(SelectedGO, currentProduct))
+                    if (HasImageFilePath(SelectedGO, currentProduct))
                     {
                         newPath = System.IO.Path.GetFullPath(System.IO.Path.Combine(pdfDirectory, @"..\"));     //one folder back from pdfDirectory
                     }
@@ -1019,7 +1027,7 @@ namespace LightningPRO
             string query = "select [GO] from [" + ProductTable + "] where [ID]=" + ID.ToString();
             string output = "";
 
-            using (DataTableReader dtr = loadData(query))
+            using (DataTableReader dtr = LoadData(query))
             {
                 while (dtr.Read())
                 {
@@ -1116,7 +1124,7 @@ namespace LightningPRO
 
 
         // The following is used to check LPdatabase for a duplicate GO_Item
-        public static Boolean isDuplicate(string GO_Item, ProductGroup CurrentProduct)
+        public static Boolean IsDuplicate(string GO_Item, ProductGroup CurrentProduct)
         {
             try
             {
@@ -1133,7 +1141,7 @@ namespace LightningPRO
                 {
                     query = "select [GO_Item] from [PRLCS] where [GO_Item]='" + GO_Item + "' and [PageNumber]=0";
                 }
-                using (DataTableReader dtr = loadData(query))
+                using (DataTableReader dtr = LoadData(query))
                 {
                     while (dtr.Read())
                     {
@@ -1160,7 +1168,7 @@ namespace LightningPRO
             try
             {
                 string query = "select [Replace] from [ReplacementParts] where [Find]='" + part + "'";
-                using (DataTableReader dtr = loadData(query))
+                using (DataTableReader dtr = LoadData(query))
                 {
                     while (dtr.Read())
                     {
@@ -1181,13 +1189,13 @@ namespace LightningPRO
 
 
         // The following is used to search the PullSequence table for a part, if the part is not there => it is standardAMO   
-        public static Boolean standardAMO(string part)
+        public static Boolean StandardAMO(string part)
         {
             try
             {
                 int ID = -10;
                 string query = "select [ID] from [PullSequence] where [Item]='" + part + "'";
-                using (DataTableReader dtr = loadData(query))
+                using (DataTableReader dtr = LoadData(query))
                 {
                     while (dtr.Read())
                     {
@@ -1214,7 +1222,7 @@ namespace LightningPRO
             try
             {
                 string query = "select [HalfSize] from [PullSequence] where [Item]='" + part + "'";
-                using (DataTableReader dtr = loadData(query))
+                using (DataTableReader dtr = LoadData(query))
                 {
                     while (dtr.Read())
                     {
@@ -1243,7 +1251,7 @@ namespace LightningPRO
             try
             {
                 string query = "select [ItemStatus], [Description] from [PullPartStatus] where [Item]='" + part + "'";
-                using (DataTableReader dtr = loadData(query))
+                using (DataTableReader dtr = LoadData(query))
                 {
                     while (dtr.Read())
                     {
@@ -1265,7 +1273,7 @@ namespace LightningPRO
 
 
         // The following is used to get the max voltage given the full voltage string
-        public static string getMaxVoltage(string fullVoltage)
+        public static string GetMaxVoltage(string fullVoltage)
         {
             if (string.IsNullOrEmpty(fullVoltage))
             {
@@ -1276,8 +1284,8 @@ namespace LightningPRO
                 if (fullVoltage.Contains("/"))
                 {
                     string[] voltages = fullVoltage.Split('/'); 
-                    string voltage1 = getNumberInString(voltages[0]);
-                    string voltage2 = getNumberInString(voltages[1]);
+                    string voltage1 = GetNumberInString(voltages[0]);
+                    string voltage2 = GetNumberInString(voltages[1]);
 
                     if (Int32.Parse(voltage1) > Int32.Parse(voltage2))
                     {
@@ -1290,14 +1298,14 @@ namespace LightningPRO
                 }
                 else 
                 {
-                    return getNumberInString(fullVoltage);
+                    return GetNumberInString(fullVoltage);
                 }
             }
         }
 
 
         // The following is used to extract a number from a specified string
-        public static string getNumberInString(string strSource)
+        public static string GetNumberInString(string strSource)
         {
             string[] numbers;
             numbers = Regex.Split(strSource, @"\D+");
@@ -1307,7 +1315,7 @@ namespace LightningPRO
 
 
         // The following is used to truncate a source string given a start string and an end string
-        public static string getBetween(string strSource, string strStart, string strEnd)
+        public static string GetBetween(string strSource, string strStart, string strEnd)
         {
             if (strSource.Contains(strStart) && strSource.Contains(strEnd))
             {

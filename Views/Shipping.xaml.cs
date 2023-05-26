@@ -122,8 +122,8 @@ namespace LightningPRO.Views
 
         private void getGOs(string query)
         {
-            DataTableReader rd = Utility.loadData(query);
-            DataTableReader rb = Utility.loadData(query);
+            DataTableReader rd = Utility.LoadData(query);
+            DataTableReader rb = Utility.LoadData(query);
 
             if (rd.HasRows == false)
             {
@@ -696,7 +696,7 @@ namespace LightningPRO.Views
 
         private void SetupDirectoriesDate()
         {
-            pdfDirectory = Utility.getDirectoryForOrderFiles(GOI.Text, CurrentProduct);
+            pdfDirectory = Utility.GetDirectoryForOrderFiles(GOI.Text, CurrentProduct);
             Directory.CreateDirectory(pdfDirectory + @"\Z_FinalShippedDocuments");
 
             DateTime dt = DateTime.Now;
@@ -723,7 +723,7 @@ namespace LightningPRO.Views
                 query += "[IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [ThirtyDeepEnclosure] from [PRLCS] where [GO_Item]='" + GOI.Text + "' and [PageNumber]=0";
             }
 
-            DataTableReader dtr = Utility.loadData(query);
+            DataTableReader dtr = Utility.LoadData(query);
             using (dtr)
             {
                 while (dtr.Read())
@@ -796,7 +796,7 @@ namespace LightningPRO.Views
 
         private void getCSAinfo()
         {
-            DataTableReader values = Utility.getCSAValues(GOI.Text, CurrentProduct);
+            DataTableReader values = Utility.GetCSAValues(GOI.Text, CurrentProduct);
             using (values)
             {
                 while (values.Read())
@@ -954,7 +954,7 @@ namespace LightningPRO.Views
         private void Ship()
         {
             string command = "delete * from [" + ProductTable + "] where [GO_Item]='" + GOI.Text + "'";
-            Utility.executeNonQueryLP(command);
+            Utility.ExecuteNonQueryLP(command);
             Utility.DeleteCSAValues(GOI.Text, CurrentProduct);
             LoadGrid(null);
             updateStatus(GOI.Text + " SUCCESSFULLY SHIPPED");

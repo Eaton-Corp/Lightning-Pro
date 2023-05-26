@@ -154,8 +154,8 @@ namespace LightningPRO
         private void getGOs(string query)
         {
             //get the data twice - once for counters and once for operations
-            DataTableReader rd = Utility.loadData(query);
-            DataTableReader rb = Utility.loadData(query);
+            DataTableReader rd = Utility.LoadData(query);
+            DataTableReader rb = Utility.LoadData(query);
 
             var counter = 0;
             int pages = 0;
@@ -303,7 +303,7 @@ namespace LightningPRO
                         ProductID[counter] = "Pow - R - LineCS";
                     }
 
-                    DataTableReader rcsa = Utility.getCSAValues(GOItemArr[counter], CurrentProduct);
+                    DataTableReader rcsa = Utility.GetCSAValues(GOItemArr[counter], CurrentProduct);
 
                     using (rcsa)
                     {
@@ -371,8 +371,8 @@ namespace LightningPRO
         int CSlabelsPage;
         private void GetLabelDataCS()
         {
-            DataTableReader tcsa = Utility.getCSAValues(GOItemArr[page], CurrentProduct);
-            DataTableReader rcsa = Utility.getCSAValues(GOItemArr[page], CurrentProduct);
+            DataTableReader tcsa = Utility.GetCSAValues(GOItemArr[page], CurrentProduct);
+            DataTableReader rcsa = Utility.GetCSAValues(GOItemArr[page], CurrentProduct);
 
             var counter = 0;
             int NumLabels = 0;
@@ -486,7 +486,7 @@ namespace LightningPRO
                 CSPageData();
             }
 
-            if (string.IsNullOrEmpty(Utility.getNotes(GO_Item.Text, ProductTable))) btnNotes.Background = System.Windows.Media.Brushes.LightGray; else btnNotes.Background = System.Windows.Media.Brushes.Blue;
+            if (string.IsNullOrEmpty(Utility.GetNotes(GO_Item.Text, ProductTable))) btnNotes.Background = System.Windows.Media.Brushes.LightGray; else btnNotes.Background = System.Windows.Media.Brushes.Blue;
 
             if (CurrentProduct == Utility.ProductGroup.PRL123)
             {
@@ -615,11 +615,11 @@ namespace LightningPRO
         private BitmapImage getBidman(string GOItem)
         {
             BitmapImage output;
-            string imageFilePath = Utility.getImageFilePath(GOItem, CurrentProduct, pgNumber[page]);
+            string imageFilePath = Utility.GetImageFilePath(GOItem, CurrentProduct, pgNumber[page]);
             if (string.IsNullOrEmpty(imageFilePath))  //proceed with bidman byte array to bitmap image
             {
                 hasImageFilePath = false;
-                output = Utility.retrieveBinaryBidman(GOItem);
+                output = Utility.RetrieveBinaryBidman(GOItem);
             }
             else
             {
@@ -627,7 +627,7 @@ namespace LightningPRO
                 ImageFilePath = imageFilePath;
                 output = Utility.PNGtoBitmap(ImageFilePath);
             }
-            LastSave.Content = Utility.getLastSave(GOItem, CurrentProduct, pgNumber[page]);
+            LastSave.Content = Utility.GetLastSave(GOItem, CurrentProduct, pgNumber[page]);
             return output;
         }
 
@@ -656,7 +656,7 @@ namespace LightningPRO
             {
                 binaryImageSave();
             }
-            Utility.updateLastSave(current_ID, CurrentProduct, pgNumber[page]);
+            Utility.UpdateLastSave(current_ID, CurrentProduct, pgNumber[page]);
         }
 
         private void binaryImageSave() //save image as an array of bytes 

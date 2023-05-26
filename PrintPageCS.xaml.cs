@@ -87,8 +87,8 @@ namespace LightningPRO
 
         private void LabelRender(string GOItem)
         {
-            DataTableReader valuesCounter = Utility.getCSAValues(GOItem, Utility.ProductGroup.PRLCS);
-            DataTableReader values = Utility.getCSAValues(GOItem, Utility.ProductGroup.PRLCS);
+            DataTableReader valuesCounter = Utility.GetCSAValues(GOItem, Utility.ProductGroup.PRLCS);
+            DataTableReader values = Utility.GetCSAValues(GOItem, Utility.ProductGroup.PRLCS);
 
             if (valuesCounter.HasRows == false)
             {

@@ -28,7 +28,7 @@ using iTextSharp.text.pdf.parser;
 using System.Diagnostics;
 using System.Net.Mail;
 using System.Net;
-using static PRL123_Final.Insert;
+using static LightningPRO.Insert;
 using iTextSharp.text.pdf.qrcode;
 //using System.Windows.Forms;
 
@@ -653,15 +653,15 @@ namespace LightningPRO
                         {
                             if (childNode.OuterXml.ToString().Contains("\"Designations\""))
                             {
-                                DesignationArr[i] = Utility.getBetween(childNode.OuterXml.ToString(), "V=\"", "\"");
+                                DesignationArr[i] = Utility.GetBetween(childNode.OuterXml.ToString(), "V=\"", "\"");
                             }
                             if (childNode.OuterXml.ToString().Contains("\"GONumber\""))
                             {
-                                GO = Utility.getBetween(childNode.OuterXml.ToString(), "V=\"", "\"");
+                                GO = Utility.GetBetween(childNode.OuterXml.ToString(), "V=\"", "\"");
                             }
                             if (childNode.OuterXml.ToString().Contains("\"ItemNumber\""))
                             {
-                                itemNum = Utility.getBetween(childNode.OuterXml.ToString(), "V=\"", "\"");
+                                itemNum = Utility.GetBetween(childNode.OuterXml.ToString(), "V=\"", "\"");
                                 break;
                             }
                         }
@@ -935,14 +935,14 @@ namespace LightningPRO
 
                         if (line.Contains("Max X-Space for Branch Devices:"))
                         {
-                            XSpaceUsedArr[i] = Utility.getBetween(line, "Max X-Space for Branch Devices: ", "\"");
+                            XSpaceUsedArr[i] = Utility.GetBetween(line, "Max X-Space for Branch Devices: ", "\"");
                             CatalogFound = true;
                         }
                         else
                         {
                             if (line2.Contains("CatalogNumber") && CatalogFound == false)
                             {
-                                XSpaceUsedArr[i] = Utility.getBetween(line2, "-", "\"");
+                                XSpaceUsedArr[i] = Utility.GetBetween(line2, "-", "\"");
                                 CatalogFound = true;
                             }
                         }
@@ -1113,7 +1113,7 @@ namespace LightningPRO
 
         private Boolean insertSingleEntry()
         {
-            if (Utility.isDuplicate(GO_Item.Text, Utility.ProductGroup.PRL4) == false)
+            if (Utility.IsDuplicate(GO_Item.Text, Utility.ProductGroup.PRL4) == false)
             {
                 int amountOfPages = 0;
                 int firstPageIndex = getFirstPageIndex();
@@ -2060,7 +2060,7 @@ namespace LightningPRO
                         {
                             if (child.OuterXml.ToString().Contains("\"CatalogNumber\""))                    //get CatalogNumber value and alter it using convertToRequired
                             {
-                                string output = Utility.getBetween(child.OuterXml.ToString(), "V=\"", "\"");
+                                string output = Utility.GetBetween(child.OuterXml.ToString(), "V=\"", "\"");
                                 if (!(output.StartsWith("CN")) && !(output.Contains("-")) && !(output.Contains("PROV")) && !(output.Contains("start")) && !(output.StartsWith("S3")) && !(output.StartsWith("P2")) && !(output == "C1") && !(output.StartsWith("A29")) && !(output.StartsWith("H5")) && !(output.StartsWith("SP")) && !(output.StartsWith("BX")))
                                 {
                                     currentpart.setName(convertToRequired(output, encl, paint, mount, multiple));
@@ -2068,7 +2068,7 @@ namespace LightningPRO
                             }
                             if (child.OuterXml.ToString().Contains("\"Quantity\""))             //get quantity value of current part
                             {
-                                currentpart.addToQuantity(Int32.Parse(Utility.getBetween(child.OuterXml.ToString(), "V=\"", "\"")));
+                                currentpart.addToQuantity(Int32.Parse(Utility.GetBetween(child.OuterXml.ToString(), "V=\"", "\"")));
                             }
                         }//end for loop attributes
 
@@ -2096,7 +2096,7 @@ namespace LightningPRO
             {
                 partslist[i].setName(Utility.ReplacePart(partslist[i].Get_partName()));     //look for replacement part
 
-                if (Utility.standardAMO(partslist[i].Get_partName()))                                //check PullSequence if standardAMO
+                if (Utility.StandardAMO(partslist[i].Get_partName()))                                //check PullSequence if standardAMO
                 {
                     statuses.Add(info.AMO);
                 }

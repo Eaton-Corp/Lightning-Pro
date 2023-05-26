@@ -8,7 +8,7 @@
         xmlns:viewmodels="clr-namespace:LightningPRO.ViewModels"
         xmlns:views="clr-namespace:LightningPRO.Views"
         mc:Ignorable="d"
-        Title="LightningPRO" Height="550" Width="950" WindowState="Maximized" ResizeMode="CanResize" MinHeight="550" MinWidth="950" Loaded="MainWindow_OnLoaded" ContentRendered="contentRendered"
+        Title="LightningPRO" Height="550" Width="950" WindowState="Maximized" ResizeMode="CanResize" MinHeight="550" MinWidth="950" Loaded="MainWindow_OnLoaded" ContentRendered="ContentLoaded"
         Icon="Assets/bolt.png">
     <Window.Resources>
         <DataTemplate x:Name="eatonViewTemplate" DataType="{x:Type viewmodels:EatonViewModel}">
@@ -69,7 +69,7 @@
             <HamburgerMenu:HamburgerMenuItem  Icon="Assets/home.png" Text="Home" Selected="Eaton_Clicked"/>
             <HamburgerMenu:HamburgerMenuItem Icon="Assets/specialist.png" Text="Specialist" Selected="Specialist_Clicked"/>
             <HamburgerMenu:HamburgerMenuItem Icon="Assets/supervisor.png" Text="Supervisor" Selected="Supervisor_Clicked"/>
-            <HamburgerMenu:HamburgerMenuItem Icon="Assets/materials.png" Text="Materials" Selected="materialPlanning_Clicked"/>
+            <HamburgerMenu:HamburgerMenuItem Icon="Assets/materials.png" Text="Materials" Selected="MaterialPlanning_Clicked"/>
             <HamburgerMenu:HamburgerMenuItem Icon="Assets/production.png" Text="Assembler" Selected="Assembler_Clicked"/>
             <HamburgerMenu:HamburgerMenuItem Icon="Assets/shipping.png" Text="Shipping" Selected="Shipping_Clicked"/>
             <HamburgerMenu:HamburgerMenuItem Icon="Assets/stats.png" Text="Analytics" Selected="Analytics_Clicked"/>

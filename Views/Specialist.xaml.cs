@@ -334,7 +334,7 @@ namespace LightningPRO.Views
                         foreach (int id in MultipleSelected)
                         {
                             string query = "update [PRL123] set [Tracking]='MIComplete' where [ID]=" + id.ToString();
-                            Utility.executeNonQueryLP(query);
+                            Utility.ExecuteNonQueryLP(query);
                         }
                         LoadGrid();
                         updateStatus("MULTIPLE SUCCESSFULLY APPROVED");
@@ -342,7 +342,7 @@ namespace LightningPRO.Views
                     else
                     {
                         string query = "update [PRL123] set [Tracking]='MIComplete' where [ID]=" + Selected.ToString();
-                        Utility.executeNonQueryLP(query);
+                        Utility.ExecuteNonQueryLP(query);
 
                         LoadGrid();
                         updateStatus(SelectedGO + " SUCCESSFULLY APPROVED");
@@ -355,7 +355,7 @@ namespace LightningPRO.Views
                         foreach (string goItem in MultipleSelectedGO)
                         {
                             string query = "update [" + ProductTable + "] set [Tracking]='MIComplete' where [GO_Item]='" + goItem + "'";
-                            Utility.executeNonQueryLP(query);
+                            Utility.ExecuteNonQueryLP(query);
                         }
                         LoadGrid();
                         updateStatus("MULTIPLE SUCCESSFULLY APPROVED");
@@ -363,7 +363,7 @@ namespace LightningPRO.Views
                     else
                     {
                         string query = "update [" + ProductTable + "] set [Tracking]='MIComplete' where [GO_Item]='" + SelectedGO + "'";
-                        Utility.executeNonQueryLP(query);
+                        Utility.ExecuteNonQueryLP(query);
 
                         LoadGrid();
                         updateStatus(SelectedGO + " SUCCESSFULLY APPROVED");
@@ -384,7 +384,7 @@ namespace LightningPRO.Views
                         foreach (int id in MultipleSelected)
                         {
                             string query = "update [PRL123] set [Tracking]='InDevelopment' where [ID]=" + id.ToString();
-                            Utility.executeNonQueryLP(query);
+                            Utility.ExecuteNonQueryLP(query);
                         }
                         LoadGrid();
                         updateStatus("MULTIPLE SUCCESSFULLY RECALLED");
@@ -392,7 +392,7 @@ namespace LightningPRO.Views
                     else
                     {
                         string query = "update [PRL123] set [Tracking]='InDevelopment' where [ID]=" + Selected.ToString();
-                        Utility.executeNonQueryLP(query);
+                        Utility.ExecuteNonQueryLP(query);
 
                         LoadGrid();
                         updateStatus(SelectedGO + " RECALLED");
@@ -405,7 +405,7 @@ namespace LightningPRO.Views
                         foreach (string goItem in MultipleSelectedGO)
                         {
                             string query = "update [" + ProductTable + "] set [Tracking]='InDevelopment' where [GO_Item]='" + goItem + "'";
-                            Utility.executeNonQueryLP(query);
+                            Utility.ExecuteNonQueryLP(query);
                         }
                         LoadGrid();
                         updateStatus("MULTIPLE SUCCESSFULLY RECALLED");
@@ -413,7 +413,7 @@ namespace LightningPRO.Views
                     else
                     {
                         string query = "update [" + ProductTable + "] set [Tracking]='InDevelopment' where [GO_Item]='" + SelectedGO + "'";
-                        Utility.executeNonQueryLP(query);
+                        Utility.ExecuteNonQueryLP(query);
 
                         LoadGrid();
                         updateStatus(SelectedGO + " RECALLED");
@@ -431,7 +431,7 @@ namespace LightningPRO.Views
                         MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
                     string query = "delete * from [" + ProductTable + "] where [GO_Item]='" + SelectedGO + "'";
-                    Utility.executeNonQueryLP(query);
+                    Utility.ExecuteNonQueryLP(query);
                     Utility.DeleteCSAValues(SelectedGO, CurrentProduct);
 
                     LoadGrid();
@@ -458,7 +458,7 @@ namespace LightningPRO.Views
         {
             Current_Tab = "Search";
             DataTable dt;
-            string query = Utility.searchQueryGenerator(CurrentProduct, Field.Text, Search.Text);
+            string query = Utility.SearchQueryGenerator(CurrentProduct, Field.Text, Search.Text);
             dt = Utility.SearchLP(query);
             dg.ItemsSource = dt.DefaultView;
             HideFullNotesColoumn();
@@ -472,7 +472,7 @@ namespace LightningPRO.Views
             {
                 if (CurrentProduct != Utility.ProductGroup.PRL123)
                 {
-                    int check = Utility.executeAddToShopPack(SelectedGO, CurrentProduct);
+                    int check = Utility.ExecuteAddToShopPack(SelectedGO, CurrentProduct);
 
                     if (check == 1)
                     {
@@ -495,8 +495,8 @@ namespace LightningPRO.Views
         {
             if (Selected != -1)
             {
-                string pdfDirectory = Utility.getDirectoryForOrderFiles(SelectedGO, CurrentProduct);
-                int check = Utility.executeCONSTRinsert(SelectedGO, pdfDirectory, CurrentProduct);
+                string pdfDirectory = Utility.GetDirectoryForOrderFiles(SelectedGO, CurrentProduct);
+                int check = Utility.ExecuteCONSTRinsert(SelectedGO, pdfDirectory, CurrentProduct);
 
                 if (check == 1) 
                 {
@@ -513,8 +513,8 @@ namespace LightningPRO.Views
         {
             if (Selected != -1)
             {
-                string pdfDirectory = Utility.getDirectoryForOrderFiles(SelectedGO, CurrentProduct);
-                int check = Utility.executeBLTinsert(SelectedGO, pdfDirectory, CurrentProduct);
+                string pdfDirectory = Utility.GetDirectoryForOrderFiles(SelectedGO, CurrentProduct);
+                int check = Utility.ExecuteBLTinsert(SelectedGO, pdfDirectory, CurrentProduct);
 
                 if (check == 1)
                 {

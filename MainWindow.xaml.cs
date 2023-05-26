@@ -26,7 +26,7 @@ namespace LightningPRO
     /// </summary>
     public partial class MainWindow : Window
     {
-        private bool isConfigured;
+        private readonly bool isConfigured;
         public static string localConfigFilePath = System.AppDomain.CurrentDomain.BaseDirectory + "..\\Config.txt";
 
         //single instance of connection to Lightning Pro Database
@@ -60,7 +60,7 @@ namespace LightningPRO
             //Command to delete the automatic configuration file on local computer - Normally should be commented out
             //if (File.Exists(localConfigFilePath)) File.Delete(localConfigFilePath);
 
-            isConfigured = checkConfigured();
+            isConfigured = CheckConfigured();
 
             if (isConfigured)
             {
@@ -71,13 +71,13 @@ namespace LightningPRO
             }
         }
 
-        private void contentRendered(object sender, EventArgs e)
+        private void ContentLoaded(object sender, EventArgs e)
         {
             if (!isConfigured)
             {
                 if (File.Exists(localConfigFilePath))
                 {
-                    automaticConfiguration();
+                    AutomaticConfiguration();
                 }
                 else
                 {
@@ -93,7 +93,7 @@ namespace LightningPRO
         }
 
 
-        private bool checkConfigured()
+        private bool CheckConfigured()
         {
             if (string.IsNullOrEmpty(ConfigurationManager.ConnectionStrings["Location"].ToString()) || string.IsNullOrEmpty(ConfigurationManager.ConnectionStrings["MasterDB"].ToString()) || string.IsNullOrEmpty(ConfigurationManager.ConnectionStrings["LPdatabase"].ToString()) || string.IsNullOrEmpty(ConfigurationManager.ConnectionStrings["orderFiles"].ToString()) || string.IsNullOrEmpty(ConfigurationManager.ConnectionStrings["imagesFolder"].ToString()) || string.IsNullOrEmpty(ConfigurationManager.ConnectionStrings["releaseFolder"].ToString()) || string.IsNullOrEmpty(ConfigurationManager.ConnectionStrings["locationAddress"].ToString()) || string.IsNullOrEmpty(ConfigurationManager.ConnectionStrings["productNameList"].ToString()) || string.IsNullOrEmpty(ConfigurationManager.ConnectionStrings["specialCustomersList"].ToString()))
             {
@@ -105,7 +105,7 @@ namespace LightningPRO
             }
         }
 
-        private void automaticConfiguration()
+        private void AutomaticConfiguration()
         {
             try
             {
@@ -164,7 +164,7 @@ namespace LightningPRO
             }
         }
 
-        private void materialPlanning_Clicked(object sender, RoutedEventArgs e)
+        private void MaterialPlanning_Clicked(object sender, RoutedEventArgs e)
         {
             if (isConfigured)
             {
@@ -224,8 +224,10 @@ namespace LightningPRO
         {
             try
             {
-                System.Configuration.ExeConfigurationFileMap fileMap = new ExeConfigurationFileMap();
-                fileMap.ExeConfigFilename = AppDomain.CurrentDomain.BaseDirectory + "LightningPRO.exe.config";
+                ExeConfigurationFileMap fileMap = new ExeConfigurationFileMap
+                {
+                    ExeConfigFilename = AppDomain.CurrentDomain.BaseDirectory + "LightningPRO.exe.config"
+                };
                 Configuration configFile = ConfigurationManager.OpenMappedExeConfiguration(fileMap, ConfigurationUserLevel.None);
                 var settings = configFile.ConnectionStrings.ConnectionStrings;
                 settings[name].ConnectionString = connectionString;

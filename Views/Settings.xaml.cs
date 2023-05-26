@@ -37,10 +37,10 @@ namespace LightningPRO.Views
         {
             InitializeComponent();
             PRL123_Set();
-            loadGrid("select * from [Employee]");
+            LoadGrid("select * from [Employee]");
         }
 
-        private void loadGrid(string query)
+        private void LoadGrid(string query)
         {
             DataTable dt = Utility.SearchLP(query);
             dg.ItemsSource = dt.DefaultView;    
@@ -59,8 +59,8 @@ namespace LightningPRO.Views
         private void Click_Delete(object sender, RoutedEventArgs e)
         {
             string query = "delete * from [Employee] where [ID]=" + Selected.ToString();
-            Utility.executeNonQueryLP(query);
-            loadGrid("select * from [Employee]");
+            Utility.ExecuteNonQueryLP(query);
+            LoadGrid("select * from [Employee]");
         }
 
         private void Click_Insert(object sender, RoutedEventArgs e)
@@ -72,13 +72,13 @@ namespace LightningPRO.Views
                 cmd.Parameters.AddWithValue("EmployeePosition", Role.Text);
                 cmd.ExecuteNonQuery();
             } //end using command
-            loadGrid("select * from [Employee]");
+            LoadGrid("select * from [Employee]");
         }
 
 
 
 
-        private void loadDeleteGrid()
+        private void LoadDeleteGrid()
         {
             string query = "";
             if (CurrentProduct == Utility.ProductGroup.PRL123)
@@ -95,7 +95,7 @@ namespace LightningPRO.Views
 
         private void Click_CleanUp(object sender, RoutedEventArgs e)
         {
-            loadDeleteGrid();
+            LoadDeleteGrid();
         }
 
         private void Selection_ChangedDelete(object sender, SelectionChangedEventArgs e)
@@ -138,19 +138,19 @@ namespace LightningPRO.Views
                                 currentGOI = GoItem;
                                 RegularShippingProcess(GoItem);
                                 string query = "delete * from [" + ProductTable + "] where [GO_Item]='" + GoItem + "'";
-                                Utility.executeNonQueryLP(query);
+                                Utility.ExecuteNonQueryLP(query);
                                 Utility.DeleteCSAValues(GoItem, CurrentProduct);
                             }
-                            loadDeleteGrid();
+                            LoadDeleteGrid();
                         }
                         else
                         {
                             currentGOI = SelectedDelete;
                             RegularShippingProcess(SelectedDelete);
                             string query = "delete * from [" + ProductTable + "] where [GO_Item]='" + SelectedDelete + "'";
-                            Utility.executeNonQueryLP(query);
+                            Utility.ExecuteNonQueryLP(query);
                             Utility.DeleteCSAValues(SelectedDelete, CurrentProduct);
-                            loadDeleteGrid();
+                            LoadDeleteGrid();
                         }
                         Status.Content = "OLD JOBS SUCCESSFULLY ARCHIVED ";
                     }
@@ -167,7 +167,7 @@ namespace LightningPRO.Views
 
         public class DateGOIPairs
         {
-            private string GOI;
+            private readonly string GOI;
             private DateTime? CommitDate;
 
             public DateGOIPairs(string GoItem) 
@@ -205,9 +205,9 @@ namespace LightningPRO.Views
                     Task<int> ShowProgressBar = TurnOnStatus();
                     int result = await ShowProgressBar;
 
-                    getDates(Utility.ProductGroup.PRL123,"PRL123");
-                    getDates(Utility.ProductGroup.PRL4,"PRL4");
-                    getDates(Utility.ProductGroup.PRLCS,"PRLCS");
+                    GetDates(Utility.ProductGroup.PRL123,"PRL123");
+                    GetDates(Utility.ProductGroup.PRL4,"PRL4");
+                    GetDates(Utility.ProductGroup.PRLCS,"PRLCS");
 
                     Status.Content = "COMMIT DATES SUCCESSFULLY UPDATED ";
                 }
@@ -230,7 +230,7 @@ namespace LightningPRO.Views
 
 
 
-        private void getDates(Utility.ProductGroup currProd, string currTable) 
+        private void GetDates(Utility.ProductGroup currProd, string currTable)
         {
             DateGOIPairsList = new List<DateGOIPairs>();
 
@@ -260,7 +260,7 @@ namespace LightningPRO.Views
 
             for (int i = 0; i < DateGOIPairsList.Count; i++) 
             {
-                using (DataTableReader dtr = Utility.loadData("select [Commit Date] from [tblOrderStatus] where [GO Item]='" + DateGOIPairsList[i].Get_GOI() + "'"))
+                using (DataTableReader dtr = Utility.LoadData("select [Commit Date] from [tblOrderStatus] where [GO Item]='" + DateGOIPairsList[i].Get_GOI() + "'"))
                 {
                     while (dtr.Read())
                     {
@@ -378,9 +378,9 @@ namespace LightningPRO.Views
         {
             SetupDirectoriesDate(GoItem);
             SaveBLTfiles(GoItem);           //only for PRL123
-            getDataFromLPDB(GoItem);
-            getCSAinfo(GoItem);
-            cleanUpDirectories(GoItem);
+            GetDataFromLPDB(GoItem);
+            GetCSAinfo(GoItem);
+            CleanUpDirectories(GoItem);
         }
 
         
@@ -390,19 +390,19 @@ namespace LightningPRO.Views
         {
             if (CurrentProduct == Utility.ProductGroup.PRL123) 
             {
-                BitmapImage GOIpage = getBidman(GOI);
+                BitmapImage GOIpage = GetBidman(GOI);
                 var path = pdfDirectory + @"\BLT_" + GOI + ".pdf";
                 Utility.SaveImageToPdf(path, GOIpage);
             }
         }
 
-        private BitmapImage getBidman(string GOItem)
+        private BitmapImage GetBidman(string GOItem)
         {
             BitmapImage output;
-            string imageFilePath = Utility.getImageFilePath(GOItem, CurrentProduct, 0);
+            string imageFilePath = Utility.GetImageFilePath(GOItem, CurrentProduct, 0);
             if (string.IsNullOrEmpty(imageFilePath))  //proceed with bidman byte array to bitmap image
             {
-                output = Utility.retrieveBinaryBidman(GOItem);
+                output = Utility.RetrieveBinaryBidman(GOItem);
             }
             else
             {
@@ -416,14 +416,14 @@ namespace LightningPRO.Views
 
         private void SetupDirectoriesDate(string GOI)
         {
-            pdfDirectory = Utility.getDirectoryForOrderFiles(GOI, CurrentProduct);
+            pdfDirectory = Utility.GetDirectoryForOrderFiles(GOI, CurrentProduct);
             Directory.CreateDirectory(pdfDirectory + @"\Z_FinalShippedDocuments");
 
             DateTime dt = DateTime.Now;
             shippedDate = dt.ToShortDateString();
         }
 
-        private void getDataFromLPDB(string GOI)
+        private void GetDataFromLPDB(string GOI)
         {
             //base query for all similar fields 
             string query = "select [GO_Item], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Urgency], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Catalogue], [ProductSpecialist], [SpecialCustomer], [AMO], [PaintedBox], [DNSB], [Complete], [Short], [Notes], ";
@@ -441,7 +441,7 @@ namespace LightningPRO.Views
                 query += "[IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [ThirtyDeepEnclosure] from [PRLCS] where [GO_Item]='" + GOI + "' and [PageNumber]=0";
             }
 
-            DataTableReader dtr = Utility.loadData(query);
+            DataTableReader dtr = Utility.LoadData(query);
             using (dtr)
             {
                 while (dtr.Read())
@@ -508,9 +508,9 @@ namespace LightningPRO.Views
         }
 
 
-        private void getCSAinfo(string GOI)
+        private void GetCSAinfo(string GOI)
         {
-            DataTableReader values = Utility.getCSAValues(GOI, CurrentProduct);
+            DataTableReader values = Utility.GetCSAValues(GOI, CurrentProduct);
             using (values)
             {
                 while (values.Read())
@@ -551,7 +551,7 @@ namespace LightningPRO.Views
 
 
 
-        private void cleanUpDirectories(string GOI)
+        private void CleanUpDirectories(string GOI)
         {
             var pdfDir = new DirectoryInfo(pdfDirectory);
 
@@ -559,15 +559,15 @@ namespace LightningPRO.Views
             string txtPath = pdfDirectory + @"\Z_FinalShippedDocuments\QualityInfo_" + GOI + ".txt";
             if (CurrentProduct == Utility.ProductGroup.PRL123)
             {
-                writeQualityInfoTXTprl123(txtPath);
+                WriteQualityInfoTXTprl123(txtPath);
             }
             else if (CurrentProduct == Utility.ProductGroup.PRL4)
             {
-                writeQualityInfoTXTprl4(txtPath);
+                WriteQualityInfoTXTprl4(txtPath);
             }
             else if (CurrentProduct == Utility.ProductGroup.PRLCS)
             {
-                writeQualityInfoTXTprlCS(txtPath);
+                WriteQualityInfoTXTprlCS(txtPath);
             }
             //convert the TXT file to PDF
             Utility.ConvertTXTtoPDF(txtPath, pdfDirectory + @"\BLT_" + GOI + "_QualityInfo.pdf");
@@ -610,7 +610,7 @@ namespace LightningPRO.Views
         }
 
 
-        private void writeQualityInfoTXTprl123(string documentPath)
+        private void WriteQualityInfoTXTprl123(string documentPath)
         {
             //PRL123
             string[] lines = {"QUALITY INFORMATION REPORT"," ", "Go Item: " + GO_Item, "Product ID: " + ProductID, "Shop Order Interior: " + interior,
@@ -626,7 +626,7 @@ namespace LightningPRO.Views
             Utility.WriteLinesToTXT(lines, documentPath);
         }
 
-        private void writeQualityInfoTXTprl4(string documentPath)
+        private void WriteQualityInfoTXTprl4(string documentPath)
         {
             //PRL4
             string[] lines = {"QUALITY INFORMATION REPORT"," ", "Go Item: " + GO_Item, "Product ID: " + ProductID, "Shop Order Interior: " + interior,
@@ -642,7 +642,7 @@ namespace LightningPRO.Views
             Utility.WriteLinesToTXT(lines, documentPath);
         }
 
-        private void writeQualityInfoTXTprlCS(string documentPath)
+        private void WriteQualityInfoTXTprlCS(string documentPath)
         {
             //PRLCS
             string[] lines = {"QUALITY INFORMATION REPORT"," ", "Go Item: " + GO_Item, "Product ID: " + ProductID, "Shop Order Interior: " + interior,
@@ -681,7 +681,7 @@ namespace LightningPRO.Views
             PWL123.Background = Brushes.DarkBlue;
             PWL4.Background = Brushes.Blue;
             PWLCS.Background = Brushes.Blue;
-            loadDeleteGrid();
+            LoadDeleteGrid();
         }
 
         private void PRL4_Set()
@@ -691,7 +691,7 @@ namespace LightningPRO.Views
             PWL4.Background = Brushes.DarkBlue;
             PWL123.Background = Brushes.Blue;
             PWLCS.Background = Brushes.Blue;
-            loadDeleteGrid();
+            LoadDeleteGrid();
         }
 
         private void PRLCS_Set()
@@ -701,7 +701,7 @@ namespace LightningPRO.Views
             PWL4.Background = Brushes.Blue;
             PWL123.Background = Brushes.Blue;
             PWLCS.Background = Brushes.DarkBlue;
-            loadDeleteGrid();
+            LoadDeleteGrid();
         }
 
 

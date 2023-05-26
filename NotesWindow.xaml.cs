@@ -29,12 +29,12 @@ namespace LightningPRO
             GOItem.Content = GOI;
             ProductTable = productTBL;
             btnNotes = NotesButton;
-            Note.Text = Utility.getNotes(GOItem.Content.ToString(), ProductTable);
+            Note.Text = Utility.GetNotes(GOItem.Content.ToString(), ProductTable);
         }
 
         private async void Save_Click(object sender, RoutedEventArgs e)
         {
-            Utility.updateNotes(GOItem.Content.ToString(), ProductTable, Note.Text);
+            Utility.UpdateNotes(GOItem.Content.ToString(), ProductTable, Note.Text);
             Task<int> ShowProgressBar = TurnOnStatus();
             int result = await ShowProgressBar;
             if (result == 1) Status.Content = "";

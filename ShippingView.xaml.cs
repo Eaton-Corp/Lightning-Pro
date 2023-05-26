@@ -68,8 +68,8 @@ namespace LightningPRO
 
         private void getGOs(string query)
         {
-            DataTableReader rd = Utility.loadData(query);
-            DataTableReader rb = Utility.loadData(query);
+            DataTableReader rd = Utility.LoadData(query);
+            DataTableReader rb = Utility.LoadData(query);
             
             var counter = 0;
             int pages = 0;

@@ -92,7 +92,7 @@ namespace LightningPRO
             string trip3 = "FERME. POUR REFERMER, POUSSER LE MANCHON A LA POSITION 'OVERT' ET ENSUITE 'FERME'.";
             string trip4 = "239P058H01 REV #10";
 
-            DataTableReader values = Utility.getCSAValues(GOItem,CurrentProduct);
+            DataTableReader values = Utility.GetCSAValues(GOItem,CurrentProduct);
 
             using (values)
             {
