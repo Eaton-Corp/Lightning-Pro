@@ -48,7 +48,7 @@ namespace LightningPRO.Views
 
                 if (Current_Tab == "Search")
                 {
-                    search();
+                    Search();
                     return;
                 }
                 else
@@ -162,11 +162,11 @@ namespace LightningPRO.Views
         }
 
 
-        private void search()
+        private void Search()
         {
             Current_Tab = "Search";
             DataTable dt;
-            string query = Utility.searchQueryGenerator(CurrentProduct, Field.Text, Search.Text);
+            string query = Utility.SearchQueryGenerator(CurrentProduct, Field.Text, SearchBox.Text);
             dt = Utility.SearchLP(query);
             dg.ItemsSource = dt.DefaultView;
             HideFullNotesColoumn();
@@ -176,14 +176,14 @@ namespace LightningPRO.Views
 
         private void Search_Click(object sender, RoutedEventArgs e)
         {
-            search();
+            Search();
         }
 
         private void KeyDownClick(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
-                search();
+                Search();
             }
         }
 

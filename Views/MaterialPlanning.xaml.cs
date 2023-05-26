@@ -147,11 +147,11 @@ namespace LightningPRO.Views
                 {
                     if (childNode.OuterXml.ToString().Contains("\"GONumber\""))                    
                     {
-                        GO = Utility.getBetween(childNode.OuterXml.ToString(), "V=\"", "\"");
+                        GO = Utility.GetBetween(childNode.OuterXml.ToString(), "V=\"", "\"");
                     }
                     if (childNode.OuterXml.ToString().Contains("\"ItemNumber\""))
                     {
-                        itemNum = Utility.getBetween(childNode.OuterXml.ToString(), "V=\"", "\"");
+                        itemNum = Utility.GetBetween(childNode.OuterXml.ToString(), "V=\"", "\"");
                         break;
                     }
                 }
@@ -171,17 +171,17 @@ namespace LightningPRO.Views
                 {
                     if (childNode.OuterXml.ToString().Contains("\"Description\""))
                     {
-                        Description = Utility.getBetween(childNode.OuterXml.ToString(), "V=\"", "\"");
+                        Description = Utility.GetBetween(childNode.OuterXml.ToString(), "V=\"", "\"");
                         check++;
                     }
                     if (childNode.OuterXml.ToString().Contains("\"CatalogNumber\""))
                     {
-                        NamePart = Utility.getBetween(childNode.OuterXml.ToString(), "V=\"", "\"");
+                        NamePart = Utility.GetBetween(childNode.OuterXml.ToString(), "V=\"", "\"");
                         check++;
                     }
                     if (childNode.OuterXml.ToString().Contains("\"Quantity\""))
                     {
-                        Quantity = Utility.getBetween(childNode.OuterXml.ToString(), "V=\"", "\"");
+                        Quantity = Utility.GetBetween(childNode.OuterXml.ToString(), "V=\"", "\"");
                         check++;
                     }
                     if (check == 3) 
@@ -207,17 +207,17 @@ namespace LightningPRO.Views
                     {
                         if (childNode.OuterXml.ToString().Contains("\"Description\""))
                         {
-                            Description2 = Utility.getBetween(childNode.OuterXml.ToString(), "V=\"", "\"");
+                            Description2 = Utility.GetBetween(childNode.OuterXml.ToString(), "V=\"", "\"");
                             check2++;
                         }
                         if (childNode.OuterXml.ToString().Contains("\"CatalogNumber\""))
                         {
-                            NamePart2 = Utility.getBetween(childNode.OuterXml.ToString(), "V=\"", "\"");
+                            NamePart2 = Utility.GetBetween(childNode.OuterXml.ToString(), "V=\"", "\"");
                             check2++;
                         }
                         if (childNode.OuterXml.ToString().Contains("\"Quantity\""))
                         {
-                            Quantity2 = Utility.getBetween(childNode.OuterXml.ToString(), "V=\"", "\"");
+                            Quantity2 = Utility.GetBetween(childNode.OuterXml.ToString(), "V=\"", "\"");
                             check2++;
                         }
                         if (check2 == 3)
@@ -238,7 +238,7 @@ namespace LightningPRO.Views
                             info PartStatus;
                             if (isInItemMaster) 
                             {
-                                if (Utility.standardAMO(NamePart2))                                //check PullSequence if standardAMO
+                                if (Utility.StandardAMO(NamePart2))                                //check PullSequence if standardAMO
                                 {
                                     PartStatus = info.AMO;
                                 }
@@ -379,7 +379,7 @@ namespace LightningPRO.Views
         {
             string query = "select [" +Field+ "] from [" +Table+ "] where [" +Field+ "]='" + Part + "'";
 
-            using (DataTableReader dtr = Utility.loadData(query))
+            using (DataTableReader dtr = Utility.LoadData(query))
             {
                 while (dtr.Read())
                 {
@@ -400,21 +400,21 @@ namespace LightningPRO.Views
         private void insertButtonClickedPullPart(object sender, RoutedEventArgs e)
         {
             string command = "INSERT INTO [PullPartStatus](Item, Description, ItemStatus) VALUES(" + ItemPullPart.Text + ", " + DescriptionPullPart.Text + ", " + StatusPullPart.Text + ")";
-            Utility.executeNonQueryLP(command);
+            Utility.ExecuteNonQueryLP(command);
             updateStatus(ItemPullPart.Text + " INSERTED");
         }
 
         private void updateButtonClickedPullPart(object sender, RoutedEventArgs e)
         {
             string command = "UPDATE [PullPartStatus] SET [Description] ='" + DescriptionPullPart.Text + "', [ItemStatus] = '" + StatusPullPart.Text + "' WHERE [Item]='" + ItemPullPart.Text + "'";
-            Utility.executeNonQueryLP(command);
+            Utility.ExecuteNonQueryLP(command);
             updateStatus(ItemPullPart.Text + " UPDATED");
         }
 
         private void deleteButtonClickedPullPart(object sender, RoutedEventArgs e)
         {
             string command = "DELETE * FROM [PullPartStatus] WHERE [Item]='" + ItemPullPart.Text + "'";
-            Utility.executeNonQueryLP(command);
+            Utility.ExecuteNonQueryLP(command);
             updateStatus(ItemPullPart.Text + " DELETED");
         }
 
@@ -434,21 +434,21 @@ namespace LightningPRO.Views
         private void insertButtonClickedPullSequence(object sender, RoutedEventArgs e)
         {
             string command = "INSERT INTO [PullSequence](Item, Size) VALUES(" +ItemPullSequence.Text+ ", " +Int32.Parse(SizePullSequence.Text)+ ")";
-            Utility.executeNonQueryLP(command);
+            Utility.ExecuteNonQueryLP(command);
             updateStatus(ItemPullSequence.Text + " INSERTED");
         }
 
         private void updateButtonClickedPullSequence(object sender, RoutedEventArgs e)
         {
             string command = "UPDATE [PullSequence] SET [Size] =" + Int32.Parse(SizePullSequence.Text) + " WHERE [Item]='" + ItemPullSequence.Text + "'";
-            Utility.executeNonQueryLP(command);
+            Utility.ExecuteNonQueryLP(command);
             updateStatus(ItemPullSequence.Text + " UPDATED");
         }
 
         private void deleteButtonClickedPullSequence(object sender, RoutedEventArgs e)
         {
             string command = "DELETE * FROM [PullSequence] WHERE [Item]='" + ItemPullSequence.Text + "'";
-            Utility.executeNonQueryLP(command);
+            Utility.ExecuteNonQueryLP(command);
             updateStatus(ItemPullSequence.Text + " DELETED");
         }
 
@@ -466,21 +466,21 @@ namespace LightningPRO.Views
         private void insertButtonClickedReplacement(object sender, RoutedEventArgs e)
         {
             string command = "INSERT INTO [ReplacementParts](Find, Replace, Description) VALUES(" + FindReplacement.Text + ", " + ReplaceReplacement.Text + ", " + DescriptionReplacement.Text + ")";
-            Utility.executeNonQueryLP(command);
+            Utility.ExecuteNonQueryLP(command);
             updateStatus(FindReplacement.Text + " INSERTED");
         }
 
         private void updateButtonClickedReplacement(object sender, RoutedEventArgs e)
         {
             string command = "UPDATE [ReplacementParts] SET [Replace] ='" +ReplaceReplacement.Text+ "', [Description] = '" +DescriptionReplacement.Text+ "' WHERE [Find]='" +FindReplacement.Text+ "'";
-            Utility.executeNonQueryLP(command);
+            Utility.ExecuteNonQueryLP(command);
             updateStatus(FindReplacement.Text + " UPDATED");
         }
 
         private void deleteButtonClickedReplacement(object sender, RoutedEventArgs e)
         {
             string command = "DELETE * FROM [ReplacementParts] WHERE [Find]='" + FindReplacement.Text + "'";
-            Utility.executeNonQueryLP(command);
+            Utility.ExecuteNonQueryLP(command);
             updateStatus(FindReplacement.Text + " DELETED");
         }
         private void clearButtonClickedReplacement(object sender, RoutedEventArgs e)

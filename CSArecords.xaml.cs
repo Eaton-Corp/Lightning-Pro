@@ -59,7 +59,7 @@ namespace LightningPRO
             if (selected != -1) 
             {
                 string commandStr = "update [CSANamePlateRecord259P075H01] set [Series Number]='" + seriesNumber.Text + "' where [ID]=" + selected.ToString();
-                Utility.executeNonQueryLP(commandStr);
+                Utility.ExecuteNonQueryLP(commandStr);
 
                 status.Content = selected.ToString() + ": Series # Saved";
                 loadGrid();

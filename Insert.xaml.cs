@@ -637,12 +637,12 @@ namespace LightningPRO
                     if (node.OuterXml.ToString().Contains("Designations"))
                     {
 
-                        Designation.Text = Utility.getBetween(node.OuterXml.ToString(), "V=\"", "\"");
+                        Designation.Text = Utility.GetBetween(node.OuterXml.ToString(), "V=\"", "\"");
                        
                     }
                     if (node.OuterXml.ToString().Contains("ItemNumber"))
                     {
-                        string itemNumber = Utility.getBetween(node.OuterXml.ToString(), "V=\"", "\"");
+                        string itemNumber = Utility.GetBetween(node.OuterXml.ToString(), "V=\"", "\"");
                         Item.Text = itemNumber;
                         if (duplicates[activeLines[page]] == 2)
                         {
@@ -934,7 +934,7 @@ namespace LightningPRO
                             
                             if (duplicates[activeLines[page]] == 2)
                             {
-                                string str = Utility.getBetween(line, "Max X-Space for Branch Devices:", "\"");
+                                string str = Utility.GetBetween(line, "Max X-Space for Branch Devices:", "\"");
                                 if(str.Contains("X"))
                                 {
                                     str.Remove(str.Length - 1);
@@ -948,7 +948,7 @@ namespace LightningPRO
                             }
                             else
                             {
-                                Xspace.Text = Utility.getBetween(line, "Max X-Space for Branch Devices: ", "\"");
+                                Xspace.Text = Utility.GetBetween(line, "Max X-Space for Branch Devices: ", "\"");
                                 CatalogFound = true;                                
                             }
 
@@ -1090,7 +1090,7 @@ namespace LightningPRO
                 try
                 {                 
                     Boolean Duplicate = false;
-                    if (Utility.isDuplicate(GO_Item.Text,Utility.ProductGroup.PRL123))
+                    if (Utility.IsDuplicate(GO_Item.Text,Utility.ProductGroup.PRL123))
                     {
                         MessageBox.Show("You Have A Duplicate. GO Items Must Be Unique.", "Duplicate Detected", MessageBoxButton.OK, MessageBoxImage.Information);
                         Duplicate = true;
@@ -1232,7 +1232,7 @@ namespace LightningPRO
             try
             {
                 Boolean Duplicate = false;
-                if (Utility.isDuplicate(GO_Item.Text,Utility.ProductGroup.PRL123))
+                if (Utility.IsDuplicate(GO_Item.Text,Utility.ProductGroup.PRL123))
                 {
                     MessageBox.Show("You Have A Duplicate. GO Items Must Be Unique.", "Duplicate Detected", MessageBoxButton.OK, MessageBoxImage.Information);
                     Duplicate = true;
@@ -1906,7 +1906,7 @@ namespace LightningPRO
                         {
                             if (child.OuterXml.ToString().Contains("\"CatalogNumber\""))                    //get CatalogNumber value and alter it using convertToRequired
                             {
-                                string output = Utility.getBetween(child.OuterXml.ToString(), "V=\"", "\"");    
+                                string output = Utility.GetBetween(child.OuterXml.ToString(), "V=\"", "\"");    
                                 if (!(output.StartsWith("CN")) && !(output.Contains("-")) && !(output.Contains("PROV")) && !(output.Contains("start")) && !(output.StartsWith("S3")) && !(output.StartsWith("P2")) && !(output == "C1") && !(output.StartsWith("A29")) && !(output.StartsWith("H5")))
                                 {
                                     currentpart.setName(convertToRequired(output, encl, paint, mount, multiple));
@@ -1914,7 +1914,7 @@ namespace LightningPRO
                             }
                             if (child.OuterXml.ToString().Contains("\"Quantity\""))             //get quantity value of current part
                             {
-                                currentpart.addToQuantity(Int32.Parse(Utility.getBetween(child.OuterXml.ToString(), "V=\"", "\"")));
+                                currentpart.addToQuantity(Int32.Parse(Utility.GetBetween(child.OuterXml.ToString(), "V=\"", "\"")));
                             }
                         }//end for loop attributes
 
@@ -1942,7 +1942,7 @@ namespace LightningPRO
             {
                 partslist[i].setName(Utility.ReplacePart(partslist[i].Get_partName()));     //look for replacement part
                 
-                if(Utility.standardAMO(partslist[i].Get_partName()))                                //check PullSequence if standardAMO
+                if(Utility.StandardAMO(partslist[i].Get_partName()))                                //check PullSequence if standardAMO
                 {
                     statuses.Add(info.AMO);
                 }
@@ -2122,7 +2122,7 @@ namespace LightningPRO
                 try
                 {
                     Boolean Duplicate = false;
-                    if (Utility.isDuplicate(GO_Item.Text,Utility.ProductGroup.PRL123))
+                    if (Utility.IsDuplicate(GO_Item.Text,Utility.ProductGroup.PRL123))
                     {
                         MessageBox.Show("You Have A Duplicate. GO Items Must Be Unique.", "Duplicate Detected", MessageBoxButton.OK, MessageBoxImage.Information);
                         Duplicate = true;

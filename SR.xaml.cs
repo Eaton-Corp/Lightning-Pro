@@ -85,7 +85,7 @@ namespace LightningPRO
         private void getCommitAndSpecialist()
         {
             string query = "select [CommitDate], [ProductSpecialist] from [" + ProductTable + "] where [ID]=" + Id.ToString();
-            using (DataTableReader dtr = Utility.loadData(query))
+            using (DataTableReader dtr = Utility.LoadData(query))
             {
                 while (dtr.Read())
                 {
@@ -105,7 +105,7 @@ namespace LightningPRO
         {
             int y = 280;
 
-            using (DataTableReader dtr = Utility.loadData(query))
+            using (DataTableReader dtr = Utility.LoadData(query))
             {
                 while (dtr.Read())
                 {

@@ -685,7 +685,7 @@ namespace LightningPRO
                 LineItemHas90degWireway = false;
             }
 
-            NumOfStructrues = Int32.Parse(Utility.getBetween(ImagesInText[firstPage + 1], "Total of ", " Structures"));
+            NumOfStructrues = Int32.Parse(Utility.GetBetween(ImagesInText[firstPage + 1], "Total of ", " Structures"));
             LineItemStructuresArr = new Structure[NumOfStructrues];
 
 
@@ -962,11 +962,11 @@ namespace LightningPRO
                         {
                             if (childNode.OuterXml.ToString().Contains("\"GONumber\""))
                             {
-                                GO = Utility.getBetween(childNode.OuterXml.ToString(), "V=\"", "\"");
+                                GO = Utility.GetBetween(childNode.OuterXml.ToString(), "V=\"", "\"");
                             }
                             if (childNode.OuterXml.ToString().Contains("\"ItemNumber\""))
                             {
-                                itemNum = Utility.getBetween(childNode.OuterXml.ToString(), "V=\"", "\"");
+                                itemNum = Utility.GetBetween(childNode.OuterXml.ToString(), "V=\"", "\"");
                                 break;
                             }
                         }
@@ -976,9 +976,9 @@ namespace LightningPRO
                         XmlNode MainMaterialLineItemNode = lineItemNode.SelectSingleNode("BMLineItem");
                         //Main Description
                         string line = MainMaterialLineItemNode.FirstChild.OuterXml.ToString();
-                        ShortCircuitRatingArr[i] = Utility.getBetween(line, "Rating: ", "kA,");
+                        ShortCircuitRatingArr[i] = Utility.GetBetween(line, "Rating: ", "kA,");
 
-                        MainBusBarCapacityArr[i] = Utility.getNumberInString(Utility.getBetween(line, "-Wire, ", ","));
+                        MainBusBarCapacityArr[i] = Utility.GetNumberInString(Utility.GetBetween(line, "-Wire, ", ","));
 
                         if (line.Contains("1-Phase"))
                         {
@@ -1144,7 +1144,7 @@ namespace LightningPRO
                             EnclosureArr[i] = "";
                         }
 
-                        AmpsArr[i] = Utility.getMaxVoltage(VoltageArr[i]);
+                        AmpsArr[i] = Utility.GetMaxVoltage(VoltageArr[i]);
 
                         i++;
                     }
@@ -1230,7 +1230,7 @@ namespace LightningPRO
 
         private void Insert_Entry(object sender, RoutedEventArgs e)
         {
-            if (Utility.isDuplicate(GO_Item.Text, Utility.ProductGroup.PRLCS) == false)
+            if (Utility.IsDuplicate(GO_Item.Text, Utility.ProductGroup.PRLCS) == false)
             {
                 int amountOfPages = 0;
                 int firstPageIndex = getFirstPageIndex();

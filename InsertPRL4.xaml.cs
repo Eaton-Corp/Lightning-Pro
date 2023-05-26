@@ -654,15 +654,15 @@ namespace LightningPRO
                         {
                             if (childNode.OuterXml.ToString().Contains("\"Designations\""))
                             {
-                                DesignationArr[i] = Utility.getBetween(childNode.OuterXml.ToString(), "V=\"", "\"");
+                                DesignationArr[i] = Utility.GetBetween(childNode.OuterXml.ToString(), "V=\"", "\"");
                             }
                             if (childNode.OuterXml.ToString().Contains("\"GONumber\""))
                             {
-                                GO = Utility.getBetween(childNode.OuterXml.ToString(), "V=\"", "\"");
+                                GO = Utility.GetBetween(childNode.OuterXml.ToString(), "V=\"", "\"");
                             }
                             if (childNode.OuterXml.ToString().Contains("\"ItemNumber\""))
                             {
-                                itemNum = Utility.getBetween(childNode.OuterXml.ToString(), "V=\"", "\"");
+                                itemNum = Utility.GetBetween(childNode.OuterXml.ToString(), "V=\"", "\"");
                                 break;
                             }
                         }
@@ -936,14 +936,14 @@ namespace LightningPRO
 
                         if (line.Contains("Max X-Space for Branch Devices:"))
                         {
-                            XSpaceUsedArr[i] = Utility.getBetween(line, "Max X-Space for Branch Devices: ", "\"");
+                            XSpaceUsedArr[i] = Utility.GetBetween(line, "Max X-Space for Branch Devices: ", "\"");
                             CatalogFound = true;
                         }
                         else
                         {
                             if (line2.Contains("CatalogNumber") && CatalogFound == false)
                             {
-                                XSpaceUsedArr[i] = Utility.getBetween(line2, "-", "\"");
+                                XSpaceUsedArr[i] = Utility.GetBetween(line2, "-", "\"");
                                 CatalogFound = true;
                             }
                         }
@@ -1092,7 +1092,7 @@ namespace LightningPRO
 
         private void Insert_Entry(object sender, RoutedEventArgs e)
         {
-            if (Utility.isDuplicate(GO_Item.Text, Utility.ProductGroup.PRL4) == false)
+            if (Utility.IsDuplicate(GO_Item.Text, Utility.ProductGroup.PRL4) == false)
             {
                 int amountOfPages = 0;
                 int firstPageIndex = getFirstPageIndex();

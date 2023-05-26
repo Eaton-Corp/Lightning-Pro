@@ -92,7 +92,7 @@ namespace LightningPRO.Views
         {
             try
             {
-                DataTableReader rd = Utility.loadData("select * from [Employee]");
+                DataTableReader rd = Utility.LoadData("select * from [Employee]");
                 using (rd)
                 {
                     while (rd.Read())
@@ -232,7 +232,7 @@ namespace LightningPRO.Views
         private void OrderNumToGOI() 
         { 
             string query = "SELECT [PRL123.GO_Item] AS [GO_Item], '' AS Source FROM [PRL123] where [ShopOrderInterior] = '" + Scan.Text + "' OR [ShopOrderTrim] = '" + Scan.Text + "' OR [ShopOrderBox] = '" + Scan.Text + "' UNION SELECT [PRL4.GO_Item] AS [GO_Item],'4-' AS Source FROM [PRL4] where [ShopOrderInterior] = '" + Scan.Text + "' OR [ShopOrderTrim] = '" + Scan.Text + "' OR [ShopOrderBox] = '" + Scan.Text + "' UNION SELECT [PRLCS.GO_Item] AS [GO_Item], 'CS-' AS Source FROM [PRLCS] where [ShopOrderInterior] = '" + Scan.Text + "' OR [ShopOrderTrim] = '" + Scan.Text + "' OR [ShopOrderBox] = '" + Scan.Text + "'";
-            DataTableReader rd = Utility.loadData(query);
+            DataTableReader rd = Utility.LoadData(query);
             if (rd.HasRows == false)
             {
                 return;
@@ -254,8 +254,8 @@ namespace LightningPRO.Views
         private void getGOs(string query)
         {
             //get the data twice - once for counters and once for operations
-            DataTableReader rd = Utility.loadData(query);
-            DataTableReader rb = Utility.loadData(query);
+            DataTableReader rd = Utility.LoadData(query);
+            DataTableReader rb = Utility.LoadData(query);
 
             if (rd.HasRows == false)
             {
@@ -448,7 +448,7 @@ namespace LightningPRO.Views
 
             if (AMO.IsChecked == true) AMOButton.Visibility = Visibility.Visible; else AMOButton.Visibility = Visibility.Hidden;
            
-            if (string.IsNullOrEmpty(Utility.getNotes(GO_Item.Text, ProductTable))) btnNotes.Background = System.Windows.Media.Brushes.LightGray; else btnNotes.Background = System.Windows.Media.Brushes.Blue;
+            if (string.IsNullOrEmpty(Utility.GetNotes(GO_Item.Text, ProductTable))) btnNotes.Background = System.Windows.Media.Brushes.LightGray; else btnNotes.Background = System.Windows.Media.Brushes.Blue;
 
             if (CurrentProduct == Utility.ProductGroup.PRL123)
             {
@@ -502,11 +502,11 @@ namespace LightningPRO.Views
         private BitmapImage getBidman(string GOItem)
         {
             BitmapImage output;
-            string imageFilePath = Utility.getImageFilePath(GOItem, CurrentProduct, MultiPageNumber[page]);
+            string imageFilePath = Utility.GetImageFilePath(GOItem, CurrentProduct, MultiPageNumber[page]);
             if (string.IsNullOrEmpty(imageFilePath))  //proceed with bidman byte array to bitmap image
             {
                 hasImageFilePath = false;
-                output = Utility.retrieveBinaryBidman(GOItem);
+                output = Utility.RetrieveBinaryBidman(GOItem);
             }
             else
             {
@@ -514,7 +514,7 @@ namespace LightningPRO.Views
                 ImageFilePath = imageFilePath;
                 output = Utility.PNGtoBitmap(ImageFilePath);
             }
-            LastSave.Content = Utility.getLastSave(GOItem, CurrentProduct, MultiPageNumber[page]);
+            LastSave.Content = Utility.GetLastSave(GOItem, CurrentProduct, MultiPageNumber[page]);
             return output;
         }
 
@@ -571,7 +571,7 @@ namespace LightningPRO.Views
             {
                 binaryImageSave();
             }
-            Utility.updateLastSave(GOItemsArr[page], CurrentProduct, MultiPageNumber[page]);
+            Utility.UpdateLastSave(GOItemsArr[page], CurrentProduct, MultiPageNumber[page]);
         }
 
         private void binaryImageSave() //save image as an array of bytes 
@@ -759,7 +759,7 @@ namespace LightningPRO.Views
                 }
 
                 string commandStr = "update [" + ProductTable + "] set [Tracking]='Shipping' where [GO_Item]='" + GO_Item.Text + "'";
-                Utility.executeNonQueryLP(commandStr);
+                Utility.ExecuteNonQueryLP(commandStr);
 
                 updateStatus(GO_Item.Text + " SENT TO SHIPPING");
                 GC.Collect();
@@ -782,8 +782,8 @@ namespace LightningPRO.Views
         {
             if (SuccessPull == true)
             {
-                string pdfDirectory = Utility.getDirectoryForOrderFiles(GO_Item.Text, CurrentProduct);
-                int check = Utility.executeBLTinsert(GO_Item.Text, pdfDirectory, CurrentProduct);
+                string pdfDirectory = Utility.GetDirectoryForOrderFiles(GO_Item.Text, CurrentProduct);
+                int check = Utility.ExecuteBLTinsert(GO_Item.Text, pdfDirectory, CurrentProduct);
 
                 if (check == 1)
                 {
@@ -807,7 +807,7 @@ namespace LightningPRO.Views
                        MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                     {
                         string query = "update [" + ProductTable + "] set [Tracking]='MIComplete' where [GO_Item]='" + GO_Item.Text + "'";
-                        Utility.executeNonQueryLP(query);
+                        Utility.ExecuteNonQueryLP(query);
 
                         updateStatus(GO_Item.Text + " RECALLED");
                     }
