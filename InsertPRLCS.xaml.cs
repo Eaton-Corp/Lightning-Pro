@@ -29,7 +29,7 @@ using System.Diagnostics;
 using System.Net.Mail;
 using System.Net;
 
-namespace PRL123_Final
+namespace LightningPRO
 {
     /// <summary>
     /// Interaction logic for InsertPRLCS.xaml

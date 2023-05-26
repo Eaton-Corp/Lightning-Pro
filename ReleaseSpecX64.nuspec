@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package >
   <metadata>
-    <id>PRL123_Final</id>
+    <id>LightningPRO</id>
     <version>2.0.7</version>
-    <title>PRL123</title>
-    <authors>Dr. Bartholomew Blank</authors>
+    <title>LightningPRO</title>
+    <authors>Hessian.AI</authors>
     <license type="expression">MIT</license>
-    <description>PRL 123 App</description>
+    <description>Eaton LightningPRO App</description>
     <copyright>None</copyright>
   </metadata>
   <files>

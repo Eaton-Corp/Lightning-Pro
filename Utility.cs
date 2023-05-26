@@ -20,7 +20,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.ComponentModel.Composition;
 
-namespace PRL123_Final
+namespace LightningPRO
 {
     //functions used multiple times throughout the program
     

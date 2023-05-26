@@ -10,7 +10,7 @@ using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.Collections.ObjectModel;
 
-namespace PRL123_Final.Views
+namespace LightningPRO.Views
 {
     /// <summary>
     /// Interaction logic for Shipping.xaml

@@ -15,7 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Win32;
 
-namespace PRL123_Final.Views
+namespace LightningPRO.Views
 {
     /// <summary>
     /// Interaction logic for Editor.xaml

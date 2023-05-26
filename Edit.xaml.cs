@@ -11,12 +11,12 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using iTextSharp.text.pdf;
-using PRL123_Final.Views;
+using LightningPRO.Views;
 using System.Threading.Tasks;
 using static System.Net.WebRequestMethods;
 using System.Windows.Controls;
 
-namespace PRL123_Final
+namespace LightningPRO
 {
     /// <summary>
     /// Interaction logic for Edit.xaml

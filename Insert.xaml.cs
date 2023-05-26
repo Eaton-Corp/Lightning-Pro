@@ -14,7 +14,7 @@ using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.Data;
 
-namespace PRL123_Final
+namespace LightningPRO
 {
     /// <summary>
     /// Interaction logic for Insert.xaml

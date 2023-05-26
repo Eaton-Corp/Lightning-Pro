@@ -20,7 +20,7 @@ using System.Windows.Shapes;
 using QRCoder;
 using System.Collections.ObjectModel;
 
-namespace PRL123_Final.Views
+namespace LightningPRO.Views
 {
     /// <summary>
     /// Interaction logic for Supervisor.xaml

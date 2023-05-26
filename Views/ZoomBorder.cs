@@ -8,7 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace PRL123_Final.Views
+namespace LightningPRO.Views
 {
     public class ZoomBorder : Border
     {

@@ -18,7 +18,7 @@ using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 
-namespace PRL123_Final.Views
+namespace LightningPRO.Views
 {
     /// <summary>
     /// Interaction logic for MaterialCards.xaml

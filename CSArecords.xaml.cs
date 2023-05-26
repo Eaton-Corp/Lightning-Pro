@@ -17,7 +17,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Controls.Primitives;
 
-namespace PRL123_Final
+namespace LightningPRO
 {
     /// <summary>
     /// Interaction logic for CSArecords.xaml
