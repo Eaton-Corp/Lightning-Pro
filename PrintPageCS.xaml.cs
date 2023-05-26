@@ -22,7 +22,7 @@ using System.Windows.Shapes;
 using QRCoder;
 
 
-namespace PRL123_Final
+namespace LightningPRO
 {
     /// <summary>
     /// Interaction logic for PrintPageCS.xaml

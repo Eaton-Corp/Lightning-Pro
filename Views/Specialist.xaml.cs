@@ -18,7 +18,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Collections.ObjectModel;
 
-namespace PRL123_Final.Views
+namespace LightningPRO.Views
 {
     /// <summary>
     /// Interaction logic for Specialist.xaml

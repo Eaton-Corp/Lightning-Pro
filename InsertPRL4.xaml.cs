@@ -32,7 +32,7 @@ using static PRL123_Final.Insert;
 using iTextSharp.text.pdf.qrcode;
 //using System.Windows.Forms;
 
-namespace PRL123_Final
+namespace LightningPRO
 {
     /// <summary>
     /// Interaction logic for Insert.xaml

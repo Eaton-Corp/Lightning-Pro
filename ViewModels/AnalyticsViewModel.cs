@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PRL123_Final.ViewModels
+namespace LightningPRO.ViewModels
 {
     public class AnalyticsViewModel
     {

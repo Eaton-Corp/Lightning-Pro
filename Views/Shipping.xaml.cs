@@ -11,7 +11,7 @@ using iTextSharp.text.pdf;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace PRL123_Final.Views
+namespace LightningPRO.Views
 {
     /// <summary>
     /// Interaction logic for Shipping.xaml

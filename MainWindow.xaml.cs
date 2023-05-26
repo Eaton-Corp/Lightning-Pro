@@ -15,11 +15,11 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using PRL123_Final.ViewModels;
+using LightningPRO.ViewModels;
 using Squirrel;
 using static PRL123_Final.Utility;
 
-namespace PRL123_Final
+namespace LightningPRO
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -225,7 +225,7 @@ namespace PRL123_Final
             try
             {
                 System.Configuration.ExeConfigurationFileMap fileMap = new ExeConfigurationFileMap();
-                fileMap.ExeConfigFilename = AppDomain.CurrentDomain.BaseDirectory + "PRL123_Final.exe.config";
+                fileMap.ExeConfigFilename = AppDomain.CurrentDomain.BaseDirectory + "LightningPRO.exe.config";
                 Configuration configFile = ConfigurationManager.OpenMappedExeConfiguration(fileMap, ConfigurationUserLevel.None);
                 var settings = configFile.ConnectionStrings.ConnectionStrings;
                 settings[name].ConnectionString = connectionString;
