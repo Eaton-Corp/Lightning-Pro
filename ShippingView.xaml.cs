@@ -27,7 +27,7 @@ namespace LightningPRO
     /// </summary>
     public partial class ShippingView : Window
     {
-        string GO_Item;
+        readonly string GO_Item;
 
         string[] GOs;
         string[] ShopOrderBoxArr;
@@ -42,7 +42,7 @@ namespace LightningPRO
 
         int pg;
         Boolean isLoaded;
-        Views.Shipping CurrentShippingWindow;
+        readonly Views.Shipping CurrentShippingWindow;
 
         
         public ShippingView(string GOI, Views.Shipping ShippingWindow)
@@ -51,10 +51,10 @@ namespace LightningPRO
             GO_Item = GOI;
             CurrentShippingWindow = ShippingWindow;
 
-            getGOs("select [GO_Item], [ShopOrderBox], [Customer], [Quantity], [Urgency], [Bidman], [Catalogue], [ImageFilePath] from [PRL123] where [GO]='" + GO_Item.Substring(0, 10) + "' and [BoxEarly]=True and [Box Sent]=False");         
+            GetGOs("select [GO_Item], [ShopOrderBox], [Customer], [Quantity], [Urgency], [Bidman], [Catalogue], [ImageFilePath] from [PRL123] where [GO]='" + GO_Item.Substring(0, 10) + "' and [BoxEarly]=True and [Box Sent]=False");         
         }
 
-        private void getGOs(string query)
+        private void GetGOs(string query)
         {
             DataTableReader rd = Utility.LoadData(query);
             DataTableReader rb = Utility.LoadData(query);

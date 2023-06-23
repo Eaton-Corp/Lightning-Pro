@@ -30,10 +30,10 @@ namespace LightningPRO
         {
             InitializeComponent();
 
-            loadGrid();
+            LoadGrid();
         }
 
-        private void loadGrid() 
+        private void LoadGrid() 
         {
             string query = "select * from [CSANamePlateRecord259P075H01]";
             DataTable dt = Utility.SearchLP(query);
@@ -62,7 +62,7 @@ namespace LightningPRO
                 Utility.ExecuteNonQueryLP(commandStr);
 
                 status.Content = selected.ToString() + ": Series # Saved";
-                loadGrid();
+                LoadGrid();
             }
         }
 

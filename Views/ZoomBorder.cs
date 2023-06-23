@@ -53,11 +53,11 @@ namespace LightningPRO.Views
                 group.Children.Add(tt);
                 child.RenderTransform = group;
                 child.RenderTransformOrigin = new Point(0.0, 0.0);
-                this.MouseWheel += child_MouseWheel;
-                this.MouseLeftButtonDown += child_MouseLeftButtonDown;
-                this.MouseLeftButtonUp += child_MouseLeftButtonUp;
-                this.MouseMove += child_MouseMove;
-                this.PreviewMouseRightButtonDown += new MouseButtonEventHandler(child_PreviewMouseRightButtonDown);
+                this.MouseWheel += Child_MouseWheel;
+                this.MouseLeftButtonDown += Child_MouseLeftButtonDown;
+                this.MouseLeftButtonUp += Child_MouseLeftButtonUp;
+                this.MouseMove += Child_MouseMove;
+                this.PreviewMouseRightButtonDown += new MouseButtonEventHandler(Child_PreviewMouseRightButtonDown);
             }
         }
 
@@ -79,7 +79,7 @@ namespace LightningPRO.Views
 
         #region Child Events
 
-        private void child_MouseWheel(object sender, MouseWheelEventArgs e)
+        private void Child_MouseWheel(object sender, MouseWheelEventArgs e)
         {
             if (child != null)
             {
@@ -106,7 +106,7 @@ namespace LightningPRO.Views
             }
         }
 
-        public void zoomIn(double amount, Point p)
+        public void ZoomIn(double amount, Point p)
         {
             if (child != null)
             {
@@ -133,7 +133,7 @@ namespace LightningPRO.Views
 
 
 
-        private void child_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void Child_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (child != null && CanMove == true)
             {
@@ -145,7 +145,7 @@ namespace LightningPRO.Views
             }
         }
 
-        private void child_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        private void Child_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             if (child != null && CanMove == true)
             {
@@ -154,12 +154,12 @@ namespace LightningPRO.Views
             }
         }
 
-        void child_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        void Child_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             this.Reset();
         }
 
-        private void child_MouseMove(object sender, MouseEventArgs e)
+        private void Child_MouseMove(object sender, MouseEventArgs e)
         {
             if (child != null && CanMove == true)
             {

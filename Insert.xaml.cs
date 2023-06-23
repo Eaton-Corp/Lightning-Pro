@@ -171,8 +171,10 @@ namespace LightningPRO
         {
             try
             {
-                Microsoft.Win32.OpenFileDialog ofg = new Microsoft.Win32.OpenFileDialog();
-                ofg.Filter = "Image files|*.PDF;*.tif|All files|*.*";
+                Microsoft.Win32.OpenFileDialog ofg = new Microsoft.Win32.OpenFileDialog
+                {
+                    Filter = "Image files|*.PDF;*.tif|All files|*.*"
+                };
                 bool? response = ofg.ShowDialog();
 
 
@@ -242,7 +244,7 @@ namespace LightningPRO
                     pg.Content = "Page:" + (page + 1).ToString() + "/" + image.Length.ToString();
                     if (XMLLoaded == true)
                     {
-                        loadXML(page);
+                        LoadXML(page);
                         string GOIkey = GOnum + " " + currentItemNum;
                         FindImageIndex(GOIkey);
                         ImagePreviewer.Source = image[ImagePage];
@@ -385,7 +387,7 @@ namespace LightningPRO
                 if (page < image.Length - 1)
                 {
                     page += 1;
-                    loadXML(page);
+                    LoadXML(page);
                     string GOIkey = GOnum + " " + currentItemNum;
                     FindImageIndex(GOIkey);
                     ImagePreviewer.Source = image[ImagePage];
@@ -402,7 +404,7 @@ namespace LightningPRO
                 if (page != 0)
                 {
                     page -= 1;
-                    loadXML(page);
+                    LoadXML(page);
                     string GOIkey = GOnum + " " + currentItemNum;
                     FindImageIndex(GOIkey);
                     ImagePreviewer.Source = image[ImagePage];
@@ -454,8 +456,10 @@ namespace LightningPRO
         {
             try
             {
-                Microsoft.Win32.OpenFileDialog ofg = new Microsoft.Win32.OpenFileDialog();
-                ofg.Filter = "Image files|*.XML;*.tif|All files|*.*";
+                Microsoft.Win32.OpenFileDialog ofg = new Microsoft.Win32.OpenFileDialog
+                {
+                    Filter = "Image files|*.XML;*.tif|All files|*.*"
+                };
                 bool? response = ofg.ShowDialog();
 
                 if (response == true)           //if the user selects a file and clicks OK
@@ -510,7 +514,7 @@ namespace LightningPRO
                     GOnum = outputQuery;
                     
                     //load grid with all relavent jobs; deal with directories and filepaths
-                    loadGrid("select * from [tblOrderStatus] where [Prod Group] in " + Utility.GetProductNameListInString(Views.Configuration.PRL123names) + " and [GO]='" + GOnum + "'");
+                    LoadGrid("select * from [tblOrderStatus] where [Prod Group] in " + Utility.GetProductNameListInString(Views.Configuration.PRL123names) + " and [GO]='" + GOnum + "'");
                     FilePathFinder(GOnum);
 
                     //sets global variable lines to XMLNodesList where each node is a line item
@@ -520,11 +524,11 @@ namespace LightningPRO
                     BMLines = xDoc.GetElementsByTagName("BMLineItems");
 
                     //start isAMO function to do work on the materials 
-                    isAMO();
+                    IsAMO();
 
                     if (PDFLoaded == true)
                     {
-                        loadXML(page);
+                        LoadXML(page);
                         string GOIkey = GOnum + " " + currentItemNum;
                         FindImageIndex(GOIkey);
                         ImagePreviewer.Source = image[ImagePage];
@@ -545,7 +549,7 @@ namespace LightningPRO
 
 
 
-        private void loadGrid(string query)
+        private void LoadGrid(string query)
         {
             DataTable dt = Utility.SearchMasterDB(query);
             dg.ItemsSource = dt.DefaultView;
@@ -594,7 +598,7 @@ namespace LightningPRO
 
 
 
-        private void loadXML(int page)
+        private void LoadXML(int page)
         {
             try
             {
@@ -1212,8 +1216,7 @@ namespace LightningPRO
 
                         Status.Content = GO_Item.Text + " SUCCESSFULLY INSERTED";
 
-                        DataGridRow dataGridRow = dg.ItemContainerGenerator.ContainerFromItem(dg.SelectedItem) as DataGridRow;
-                        if (dataGridRow != null)
+                        if (dg.ItemContainerGenerator.ContainerFromItem(dg.SelectedItem) is DataGridRow dataGridRow)
                             dataGridRow.Background = System.Windows.Media.Brushes.LightGreen;
                     }
                 }
@@ -1227,7 +1230,7 @@ namespace LightningPRO
 
 
 
-        private void updateDB(int p) 
+        private void UpdateDB(int p) 
         {
             try
             {
@@ -1339,7 +1342,7 @@ namespace LightningPRO
 
 
         //used to alter partNames in isAMO
-        private string convertToRequired(string partname, int enclosure, int paint, int mount, int multiple)
+        private string ConvertToRequired(string partname, int enclosure, int paint, int mount, int multiple)
         {
             string output = partname;
             
@@ -1446,8 +1449,9 @@ namespace LightningPRO
 
             if (enclosure == 0 || enclosure == 2)
             {
-                string RainCover = Utility.ReplacePart("CE24331H01");
-                DictionaryLoop(RainCover, 1);
+                List<string> RainCoverList = Utility.ReplacementParts("CE24331H01");
+                foreach (string part in RainCoverList)
+                    DictionaryLoop(part,1);
             }
             return a;
         }
@@ -1484,9 +1488,10 @@ namespace LightningPRO
             }
 
             if (enclosure == 0 || enclosure == 2)
-            {                
-                string RainCover = Utility.ReplacePart("CE24331H01");
-                DictionaryLoop(RainCover, 1);
+            {
+                List<string> RainCoverList = Utility.ReplacementParts("CE24331H01");
+                foreach (string part in RainCoverList)
+                    DictionaryLoop(part, 1);
             }
             return a;
         }
@@ -1523,8 +1528,9 @@ namespace LightningPRO
 
             if (enclosure == 0 || enclosure == 2)
             {
-                string RainCover = Utility.ReplacePart("CE24331H01");
-                DictionaryLoop(RainCover, 1);
+                List<string> RainCoverList = Utility.ReplacementParts("CE24331H01");
+                foreach (string part in RainCoverList)
+                    DictionaryLoop(part, 1);
             }
             return a;
         }
@@ -1562,8 +1568,9 @@ namespace LightningPRO
 
             if (enclosure == 0 || enclosure == 2)
             {
-                string RainCover = Utility.ReplacePart("CE24331H01");
-                DictionaryLoop(RainCover, 1);
+                List<string> RainCoverList = Utility.ReplacementParts("CE24331H01");
+                foreach (string part in RainCoverList)
+                    DictionaryLoop(part, 1);
             }
             return a;
         }
@@ -1589,10 +1596,11 @@ namespace LightningPRO
                 a = a.Replace("CTR-EZBP", "C-EZBP");
             }
 
-           if (enclosure == 1 && enclosure == 2)
+            if (enclosure == 1 && enclosure == 2)
             {
-                string RainCover = Utility.ReplacePart("CE24331H03");
-                DictionaryLoop(RainCover, 1);
+                List<string> RainCoverList = Utility.ReplacementParts("CE24331H03");
+                foreach (string part in RainCoverList)
+                    DictionaryLoop(part, 1);
             }
             return a;
         }
@@ -1627,8 +1635,9 @@ namespace LightningPRO
 
             if (enclosure == 1 && enclosure == 2)
             {
-                string RainCover = Utility.ReplacePart("CE24331H03");
-                DictionaryLoop(RainCover, 1);
+                List<string> RainCoverList = Utility.ReplacementParts("CE24331H03");
+                foreach (string part in RainCoverList)
+                    DictionaryLoop(part, 1);
             }
             return a;
         }
@@ -1652,10 +1661,11 @@ namespace LightningPRO
                 DictionaryLoop(a, 1);
             }
 
-            if (e == 0 || e == 2)
+            if (enclosure == 0 || enclosure == 2)
             {
-                string RainCover = Utility.ReplacePart("CE24331H02");
-                DictionaryLoop(RainCover, 1);
+                List<string> RainCoverList = Utility.ReplacementParts("CE24331H02");
+                foreach (string part in RainCoverList)
+                    DictionaryLoop(part, 1);
             }
             return a;
         }
@@ -1683,10 +1693,11 @@ namespace LightningPRO
                 a = a.Replace("C-EZBP", "EZT");
                 a = a.Replace("RC", "S");
             }
-            if(enclosure == 0 || enclosure ==2)
+            if (enclosure == 0 || enclosure ==2)
             {
-                string RainCover = Utility.ReplacePart("CE24331H02");
-                DictionaryLoop(RainCover, 1);
+                List<string> RainCoverList = Utility.ReplacementParts("CE24331H02");
+                foreach (string part in RainCoverList)
+                    DictionaryLoop(part, 1);
             }
             return a;
         }
@@ -1701,23 +1712,23 @@ namespace LightningPRO
             {
                 if (ContainsPart(partslist, par))
                 {
-                    partslist[FindIndexPartsList(partslist, par)].addToQuantity(1);
+                    partslist[FindIndexPartsList(partslist, par)].AddToQuantity(1);
                 }
                 else
                 {
-                    partslist.Add(new part(par, quantity));
+                    partslist.Add(new Part(par, quantity));
                 }
             }
         }
 
 
 
-        public class part
+        public class Part
         {
             private string partName;
             private int Quantity;
 
-            public part(string partNumber, int Amount)
+            public Part(string partNumber, int Amount)
             {
                 partName = partNumber;
                 Quantity = Amount;
@@ -1733,12 +1744,12 @@ namespace LightningPRO
                 return this.partName;
             }
 
-            public void addToQuantity(int numberOfPeices)
+            public void AddToQuantity(int numberOfPeices)
             {
                 this.Quantity += numberOfPeices;
             }
 
-            public void setName(string name)
+            public void SetName(string name)
             {
                 this.partName = name;
             }
@@ -1746,11 +1757,11 @@ namespace LightningPRO
 
 
         // Used to determine if a list of parts contains a given part
-        public Boolean ContainsPart(List<part> parts, string part)
+        public Boolean ContainsPart(List<Part> parts, string part)
         {
             if (parts != null)
             {
-                foreach (part p in parts)
+                foreach (Part p in parts)
                 {
                     if (p.Get_partName().Contains(part))
                     {
@@ -1762,10 +1773,10 @@ namespace LightningPRO
         }
 
         // Used to determine the index of a part within a parts list
-        public int FindIndexPartsList(List<part> parts, string part)
+        public int FindIndexPartsList(List<Part> parts, string part)
         {
             int counter = 0;
-            foreach (part p in parts)
+            foreach (Part p in parts)
             {
                 if (p.Get_partName().Contains(part))
                 {
@@ -1778,7 +1789,7 @@ namespace LightningPRO
 
 
 
-        public enum info
+        public enum Info
         {
             None, AMO, KanbanSpike
         }
@@ -1792,14 +1803,14 @@ namespace LightningPRO
         {
             public string PartName { get; set; }
             public int Quantity { get; set; }
-            public info Status { get; set; }
+            public Info Status { get; set; }
             public string IsActive { get; set; }
             public string Description { get; set; }
         }
 
 
-        List<part> partslist;
-        private void isAMO()
+        List<Part> partslist;
+        private void IsAMO()
         {
 
             //look through to find all parts with amount 
@@ -1811,7 +1822,7 @@ namespace LightningPRO
 
 
             string AMOreport = "";
-            partslist = new List<part>();
+            partslist = new List<Part>();
             
             int counter = 0;
             foreach(XmlNode node in BMLines)    //iterate through BMLines (BMLineItems -> Materials List Information)
@@ -1900,7 +1911,7 @@ namespace LightningPRO
                     {
                         XmlNodeList m = x.ChildNodes;      //Attributes of BMLineItem
                         
-                        part currentpart = new part("HOLDUP", 0);
+                        Part currentpart = new Part("HOLDUP", 0);
                    
                         foreach (XmlNode child in m)    //loop each attribute line in BMLineItem
                         {
@@ -1909,18 +1920,18 @@ namespace LightningPRO
                                 string output = Utility.GetBetween(child.OuterXml.ToString(), "V=\"", "\"");    
                                 if (!(output.StartsWith("CN")) && !(output.Contains("-")) && !(output.Contains("PROV")) && !(output.Contains("start")) && !(output.StartsWith("S3")) && !(output.StartsWith("P2")) && !(output == "C1") && !(output.StartsWith("A29")) && !(output.StartsWith("H5")))
                                 {
-                                    currentpart.setName(convertToRequired(output, encl, paint, mount, multiple));
+                                    currentpart.SetName(ConvertToRequired(output, encl, paint, mount, multiple));
                                 }
                             }
                             if (child.OuterXml.ToString().Contains("\"Quantity\""))             //get quantity value of current part
                             {
-                                currentpart.addToQuantity(Int32.Parse(Utility.GetBetween(child.OuterXml.ToString(), "V=\"", "\"")));
+                                currentpart.AddToQuantity(Int32.Parse(Utility.GetBetween(child.OuterXml.ToString(), "V=\"", "\"")));
                             }
                         }//end for loop attributes
 
                         if (ContainsPart(partslist, currentpart.Get_partName()))
                         {
-                            partslist[FindIndexPartsList(partslist, currentpart.Get_partName())].addToQuantity(currentpart.Get_Amount());
+                            partslist[FindIndexPartsList(partslist, currentpart.Get_partName())].AddToQuantity(currentpart.Get_Amount());
                         }
                         else if (!currentpart.Get_partName().Contains("HOLDUP"))
                         {
@@ -1934,25 +1945,42 @@ namespace LightningPRO
 
 
             //get parts list ready for AMOdg; get IsActive and Description + get status info -> AMO, KanBanKpike, or None
-            List<info> statuses = new List<info>();
+            List<Info> statuses = new List<Info>();
             List<string> EnableOrDisable = new List<string>();
             List<string> Description = new List<string>();
 
-            for (int i = 0; i < partslist.Count; i++)
+
+            int ListSize = partslist.Count;  //partslist.Count will be variable within the loop
+            //loop first to replace parts
+            for (int i = 0; i < ListSize; i++)
             {
-                partslist[i].setName(Utility.ReplacePart(partslist[i].Get_partName()));     //look for replacement part
-                
+                List<string> ReplacePartsList = Utility.ReplacementParts(partslist[i].Get_partName());
+                for (int j = 0; j < ReplacePartsList.Count; j++)
+                {
+                    if (j == 0)
+                    {
+                        partslist[i].SetName(ReplacePartsList[j]);
+                    }
+                    else
+                    {
+                        partslist.Add(new Part(ReplacePartsList[j], partslist[i].Get_Amount()));
+                    }
+                }
+            }
+
+            for (int i = 0; i < partslist.Count; i++)
+            {                
                 if(Utility.StandardAMO(partslist[i].Get_partName()))                                //check PullSequence if standardAMO
                 {
-                    statuses.Add(info.AMO);
+                    statuses.Add(Info.AMO);
                 }
                 else if(Utility.KanBanSpike(partslist[i].Get_partName(), partslist[i].Get_Amount()))       //check PullSequence if KanBanSpike
                 {
-                    statuses.Add(info.KanbanSpike);
+                    statuses.Add(Info.KanbanSpike);
                 }
                 else
                 {
-                    statuses.Add(info.None);
+                    statuses.Add(Info.None);
                 }    
 
                 string[] outputPullPartStatus = Utility.PullPartStatus(partslist[i].Get_partName());
@@ -1976,7 +2004,7 @@ namespace LightningPRO
                 {
                         for (int n = 0; n < partslist.Count; n++)
                         {
-                            if (statuses[n] == info.AMO)
+                            if (statuses[n] == Info.AMO)
                             {
                                 AMOreport = AMOreport + partslist[n].Get_partName() + ": " + partslist[n].Get_Amount().ToString() + ": " + statuses[n].ToString() + ": " + EnableOrDisable[n] + ": " + Description[n] + "\n";
                             }
@@ -1986,7 +2014,7 @@ namespace LightningPRO
                 {
                         for (int n = 0; n < partslist.Count; n++)
                         {
-                            if (statuses[n] == info.KanbanSpike)
+                            if (statuses[n] == Info.KanbanSpike)
                             {
                                 AMOreport = AMOreport + partslist[n].Get_partName() + ": " + partslist[n].Get_Amount().ToString() + ": " + statuses[n].ToString() + ": " + EnableOrDisable[n] + ": " + Description[n] + "\n";
                             }
@@ -1996,7 +2024,7 @@ namespace LightningPRO
                 {
                         for (int n = 0; n < partslist.Count; n++)
                         {
-                            if (statuses[n] == info.None)
+                            if (statuses[n] == Info.None)
                             {
                                 AMOreport = AMOreport + partslist[n].Get_partName() + ": " + partslist[n].Get_Amount().ToString() + ": " + statuses[n].ToString() + ": " + EnableOrDisable[n] + ": " + Description[n] + "\n";
                             }
@@ -2067,7 +2095,7 @@ namespace LightningPRO
                             {
                                 for (int i = 0; i < pages.Length; i++)
                                 {
-                                    loadXML(i);
+                                    LoadXML(i);
                                     using (OleDbDataReader rd = cmd.ExecuteReader())
                                     {
                                         while (rd.Read())
@@ -2092,7 +2120,7 @@ namespace LightningPRO
                                             }
                                         }
                                     }   //end using reader
-                                    updateDB(i);
+                                    UpdateDB(i);
                                 }
                             } //end using command
 
@@ -2209,8 +2237,7 @@ namespace LightningPRO
 
                         Status.Content = GO_Item.Text + " SUCCESSFULLY INSERTED";
 
-                        DataGridRow dataGridRow = dg.ItemContainerGenerator.ContainerFromItem(dg.SelectedItem) as DataGridRow;
-                        if (dataGridRow != null)
+                        if (dg.ItemContainerGenerator.ContainerFromItem(dg.SelectedItem) is DataGridRow dataGridRow)
                             dataGridRow.Background = System.Windows.Media.Brushes.LightGreen;
                     }
                 }

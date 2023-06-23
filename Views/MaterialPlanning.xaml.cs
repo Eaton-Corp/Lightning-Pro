@@ -36,7 +36,7 @@ namespace LightningPRO.Views
             btnMaterialsGenerator.Background = System.Windows.Media.Brushes.DarkBlue;
             btnEditTables.Background = System.Windows.Media.Brushes.Blue;
 
-            updateStatus("");
+            UpdateStatus("");
         }
 
         private void MaterialsTables_Set()
@@ -47,20 +47,20 @@ namespace LightningPRO.Views
             btnEditTables.Background = System.Windows.Media.Brushes.DarkBlue;
             btnMaterialsGenerator.Background = System.Windows.Media.Brushes.Blue;
 
-            updateStatus("");
+            UpdateStatus("");
 
-            loadPullPartStatus();
-            loadPullSequence();
-            loadReplacementParts();
+            LoadPullPartStatus();
+            LoadPullSequence();
+            LoadReplacementParts();
         }
 
-        private void updateStatus(string command)
+        private void UpdateStatus(string command)
         {
             Status.Content = command;
         }
 
 
-        private void btnGenerator_Click(object sender, RoutedEventArgs e)
+        private void BtnGenerator_Click(object sender, RoutedEventArgs e)
         {
             ListGenerator_Set();
         }
@@ -77,12 +77,12 @@ namespace LightningPRO.Views
         //List Generator Code
         private async Task<int> TurnOnStatus()
         {
-            updateStatus("LOADING ...");
+            UpdateStatus("LOADING ...");
             await Task.Delay(500);
             return 1;
         }
 
-        public enum info
+        public enum Info
         {
             None, AMO, KanbanSpike, KB, Main
         }
@@ -92,7 +92,7 @@ namespace LightningPRO.Views
             public string GoItem { get; set; }
             public string PartName { get; set; }
             public int Quantity { get; set; }
-            public info Status { get; set; }
+            public Info Status { get; set; }
             public string IsActive { get; set; }
             public string Description { get; set; }
         }
@@ -103,8 +103,10 @@ namespace LightningPRO.Views
         {
             try
             {
-                Microsoft.Win32.OpenFileDialog ofg = new Microsoft.Win32.OpenFileDialog();
-                ofg.Filter = "Image files|*.XML;*.tif|All files|*.*";
+                Microsoft.Win32.OpenFileDialog ofg = new Microsoft.Win32.OpenFileDialog
+                {
+                    Filter = "Image files|*.XML;*.tif|All files|*.*"
+                };
                 bool? response = ofg.ShowDialog();
 
                 if (response == true)           //if the user selects a file and clicks OK
@@ -123,12 +125,12 @@ namespace LightningPRO.Views
 
                     GeneratePartsList(BMConfiguredLineItemNodes);
 
-                    updateStatus("XML SUCCESSFULLY UPLOADED");
+                    UpdateStatus("XML SUCCESSFULLY UPLOADED");
                 }
             }
             catch
             {
-                updateStatus("XML UPLOAD ERROR");
+                UpdateStatus("XML UPLOAD ERROR");
                 MessageBox.Show("Error Occurred Uploading XML");
             }
         }
@@ -186,7 +188,7 @@ namespace LightningPRO.Views
                     }
                     if (check == 3) 
                     {
-                        partslist.Add(new Parts() { GoItem = lineItemGO, PartName = NamePart, Quantity = Int32.Parse(Quantity), Status = info.Main, IsActive = "Main", Description = Description });
+                        partslist.Add(new Parts() { GoItem = lineItemGO, PartName = NamePart, Quantity = Int32.Parse(Quantity), Status = Info.Main, IsActive = "Main", Description = Description });
                         break;
                     }
                 }
@@ -222,41 +224,45 @@ namespace LightningPRO.Views
                         }
                         if (check2 == 3)
                         {
-                            NamePart2 = Utility.ReplacePart(NamePart2);
-                            Boolean isInItemMaster = false;
+                            List<string> ReplacePartsList = Utility.ReplacementParts(NamePart2);
 
-                            string[] outputPullPartStatus = Utility.PullPartStatus(NamePart2);
-                            if (!string.IsNullOrEmpty(outputPullPartStatus[0]))                 //checks if IsActive is empty
+                            for (int i = 0; i < ReplacePartsList.Count; i++)
                             {
-                                isInItemMaster = true;
-                            }
-                            if (!string.IsNullOrEmpty(outputPullPartStatus[1])) 
-                            {
-                                Description2 = outputPullPartStatus[1];
-                            }
+                                Boolean isInItemMaster = false;
 
-                            info PartStatus;
-                            if (isInItemMaster) 
-                            {
-                                if (Utility.StandardAMO(NamePart2))                                //check PullSequence if standardAMO
+                                string[] outputPullPartStatus = Utility.PullPartStatus(ReplacePartsList[i]);
+                                if (!string.IsNullOrEmpty(outputPullPartStatus[0]))                 //checks if IsActive is empty
                                 {
-                                    PartStatus = info.AMO;
+                                    isInItemMaster = true;
                                 }
-                                else if (Utility.KanBanSpike(NamePart2, Int32.Parse(Quantity2)))       //check PullSequence if KanBanSpike
+                                if (!string.IsNullOrEmpty(outputPullPartStatus[1]))
                                 {
-                                    PartStatus = info.KanbanSpike;
+                                    Description2 = outputPullPartStatus[1];
+                                }
+
+                                Info PartStatus;
+                                if (isInItemMaster)
+                                {
+                                    if (Utility.StandardAMO(ReplacePartsList[i]))                                //check PullSequence if standardAMO
+                                    {
+                                        PartStatus = Info.AMO;
+                                    }
+                                    else if (Utility.KanBanSpike(ReplacePartsList[i], Int32.Parse(Quantity2)))       //check PullSequence if KanBanSpike
+                                    {
+                                        PartStatus = Info.KanbanSpike;
+                                    }
+                                    else
+                                    {
+                                        PartStatus = Info.KB;
+                                    }
                                 }
                                 else
                                 {
-                                    PartStatus = info.KB;
+                                    PartStatus = Info.None;
                                 }
-                            }
-                            else
-                            {
-                                PartStatus = info.None;
-                            }
 
-                            partslist.Add(new Parts() { GoItem = lineItemGO, PartName = NamePart2, Quantity = Int32.Parse(Quantity2), Status = PartStatus, IsActive = outputPullPartStatus[0], Description = Description2 });
+                                partslist.Add(new Parts() { GoItem = lineItemGO, PartName = ReplacePartsList[i], Quantity = Int32.Parse(Quantity2), Status = PartStatus, IsActive = outputPullPartStatus[0], Description = Description2 });
+                            }
                             break;
                         }
                     }
@@ -273,7 +279,7 @@ namespace LightningPRO.Views
         {
             public string PartName { get; set; }
             public int Quantity { get; set; }
-            public info Status { get; set; }
+            public Info Status { get; set; }
             public string IsActive { get; set; }
             public string Description { get; set; }
         }
@@ -301,11 +307,11 @@ namespace LightningPRO.Views
             //re-check Statuses of unique part list
             for (int i = 0; i < UniquePartsList.Count; i++)
             {
-                if (UniquePartsList[i].Status == info.KB) 
+                if (UniquePartsList[i].Status == Info.KB) 
                 {
                     if (Utility.KanBanSpike(UniquePartsList[i].PartName, UniquePartsList[i].Quantity))       //check PullSequence if KanBanSpike
                     {
-                        UniquePartsList[i].Status = info.KanbanSpike;
+                        UniquePartsList[i].Status = Info.KanbanSpike;
                     }
                 }
             }
@@ -352,19 +358,19 @@ namespace LightningPRO.Views
         //Material Tables Page Code
 
 
-        private void loadPullPartStatus() 
+        private void LoadPullPartStatus() 
         {
             DataTable dt = Utility.SearchLP("select * from [PullPartStatus]");
             PullPartStatusDG.ItemsSource = dt.DefaultView;
         }
 
-        private void loadPullSequence()
+        private void LoadPullSequence()
         {
             DataTable dt = Utility.SearchLP("select * from [PullSequence]");
             PullSequenceDG.ItemsSource = dt.DefaultView;
         }
 
-        private void loadReplacementParts()
+        private void LoadReplacementParts()
         {
             DataTable dt = Utility.SearchLP("select * from [ReplacementParts]");
             ReplacementPartsDG.ItemsSource = dt.DefaultView;
@@ -375,50 +381,50 @@ namespace LightningPRO.Views
         
 
         //used to check if the user is entering a duplicate item
-        private Boolean IsDuplicate(string Part, string Table, string Field)
-        {
-            string query = "select [" +Field+ "] from [" +Table+ "] where [" +Field+ "]='" + Part + "'";
+        //private Boolean IsDuplicate(string Part, string Table, string Field)
+        //{
+        //    string query = "select [" +Field+ "] from [" +Table+ "] where [" +Field+ "]='" + Part + "'";
 
-            using (DataTableReader dtr = Utility.LoadData(query))
-            {
-                while (dtr.Read())
-                {
-                    if (dtr[0] != null)
-                    {
-                        return true;      //there is a duplicate in LPdatabase
-                    }
-                }
-            } //end using reader
+        //    using (DataTableReader dtr = Utility.LoadData(query))
+        //    {
+        //        while (dtr.Read())
+        //        {
+        //            if (dtr[0] != null)
+        //            {
+        //                return true;      //there is a duplicate in LPdatabase
+        //            }
+        //        }
+        //    } //end using reader
 
-            return false;
-        }
+        //    return false;
+        //}
         
 
 
 
 
-        private void insertButtonClickedPullPart(object sender, RoutedEventArgs e)
+        private void InsertButtonClickedPullPart(object sender, RoutedEventArgs e)
         {
             string command = "INSERT INTO [PullPartStatus](Item, Description, ItemStatus) VALUES(" + ItemPullPart.Text + ", " + DescriptionPullPart.Text + ", " + StatusPullPart.Text + ")";
             Utility.ExecuteNonQueryLP(command);
-            updateStatus(ItemPullPart.Text + " INSERTED");
+            UpdateStatus(ItemPullPart.Text + " INSERTED");
         }
 
-        private void updateButtonClickedPullPart(object sender, RoutedEventArgs e)
+        private void UpdateButtonClickedPullPart(object sender, RoutedEventArgs e)
         {
             string command = "UPDATE [PullPartStatus] SET [Description] ='" + DescriptionPullPart.Text + "', [ItemStatus] = '" + StatusPullPart.Text + "' WHERE [Item]='" + ItemPullPart.Text + "'";
             Utility.ExecuteNonQueryLP(command);
-            updateStatus(ItemPullPart.Text + " UPDATED");
+            UpdateStatus(ItemPullPart.Text + " UPDATED");
         }
 
-        private void deleteButtonClickedPullPart(object sender, RoutedEventArgs e)
+        private void DeleteButtonClickedPullPart(object sender, RoutedEventArgs e)
         {
             string command = "DELETE * FROM [PullPartStatus] WHERE [Item]='" + ItemPullPart.Text + "'";
             Utility.ExecuteNonQueryLP(command);
-            updateStatus(ItemPullPart.Text + " DELETED");
+            UpdateStatus(ItemPullPart.Text + " DELETED");
         }
 
-        private void clearButtonClickedPullPart(object sender, RoutedEventArgs e)
+        private void ClearButtonClickedPullPart(object sender, RoutedEventArgs e)
         {
             ItemPullPart.Clear();
             DescriptionPullPart.Clear();
@@ -431,28 +437,28 @@ namespace LightningPRO.Views
 
 
 
-        private void insertButtonClickedPullSequence(object sender, RoutedEventArgs e)
+        private void InsertButtonClickedPullSequence(object sender, RoutedEventArgs e)
         {
             string command = "INSERT INTO [PullSequence](Item, Size) VALUES(" +ItemPullSequence.Text+ ", " +Int32.Parse(SizePullSequence.Text)+ ")";
             Utility.ExecuteNonQueryLP(command);
-            updateStatus(ItemPullSequence.Text + " INSERTED");
+            UpdateStatus(ItemPullSequence.Text + " INSERTED");
         }
 
-        private void updateButtonClickedPullSequence(object sender, RoutedEventArgs e)
+        private void UpdateButtonClickedPullSequence(object sender, RoutedEventArgs e)
         {
             string command = "UPDATE [PullSequence] SET [Size] =" + Int32.Parse(SizePullSequence.Text) + " WHERE [Item]='" + ItemPullSequence.Text + "'";
             Utility.ExecuteNonQueryLP(command);
-            updateStatus(ItemPullSequence.Text + " UPDATED");
+            UpdateStatus(ItemPullSequence.Text + " UPDATED");
         }
 
-        private void deleteButtonClickedPullSequence(object sender, RoutedEventArgs e)
+        private void DeleteButtonClickedPullSequence(object sender, RoutedEventArgs e)
         {
             string command = "DELETE * FROM [PullSequence] WHERE [Item]='" + ItemPullSequence.Text + "'";
             Utility.ExecuteNonQueryLP(command);
-            updateStatus(ItemPullSequence.Text + " DELETED");
+            UpdateStatus(ItemPullSequence.Text + " DELETED");
         }
 
-        private void clearButtonClickedPullSequence(object sender, RoutedEventArgs e)
+        private void ClearButtonClickedPullSequence(object sender, RoutedEventArgs e)
         {
             ItemPullSequence.Clear();
             SizePullSequence.Clear();
@@ -463,27 +469,27 @@ namespace LightningPRO.Views
 
 
 
-        private void insertButtonClickedReplacement(object sender, RoutedEventArgs e)
+        private void InsertButtonClickedReplacement(object sender, RoutedEventArgs e)
         {
             string command = "INSERT INTO [ReplacementParts](Find, Replace, Description) VALUES(" + FindReplacement.Text + ", " + ReplaceReplacement.Text + ", " + DescriptionReplacement.Text + ")";
             Utility.ExecuteNonQueryLP(command);
-            updateStatus(FindReplacement.Text + " INSERTED");
+            UpdateStatus(FindReplacement.Text + " INSERTED");
         }
 
-        private void updateButtonClickedReplacement(object sender, RoutedEventArgs e)
+        private void UpdateButtonClickedReplacement(object sender, RoutedEventArgs e)
         {
             string command = "UPDATE [ReplacementParts] SET [Replace] ='" +ReplaceReplacement.Text+ "', [Description] = '" +DescriptionReplacement.Text+ "' WHERE [Find]='" +FindReplacement.Text+ "'";
             Utility.ExecuteNonQueryLP(command);
-            updateStatus(FindReplacement.Text + " UPDATED");
+            UpdateStatus(FindReplacement.Text + " UPDATED");
         }
 
-        private void deleteButtonClickedReplacement(object sender, RoutedEventArgs e)
+        private void DeleteButtonClickedReplacement(object sender, RoutedEventArgs e)
         {
             string command = "DELETE * FROM [ReplacementParts] WHERE [Find]='" + FindReplacement.Text + "'";
             Utility.ExecuteNonQueryLP(command);
-            updateStatus(FindReplacement.Text + " DELETED");
+            UpdateStatus(FindReplacement.Text + " DELETED");
         }
-        private void clearButtonClickedReplacement(object sender, RoutedEventArgs e)
+        private void ClearButtonClickedReplacement(object sender, RoutedEventArgs e)
         {
             FindReplacement.Clear();
             ReplaceReplacement.Clear();

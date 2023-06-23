@@ -53,7 +53,7 @@
                 <RowDefinition />
                 <RowDefinition Height="3"/>
             </Grid.RowDefinitions>
-            <Button Name="btnMaterialsGenerator" Content="List Generator" Grid.Column="1" Grid.Row="1" Background="Blue" VerticalAlignment="Center" HorizontalAlignment="Center" Height ="25" Width="120" Foreground="White" Click="btnGenerator_Click"/>
+            <Button Name="btnMaterialsGenerator" Content="List Generator" Grid.Column="1" Grid.Row="1" Background="Blue" VerticalAlignment="Center" HorizontalAlignment="Center" Height ="25" Width="120" Foreground="White" Click="BtnGenerator_Click"/>
             <Button Name="btnEditTables" Content="Materials Tables" Grid.Column="1" Grid.Row="3" Background="Blue" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="120" Foreground="White" Click="Tables_Click"/>
         </Grid>
 
@@ -139,10 +139,10 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
 
-                    <Button Name="insertButtonPullPart" Grid.Column="0" Content="Insert" Height="26" Background="#FFD89120" VerticalAlignment="Bottom" Foreground="Black" Click="insertButtonClickedPullPart"/>
-                    <Button Name="updateButtonPullPart" Grid.Column="2"  Content="Update"  Height="26"  Background="#FFD89120" VerticalAlignment="Bottom" Foreground="Black" Click="updateButtonClickedPullPart"/>
-                    <Button Name ="deleteButtonPullPart" Grid.Column="4" Content="Delete" Height="26" Background="#FFD89120" VerticalAlignment="Bottom" Foreground="Black" Click="deleteButtonClickedPullPart"/>
-                    <Button Name="clearButtonPullPart"  Grid.Column="6"  Content="Clear"  Height="26"  Background="#FFD89120" VerticalAlignment="Bottom" Foreground="Black" Click="clearButtonClickedPullPart"/>
+                    <Button Name="insertButtonPullPart" Grid.Column="0" Content="Insert" Height="26" Background="#FFD89120" VerticalAlignment="Bottom" Foreground="Black" Click="InsertButtonClickedPullPart"/>
+                    <Button Name="updateButtonPullPart" Grid.Column="2"  Content="Update"  Height="26"  Background="#FFD89120" VerticalAlignment="Bottom" Foreground="Black" Click="UpdateButtonClickedPullPart"/>
+                    <Button Name ="deleteButtonPullPart" Grid.Column="4" Content="Delete" Height="26" Background="#FFD89120" VerticalAlignment="Bottom" Foreground="Black" Click="DeleteButtonClickedPullPart"/>
+                    <Button Name="clearButtonPullPart"  Grid.Column="6"  Content="Clear"  Height="26"  Background="#FFD89120" VerticalAlignment="Bottom" Foreground="Black" Click="ClearButtonClickedPullPart"/>
                 </Grid>
             </Grid>
 
@@ -184,10 +184,10 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
 
-                    <Button Name="insertButtonPullSequence" Grid.Column="0" Content="Insert" Height="26" Background="Blue" VerticalAlignment="Bottom" Foreground="White" Click="insertButtonClickedPullSequence"/>
-                    <Button Name="updateButtonPullSequence" Grid.Column="2"  Content="Update"  Height="26" Background="Blue" VerticalAlignment="Bottom" Foreground="White" Click="updateButtonClickedPullSequence"/>
-                    <Button Name ="deleteButtonPullSequence" Grid.Column="4" Content="Delete" Height="26" Background="Blue" VerticalAlignment="Bottom" Foreground="White" Click="deleteButtonClickedPullSequence"/>
-                    <Button Name="clearButtonPullSequence"  Grid.Column="6"  Content="Clear"  Height="26" Background="Blue" VerticalAlignment="Bottom" Foreground="White" Click="clearButtonClickedPullSequence"/>
+                    <Button Name="insertButtonPullSequence" Grid.Column="0" Content="Insert" Height="26" Background="Blue" VerticalAlignment="Bottom" Foreground="White" Click="InsertButtonClickedPullSequence"/>
+                    <Button Name="updateButtonPullSequence" Grid.Column="2"  Content="Update"  Height="26" Background="Blue" VerticalAlignment="Bottom" Foreground="White" Click="UpdateButtonClickedPullSequence"/>
+                    <Button Name ="deleteButtonPullSequence" Grid.Column="4" Content="Delete" Height="26" Background="Blue" VerticalAlignment="Bottom" Foreground="White" Click="DeleteButtonClickedPullSequence"/>
+                    <Button Name="clearButtonPullSequence"  Grid.Column="6"  Content="Clear"  Height="26" Background="Blue" VerticalAlignment="Bottom" Foreground="White" Click="ClearButtonClickedPullSequence"/>
                 </Grid>
             </Grid>
 
@@ -233,10 +233,10 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
 
-                    <Button Name="insertButtonReplacement" Grid.Column="0" Content="Insert" Height="26" Background="#FFD89120" VerticalAlignment="Bottom" Foreground="Black" Click="insertButtonClickedReplacement"/>
-                    <Button Name="updateButtonReplacement" Grid.Column="2"  Content="Update"  Height="26"  Background="#FFD89120" VerticalAlignment="Bottom" Foreground="Black" Click="updateButtonClickedReplacement"/>
-                    <Button Name ="deleteButtonReplacement" Grid.Column="4" Content="Delete" Height="26" Background="#FFD89120" VerticalAlignment="Bottom" Foreground="Black" Click="deleteButtonClickedReplacement"/>
-                    <Button Name="clearButtonReplacement"  Grid.Column="6"  Content="Clear"  Height="26"  Background="#FFD89120" VerticalAlignment="Bottom" Foreground="Black" Click="clearButtonClickedReplacement"/>
+                    <Button Name="insertButtonReplacement" Grid.Column="0" Content="Insert" Height="26" Background="#FFD89120" VerticalAlignment="Bottom" Foreground="Black" Click="InsertButtonClickedReplacement"/>
+                    <Button Name="updateButtonReplacement" Grid.Column="2"  Content="Update"  Height="26"  Background="#FFD89120" VerticalAlignment="Bottom" Foreground="Black" Click="UpdateButtonClickedReplacement"/>
+                    <Button Name ="deleteButtonReplacement" Grid.Column="4" Content="Delete" Height="26" Background="#FFD89120" VerticalAlignment="Bottom" Foreground="Black" Click="DeleteButtonClickedReplacement"/>
+                    <Button Name="clearButtonReplacement"  Grid.Column="6"  Content="Clear"  Height="26"  Background="#FFD89120" VerticalAlignment="Bottom" Foreground="Black" Click="ClearButtonClickedReplacement"/>
                 </Grid>
             </Grid>
 

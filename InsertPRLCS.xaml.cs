@@ -46,15 +46,15 @@ namespace LightningPRO
 
 
         int page;
-        Boolean XMLLoaded = false;
+        readonly Boolean XMLLoaded = false;
         Boolean PDFLoaded = false;
 
         string ProductSpecialist = "";
 
-        int[] SliderShowcase = new int[5];
+        readonly int[] SliderShowcase = new int[5];
 
-        System.Windows.Controls.Image[] ImagePreviewObjects;
-        System.Windows.Controls.Image[] CheckPreviewObjects;
+        readonly System.Windows.Controls.Image[] ImagePreviewObjects;
+        readonly System.Windows.Controls.Image[] CheckPreviewObjects;
 
         Boolean[] SelectedPages;
 
@@ -201,7 +201,7 @@ namespace LightningPRO
 
 
 
-        public void updateSlider()
+        public void UpdateSlider()
         {
             int i = 0;
             while (i + page < image.Length && i < 5)
@@ -257,8 +257,10 @@ namespace LightningPRO
         {
             try
             {
-                Microsoft.Win32.OpenFileDialog ofg = new Microsoft.Win32.OpenFileDialog();
-                ofg.Filter = "Image files|*.PDF;*.tif|All files|*.*";
+                Microsoft.Win32.OpenFileDialog ofg = new Microsoft.Win32.OpenFileDialog
+                {
+                    Filter = "Image files|*.PDF;*.tif|All files|*.*"
+                };
                 bool? response = ofg.ShowDialog();
 
                 if (response == true)
@@ -380,7 +382,7 @@ namespace LightningPRO
                         return;
                     }
 
-                    updateSlider();
+                    UpdateSlider();
 
 
                     pg.Content = "Page:" + (page + 1).ToString() + "/" + image.Length.ToString();
@@ -527,7 +529,7 @@ namespace LightningPRO
                     //loadXML(page);
 
                 }
-                updateSlider();
+                UpdateSlider();
             }
         }
 
@@ -546,7 +548,7 @@ namespace LightningPRO
                     //loadXML(page);
 
                 }
-                updateSlider();
+                UpdateSlider();
             }
         }
 
@@ -579,68 +581,68 @@ namespace LightningPRO
             {
             }
 
-            public void setWireWay(bool wireway)
+            public void SetWireWay(bool wireway)
             {
                 this.isWireWay = wireway;
             }
 
-            public bool getWireWay()
+            public bool GetWireWay()
             {
                 return this.isWireWay;
             }
 
 
-            public void setFSMCs(bool FSMCs)
+            public void SetFSMCs(bool FSMCs)
             {
                 this.hasFSMCs = FSMCs;
             }
 
-            public bool getFSMCs()
+            public bool GetFSMCs()
             {
                 return this.hasFSMCs;
             }
 
-            public void setCSA244() 
+            public void SetCSA244() 
             { 
                 SwitchboardTitle = "SWITCHBOARD UNIT/SOUS STATION";
                 CSAStandard = "CSA STANDARD C22.2 No.244 / SERIE CSA No.244";
                 CSAFooter = "SWITCHBOARD UNIT/TABLEAUX DE CONTROLE/LL47168";
             }
 
-            public void setCSA229()
+            public void SetCSA229()
             {
                 SwitchboardTitle = "SWITCHBOARD METER CENTER/TABLEAUX DE COMMUTATION ET DE/MESURAGE";
                 CSAStandard = "CSA STANDARD C22.2 No.229 / SERIE CSA No.229";
                 CSAFooter = "SWITCHING AND METERING CENTER/TABLEAUX DE COMMUTATION ET DE/MESURAGE/LR47167";
             }
 
-            public void setCSA31()
+            public void SetCSA31()
             {
                 SwitchboardTitle = "SWITCHGEAR UNIT/APPAREIL DE COMMUTATION";
                 CSAStandard = "CSA STANDARD C22.2 No.31 / SERIE CSA No.31";
                 CSAFooter = "SWITCHGEAR UNIT/APPAREIL DE COMMUTATION/LL47168";
             }
 
-            public string getSwitchboardTitle()
+            public string GetSwitchboardTitle()
             {
                 return this.SwitchboardTitle;
             }
-            public string getCSAStandard()
+            public string GetCSAStandard()
             {
                 return this.CSAStandard;
             }
-            public string getCSAFooter()
+            public string GetCSAFooter()
             {
                 return this.CSAFooter;
             }
 
 
-            public void setSection(string section)
+            public void SetSection(string section)
             {
                 this.Section = section;
             }
 
-            public string getSection()
+            public string GetSection()
             {
                 return this.Section;
             }
@@ -774,46 +776,46 @@ namespace LightningPRO
             {
                 Structure CurrentStructure = new Structure();
 
-                CurrentStructure.setSection("Section " + (i+1).ToString() + " of " + NumOfStructrues.ToString());
+                CurrentStructure.SetSection("Section " + (i+1).ToString() + " of " + NumOfStructrues.ToString());
 
                 if (string.IsNullOrEmpty(StructureInformation[i]))
                 {
-                    CurrentStructure.setWireWay(true);
+                    CurrentStructure.SetWireWay(true);
                 }
                 else 
                 {
-                    CurrentStructure.setWireWay(false);
+                    CurrentStructure.SetWireWay(false);
                 }
 
                 if (StructureInformation[i].Contains("FSMC"))
                 {
-                    CurrentStructure.setFSMCs(true);
+                    CurrentStructure.SetFSMCs(true);
                 }
                 else
                 {
-                    CurrentStructure.setFSMCs(false);
+                    CurrentStructure.SetFSMCs(false);
                 }
 
-                if (CurrentStructure.getWireWay())
+                if (CurrentStructure.GetWireWay())
                 {
                     if (LineItemHas90degWireway)
                     {
-                        CurrentStructure.setCSA31();
+                        CurrentStructure.SetCSA31();
                     }
                     else
                     {
-                        CurrentStructure.setCSA244();
+                        CurrentStructure.SetCSA244();
                     }
                 }
                 else 
                 {
-                    if (CurrentStructure.getFSMCs())
+                    if (CurrentStructure.GetFSMCs())
                     {
-                        CurrentStructure.setCSA229();
+                        CurrentStructure.SetCSA229();
                     }
                     else
                     {
-                        CurrentStructure.setCSA244();
+                        CurrentStructure.SetCSA244();
                     }
                 }
 
@@ -878,8 +880,10 @@ namespace LightningPRO
         {
             try
             {
-                Microsoft.Win32.OpenFileDialog ofg = new Microsoft.Win32.OpenFileDialog();
-                ofg.Filter = "Image files|*.XML;*.tif|All files|*.*";
+                Microsoft.Win32.OpenFileDialog ofg = new Microsoft.Win32.OpenFileDialog
+                {
+                    Filter = "Image files|*.XML;*.tif|All files|*.*"
+                };
                 bool? response = ofg.ShowDialog();
 
                 if (response == true)           //if the user selects a file and clicks OK
@@ -899,7 +903,7 @@ namespace LightningPRO
                     string outputQuery = name[0].FirstChild.OuterXml.Substring(22, 10);
                     SearchBox.Text = outputQuery;
 
-                    loadGrid("select * from [tblOrderStatus] where [Prod Group] in " + Utility.GetProductNameListInString(Views.Configuration.PRLCSnames) + " and [GO]='" + SearchBox.Text + "'");
+                    LoadGrid("select * from [tblOrderStatus] where [Prod Group] in " + Utility.GetProductNameListInString(Views.Configuration.PRLCSnames) + " and [GO]='" + SearchBox.Text + "'");
 
                     //each node is a line item
                     XmlNodeList BMConfiguredLineItemNodes = xDoc.GetElementsByTagName("BMConfiguredLineItem");
@@ -1168,7 +1172,7 @@ namespace LightningPRO
 
 
 
-        private void loadGrid(string query)
+        private void LoadGrid(string query)
         {
             DataTable dt = Utility.SearchMasterDB(query);
             dg.ItemsSource = dt.DefaultView;
@@ -1216,7 +1220,7 @@ namespace LightningPRO
 
 
 
-        private int getFirstPageIndex()
+        private int GetFirstPageIndex()
         {
             for (int i = 0; i < SelectedPages.Length; i++)
             {
@@ -1233,7 +1237,7 @@ namespace LightningPRO
             if (Utility.IsDuplicate(GO_Item.Text, Utility.ProductGroup.PRLCS) == false)
             {
                 int amountOfPages = 0;
-                int firstPageIndex = getFirstPageIndex();
+                int firstPageIndex = GetFirstPageIndex();
                 if (firstPageIndex != -1)
                 {
                     for (int i = 0; i < SelectedPages.Length; i++)
@@ -1354,7 +1358,6 @@ namespace LightningPRO
         {
             if (PDFLoaded == true)
             {
-
                 string Tracking;
                 if (Approve.IsChecked == true)
                 {
@@ -1434,10 +1437,10 @@ namespace LightningPRO
                         {
                             InsertCSA.Parameters.AddWithValue("[GONumber]", GO1.Text);
                             InsertCSA.Parameters.AddWithValue("[ItemNumber]", Item.Text);
-                            InsertCSA.Parameters.AddWithValue("[SwitchBoardTitle]", LineItemStructuresArr[i].getSwitchboardTitle());
-                            InsertCSA.Parameters.AddWithValue("[CSAStandard]", LineItemStructuresArr[i].getCSAStandard());
-                            InsertCSA.Parameters.AddWithValue("[SMCenter]", LineItemStructuresArr[i].getCSAFooter());
-                            InsertCSA.Parameters.AddWithValue("[Section]", LineItemStructuresArr[i].getSection());
+                            InsertCSA.Parameters.AddWithValue("[SwitchBoardTitle]", LineItemStructuresArr[i].GetSwitchboardTitle());
+                            InsertCSA.Parameters.AddWithValue("[CSAStandard]", LineItemStructuresArr[i].GetCSAStandard());
+                            InsertCSA.Parameters.AddWithValue("[SMCenter]", LineItemStructuresArr[i].GetCSAFooter());
+                            InsertCSA.Parameters.AddWithValue("[Section]", LineItemStructuresArr[i].GetSection());
                             InsertCSA.Parameters.AddWithValue("[MainBusBarCapacity]", ManBusBarCpacity.Text);
                             InsertCSA.Parameters.AddWithValue("[Voltage]", Voltage.Text);
                             InsertCSA.Parameters.AddWithValue("[Hz]", Hertz.Text);
@@ -1456,8 +1459,7 @@ namespace LightningPRO
 
                 Status.Content = GO_Item.Text + " SUCCESSFULLY INSERTED";
 
-                DataGridRow dataGridRow = dg.ItemContainerGenerator.ContainerFromItem(dg.SelectedItem) as DataGridRow;
-                if (dataGridRow != null)
+                if (dg.ItemContainerGenerator.ContainerFromItem(dg.SelectedItem) is DataGridRow dataGridRow)
                     dataGridRow.Background = System.Windows.Media.Brushes.LightGreen;
             }
         }
@@ -1467,7 +1469,7 @@ namespace LightningPRO
 
         private void Search_GOs(object sender, RoutedEventArgs e)
         {
-            loadGrid("select * from [tblOrderStatus] where [Prod Group] in " + Utility.GetProductNameListInString(Views.Configuration.PRLCSnames) + " and [GO]='" + SearchBox.Text + "'");
+            LoadGrid("select * from [tblOrderStatus] where [Prod Group] in " + Utility.GetProductNameListInString(Views.Configuration.PRLCSnames) + " and [GO]='" + SearchBox.Text + "'");
         }
 
         private void Pg1_Click(object sender, RoutedEventArgs e)

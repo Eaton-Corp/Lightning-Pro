@@ -22,8 +22,8 @@ namespace LightningPRO
     /// </summary>
     public partial class PrintTracking : Window
     {
-        string[] Boxes;
-        string[] GOItems;
+        readonly string[] Boxes;
+        readonly string[] GOItems;
         public PrintTracking(string[] catalgoue, string[] GOs)
         {
             InitializeComponent();

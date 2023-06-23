@@ -46,15 +46,15 @@ namespace LightningPRO
         
 
         int page;
-        Boolean XMLLoaded = false;
+        readonly Boolean XMLLoaded = false;
         Boolean PDFLoaded = false;
         
         string ProductSpecialist = "";
 
-        int[] SliderShowcase = new int[5];
+        readonly int[] SliderShowcase = new int[5];
 
-        System.Windows.Controls.Image[] ImagePreviewObjects;
-        System.Windows.Controls.Image[] CheckPreviewObjects;
+        readonly System.Windows.Controls.Image[] ImagePreviewObjects;
+        readonly System.Windows.Controls.Image[] CheckPreviewObjects;
 
         Boolean[] SelectedPages; 
         
@@ -199,7 +199,7 @@ namespace LightningPRO
 
 
 
-        public void updateSlider()
+        public void UpdateSlider()
         {           
             int i = 0;
             while(i + page < image.Length && i < 5)
@@ -255,8 +255,10 @@ namespace LightningPRO
         {
             try
             {
-                Microsoft.Win32.OpenFileDialog ofg = new Microsoft.Win32.OpenFileDialog();
-                ofg.Filter = "Image files|*.PDF;*.tif|All files|*.*";
+                Microsoft.Win32.OpenFileDialog ofg = new Microsoft.Win32.OpenFileDialog
+                {
+                    Filter = "Image files|*.PDF;*.tif|All files|*.*"
+                };
                 bool? response = ofg.ShowDialog();
 
                 if (response == true)
@@ -332,7 +334,7 @@ namespace LightningPRO
                         return;
                     }
 
-                    updateSlider();
+                    UpdateSlider();
 
 
                     pg.Content = "Page:" + (page + 1).ToString() + "/" + image.Length.ToString();
@@ -479,7 +481,7 @@ namespace LightningPRO
                     //loadXML(page);
 
                 }
-                updateSlider();
+                UpdateSlider();
             }
         }
 
@@ -498,7 +500,7 @@ namespace LightningPRO
                     //loadXML(page);
 
                 }
-                updateSlider();
+                UpdateSlider();
             }
 
         }
@@ -567,8 +569,10 @@ namespace LightningPRO
         {
             try
             {
-                Microsoft.Win32.OpenFileDialog ofg = new Microsoft.Win32.OpenFileDialog();
-                ofg.Filter = "Image files|*.XML;*.tif|All files|*.*";
+                Microsoft.Win32.OpenFileDialog ofg = new Microsoft.Win32.OpenFileDialog
+                {
+                    Filter = "Image files|*.XML;*.tif|All files|*.*"
+                };
                 bool? response = ofg.ShowDialog();
 
                 if (response == true)           //if the user selects a file and clicks OK
@@ -588,7 +592,7 @@ namespace LightningPRO
                     string outputQuery = name[0].FirstChild.OuterXml.Substring(22, 10);
                     SearchBox.Text = outputQuery;
 
-                    loadGrid("select * from [tblOrderStatus] where [Prod Group] in " + Utility.GetProductNameListInString(Views.Configuration.PRL4names) + " and [GO]='" + SearchBox.Text + "'");
+                    LoadGrid("select * from [tblOrderStatus] where [Prod Group] in " + Utility.GetProductNameListInString(Views.Configuration.PRL4names) + " and [GO]='" + SearchBox.Text + "'");
 
                     //each node is a line item
                     XmlNodeList BMConfiguredLineItemNodes = xDoc.GetElementsByTagName("BMConfiguredLineItem");
@@ -1029,7 +1033,7 @@ namespace LightningPRO
 
 
 
-        private void loadGrid(string query)
+        private void LoadGrid(string query)
         {
             DataTable dt = Utility.SearchMasterDB(query);
             dg.ItemsSource = dt.DefaultView;
@@ -1070,15 +1074,7 @@ namespace LightningPRO
 
         }
 
-        
-
-
-
-
-
-
-
-        private int getFirstPageIndex() 
+        private int GetFirstPageIndex() 
         {
             for (int i = 0; i < SelectedPages.Length; i++)
             {
@@ -1095,7 +1091,7 @@ namespace LightningPRO
             if (Utility.IsDuplicate(GO_Item.Text, Utility.ProductGroup.PRL4) == false)
             {
                 int amountOfPages = 0;
-                int firstPageIndex = getFirstPageIndex();
+                int firstPageIndex = GetFirstPageIndex();
                 if (firstPageIndex != -1)
                 {
                     for (int i = 0; i < SelectedPages.Length; i++)
@@ -1210,7 +1206,6 @@ namespace LightningPRO
         {
             if (PDFLoaded == true)
             {
-              
                 string Tracking;
                 if (Approve.IsChecked == true)
                 {
@@ -1298,9 +1293,8 @@ namespace LightningPRO
                 }
                 
                 Status.Content = GO_Item.Text + " SUCCESSFULLY INSERTED";
-                
-                DataGridRow dataGridRow = dg.ItemContainerGenerator.ContainerFromItem(dg.SelectedItem) as DataGridRow;
-                if (dataGridRow != null)
+
+                if (dg.ItemContainerGenerator.ContainerFromItem(dg.SelectedItem) is DataGridRow dataGridRow)
                     dataGridRow.Background = System.Windows.Media.Brushes.LightGreen;
             }
         }
@@ -1310,7 +1304,7 @@ namespace LightningPRO
 
         private void Search_GOs(object sender, RoutedEventArgs e)
         {
-            loadGrid("select * from [tblOrderStatus] where [Prod Group] in " + Utility.GetProductNameListInString(Views.Configuration.PRL4names) + " and [GO]='" + SearchBox.Text + "'");
+            LoadGrid("select * from [tblOrderStatus] where [Prod Group] in " + Utility.GetProductNameListInString(Views.Configuration.PRL4names) + " and [GO]='" + SearchBox.Text + "'");
         }
 
         private void Pg1_Click(object sender, RoutedEventArgs e)

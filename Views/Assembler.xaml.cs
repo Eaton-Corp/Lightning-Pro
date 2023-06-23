@@ -84,11 +84,11 @@ namespace LightningPRO.Views
         public Assembler()
         {
             InitializeComponent();
-            loadComboBox();
+            LoadComboBox();
         }
 
         // used to load assembler employees
-        private void loadComboBox()
+        private void LoadComboBox()
         {
             try
             {
@@ -171,12 +171,12 @@ namespace LightningPRO.Views
                     if (Scan.Text.StartsWith("4-"))     //PWL4
                     {
                         PRL4_Set();
-                        getGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], [SpecialCustomer], [AMO], [ServiceEntrance], [RatedNeutral200], [PaintedBox], [DNSB], [Complete], [Short], [FilePath], [DoorOverDist], [DoorInDoor], [PageNumber] from [PRL4] where [GO]='" + Scan.Text.Substring(2, 10) + "' order by [GO_Item],[PageNumber]");
+                        GetGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], [SpecialCustomer], [AMO], [ServiceEntrance], [RatedNeutral200], [PaintedBox], [DNSB], [Complete], [Short], [FilePath], [DoorOverDist], [DoorInDoor], [PageNumber] from [PRL4] where [GO]='" + Scan.Text.Substring(2, 10) + "' order by [GO_Item],[PageNumber]");
                     }
                     else if (Scan.Text.ToUpper().StartsWith("CS-"))       //PWLCS
                     {
                         PRLCS_Set();
-                        getGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], [SpecialCustomer], [AMO], [IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], [ThirtyDeepEnclosure], [DNSB], [Complete], [Short], [FilePath], [PageNumber] from [PRLCS] where [GO]='" + Scan.Text.Substring(3, 10) + "' order by [GO_Item],[PageNumber]");
+                        GetGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], [SpecialCustomer], [AMO], [IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], [ThirtyDeepEnclosure], [DNSB], [Complete], [Short], [FilePath], [PageNumber] from [PRLCS] where [GO]='" + Scan.Text.Substring(3, 10) + "' order by [GO_Item],[PageNumber]");
 
                     }
                     else if (Scan.Text.ToUpper().StartsWith("EC-"))       //PWLEC
@@ -186,23 +186,23 @@ namespace LightningPRO.Views
                     else            //PWL123
                     {
                         PRL123_Set();
-                        getGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], [SpecialCustomer], [AMO], [ServiceEntrance], [RatedNeutral200], [PaintedBox], [DNSB], [Complete], [Short], [FilePath], [BoxEarly], [Box Sent], [DoubleSection] from [PRL123] where [GO]='" + Scan.Text.Substring(0, 10) + "' order by [GO_Item]");
+                        GetGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], [SpecialCustomer], [AMO], [ServiceEntrance], [RatedNeutral200], [PaintedBox], [DNSB], [Complete], [Short], [FilePath], [BoxEarly], [Box Sent], [DoubleSection] from [PRL123] where [GO]='" + Scan.Text.Substring(0, 10) + "' order by [GO_Item]");
                     }
 
                     if (SuccessPull == true)
                     {
                         First_Page();
                         InsertData();
-                        updateStatus(Scan.Text + " SCANNED");
+                        UpdateStatus(Scan.Text + " SCANNED");
                     }
                     else
                     {
-                        updateStatus("ENTRY NOT FOUND");
+                        UpdateStatus("ENTRY NOT FOUND");
                     }
                 }
                 else
                 {
-                    updateStatus("PLEASE SCAN A VALID GO#");
+                    UpdateStatus("PLEASE SCAN A VALID GO#");
                 }
             }
             catch
@@ -251,7 +251,7 @@ namespace LightningPRO.Views
 
 
         //gets non-image data
-        private void getGOs(string query)
+        private void GetGOs(string query)
         {
             //get the data twice - once for counters and once for operations
             DataTableReader rd = Utility.LoadData(query);
@@ -402,7 +402,7 @@ namespace LightningPRO.Views
         }
 
 
-        private void setUrgency()
+        private void SetUrgency()
         {
             if (UrgencyArr[page] == "UP")
             {
@@ -440,7 +440,7 @@ namespace LightningPRO.Views
             Torque.Text = TorqueArr[page];
             Volts.Text = VoltsArr[page];
             Type.Text = TypeArr[page];
-            setUrgency();
+            SetUrgency();
 
             SpecialCustomer.IsChecked = SpecialCustomerArr[page];
             Customer.Text = CustomerArr[page];
@@ -491,15 +491,15 @@ namespace LightningPRO.Views
             }
 
 
-            CurrentImage = getBidman(GOItemsArr[page]);
-            imgEditor.loadImage(CurrentImage);
+            CurrentImage = GetBidman(GOItemsArr[page]);
+            imgEditor.LoadImage(CurrentImage);
 
             pg.Content = "Page: " + (page + 1).ToString() + "/" + GOItemsArr.Length.ToString();
         }
 
 
 
-        private BitmapImage getBidman(string GOItem)
+        private BitmapImage GetBidman(string GOItem)
         {
             BitmapImage output;
             string imageFilePath = Utility.GetImageFilePath(GOItem, CurrentProduct, MultiPageNumber[page]);
@@ -524,15 +524,15 @@ namespace LightningPRO.Views
         {
             if (CurrentProduct == Utility.ProductGroup.PRL123)
             {
-                getGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], [SpecialCustomer], [AMO], [ServiceEntrance], [RatedNeutral200], [PaintedBox], [DNSB], [Complete], [Short], [FilePath], [BoxEarly], [Box Sent], [DoubleSection] from [PRL123] where [GO]='" + GO_Item.Text.Substring(0, 10) + "' order by [GO_Item]");
+                GetGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], [SpecialCustomer], [AMO], [ServiceEntrance], [RatedNeutral200], [PaintedBox], [DNSB], [Complete], [Short], [FilePath], [BoxEarly], [Box Sent], [DoubleSection] from [PRL123] where [GO]='" + GO_Item.Text.Substring(0, 10) + "' order by [GO_Item]");
             }
             else if (CurrentProduct == Utility.ProductGroup.PRL4)
             {
-                getGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], [SpecialCustomer], [AMO], [ServiceEntrance], [RatedNeutral200], [PaintedBox], [DNSB], [Complete], [Short], [FilePath], [DoorOverDist], [DoorInDoor], [PageNumber] from [PRL4] where [GO]='" + GO_Item.Text.Substring(0, 10) + "' order by [GO_Item],[PageNumber]");
+                GetGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], [SpecialCustomer], [AMO], [ServiceEntrance], [RatedNeutral200], [PaintedBox], [DNSB], [Complete], [Short], [FilePath], [DoorOverDist], [DoorInDoor], [PageNumber] from [PRL4] where [GO]='" + GO_Item.Text.Substring(0, 10) + "' order by [GO_Item],[PageNumber]");
             }
             else if(CurrentProduct == Utility.ProductGroup.PRLCS)
             {
-                getGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], [SpecialCustomer], [AMO], [IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], [ThirtyDeepEnclosure], [DNSB], [Complete], [Short], [FilePath], [PageNumber] from [PRLCS] where [GO]='" + GO_Item.Text.Substring(0, 10) + "' order by [GO_Item],[PageNumber]");
+                GetGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], [SpecialCustomer], [AMO], [IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], [ThirtyDeepEnclosure], [DNSB], [Complete], [Short], [FilePath], [PageNumber] from [PRLCS] where [GO]='" + GO_Item.Text.Substring(0, 10) + "' order by [GO_Item],[PageNumber]");
             }
         }
 
@@ -542,18 +542,18 @@ namespace LightningPRO.Views
             if (SuccessPull == true) 
             {
                 FullSave();
-                updateStatus(GO_Item.Text + " SAVED");
+                UpdateStatus(GO_Item.Text + " SAVED");
             }
         }
 
 
         private void FullSave()
         {
-            if (imgEditor.hasDrawings())
+            if (imgEditor.HasDrawings())
             {
                 SaveImage();
             }
-            pdfSaveBLT();
+            PdfSaveBLT();
             SaveData();
 
             RefreshData();
@@ -565,20 +565,20 @@ namespace LightningPRO.Views
         {
             if (hasImageFilePath)
             {
-                imageFilePathSave(ImageFilePath);
+                ImageFilePathSave(ImageFilePath);
             }
             else
             {
-                binaryImageSave();
+                BinaryImageSave();
             }
             Utility.UpdateLastSave(GOItemsArr[page], CurrentProduct, MultiPageNumber[page]);
         }
 
-        private void binaryImageSave() //save image as an array of bytes 
+        private void BinaryImageSave() //save image as an array of bytes 
         {
             try
             {
-                imgEditor.save();
+                imgEditor.Save();
                 string commandStr = "update [PRL123] set [Bidman]=? where [GO_Item]='" + GO_Item.Text + "'";
                 using (OleDbCommand cmd = new OleDbCommand(commandStr, MainWindow.LPcon))
                 {
@@ -593,11 +593,11 @@ namespace LightningPRO.Views
         }
 
 
-        private void imageFilePathSave(string imageFilePath)    //save with image file path 
+        private void ImageFilePathSave(string imageFilePath)    //save with image file path 
         {
             try
             {
-                imgEditor.save();
+                imgEditor.Save();
                 Utility.SaveBitmapAsPNGinImages(imageFilePath, (BitmapImage)imgEditor.Back.Source);
             }
             catch
@@ -607,7 +607,7 @@ namespace LightningPRO.Views
         }
 
 
-        private void pdfSaveBLT()
+        private void PdfSaveBLT()
         {
             if (CurrentProduct != Utility.ProductGroup.PRL123)      // PRL123 is created when line item is SENT TO SHIPPING
             {
@@ -699,11 +699,11 @@ namespace LightningPRO.Views
                 {
                     if (page < GOItemsArr.Length - 1)
                     {
-                        if (imgEditor.hasDrawings())
+                        if (imgEditor.HasDrawings())
                         {
                             SaveImage();
                         }
-                        pdfSaveBLT();
+                        PdfSaveBLT();
 
                         page += 1;
                         InsertData();
@@ -727,11 +727,11 @@ namespace LightningPRO.Views
                 {
                     if (page != 0)
                     {
-                        if (imgEditor.hasDrawings())
+                        if (imgEditor.HasDrawings())
                         {
                             SaveImage();
                         }
-                        pdfSaveBLT();
+                        PdfSaveBLT();
 
                         page -= 1;
                         InsertData();
@@ -761,7 +761,7 @@ namespace LightningPRO.Views
                 string commandStr = "update [" + ProductTable + "] set [Tracking]='Shipping' where [GO_Item]='" + GO_Item.Text + "'";
                 Utility.ExecuteNonQueryLP(commandStr);
 
-                updateStatus(GO_Item.Text + " SENT TO SHIPPING");
+                UpdateStatus(GO_Item.Text + " SENT TO SHIPPING");
                 GC.Collect();
             }
         }
@@ -787,11 +787,11 @@ namespace LightningPRO.Views
 
                 if (check == 1)
                 {
-                    updateStatus(GO_Item.Text + " BLT ADDED");
+                    UpdateStatus(GO_Item.Text + " BLT ADDED");
                 }
                 else if (check == -2)
                 {
-                    updateStatus(GO_Item.Text + " BLT ERROR");
+                    UpdateStatus(GO_Item.Text + " BLT ERROR");
                 }
             }
         }
@@ -809,7 +809,7 @@ namespace LightningPRO.Views
                         string query = "update [" + ProductTable + "] set [Tracking]='MIComplete' where [GO_Item]='" + GO_Item.Text + "'";
                         Utility.ExecuteNonQueryLP(query);
 
-                        updateStatus(GO_Item.Text + " RECALLED");
+                        UpdateStatus(GO_Item.Text + " RECALLED");
                     }
                 }
             }
@@ -837,7 +837,7 @@ namespace LightningPRO.Views
         }
 
 
-        private void updateStatus(string command)
+        private void UpdateStatus(string command)
         {
             Status.Content = command;
             Status.Foreground = System.Windows.Media.Brushes.Green;

@@ -126,8 +126,7 @@ namespace LightningPRO.Views
 
         protected virtual void OnPropertyChanged(string propertyName = null)
         {
-            var handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         private void UpdateOnclick(object sender, RoutedEventArgs e)

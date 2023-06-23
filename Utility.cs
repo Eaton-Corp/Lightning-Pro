@@ -1161,30 +1161,63 @@ namespace LightningPRO
 
 
 
-        // The following is used to access the ReplacementParts table
-        public static string ReplacePart(string part)
+        //// The following is used to access the ReplacementParts table - 1-1 mapping only
+        //public static string ReplacePart(string part)
+        //{
+        //    string replacement = part;
+        //    try
+        //    {
+        //        string query = "select [Replace] from [ReplacementParts] where [Find]='" + part + "'";
+        //        using (DataTableReader dtr = LoadData(query))
+        //        {
+        //            while (dtr.Read())
+        //            {
+        //                if (dtr[0] != null)
+        //                {
+        //                    replacement = dtr[0].ToString();    //there is a replacement available
+        //                }
+        //            }
+        //        } //end using reader
+        //    }
+        //    catch
+        //    {
+        //        MessageBox.Show("Unable To Replace Part");
+        //    }
+        //    return replacement;
+        //}
+
+
+
+        // The following is used to access the ReplacementParts table - with the possibility of mapping 1-1 or 1-Many
+        public static List<string> ReplacementParts(string part)
         {
-            string replacement = part;
+            List<string> ReplacementPartsList = new List<string>();
             try
             {
                 string query = "select [Replace] from [ReplacementParts] where [Find]='" + part + "'";
                 using (DataTableReader dtr = LoadData(query))
                 {
+                    if (dtr.HasRows == false)
+                    {
+                        ReplacementPartsList.Add(part);
+                        return ReplacementPartsList;
+                    }
                     while (dtr.Read())
                     {
-                        if (dtr[0] != null)
+                        if (dtr[0] != null)             //there is a replacement available
                         {
-                            replacement = dtr[0].ToString();    //there is a replacement available
+                            ReplacementPartsList.Add(dtr[0].ToString());    
                         }
                     }
                 } //end using reader
             }
             catch
             {
-                MessageBox.Show("Unable To Replace Part");
+                MessageBox.Show("Unable To Execute ReplacementParts");
             }
-            return replacement;
+            return ReplacementPartsList;
         }
+
 
 
 

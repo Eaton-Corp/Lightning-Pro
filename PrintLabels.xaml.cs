@@ -27,9 +27,9 @@ namespace LightningPRO
     /// </summary>
     public partial class PrintLabels : Window
     {
-        List<string> GO;
-        Utility.ProductGroup CurrentProduct;
-        string ProductTbl;
+        readonly List<string> GO;
+        readonly Utility.ProductGroup CurrentProduct;
+        readonly string ProductTbl;
 
         System.Windows.Controls.Image im;
 
@@ -58,15 +58,15 @@ namespace LightningPRO
 
         private RenderTargetBitmap LabelRender(string GOItem)
         {
-            string GONumber = "";
+            string GONumber;
             string enc = "";
-            string ItemNumber = "";
+            string ItemNumber;
             string Designation = "";
             string MA = "";
             string Voltage = "";
             string P = "";
             string W = "";
-            string Ground = "";
+            string Ground;
             string Hertz = "";
             string ProductID = "";
             string GO_Item = "";
@@ -178,12 +178,14 @@ namespace LightningPRO
             RenderTargetBitmap renderBmap = new RenderTargetBitmap(img.PixelWidth * 8, img.PixelHeight * 8, 768, 768, PixelFormats.Pbgra32);
             renderBmap.Render(drawingVisual);
 
-            im = new System.Windows.Controls.Image();
-            im.Source = renderBmap;
-            im.Width = img.Width - 20;
-            im.Height = img.Height;
-            im.HorizontalAlignment = HorizontalAlignment.Left;
-            im.VerticalAlignment = VerticalAlignment.Top;
+            im = new System.Windows.Controls.Image
+            {
+                Source = renderBmap,
+                Width = img.Width - 20,
+                Height = img.Height,
+                HorizontalAlignment = HorizontalAlignment.Left,
+                VerticalAlignment = VerticalAlignment.Top
+            };
 
             return renderBmap;
         }

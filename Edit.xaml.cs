@@ -101,7 +101,7 @@ namespace LightningPRO
 
 
         string current_ID;
-        Utility.ProductGroup CurrentProduct;
+        readonly Utility.ProductGroup CurrentProduct;
         string ProductTable;
 
         public Edit(string GO, Utility.ProductGroup currProduct)
@@ -126,7 +126,7 @@ namespace LightningPRO
         {
             if (CurrentProduct == Utility.ProductGroup.PRL123)
             {
-                getGOs("select [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Quantity], " +
+                GetGOs("select [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Quantity], " +
                     "[EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [ProductSpecialist], [Customer], " +
                     "[SpecialCustomer], [AMO], [ServiceEntrance], [RatedNeutral200], [PaintedBox], " +
                     "[DNSB], [Complete], [Short], [FilePath], [BoxEarly], [Box Sent], [DoubleSection] " +
@@ -134,7 +134,7 @@ namespace LightningPRO
             }
             else if (CurrentProduct == Utility.ProductGroup.PRL4)
             {
-                getGOs("select [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Quantity], " +
+                GetGOs("select [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Quantity], " +
                     "[EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [ProductSpecialist], [Customer], " +
                     "[SpecialCustomer], [AMO], [ServiceEntrance], [RatedNeutral200], [PaintedBox], " +
                     "[DNSB], [Complete], [Short], [FilePath], [DoorOverDist], [DoorInDoor], [PageNumber] " +
@@ -142,7 +142,7 @@ namespace LightningPRO
             }
             else if(CurrentProduct == Utility.ProductGroup.PRLCS)
             {
-                getGOs("select [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Quantity], " +
+                GetGOs("select [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Quantity], " +
                     "[EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [ProductSpecialist], [Customer], " +
                     "[SpecialCustomer], [AMO], [IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], " +
                     "[ThirtyDeepEnclosure], [DNSB], [Complete], [Short], [FilePath], [PageNumber] " +
@@ -150,7 +150,7 @@ namespace LightningPRO
             }
         }
 
-        private void getGOs(string query)
+        private void GetGOs(string query)
         {
             //get the data twice - once for counters and once for operations
             DataTableReader rd = Utility.LoadData(query);
@@ -528,8 +528,8 @@ namespace LightningPRO
                 Short_CS.IsChecked = ShortArr[page];
             }
 
-            CurrentBidman = getBidman(GOItemArr[page]);
-            imgEditor.loadImage(CurrentBidman);
+            CurrentBidman = GetBidman(GOItemArr[page]);
+            imgEditor.LoadImage(CurrentBidman);
 
             pg.Content = "Page: " + (page + 1).ToString() + "/" + GOItemArr.Length.ToString();
         }
@@ -543,7 +543,7 @@ namespace LightningPRO
             {
                 if (page != 0)
                 {
-                    if (imgEditor.hasDrawings())
+                    if (imgEditor.HasDrawings())
                     {
                         SaveImage();
                     }
@@ -565,7 +565,7 @@ namespace LightningPRO
             {
                 if (page < GOItemArr.Length - 1)
                 {
-                    if (imgEditor.hasDrawings())
+                    if (imgEditor.HasDrawings())
                     {
                         SaveImage();
                     }
@@ -607,7 +607,7 @@ namespace LightningPRO
 
 
 
-        private BitmapImage getBidman(string GOItem)
+        private BitmapImage GetBidman(string GOItem)
         {
             BitmapImage output;
             string imageFilePath = Utility.GetImageFilePath(GOItem, CurrentProduct, pgNumber[page]);
@@ -629,7 +629,7 @@ namespace LightningPRO
 
         private void Click_Save(object sender, RoutedEventArgs e)
         {
-            if (imgEditor.hasDrawings())
+            if (imgEditor.HasDrawings())
             {
                 SaveImage();
             }
@@ -638,34 +638,34 @@ namespace LightningPRO
             LoadDataForPage();
             PageData();
 
-            updateStatus(current_ID + " SAVED");
+            UpdateStatus(current_ID + " SAVED");
         }
 
         private void SaveImage()
         {
             if (hasImageFilePath)
             {
-                imageFilePathSave(ImageFilePath);
+                ImageFilePathSave(ImageFilePath);
             }
             else
             {
-                binaryImageSave();
+                BinaryImageSave();
             }
             Utility.UpdateLastSave(current_ID, CurrentProduct, pgNumber[page]);
         }
 
-        private void binaryImageSave() //save image as an array of bytes 
+        private void BinaryImageSave() //save image as an array of bytes 
         {
             try
             {
-                imgEditor.save();
+                imgEditor.Save();
                 string commandStr = "update [PRL123] set [Bidman]=? where [GO_Item]='" + current_ID + "'";
                 using (OleDbCommand cmd = new OleDbCommand(commandStr, MainWindow.LPcon))
                 {
                     cmd.Parameters.AddWithValue("Bidman", Utility.ImageToByte((BitmapImage)imgEditor.Back.Source));
                     cmd.ExecuteNonQuery();
                 } //end using command
-                savePDF();
+                SavePDF();
             }
             catch
             {
@@ -674,12 +674,12 @@ namespace LightningPRO
         }
 
 
-        private void imageFilePathSave(string imageFilePath)    //save with image file path 
+        private void ImageFilePathSave(string imageFilePath)    //save with image file path 
         {
             try
             {
-                imgEditor.save();
-                savePDF();
+                imgEditor.Save();
+                SavePDF();
                 Utility.SaveBitmapAsPNGinImages(imageFilePath, (BitmapImage)imgEditor.Back.Source);
             }
             catch
@@ -822,7 +822,7 @@ namespace LightningPRO
 }
 
 
-        private void savePDF()
+        private void SavePDF()
         {
             if (CurrentProduct == Utility.ProductGroup.PRL123)
             {
@@ -856,8 +856,10 @@ namespace LightningPRO
         {
             try
             {
-                Microsoft.Win32.OpenFileDialog ofg = new Microsoft.Win32.OpenFileDialog();
-                ofg.Filter = "Image files|*.PDF;*.tif|All files|*.*";
+                Microsoft.Win32.OpenFileDialog ofg = new Microsoft.Win32.OpenFileDialog
+                {
+                    Filter = "Image files|*.PDF;*.tif|All files|*.*"
+                };
                 bool? response = ofg.ShowDialog();
                 if (response == true)
                 {
@@ -867,10 +869,10 @@ namespace LightningPRO
                         string filepath = ofg.FileName;
                         BitmapSource ReplacementImage = Utility.ConvertPDFToImage(filepath)[0];
                         CurrentBidman = (BitmapImage)ReplacementImage;
-                        imgEditor.loadImage(CurrentBidman);
+                        imgEditor.LoadImage(CurrentBidman);
                         MessageBox.Show("PDF Image Successfully Uploaded");
                         SaveImage();
-                        updateStatus("PAGE " + (page + 1).ToString() + " SUCCESSFULLY REPLACED");
+                        UpdateStatus("PAGE " + (page + 1).ToString() + " SUCCESSFULLY REPLACED");
                     }
                 }
             }
@@ -930,11 +932,11 @@ namespace LightningPRO
                 LoadDataForPage();
                 PageData();
 
-                updateStatus(current_ID + " AUTO RETRIEVED DATA");
+                UpdateStatus(current_ID + " AUTO RETRIEVED DATA");
             }
             catch
             {
-                updateStatus("UNABLE TO AUTO RETRIEVE");
+                UpdateStatus("UNABLE TO AUTO RETRIEVE");
                 MessageBox.Show("An Error Occurred Trying To AutoRetrieveData");
             }
         }
@@ -953,7 +955,7 @@ namespace LightningPRO
         }
 
 
-        private void updateStatus(string command)
+        private void UpdateStatus(string command)
         {
             Status.Content = command;
             Status.Foreground = System.Windows.Media.Brushes.Green;

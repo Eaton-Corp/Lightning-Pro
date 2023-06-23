@@ -152,15 +152,14 @@ namespace LightningPRO.Views
                 {
                     Title = "2015",
                     Values = new ChartValues<double> { 10, 50, 39, 50 }
+                },
+                //adding series will update and animate the chart automatically
+                new ColumnSeries
+                {
+                    Title = "2016",
+                    Values = new ChartValues<double> { 11, 56, 42 }
                 }
             };
-
-            //adding series will update and animate the chart automatically
-            BarCollection.Add(new ColumnSeries
-            {
-                Title = "2016",
-                Values = new ChartValues<double> { 11, 56, 42 }
-            });
 
             //also adding values updates and animates the chart automatically
             BarCollection[1].Values.Add(48d);
@@ -184,8 +183,10 @@ namespace LightningPRO.Views
             var chart = (LiveCharts.Wpf.PieChart)chartpoint.ChartView;
 
             //clear selected slice.
-            foreach (PieSeries series in chart.Series)
+            foreach (PieSeries series in chart.Series.Cast<PieSeries>())
+            {
                 series.PushOut = 0;
+            }
 
             var selectedSeries = (PieSeries)chartpoint.SeriesView;
             selectedSeries.PushOut = 8;
@@ -245,8 +246,7 @@ namespace LightningPRO.Views
 
         protected virtual void OnPropertyChanged(string propertyName = null)
         {
-            var handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         private void UpdateOnclick(object sender, RoutedEventArgs e)
