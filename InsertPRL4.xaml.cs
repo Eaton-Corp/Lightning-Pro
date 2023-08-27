@@ -28,6 +28,9 @@ using iTextSharp.text.pdf.parser;
 using System.Diagnostics;
 using System.Net.Mail;
 using System.Net;
+using static PRL123_Final.Insert;
+using iTextSharp.text.pdf.qrcode;
+//using System.Windows.Forms;
 
 namespace PRL123_Final
 {
@@ -41,15 +44,20 @@ namespace PRL123_Final
         string[] ImagesInText;
 
         BitmapSource[] image;
-        
+        Boolean AMOFound;   //boolean indicator for isAMO()
+
         int[] pages;
         
 
         int page;
         Boolean XMLLoaded = false;
         Boolean PDFLoaded = false;
-        
+
+        XmlNodeList lines;      //BMConfiguredLineItem nodes -> XmlNodeList of each GoItem
+        XmlNodeList BMLines;    //BMLineItems nodes -> Bill of Materials Nodes (Materials Listed Here)
+
         string ProductSpecialist = "";
+        string strPathPDF;
 
         int[] SliderShowcase = new int[5];
 
@@ -57,8 +65,8 @@ namespace PRL123_Final
         System.Windows.Controls.Image[] CheckPreviewObjects;
 
         Boolean[] SelectedPages; 
+
         
-         
         
         /*
          * Insert procedure:
@@ -193,12 +201,6 @@ namespace PRL123_Final
             IsRatedNeutral(index);
         }
 
-
-
-
-
-
-
         public void updateSlider()
         {           
             int i = 0;
@@ -235,12 +237,6 @@ namespace PRL123_Final
                 }
             }            
         }
-
-
-
-
-
-
 
 
         public async Task<int> TurnOnStatusBar()
@@ -325,12 +321,14 @@ namespace PRL123_Final
                             SelectedPages[i] = false;
                         }
                     }
-                    catch
+                    catch (Exception ex)
                     {
-                        MessageBox.Show("Error In PDF");
+                        MessageBox.Show($"Error In PDF: {ex.Message}");
                         pbStatus.Visibility = Visibility.Hidden;
                         return;
+
                     }
+          
 
                     updateSlider();
 
@@ -345,10 +343,10 @@ namespace PRL123_Final
                     Status.Content = "PDF SUCCESSFULLY UPLOADED";
                 }
             }
-            catch
+            catch (Exception ex)
             {
                 pbStatus.Visibility = Visibility.Hidden;
-                MessageBox.Show("Error Occurred");
+                MessageBox.Show($"Error Occurred in upload: {ex.Message}");
             }
         }
 
@@ -447,22 +445,9 @@ namespace PRL123_Final
                 Directory.CreateDirectory(dir + @"\" + GO + @"\PDF Storage");
             }
             PathIMAGE.Text = dir.FullName + @"\" + GO + @"\Images" + @"\" + GO;
+            
             return dir.FullName + @"\" + GO + @"\PDF Storage" + @"\" + GO;
         }
-
-
-        
-     
-
-     
-
-
-    
-
-        
-
-
-       
 
         private void Forward_Click(object sender, RoutedEventArgs e)
         {
@@ -503,12 +488,6 @@ namespace PRL123_Final
 
         }
 
-
-
-
-
-
-
         private void InsertXmlData() 
         {
             Designation.Text = DesignationArr[XMLpage];
@@ -524,6 +503,17 @@ namespace PRL123_Final
             GOItemXML.Text = GoItemXmlArr[XMLpage];
         }
 
+        private void matchXMLPage(string GOItem)
+        {
+            for(int i = 0; i < GoItemXmlArr.Length; i++)
+            {
+                if(GOItem == GoItemXmlArr[i])
+                {
+                    XMLpage = i;
+                    InsertXmlData();
+                }
+            }
+        }
 
         private void Forward_ClickXML(object sender, RoutedEventArgs e)
         {
@@ -544,9 +534,7 @@ namespace PRL123_Final
         }
 
         int XMLpage;
-
         Boolean XmlUploaded = false;
-
         string[] DesignationArr;
         string[] MAArr;
         string[] VoltageArr;
@@ -565,8 +553,8 @@ namespace PRL123_Final
 
         private async void XML_Upload(object sender, RoutedEventArgs e)
         {
-            try
-            {
+            //try
+            //{
                 Microsoft.Win32.OpenFileDialog ofg = new Microsoft.Win32.OpenFileDialog();
                 ofg.Filter = "Image files|*.XML;*.tif|All files|*.*";
                 bool? response = ofg.ShowDialog();
@@ -592,6 +580,9 @@ namespace PRL123_Final
 
                     //each node is a line item
                     XmlNodeList BMConfiguredLineItemNodes = xDoc.GetElementsByTagName("BMConfiguredLineItem");
+                    lines = BMConfiguredLineItemNodes;
+
+
 
                     int NumberOfLineItems = 0;
                     foreach (XmlNode lineItemNode in BMConfiguredLineItemNodes)
@@ -620,17 +611,24 @@ namespace PRL123_Final
 
                     InsertXmlData();
 
+                    //sets global variable BMLines to XMLNodesList where each node has the list of materials for a line item
+                    BMLines = xDoc.GetElementsByTagName("BMLineItems");
+                    strPathPDF = FilePathFinder(SearchBox.Text);
+                    isAMO();
+
+
                     XmlUploaded = true;
 
                     pbStatus.Visibility = Visibility.Hidden;
                     Status.Content = "XML SUCCESSFULLY UPLOADED";
                 }
-            }
-            catch
+            /*}
+            catch (Exception ex)
             {
                 pbStatus.Visibility = Visibility.Hidden;
-                MessageBox.Show("Error Occurred Uploading XML");
-            }
+                MessageBox.Show($"Error Occurred: {ex.Message}");
+            }*/
+            
         }
 
 
@@ -1020,9 +1018,10 @@ namespace PRL123_Final
                 }//end for loop of line item
 
             }
-            catch 
+            catch (Exception ex)
             {
-                MessageBox.Show("Unable To GetXmlData");
+                MessageBox.Show($"Unable To GetXmlData: {ex.Message}");
+
             }
         }
 
@@ -1049,8 +1048,9 @@ namespace PRL123_Final
             if (gd.SelectedItem != null)
             {
                 dynamic row = gd.SelectedItem;
+                SetRow(row);
 
-                GO1.Text = row["GO"];
+                /*GO1.Text = row["GO"];
                 GO_Item.Text = row["GO Item"];
                 Item.Text = row["Item"];
                 Suffix.Text = row["Suffix"];
@@ -1066,18 +1066,33 @@ namespace PRL123_Final
                 Status.Content = GO_Item.Text + " SELECTED";
                 ProductSpecialist = row["Product Specialist"].ToString();
                 jobName.Text = row["Job Name"].ToString();
+                */
             }
 
         }
 
-        
+        private void SetRow(dynamic row)
+        {
+            
+            GO1.Text = row["GO"];
+            GO_Item.Text = row["GO Item"];
+            Item.Text = row["Item"];
+            Suffix.Text = row["Suffix"];
+            ShopOrder.Text = row["Shop Order"].ToString();
+            ShopOrderTrim.Text = row["Shop Order T"].ToString();
+            ShopOrderBox.Text = row["Shop Order B"].ToString();
+            Customer.Text = row["Customer"];
+            Qty.Text = row["Qty"].ToString();
+            ReleaseDate.Text = row["Release Date"].ToString();
+            CommitDate.Text = row["Commit Date"].ToString();
+            EnteredDate.Text = row["Entered Date"].ToString();
+            Urgency.Text = "N";
+            Status.Content = GO_Item.Text + " SELECTED";
+            ProductSpecialist = row["Product Specialist"].ToString();
+            jobName.Text = row["Job Name"].ToString();
+        }
 
-
-
-
-
-
-
+       
         private int getFirstPageIndex() 
         {
             for (int i = 0; i < SelectedPages.Length; i++)
@@ -1091,6 +1106,11 @@ namespace PRL123_Final
         }
 
         private void Insert_Entry(object sender, RoutedEventArgs e)
+        {
+            insertSingleEntry();
+        }
+
+        private Boolean insertSingleEntry()
         {
             if (Utility.isDuplicate(GO_Item.Text, Utility.ProductGroup.PRL4) == false)
             {
@@ -1108,12 +1128,16 @@ namespace PRL123_Final
                     }
                     InsertTestReport(amountOfPages);
                 }
+                return true;
             }
-            else 
+            else
             {
                 MessageBox.Show("You Have A Duplicate. GO Items Must Be Unique.", "Duplicate Detected", MessageBoxButton.OK, MessageBoxImage.Information);
+                return false;
             }
         }
+
+
 
         private FormattedText TestReportText(string input)
         {
@@ -1188,7 +1212,6 @@ namespace PRL123_Final
                     InsertCommand.Parameters.AddWithValue("[DoorOverDist]", (Boolean)DoorOverDistribution);
                     InsertCommand.Parameters.AddWithValue("[DoorInDoor]", (Boolean)DoorInDoor);
 
-
                     InsertCommand.Parameters.AddWithValue("ReleaseDate", ReleaseDate.Text);
                     InsertCommand.Parameters.AddWithValue("CommitDate", CommitDate.Text);
                     InsertCommand.Parameters.AddWithValue("EnteredDate", ReleaseDate.Text);
@@ -1259,7 +1282,6 @@ namespace PRL123_Final
                     InsertCommand.Parameters.AddWithValue("[DoorOverDist]", (Boolean)DoorOverDistribution);
                     InsertCommand.Parameters.AddWithValue("[DoorInDoor]", (Boolean)DoorInDoor);
 
-
                     InsertCommand.Parameters.AddWithValue("ReleaseDate", ReleaseDate.Text);
                     InsertCommand.Parameters.AddWithValue("CommitDate", CommitDate.Text);
                     InsertCommand.Parameters.AddWithValue("EnteredDate", ReleaseDate.Text);
@@ -1313,96 +1335,900 @@ namespace PRL123_Final
             loadGrid("select * from [tblOrderStatus] where [Prod Group] in " + Utility.GetProductNameListInString(Views.Configuration.PRL4names) + " and [GO]='" + SearchBox.Text + "'");
         }
 
-        private void Pg1_Click(object sender, RoutedEventArgs e)
+        private void Auto_Insert(object sender, RoutedEventArgs e)
         {
-            if(SelectedPages.Length > page)
+            AutomaticInsert();
+        }
+
+
+        public class GOItemPages
+        {
+            public List<int> Pages { get; set; }
+        }
+
+        public class GOData
+        {
+            public string GO { get; set; }
+            public Dictionary<string, GOItemPages> GOItems { get; set; }
+        }
+
+        public static class PDFPageOrganizer
+        {
+            public static GOData FindPagesForGOItem(string[] imagesInText, string goKeyword)
             {
-                if (SelectedPages[page] == false)
+                GOData goData = new GOData
                 {
-                    SelectedPages[page] = true;
-                    pg1OverLay.Visibility = Visibility.Visible;
+                    GO = null,
+                    GOItems = new Dictionary<string, GOItemPages>()
+                };
+
+                goData.GO = goKeyword;
+                Regex goItemRegex = new Regex($@"{goKeyword}\s+(?<GOItem>\d+[A-Za-z])\s+(?<Page>\d+)\s+of\s+(?<TotalPages>\d+)", RegexOptions.IgnoreCase);
+
+
+                for (int pageIndex = 0; pageIndex < imagesInText.Length; pageIndex++)
+                {
+                    string pageText = imagesInText[pageIndex];
+                    Match match = goItemRegex.Match(pageText);
+                    if (match.Success)
+                    {
+                        string GOItem = match.Groups["GOItem"].Value;
+                        string PageNumber = match.Groups["Page"].Value;
+                        string TotalPages = match.Groups["TotalPages"].Value;
+
+                        if (!goData.GOItems.ContainsKey(GOItem))
+                        {
+                            goData.GOItems.Add(GOItem, new GOItemPages { Pages = new List<int>() });
+                        }
+
+                        goData.GOItems[GOItem].Pages.Add(pageIndex);
+
+                    }
+
+                }
+                return goData;
+            }
+
+            public static string GODataToString(GOData goData)
+            {
+                StringBuilder stringBuilder = new StringBuilder();
+
+                stringBuilder.AppendLine($"GO: {goData.GO}");
+                foreach (var goItemPage in goData.GOItems)
+                {
+                    stringBuilder.AppendLine($"GOItem: {goItemPage.Key}, Pages: [{string.Join(", ", goItemPage.Value.Pages)}]");
+                }
+
+                return stringBuilder.ToString();
+            }
+        }
+
+        public string GetFirstGO(DataGrid dataGrid)
+        {
+            foreach (var dataGridRow in dataGrid.Items)
+            {
+                DataRowView rowView = dataGridRow as DataRowView;
+
+                if (rowView != null && rowView.Row.Table.Columns.Contains("GO"))
+                {
+                    return rowView["GO"].ToString();
+                }
+            }
+
+            // Return null (or any default value) if no "GO" is found in the DataGrid
+            return null;
+        }
+
+        public List<int> GetGOItemPages(string goItem, GOData goData)
+        {
+            if (goData.GOItems.TryGetValue(goItem, out GOItemPages goItemPages))
+            {
+                return goItemPages.Pages;
+            }
+            else
+            {
+                return new List<int>(); // Return an empty list if the GOItem is not found in GOData
+            }
+        }
+
+        private void AutomaticInsert()
+        {
+            //pbStatus.Visibility = Visibility.Visible;
+            try
+            {
+            //returns the pageArray for the 
+            GOData result = PDFPageOrganizer.FindPagesForGOItem(ImagesInText, GetFirstGO(dg));
+
+                string status = "Successfully inserted items:\n"; // Initialize with a newline
+                // Output the result as a loggable string
+                string logString = PDFPageOrganizer.GODataToString(result);
+                System.Windows.MessageBox.Show(logString);
+
+                if (dg.ItemsSource == null)
+                {
+                    System.Windows.MessageBox.Show("DataGrid is empty.");
+                    return;
+                }
+
+                foreach (var dataGridRow in dg.Items)
+                {
+                    DataRowView rowView = dataGridRow as DataRowView;
+
+                    if (rowView != null)
+                    {
+                        List<int> matchingPage = GetGOItemPages(rowView["Item"].ToString(), result);
+
+                        if (matchingPage.Count > 0)
+                        {
+                            
+                            SetRow(rowView);
+                            matchXMLPage(rowView["GO Item"].ToString());
+
+                            foreach (int pageNumber in matchingPage)
+                            {
+                                SelectedPages[pageNumber] = true;
+                            }
+                            Boolean insertionStatus = insertSingleEntry();
+                            if (insertionStatus)
+                            {
+                                status += rowView["Item"] + "\n"; // Append the item name with a newline
+                            }
+                            for (int i = 0; i < SelectedPages.Length; i++)
+                            {
+                                SelectedPages[i] = false;
+                            }
+                        }
+                    }
+                }
+                MessageBox.Show(status);
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occured when trying to auto insert drawings : {ex.Message}");
+            }
+
+            //pbStatus.Visibility = Visibility.Hidden;
+        }
+
+
+        private string convertToRequired(string partname, int enclosure, int paint, int mount, int multiple)
+        {
+            string output = partname;
+
+            if (output != null)
+            {
+                if (!(output.StartsWith("CN")) && !(output.StartsWith("ItemNumber")) && !(output.Contains("-")) && !(output.Contains("PROV")) && !(output.Contains("start")) && !(output.StartsWith("S3")) && !(output.StartsWith("P25")) && !(output.StartsWith("A29")) && !(output.StartsWith("H5")) && !(output.StartsWith("SP")) && !(output.StartsWith("BX")))
+                {
+                    if (output.StartsWith("JD3") || output.StartsWith("JDB3") || output.StartsWith("HJD3") || output.StartsWith("KD3") || output.StartsWith("KDB3") && !(output.StartsWith("JDB3070") || output.StartsWith("JDB3090") || output.StartsWith("JD3070") || output.StartsWith("JD3090") || output.StartsWith("HJD3070") || output.StartsWith("HJD3090")))
+                    {
+                        output = "HKD3400F";
+                    }
+
+                    else if (output.StartsWith("JD2") || output.StartsWith("JDB2") || output.StartsWith("HJD2") || output.StartsWith("KD2") || output.StartsWith("KDB3") && !(output.StartsWith("JDB2070") || output.StartsWith("JDB2090") || output.StartsWith("JD2070") || output.StartsWith("JD2090") || output.StartsWith("HJD3070") || output.StartsWith("HJD2090")))
+                    {
+                        output = "HKD3400F";
+                    }
+
+                    else if (output.StartsWith("DK2") || output.StartsWith("DK3"))
+                    {
+                        output = output.Remove(0, 2);
+                    }
+
+                    else if (output.StartsWith("LG"))
+                    {
+                        //what to do if we have an LG breaker
+                        //previous implementation
+                        //Sends message to Label
+                        MessageBox.Show("LG Breaker Present");
+                    }
+
+                    else if (output.StartsWith("EZB") && output.EndsWith("RCSP") && multiple == 1 && mount == 0)
+                    {
+                        output = EnclosureFlush1(output, enclosure, paint);
+                    }
+                    else if (output.StartsWith("EZB") && output.EndsWith("SPEC") && multiple == 1 && mount == 0)
+                    {
+                        output = EnclosureFlush(output, enclosure, paint);
+                    }
+                    else if (output.StartsWith("EZB") && output.EndsWith("RCSP") && multiple == 1 && mount == 1)
+                    {
+                        output = EnclosureSurface1(output, enclosure, paint);
+                    }
+
+                    else if (output.StartsWith("EZB") && output.EndsWith("SPEC") && multiple == 1 && mount == 1)
+                    {
+                        output = EnclosureSurface(output, enclosure, paint);
+                    }
+
+                    else if (output.StartsWith("EZB") && multiple == 3 && mount == 0)
+                    {
+                        output = TripleFlush(output, enclosure, paint);
+                    }
+                    else if (output.StartsWith("EZB") && multiple == 3 && mount == 1)
+                    {
+                        output = TripleSurface(output, enclosure, paint);
+                    }
+                    else if (output.StartsWith("EZB") && multiple == 2 && mount == 0)
+                    {
+                        output = DoubleFlush(output, enclosure, paint);
+                    }
+                    else if (output.StartsWith("EZB") && multiple == 2 && mount == 1)
+                    {
+                        output = DoubleSurface(output, enclosure, paint);
+                    }
+                }
+            }
+            return output;
+        }
+
+
+        // 8 functions of Random Ass Logic to alter the partname
+
+        private string EnclosureSurface1(string partname, int e, int p)
+        {
+            string a = partname;
+            int enclosure = e;
+            int paint = p;
+
+            if (enclosure == 0 && paint == 1)
+            {
+                a = a.Replace("EZB", "EZBP");
+                a = a.Replace("RCSP", "RC");
+                DictionaryLoop(a, 1);
+                a = a.Replace("EZBP", "EZT");
+                a = a.Replace("RC", "S");
+            }
+            else if (enclosure == 0 && !(paint == 1))
+            {
+                a = a.Replace("RCSP", "RC");
+                DictionaryLoop(a, 1);
+                a = a.Replace("EZB", "EZT");
+                a = a.Replace("RC", "S");
+            }
+            else if ((enclosure == 0 || enclosure == 2) && !(paint == 1))
+            {
+                a = a.Replace("RCSP", "RC");
+            }
+            else if ((enclosure == 1 || enclosure == 2) && paint == 1)
+            {
+                a = a.Replace("EZB", "EZBP");
+                a = a.Replace("RCSP", "RC");
+            }
+
+            if (enclosure == 0 || enclosure == 2)
+            {
+                string RainCover = Utility.ReplacePart("CE24331H01");
+                DictionaryLoop(RainCover, 1);
+            }
+            return a;
+        }
+
+
+        private string EnclosureFlush1(string partname, int e, int p)
+        {
+            string a = partname;
+            int enclosure = e;
+            int paint = p;
+            if (enclosure == 0 && paint == 1)
+            {
+                a = a.Replace("EZB", "EZBP");
+                a = a.Replace("RCSP", "RC");
+                DictionaryLoop(a, 1);
+                a = a.Replace("EZBP", "EZT");
+                a = a.Replace("RC", "F");
+            }
+            else if (enclosure == 0 && !(paint == 1))
+            {
+                a = a.Replace("RCSP", "RC");
+                DictionaryLoop(a, 1);
+                a = a.Replace("EZB", "EZT");
+                a = a.Replace("RC", "F");
+            }
+            else if ((enclosure == 1 || enclosure == 2) && !(paint == 1))
+            {
+                a = a.Replace("RCSP", "RC");
+            }
+            else if ((enclosure == 1 || enclosure == 2) && paint == 1)
+            {
+                a = a.Replace("EZB", "EZBP");
+                a = a.Replace("RCSP", "RC");
+            }
+
+            if (enclosure == 0 || enclosure == 2)
+            {
+                string RainCover = Utility.ReplacePart("CE24331H01");
+                DictionaryLoop(RainCover, 1);
+            }
+            return a;
+        }
+
+        private string EnclosureFlush(string partname, int e, int p)
+        {
+            string a = partname;
+            int enclosure = e;
+            int paint = p;
+            if (enclosure == 0 && paint == 1)
+            {
+                a = a.Replace("EZB", "EZBP");
+                a = a.Replace("SPEC", "RC");
+                DictionaryLoop(a, 1);
+                a = a.Replace("EZBP", "EZT");
+                a = a.Replace("RC", "F");
+            }
+            else if (enclosure == 0 && !(paint == 1))
+            {
+                a = a.Replace("SPEC", "RC");
+                DictionaryLoop(a, 1);
+                a = a.Replace("EZB", "EZT");
+                a = a.Replace("RC", "F");
+            }
+            else if (enclosure == 1 || enclosure == 2 && !(paint == 1))
+            {
+                a = a.Replace("SPEC", "RC");
+            }
+            else if (enclosure == 1 || enclosure == 2 && paint == 1)
+            {
+                a = a.Replace("EZB", "EZBP");
+                a = a.Replace("SPEC", "RC");
+            }
+
+            if (enclosure == 0 || enclosure == 2)
+            {
+                string RainCover = Utility.ReplacePart("CE24331H01");
+                DictionaryLoop(RainCover, 1);
+            }
+            return a;
+        }
+
+        private string EnclosureSurface(string partname, int e, int p)
+        {
+            string a = partname;
+            int enclosure = e;
+            int paint = p;
+
+            if (enclosure == 0 && paint == 1)
+            {
+                a = a.Replace("EZB", "EZBP");
+                a = a.Replace("SPEC", "RC");
+                DictionaryLoop(a, 1);
+                a = a.Replace("EZBP", "EZT");
+                a = a.Replace("RC", "S");
+            }
+            else if (enclosure == 0 && !(paint == 1))
+            {
+                a = a.Replace("SPEC", "RC");
+                DictionaryLoop(a, 1);
+                a = a.Replace("EZB", "EZT");
+                a = a.Replace("RC", "S");
+            }
+            else if (enclosure == 1 || enclosure == 2 && !(paint == 1))
+            {
+                a = a.Replace("SPEC", "RC");
+            }
+            else if (enclosure == 1 || enclosure == 2 && paint == 1)
+            {
+                a = a.Replace("EZB", "EZBP");
+                a = a.Replace("SPEC", "RC");
+            }
+
+            if (enclosure == 0 || enclosure == 2)
+            {
+                string RainCover = Utility.ReplacePart("CE24331H01");
+                DictionaryLoop(RainCover, 1);
+            }
+            return a;
+        }
+
+
+        private string TripleFlush(string partname, int e, int p)
+        {
+            string a = partname;
+            int enclosure = e;
+            int paint = p;
+            if (!(paint == 1))
+            {
+                a = a.Replace("EZB", "CTR-EZB");
+                a = a.Replace("SPEC", "RC");
+                DictionaryLoop(a, 1);
+                a = a.Replace("CTR-EZB", "C-EZB");
+            }
+            else if (paint == 1)
+            {
+                a = a.Replace("EZB", "CTR-EZBP");
+                a = a.Replace("SPEC", "RC");
+                DictionaryLoop(a, 1);
+                a = a.Replace("CTR-EZBP", "C-EZBP");
+            }
+
+            if (enclosure == 1 && enclosure == 2)
+            {
+                string RainCover = Utility.ReplacePart("CE24331H03");
+                DictionaryLoop(RainCover, 1);
+            }
+            return a;
+        }
+
+
+
+        private string TripleSurface(string partname, int e, int p)
+        {
+            string a = partname;
+            int enclosure = e;
+            int paint = p;
+            if (!(paint == 1))
+            {
+                a = a.Replace("EZB", "CTR-EZB");
+                a = a.Replace("SPEC", "RC");
+                DictionaryLoop(a, 1);
+                a = a.Replace("CTR-EZB", "C-EZB");
+                DictionaryLoop(a, 1);
+                a = a.Replace("C-EZB", "EZT");
+                a = a.Replace("RC", "S");
+            }
+            else if (paint == 1)
+            {
+                a = a.Replace("EZB", "CTR-EZBP");
+                a = a.Replace("SPEC:3", "RC:1");
+                DictionaryLoop(a, 1);
+                a = a.Replace("CTR-EZBP", "C-EZBP");
+                DictionaryLoop(a, 1);
+                a = a.Replace("C-EZBP", "EZT");
+                a = a.Replace("RC", "S");
+            }
+
+            if (enclosure == 1 && enclosure == 2)
+            {
+                string RainCover = Utility.ReplacePart("CE24331H03");
+                DictionaryLoop(RainCover, 1);
+            }
+            return a;
+        }
+
+
+        private string DoubleFlush(string partname, int e, int p)
+        {
+            string a = partname;
+            int enclosure = e;
+            int paint = p;
+            if (!(paint == 1))
+            {
+                a = a.Replace("EZB", "C-EZB");
+                a = a.Replace("SPEC", "RC");
+                DictionaryLoop(a, 1);
+            }
+            else if (paint == 1)
+            {
+                a = a.Replace("EZB", "C-EZBP");
+                a = a.Replace("SPEC", "RC");
+                DictionaryLoop(a, 1);
+            }
+
+            if (e == 0 || e == 2)
+            {
+                string RainCover = Utility.ReplacePart("CE24331H02");
+                DictionaryLoop(RainCover, 1);
+            }
+            return a;
+        }
+
+        private string DoubleSurface(string partname, int e, int p)
+        {
+            string a = partname;
+            int enclosure = e;
+            int paint = p;
+            if (!(paint == 1))
+            {
+                a = a.Replace("EZB", "C-EZB");
+                a = a.Replace("SPEC", "RC");
+                DictionaryLoop(a, 1);
+
+                a = a.Replace("C-EZB", "EZT");
+                a = a.Replace("RC", "S");
+            }
+            else if (paint == 1)
+            {
+                a = a.Replace("EZB", "C-EZBP");
+                a = a.Replace("SPEC", "RC");
+                DictionaryLoop(a, 1);
+
+                a = a.Replace("C-EZBP", "EZT");
+                a = a.Replace("RC", "S");
+            }
+            if (enclosure == 0 || enclosure == 2)
+            {
+                string RainCover = Utility.ReplacePart("CE24331H02");
+                DictionaryLoop(RainCover, 1);
+            }
+            return a;
+        }
+
+
+        private void DictionaryLoop(string par, int quantity)
+        {
+            if (!(par.Contains("Enclosure") && !(par.Contains("Mount")) && !(par.Contains("SpecialTrim")) && !(par.Contains("Neutral")) && !(par.Contains("Define on Notes Tab"))))
+            {
+                if (ContainsPart(partslist, par))
+                {
+                    partslist[FindIndexPartsList(partslist, par)].addToQuantity(1);
                 }
                 else
                 {
-                    SelectedPages[page] = false;
-                    pg1OverLay.Visibility = Visibility.Hidden;
+                    partslist.Add(new part(par, quantity));
                 }
             }
+        }
+
+        public class part
+        {
+            private string partName;
+            private int Quantity;
+
+            public part(string partNumber, int Amount)
+            {
+                partName = partNumber;
+                Quantity = Amount;
+            }
+
+            public int Get_Amount()
+            {
+                return this.Quantity;
+            }
+
+            public string Get_partName()
+            {
+                return this.partName;
+            }
+
+            public void addToQuantity(int numberOfPeices)
+            {
+                this.Quantity += numberOfPeices;
+            }
+
+            public void setName(string name)
+            {
+                this.partName = name;
+            }
+        }
+
+
+        // Used to determine if a list of parts contains a given part
+        public Boolean ContainsPart(List<part> parts, string part)
+        {
+            if (parts != null)
+            {
+                foreach (part p in parts)
+                {
+                    if (p.Get_partName().Contains(part))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        // Used to determine the index of a part within a parts list
+        public int FindIndexPartsList(List<part> parts, string part)
+        {
+            int counter = 0;
+            foreach (part p in parts)
+            {
+                if (p.Get_partName().Contains(part))
+                {
+                    return counter;
+                }
+                counter++;
+            }
+            return -1;
+        }
+
+
+
+        public enum info
+        {
+            None, AMO, KanbanSpike
+        }
+        /*int mount;
+        int enclosure;
+        int paint;*/
+
+
+        //final list that is displayed on AMOdg
+        public class PartsList
+        {
+            public string PartName { get; set; }
+            public int Quantity { get; set; }
+            public info Status { get; set; }
+            public string IsActive { get; set;}
+            public string Description { get; set; }
+            public string GO {get; set;}
+        }
+
+
+        List<part> partslist;
+        private void isAMO()
+        {
+
+            //look through to find all parts with amount 
+            //do this via an object to amount system 
+            //each part has an object number which is a string and the value which is the quantity --> note this gets added to the object amount
+            //once found convert names using flipping database
+            //then use database to check for AMO spike ie 1/2 a kanban card
+            //also check if AMO part
+
+
+            string AMOreport = "";
+            partslist = new List<part>();
+
+            int counter = 0;
+            foreach (XmlNode node in BMLines)    //iterate through BMLines (BMLineItems -> Materials List Information)
+            {
+                if (node.OuterXml.ToString().Contains("PRL4"))
+                {
+
+                    XmlNodeList n = node.ChildNodes;    //NodeList of all BMLineItem under BMLineItems
+
+                    int mount = -1;
+                    int encl = -1;
+                    int paint = -1;
+                    int multiple = 1;
+                    foreach (XmlNode kid in lines[counter])  //NodeList of each line GoItem (BMConfiguredLineItem)
+                    {
+                        string output = kid.OuterXml.ToString();    //line item node by node  
+
+                        if (!(output.StartsWith("CN")) && !(output.StartsWith("ItemNumber")) && !(output.Contains("-")) && !(output.Contains("PROV")) && !(output.Contains("Start")) && !(output.StartsWith("S3")) && !(output.StartsWith("P25")) && !(output.StartsWith("A29")) && !(output.StartsWith("H5")) && !(output.StartsWith("SP")) && !(output.StartsWith("BX")))
+                        {
+                            if (output.Contains("2P Main Breaker"))
+                            {
+                                MessageBox.Show("Please Add 2P Main Breaker Implementation");
+                            }
+                            if (output.Contains("310+LS") || output.Contains("310+LSI") || output.Contains("310+LSG") || output.Contains("310+LSIG") || output.Contains("310+ALSI") || output.Contains("Optim550 LSI"))
+                            {
+                                //Some sort of trip as well
+                                MessageBox.Show("310+ Trip");
+                            }
+                        }
+
+                        if (output.Contains("Painted Box - ASA 61 Grey"))
+                        {
+                            paint = 1;
+                        }
+                        else if (output.Contains("Painted Box - Special Colour"))
+                        {
+                            //Label 6 check
+                            MessageBox.Show("Special Colour");
+                        }
+                        else if (output.Contains("Trim, EZ Trim, Painted") || (output.Contains("Special Trim")))
+                        {
+                            //Label 7 check
+                            MessageBox.Show("Painted Box trim");
+                        }
+
+                        else if (output.StartsWith("Special") && (!(output.Contains("Trim")) || !(output.Contains("Box"))))
+                        {
+                            output = "EZB-Error";
+                            paint = 0;
+                        }
+
+                        if (output.Contains("Enclosure") && output.Contains("SPRINKLERPROOF"))
+                        {
+                            encl = 0;
+                        }
+                        else if (output.Contains("Enclosure") && output.Contains("Type 1"))
+                        {
+                            encl = 1;
+                        }
+                        else if (output.Contains("Enclosure") && output.Contains("Type 2"))
+                        {
+                            encl = 2;
+                        }
+
+                        if (output.Contains("Flush") && output.Contains("3Ph") || output.Contains("1Ph"))
+                        {
+                            mount = 0;
+                        }
+                        else if (output.Contains("Surface") && output.Contains("3Ph") || output.Contains("1Ph"))
+                        {
+                            mount = 1;
+                        }
+
+                        if (output.Contains("2 Sections") && output.Contains("Multi-Section Panel"))
+                        {
+                            multiple = 2;
+                        }
+                        else if (output.Contains("3 Sections") && output.Contains("Multi-Section Panel"))
+                        {
+                            multiple = 3;
+                        }
+                    }// end for loop for line item
+
+
+                    foreach (XmlNode x in n)    //n is NodeList of all BMLineItem under BMLineItems
+                    {
+                        XmlNodeList m = x.ChildNodes;      //Attributes of BMLineItem
+
+                        part currentpart = new part("HOLDUP", 0);
+
+                        foreach (XmlNode child in m)    //loop each attribute line in BMLineItem
+                        {
+                            if (child.OuterXml.ToString().Contains("\"CatalogNumber\""))                    //get CatalogNumber value and alter it using convertToRequired
+                            {
+                                string output = Utility.getBetween(child.OuterXml.ToString(), "V=\"", "\"");
+                                if (!(output.StartsWith("CN")) && !(output.Contains("-")) && !(output.Contains("PROV")) && !(output.Contains("start")) && !(output.StartsWith("S3")) && !(output.StartsWith("P2")) && !(output == "C1") && !(output.StartsWith("A29")) && !(output.StartsWith("H5")) && !(output.StartsWith("SP")) && !(output.StartsWith("BX")))
+                                {
+                                    currentpart.setName(convertToRequired(output, encl, paint, mount, multiple));
+                                }
+                            }
+                            if (child.OuterXml.ToString().Contains("\"Quantity\""))             //get quantity value of current part
+                            {
+                                currentpart.addToQuantity(Int32.Parse(Utility.getBetween(child.OuterXml.ToString(), "V=\"", "\"")));
+                            }
+                        }//end for loop attributes
+
+                        if (ContainsPart(partslist, currentpart.Get_partName()))
+                        {
+                            partslist[FindIndexPartsList(partslist, currentpart.Get_partName())].addToQuantity(currentpart.Get_Amount());
+                        }
+                        else if (!currentpart.Get_partName().Contains("HOLDUP"))
+                        {
+                            partslist.Add(currentpart);
+                        }
+                    }//end for loop of BMLineItem
+                    counter++;
+                }
+            }//end for loop with BMLines
+
+
+
+            //get parts list ready for AMOdg; get IsActive and Description + get status info -> AMO, KanBanKpike, or None
+            List<info> statuses = new List<info>();
+            List<string> EnableOrDisable = new List<string>();
+            List<string> Description = new List<string>();
+
+            for (int i = 0; i < partslist.Count; i++)
+            {
+                partslist[i].setName(Utility.ReplacePart(partslist[i].Get_partName()));     //look for replacement part
+
+                if (Utility.standardAMO(partslist[i].Get_partName()))                                //check PullSequence if standardAMO
+                {
+                    statuses.Add(info.AMO);
+                }
+                else if (Utility.KanBanSpike(partslist[i].Get_partName(), partslist[i].Get_Amount()))       //check PullSequence if KanBanSpike
+                {
+                    statuses.Add(info.KanbanSpike);
+                }
+                else
+                {
+                    statuses.Add(info.None);
+                }
+
+                string[] outputPullPartStatus = Utility.PullPartStatus(partslist[i].Get_partName());
+                EnableOrDisable.Add(outputPullPartStatus[0]);
+                Description.Add(outputPullPartStatus[1]);
+            }
+
+
+            List<PartsList> listOfParts = new List<PartsList>();
+            for (int i = 0; i < partslist.Count; i++)
+            {
+                listOfParts.Add(new PartsList() { PartName = partslist[i].Get_partName(), Quantity = partslist[i].Get_Amount(), Status = statuses[i], IsActive = EnableOrDisable[i], Description = Description[i] });
+            }
             
+         
+            AMOdg.ItemsSource = listOfParts;
+
+          
+            //Writing AMO report is currently disabled
+            //write AMOreport
+            /*for (int i = 0; i < 3; i++)
+            {
+                if (i == 0)
+                {
+                    for (int n = 0; n < partslist.Count; n++)
+                    {
+                        if (statuses[n] == info.AMO)
+                        {
+                            AMOreport = AMOreport + partslist[n].Get_partName() + ": " + partslist[n].Get_Amount().ToString() + ": " + statuses[n].ToString() + ": " + EnableOrDisable[i] + ": " + Description[i] + "\n";
+                        }
+                    }
+                }
+                else if (i == 1)
+                {
+                    for (int n = 0; n < partslist.Count; n++)
+                    {
+                        if (statuses[n] == info.KanbanSpike)
+                        {
+                            AMOreport = AMOreport + partslist[n].Get_partName() + ": " + partslist[n].Get_Amount().ToString() + ": " + statuses[n].ToString() + ": " + EnableOrDisable[i] + ": " + Description[i] + "\n";
+                        }
+                    }
+                }
+                else
+                {
+                    for (int n = 0; n < partslist.Count; n++)
+                    {
+                        if (statuses[n] == info.None)
+                        {
+                            AMOreport = AMOreport + partslist[n].Get_partName() + ": " + partslist[n].Get_Amount().ToString() + ": " + statuses[n].ToString() + ": " + EnableOrDisable[i] + ": " + Description[i] + "\n";
+                        }
+                    }
+                }
+            }*/
+
+
+            //write AMOreport to txt file and PDF file
+            string[] AmoReportLines = AMOreport.Split('\n');
+            string documentPath = System.IO.Path.GetFullPath(System.IO.Path.Combine(strPathPDF.Substring(0, strPathPDF.Length - 11), @"..\"));  //one folder back from pdfDirectory
+
+            string txtPathAMOReport = documentPath + @"\AMO\AMO_Report.txt";
+            Utility.WriteLinesToTXT(AmoReportLines, txtPathAMOReport);
+
+            string pdfPathAMOReport = documentPath + @"\AMO\AMO_Report.pdf";
+            Utility.ConvertTXTtoPDF(txtPathAMOReport, pdfPathAMOReport);
+
+
+            if (AMOreport.Contains("AMO") || AMOreport.Contains("Kanban"))
+            {
+                AMO.IsChecked = true;
+                AMOFound = true;
+            }
+            else
+            {
+                AMO.IsChecked = false;
+                AMOFound = false;
+            }
+        }
+
+        private void PageSelectDeselect(int pageOffset)
+        {
+            try
+            {
+                if (SelectedPages.Length > page + pageOffset)
+                {
+                    if (SelectedPages[page + pageOffset] == false)
+                    {
+                        SelectedPages[page + pageOffset] = true;
+                        pg2OverLay.Visibility = Visibility.Visible;
+                    }
+                    else
+                    {
+                        SelectedPages[page + pageOffset] = false;
+                        pg2OverLay.Visibility = Visibility.Hidden;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occured when trying to select the drawing : {ex.Message}");
+            }
+        }
+
+        private void Pg1_Click(object sender, RoutedEventArgs e)
+        {
+            PageSelectDeselect(0);
         }
 
         private void Pg2_Click(object sender, RoutedEventArgs e)
         {
-            if(SelectedPages.Length > page+1)
-            {
-                if (SelectedPages[page + 1] == false)
-                {
-                    SelectedPages[page + 1] = true;
-                    pg2OverLay.Visibility = Visibility.Visible;
-                }
-                else
-                {
-                    SelectedPages[page + 1] = false;
-                    pg2OverLay.Visibility = Visibility.Hidden;
-                }
-            }
-            
+            PageSelectDeselect(1);
+
         }
 
         private void Pg3_Click(object sender, RoutedEventArgs e)
         {
-            if (SelectedPages.Length > page + 2)
-            {
-                if (SelectedPages[page + 2] == false)
-                {
-                    SelectedPages[page + 2] = true;
-                    pg3OverLay.Visibility = Visibility.Visible;
-                }
-                else
-                {
-                    SelectedPages[page + 2] = false;
-                    pg3OverLay.Visibility = Visibility.Hidden;
-                }
-            }
+            PageSelectDeselect(2);
         }
 
         private void Pg4_Click(object sender, RoutedEventArgs e)
         {
-            if (SelectedPages.Length > page + 3)
-            {
-                if (SelectedPages[page + 3] == false)
-                {
-                    SelectedPages[page + 3] = true;
-                    pg4OverLay.Visibility = Visibility.Visible;
-                }
-                else
-                {
-                    SelectedPages[page + 3] = false;
-                    pg4OverLay.Visibility = Visibility.Hidden;
-                }
-            }
+            PageSelectDeselect(3);
 
         }
 
         private void Pg5_Click(object sender, RoutedEventArgs e)
         {
-            if (SelectedPages.Length > page + 4)
-            {
-                if (SelectedPages[page + 4] == false)
-                {
-                    SelectedPages[page + 4] = true;
-                    pg5OverLay.Visibility = Visibility.Visible;
-                }
-                else
-                {
-                    SelectedPages[page + 4] = false;
-                    pg5OverLay.Visibility = Visibility.Hidden;
-                }
-            }  
+            PageSelectDeselect(4);
         }
-
-
-
     }
 }
 
