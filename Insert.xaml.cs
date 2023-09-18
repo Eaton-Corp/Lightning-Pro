@@ -1085,7 +1085,7 @@ namespace LightningPRO
         
 
      
-       
+
 
         private void Insert_Entry(object sender, RoutedEventArgs e)
         {

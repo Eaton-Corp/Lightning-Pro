@@ -1086,6 +1086,35 @@ namespace LightningPRO
             return -1;
         }
 
+        bool HasDates = true;
+        private Boolean PassPrerequisites () 
+        {
+            if (string.IsNullOrEmpty(ShopOrder.Text))
+            {
+                if (MessageBox.Show("You Are About To Insert\nWithout A ShopOrderInterior Number\nWould You Like To Continue?", "No ShopOrderInterior Number",
+                    MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
+                {
+                    Status.Content = GO_Item.Text + " INSERT CANCELLED";
+                    return false;
+                }
+            }
+
+            if (string.IsNullOrEmpty(ReleaseDate.Text) || string.IsNullOrEmpty(CommitDate.Text) || string.IsNullOrEmpty(EnteredDate.Text))
+            {
+                if (MessageBox.Show("You Are About To Insert With\nMissing Dates (Entered, Commit, Release)\nWould You Like To Continue?", "Missing Dates",
+                    MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
+                {
+                    Status.Content = GO_Item.Text + " INSERT CANCELLED";
+                    return false;
+                }
+                else
+                {
+                    HasDates = false;
+                }
+            }
+            return true;
+        }
+
         private void Insert_Entry(object sender, RoutedEventArgs e)
         {
             if (Utility.IsDuplicate(GO_Item.Text, Utility.ProductGroup.PRL4) == false)
@@ -1094,15 +1123,18 @@ namespace LightningPRO
                 int firstPageIndex = GetFirstPageIndex();
                 if (firstPageIndex != -1)
                 {
-                    for (int i = 0; i < SelectedPages.Length; i++)
+                    if (PassPrerequisites()) 
                     {
-                        if (SelectedPages[i] == true)
+                        for (int i = 0; i < SelectedPages.Length; i++)
                         {
-                            InsertPage(i, firstPageIndex);
-                            amountOfPages++;
+                            if (SelectedPages[i] == true)
+                            {
+                                InsertPage(i, firstPageIndex);
+                                amountOfPages++;
+                            }
                         }
-                    }
-                    InsertTestReport(amountOfPages);
+                        InsertTestReport(amountOfPages);
+                    } 
                 }
             }
             else 
@@ -1161,7 +1193,16 @@ namespace LightningPRO
                 Utility.SaveBitmapAsPNGinImages(PathIMAGE.Text + "_" + Item.Text + "_" + pgNumStr + ".png", img);
 
 
-                string StrInsertCommand = "Insert into PRL4 (GO_Item, [GO], ShopOrderInterior, ShopOrderBox, ShopOrderTrim, Customer, Quantity, Tracking, Urgency, [AMO], [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], ReleaseDate, CommitDate, EnteredDate, FilePath, ProductSpecialist, PageNumber, ImageFilePath) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                string StrInsertCommand = "";
+                if (HasDates)
+                {
+                    StrInsertCommand = "Insert into PRL4 (GO_Item, [GO], ShopOrderInterior, ShopOrderBox, ShopOrderTrim, Customer, Quantity, Tracking, Urgency, [AMO], [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], ReleaseDate, CommitDate, EnteredDate, FilePath, ProductSpecialist, PageNumber, ImageFilePath) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                }
+                else
+                {
+                    StrInsertCommand = "Insert into PRL4 (GO_Item, [GO], ShopOrderInterior, ShopOrderBox, ShopOrderTrim, Customer, Quantity, Tracking, Urgency, [AMO], [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], FilePath, ProductSpecialist, PageNumber, ImageFilePath) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                }
+
                 using (OleDbCommand InsertCommand = new OleDbCommand(StrInsertCommand, MainWindow.LPcon))
                 {
                     InsertCommand.Parameters.AddWithValue("GO_Item", GO_Item.Text);
@@ -1185,9 +1226,13 @@ namespace LightningPRO
                     InsertCommand.Parameters.AddWithValue("[DoorInDoor]", (Boolean)DoorInDoor);
 
 
-                    InsertCommand.Parameters.AddWithValue("ReleaseDate", ReleaseDate.Text);
-                    InsertCommand.Parameters.AddWithValue("CommitDate", CommitDate.Text);
-                    InsertCommand.Parameters.AddWithValue("EnteredDate", ReleaseDate.Text);
+                    if (HasDates)
+                    {
+                        InsertCommand.Parameters.AddWithValue("ReleaseDate", ReleaseDate.Text);
+                        InsertCommand.Parameters.AddWithValue("CommitDate", CommitDate.Text);
+                        InsertCommand.Parameters.AddWithValue("EnteredDate", ReleaseDate.Text);
+                    }
+
                     InsertCommand.Parameters.AddWithValue("FilePath", PathPDF.Text);
                     //MessageBox.Show(PathPDF.Text);
                     InsertCommand.Parameters.AddWithValue("ProductSpecialist", ProductSpecialist);
@@ -1231,7 +1276,16 @@ namespace LightningPRO
                     Utility.SaveBitmapAsPNGinImages(PathIMAGE.Text + "_" + Item.Text + "_" + pgNumStr + ".png", (BitmapImage)image[pageNumber]);
                 }
 
-                string StrInsertCommand = "Insert into PRL4 (GO_Item, [GO], ShopOrderInterior, ShopOrderBox, ShopOrderTrim, Customer, Quantity, Tracking, Urgency, [AMO], [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], ReleaseDate, CommitDate, EnteredDate, FilePath, ProductSpecialist, PageNumber, ImageFilePath) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                string StrInsertCommand = "";
+                if (HasDates)
+                {
+                    StrInsertCommand = "Insert into PRL4 (GO_Item, [GO], ShopOrderInterior, ShopOrderBox, ShopOrderTrim, Customer, Quantity, Tracking, Urgency, [AMO], [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], ReleaseDate, CommitDate, EnteredDate, FilePath, ProductSpecialist, PageNumber, ImageFilePath) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                }
+                else
+                {
+                    StrInsertCommand = "Insert into PRL4 (GO_Item, [GO], ShopOrderInterior, ShopOrderBox, ShopOrderTrim, Customer, Quantity, Tracking, Urgency, [AMO], [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], FilePath, ProductSpecialist, PageNumber, ImageFilePath) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                }
+
                 using (OleDbCommand InsertCommand = new OleDbCommand(StrInsertCommand, MainWindow.LPcon))
                 {
                     InsertCommand.Parameters.AddWithValue("GO_Item", GO_Item.Text);
@@ -1254,10 +1308,13 @@ namespace LightningPRO
                     InsertCommand.Parameters.AddWithValue("[DoorOverDist]", (Boolean)DoorOverDistribution);
                     InsertCommand.Parameters.AddWithValue("[DoorInDoor]", (Boolean)DoorInDoor);
 
-
-                    InsertCommand.Parameters.AddWithValue("ReleaseDate", ReleaseDate.Text);
-                    InsertCommand.Parameters.AddWithValue("CommitDate", CommitDate.Text);
-                    InsertCommand.Parameters.AddWithValue("EnteredDate", ReleaseDate.Text);
+                    if (HasDates)
+                    {
+                        InsertCommand.Parameters.AddWithValue("ReleaseDate", ReleaseDate.Text);
+                        InsertCommand.Parameters.AddWithValue("CommitDate", CommitDate.Text);
+                        InsertCommand.Parameters.AddWithValue("EnteredDate", ReleaseDate.Text);
+                    }
+                    
                     InsertCommand.Parameters.AddWithValue("FilePath", PathPDF.Text);
                     //MessageBox.Show(PathPDF.Text);
                     InsertCommand.Parameters.AddWithValue("ProductSpecialist", ProductSpecialist);
