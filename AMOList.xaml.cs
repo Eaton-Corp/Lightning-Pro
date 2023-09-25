@@ -37,7 +37,6 @@ namespace LightningPRO
             LoadGrid();
         }
 
-
         private void LoadGrid()
         {
             string query = "select c.[Project Number], c.[GO Item] as [GoItem], c.[Part Number], [Locator], c.[Date Required], c.[Shortage Message], c.[BOH], c.[Qty Required], [Item] from (SELECT * FROM tblMaterialStatus WHERE [GO Item] like '%" + GON + "%') AS c LEFT JOIN tblOnHand ON c.[Part Number]=tblOnHand.Item";

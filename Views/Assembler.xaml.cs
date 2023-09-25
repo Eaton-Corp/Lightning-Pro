@@ -448,7 +448,8 @@ namespace LightningPRO.Views
             Customer.Text = CustomerArr[page];
             AMO.IsChecked = AMOArr[page];
 
-            if (AMO.IsChecked == true) AMOButton.Visibility = Visibility.Visible; else AMOButton.Visibility = Visibility.Hidden;
+            //AMO button always visible
+            //if (AMO.IsChecked == true) AMOButton.Visibility = Visibility.Visible; else AMOButton.Visibility = Visibility.Hidden;
            
             if (string.IsNullOrEmpty(Utility.GetNotes(GO_Item.Text, ProductTable))) btnNotes.Background = System.Windows.Media.Brushes.LightGray; else btnNotes.Background = System.Windows.Media.Brushes.Blue;
 

@@ -1156,18 +1156,15 @@ namespace LightningPRO
                 int firstPageIndex = getFirstPageIndex();
                 if (firstPageIndex != -1)
                 {
-                    if (PassPrerequisites()) 
+                    for (int i = 0; i < SelectedPages.Length; i++)
                     {
-                        for (int i = 0; i < SelectedPages.Length; i++)
+                        if (SelectedPages[i] == true)
                         {
-                            if (SelectedPages[i] == true)
-                            {
-                                InsertPage(i, firstPageIndex);
-                                amountOfPages++;
-                            }
+                            InsertPage(i, firstPageIndex);
+                            amountOfPages++;
                         }
-                        InsertTestReport(amountOfPages);
-                    } 
+                    }
+                    InsertTestReport(amountOfPages);
                 }
             }
             else 
@@ -1262,13 +1259,9 @@ namespace LightningPRO
                     InsertCommand.Parameters.AddWithValue("[DoorInDoor]", (Boolean)DoorInDoor);
 
 
-                    if (HasDates)
-                    {
-                        InsertCommand.Parameters.AddWithValue("ReleaseDate", ReleaseDate.Text);
-                        InsertCommand.Parameters.AddWithValue("CommitDate", CommitDate.Text);
-                        InsertCommand.Parameters.AddWithValue("EnteredDate", ReleaseDate.Text);
-                    }
-
+                    InsertCommand.Parameters.AddWithValue("ReleaseDate", ReleaseDate.Text);
+                    InsertCommand.Parameters.AddWithValue("CommitDate", CommitDate.Text);
+                    InsertCommand.Parameters.AddWithValue("EnteredDate", ReleaseDate.Text);
                     InsertCommand.Parameters.AddWithValue("FilePath", PathPDF.Text);
                     //MessageBox.Show(PathPDF.Text);
                     InsertCommand.Parameters.AddWithValue("ProductSpecialist", ProductSpecialist);
@@ -1347,13 +1340,10 @@ namespace LightningPRO
                     InsertCommand.Parameters.AddWithValue("[DoorOverDist]", (Boolean)DoorOverDistribution);
                     InsertCommand.Parameters.AddWithValue("[DoorInDoor]", (Boolean)DoorInDoor);
 
-                    if (HasDates)
-                    {
-                        InsertCommand.Parameters.AddWithValue("ReleaseDate", ReleaseDate.Text);
-                        InsertCommand.Parameters.AddWithValue("CommitDate", CommitDate.Text);
-                        InsertCommand.Parameters.AddWithValue("EnteredDate", ReleaseDate.Text);
-                    }
-                    
+
+                    InsertCommand.Parameters.AddWithValue("ReleaseDate", ReleaseDate.Text);
+                    InsertCommand.Parameters.AddWithValue("CommitDate", CommitDate.Text);
+                    InsertCommand.Parameters.AddWithValue("EnteredDate", ReleaseDate.Text);
                     InsertCommand.Parameters.AddWithValue("FilePath", PathPDF.Text);
                     //MessageBox.Show(PathPDF.Text);
                     InsertCommand.Parameters.AddWithValue("ProductSpecialist", ProductSpecialist);

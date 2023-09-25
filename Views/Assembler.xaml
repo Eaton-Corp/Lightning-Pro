@@ -55,8 +55,8 @@
                 <Grid.RowDefinitions>
                     <RowDefinition />
                 </Grid.RowDefinitions>
-                <CheckBox x:Name="AMO" Content="AMO" Grid.Row="0" Grid.Column="0" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                <Button Name="AMOButton" Content="AMO" Visibility="Hidden" Grid.Row="0" Grid.Column="1" FontSize="9" Height="17" Width="60"  Click="AMO_Clicked" />
+                <CheckBox x:Name="AMO" Content="AMO" Grid.Row="0" Grid.Column="0" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="Visible"/>
+                <Button Name="AMOButton" Content="AMO" Visibility="Visible" Grid.Row="0" Grid.Column="1" FontSize="9" Height="17" Width="60"  Click="AMO_Clicked" />
             </Grid>
             
             <!-- isolated DNSB checkbox in case a powerline has a odd number of checklist items -->
