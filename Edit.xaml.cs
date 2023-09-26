@@ -147,6 +147,7 @@ namespace PRL123_Final
                     "[SpecialCustomer], [AMO], [IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], " +
                     "[ThirtyDeepEnclosure], [DNSB], [Complete], [Short], [FilePath], [PageNumber] " +
                     "from [PRLCS] where [GO]='" + current_ID.Substring(0, 10) + "' order by [GO_Item],[PageNumber]");
+
             }
         }
 
@@ -880,50 +881,42 @@ namespace PRL123_Final
             }
         }
 
-
         private void Retrieve_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                string SOI = "";
-                string SOB = "";
-                string SOT = "";
-                string qty = "";
-                DateTime? enterDate = null;
-                DateTime? releaseDate = null;
-                DateTime? commitDate = null;
-                string customer = "";
-                DataTable dt = Utility.SearchMasterDB("select [Shop Order],[Shop Order B],[Shop Order T],[Qty],[Entered Date],[Release Date],[Commit Date],[Customer] from [tblOrderStatus] where [GO Item]='"+ GO_Item.Text +"'");
-                using (DataTableReader dtr = new DataTableReader(dt)) 
+                // Execute the modified query to get all GO items for the given GO
+                DataTable dt = Utility.SearchMasterDB("select [GO Item],[Shop Order],[Shop Order B],[Shop Order T],[Qty],[Entered Date],[Release Date],[Commit Date],[Customer] from [tblOrderStatus] where [GO]='" + GO.Text + "'");
+                using (DataTableReader dtr = new DataTableReader(dt))
                 {
-                    while (dtr.Read()) 
-                    { 
-                        SOI = dtr[0].ToString();
-                        SOB = dtr[1].ToString();
-                        SOT = dtr[2].ToString();
-                        qty = dtr[3].ToString();
-                        enterDate = string.IsNullOrEmpty(dtr[4].ToString()) ? null : (DateTime?)Convert.ToDateTime(dtr[4].ToString());
-                        releaseDate = string.IsNullOrEmpty(dtr[5].ToString()) ? null : (DateTime?)Convert.ToDateTime(dtr[5].ToString());
-                        commitDate = string.IsNullOrEmpty(dtr[6].ToString()) ? null : (DateTime?)Convert.ToDateTime(dtr[6].ToString());
-                        customer = dtr[7].ToString();
+                    while (dtr.Read())
+                    {
+                        string GOItem = dtr[0].ToString();
+                        string SOI = dtr[1].ToString();
+                        string SOB = dtr[2].ToString();
+                        string SOT = dtr[3].ToString();
+                        string qty = dtr[4].ToString();
+                        DateTime? enterDate = string.IsNullOrEmpty(dtr[5].ToString()) ? null : (DateTime?)Convert.ToDateTime(dtr[5].ToString());
+                        DateTime? releaseDate = string.IsNullOrEmpty(dtr[6].ToString()) ? null : (DateTime?)Convert.ToDateTime(dtr[6].ToString());
+                        DateTime? commitDate = string.IsNullOrEmpty(dtr[7].ToString()) ? null : (DateTime?)Convert.ToDateTime(dtr[7].ToString());
+                        string customer = dtr[8].ToString();
+
+                        string commandStr = "update [" + ProductTable + "] set [ShopOrderInterior] = ?,[ShopOrderBox] = ?,[ShopOrderTrim] = ?,[Quantity] = ?,[EnteredDate] = ?,[ReleaseDate] = ?,[CommitDate] = ?,[Customer] = ? where [GO_Item]='" + GOItem + "'";
+
+                        using (OleDbCommand cmd = new OleDbCommand(commandStr, MainWindow.LPcon))
+                        {
+                            cmd.Parameters.AddWithValue("[ShopOrderInterior]", SOI);
+                            cmd.Parameters.AddWithValue("[ShopOrderBox]", SOB);
+                            cmd.Parameters.AddWithValue("[ShopOrderTrim]", SOT);
+                            cmd.Parameters.AddWithValue("[Quantity]", qty);
+                            if (enterDate == null) cmd.Parameters.AddWithValue("[EnteredDate]", DBNull.Value); else cmd.Parameters.AddWithValue("[EnteredDate]", enterDate);
+                            if (releaseDate == null) cmd.Parameters.AddWithValue("[ReleaseDate]", DBNull.Value); else cmd.Parameters.AddWithValue("[ReleaseDate]", releaseDate);
+                            if (commitDate == null) cmd.Parameters.AddWithValue("[CommitDate]", DBNull.Value); else cmd.Parameters.AddWithValue("[CommitDate]", commitDate);
+                            cmd.Parameters.AddWithValue("[Customer]", customer);
+                            cmd.ExecuteNonQuery();
+                        }
                     }
                 }
-
-                string commandStr = "update [" + ProductTable + "] set [ShopOrderInterior] = ?,[ShopOrderBox] = ?,[ShopOrderTrim] = ?,[Quantity] = ?,[EnteredDate] = ?,[ReleaseDate] = ?,[CommitDate] = ?,[Customer] = ? where [GO_Item]='" + GO_Item.Text + "'";
-
-
-                using (OleDbCommand cmd = new OleDbCommand(commandStr, MainWindow.LPcon))
-                {
-                    cmd.Parameters.AddWithValue("[ShopOrderInterior]", SOI);
-                    cmd.Parameters.AddWithValue("[ShopOrderBox]", SOB);
-                    cmd.Parameters.AddWithValue("[ShopOrderTrim]", SOT);
-                    cmd.Parameters.AddWithValue("[Quantity]", qty);
-                    if (enterDate == null) cmd.Parameters.AddWithValue("[EnteredDate]", DBNull.Value); else cmd.Parameters.AddWithValue("[EnteredDate]", enterDate);
-                    if (releaseDate == null) cmd.Parameters.AddWithValue("[ReleaseDate]", DBNull.Value); else cmd.Parameters.AddWithValue("[ReleaseDate]", releaseDate);
-                    if (commitDate == null) cmd.Parameters.AddWithValue("[CommitDate]", DBNull.Value); else cmd.Parameters.AddWithValue("[CommitDate]", commitDate);
-                    cmd.Parameters.AddWithValue("[Customer]", customer);
-                    cmd.ExecuteNonQuery();
-                } //end using command
 
                 MessageBox.Show("Updating Fields From Oracle ... ");
 
