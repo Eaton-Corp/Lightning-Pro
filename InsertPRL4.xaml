@@ -145,7 +145,7 @@
         <Label Content="Shop Order Trim:" Grid.Row="9" Grid.Column="0"/>
         <Label Content="Customer:" Grid.Row="10" Grid.Column="0"/>
         <Label Content="End Date:" Grid.Row="11" Grid.Column="0"/>
-        <Label Content="Suffix:" Grid.Row="12" Grid.Column="0"/>
+        <Label Content="Scheduling Group:" Grid.Row="12" Grid.Column="0"/>
         <Label Content="Entered Date:" Grid.Row="13" Grid.Column="0"/>
         <Label Content="Commit Date:" Grid.Row="14" Grid.Column="0"/>
         <Label Content="Release Date:" Grid.Row="15" Grid.Column="0"/>
@@ -184,7 +184,7 @@
         <TextBox x:Name="ShopOrderTrim" TextWrapping="Wrap" Grid.Row="9" Grid.Column="1" Width="160" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <TextBox x:Name="Customer" TextWrapping="Wrap" Grid.Row="10" Grid.Column="1" Width="160" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <TextBox x:Name="EndDate" TextWrapping="Wrap" Grid.Row="11" Grid.Column="1" Width="160" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <TextBox x:Name="Suffix" TextWrapping="Wrap" Grid.Row="12" Grid.Column="1" Width="160" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBox x:Name="SchedulingGroup" TextWrapping="Wrap" Grid.Row="12" Grid.Column="1" Width="160" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <TextBox x:Name="EnteredDate" TextWrapping="Wrap" Grid.Row="13" Grid.Column="1" Width="160" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <TextBox x:Name="CommitDate" TextWrapping="Wrap" Grid.Row="14" Grid.Column="1" Width="160" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <TextBox x:Name="ReleaseDate" TextWrapping="Wrap" Grid.Row="15" Grid.Column="1" Width="160" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top"/>

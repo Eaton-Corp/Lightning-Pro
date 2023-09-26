@@ -1196,7 +1196,7 @@ namespace LightningPRO
                 GO1.Text = row["GO"];
                 GO_Item.Text = row["GO Item"];
                 Item.Text = row["Item"];
-                Suffix.Text = row["Suffix"];
+                SchedulingGroup.Text = row["Attribute1"];
                 ShopOrder.Text = row["Shop Order"].ToString();
                 ShopOrderTrim.Text = row["Shop Order T"].ToString();
                 ShopOrderBox.Text = row["Shop Order B"].ToString();
@@ -1307,7 +1307,7 @@ namespace LightningPRO
                 Utility.SaveBitmapAsPNGinImages(PathIMAGE.Text + "_" + Item.Text + "_" + pgNumStr + ".png", img);
 
 
-                string StrInsertCommand = "Insert into PRLCS ([GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], [ThirtyDeepEnclosure], [FilePath], [ProductSpecialist], [PageNumber], [ImageFilePath]) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                string StrInsertCommand = "Insert into PRLCS ([GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [SchedulingGroup], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], [ThirtyDeepEnclosure], [FilePath], [ProductSpecialist], [PageNumber], [ImageFilePath]) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 using (OleDbCommand InsertCommand = new OleDbCommand(StrInsertCommand, MainWindow.LPcon))
                 {
                     InsertCommand.Parameters.AddWithValue("GO_Item", GO_Item.Text);
@@ -1315,6 +1315,7 @@ namespace LightningPRO
                     InsertCommand.Parameters.AddWithValue("ShopOrderInterior", ShopOrder.Text);
                     InsertCommand.Parameters.AddWithValue("ShopOrderBox", ShopOrderBox.Text);
                     InsertCommand.Parameters.AddWithValue("ShopOrderTrim", ShopOrderTrim.Text);
+                    InsertCommand.Parameters.AddWithValue("SchedulingGroup", SchedulingGroup.Text);
                     InsertCommand.Parameters.AddWithValue("Customer", Customer.Text);
                     InsertCommand.Parameters.AddWithValue("Quantity", Qty.Text);
 
@@ -1384,7 +1385,7 @@ namespace LightningPRO
                     Utility.SaveBitmapAsPNGinImages(PathIMAGE.Text + "_" + Item.Text + "_" + pgNumStr + ".png", (BitmapImage)image[pageNumber]);
                 }
 
-                string StrInsertCommand = "Insert into PRLCS ([GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], [ThirtyDeepEnclosure], [FilePath], [ProductSpecialist], [PageNumber], [ImageFilePath]) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                string StrInsertCommand = "Insert into PRLCS ([GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [SchedulingGroup], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], [ThirtyDeepEnclosure], [FilePath], [ProductSpecialist], [PageNumber], [ImageFilePath]) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 using (OleDbCommand InsertCommand = new OleDbCommand(StrInsertCommand, MainWindow.LPcon))
                 {
                     InsertCommand.Parameters.AddWithValue("GO_Item", GO_Item.Text);
@@ -1392,6 +1393,7 @@ namespace LightningPRO
                     InsertCommand.Parameters.AddWithValue("ShopOrderInterior", ShopOrder.Text);
                     InsertCommand.Parameters.AddWithValue("ShopOrderBox", ShopOrderBox.Text);
                     InsertCommand.Parameters.AddWithValue("ShopOrderTrim", ShopOrderTrim.Text);
+                    InsertCommand.Parameters.AddWithValue("SchedulingGroup", SchedulingGroup.Text);
                     InsertCommand.Parameters.AddWithValue("Customer", Customer.Text);
                     InsertCommand.Parameters.AddWithValue("Quantity", Qty.Text);
 
