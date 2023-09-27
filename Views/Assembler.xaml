@@ -72,6 +72,7 @@
                     <RowDefinition />
                     <RowDefinition />
                     <RowDefinition />
+                    <RowDefinition />
                 </Grid.RowDefinitions>
                 <CheckBox x:Name="BoxEarly" Content="Box Early" Grid.Row="0" Grid.Column="0" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 <CheckBox x:Name="BoxSent" Content="Box Sent" Grid.Row="0" Grid.Column="1" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
@@ -81,6 +82,8 @@
                 <CheckBox x:Name="PaintedBox" Content="Painted Box" Grid.Row="2" Grid.Column="1" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 <CheckBox x:Name="Complete" Content="Complete" Grid.Row="3" Grid.Column="0" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 <CheckBox x:Name="Short" Content="Short" Grid.Row="3" Grid.Column="1" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <CheckBox x:Name="NameplateRequired" Content="Nameplate Required" Grid.Row="4" Grid.Column="0" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <CheckBox x:Name="NameplateOrdered" Content="Nameplate Ordered" Grid.Row="4" Grid.Column="1" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             </Grid>
 
             <Grid x:Name="checkBoxGridPRL4" Visibility="Hidden" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Grid.RowSpan="1">
@@ -89,6 +92,7 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
+                    <RowDefinition />
                     <RowDefinition />
                     <RowDefinition />
                     <RowDefinition />
@@ -102,6 +106,8 @@
                 <CheckBox x:Name="DoorInDoor_4" Content="DoorInDoor" Grid.Row="2" Grid.Column="1" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 <CheckBox x:Name="Complete_4" Content="Complete" Grid.Row="3" Grid.Column="0" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 <CheckBox x:Name="Short_4" Content="Short" Grid.Row="3" Grid.Column="1" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <CheckBox x:Name="NameplateRequired_4" Content="Nameplate Required" Grid.Row="4" Grid.Column="0" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <CheckBox x:Name="NameplateOrdered_4" Content="Nameplate Ordered" Grid.Row="4" Grid.Column="1" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             </Grid>
             
             <Grid x:Name="checkBoxGridPRLCS" Visibility="Hidden" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Grid.RowSpan="1">
@@ -110,6 +116,7 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
+                    <RowDefinition />
                     <RowDefinition />
                     <RowDefinition />
                     <RowDefinition />
@@ -126,6 +133,8 @@
                 <CheckBox x:Name="DNSB_CS" Content="DNSB" Grid.Row="3" Grid.Column="1" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 <CheckBox x:Name="Complete_CS" Content="Complete" Grid.Row="4" Grid.Column="0" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 <CheckBox x:Name="Short_CS" Content="Short" Grid.Row="4" Grid.Column="1" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <CheckBox x:Name="NameplateRequired_CS" Content="Nameplate Required" Grid.Row="5" Grid.Column="0" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <CheckBox x:Name="NameplateOrdered_CS" Content="Nameplate Ordered" Grid.Row="5" Grid.Column="1" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             </Grid>
         </Grid>
 

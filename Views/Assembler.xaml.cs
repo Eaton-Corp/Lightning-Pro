@@ -49,6 +49,8 @@ namespace LightningPRO.Views
         Boolean[] DNSBArr;
         Boolean[] CompleteArr;
         Boolean[] ShortArr;
+        Boolean[] NameplateRequiredArr;
+        Boolean[] NameplateOrderedArr;
 
         //PRL123 Specific
         Boolean[] BoxEarlyArr;
@@ -171,12 +173,12 @@ namespace LightningPRO.Views
                     if (Scan.Text.StartsWith("4-"))     //PWL4
                     {
                         PRL4_Set();
-                        GetGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], [SpecialCustomer], [AMO], [ServiceEntrance], [RatedNeutral200], [PaintedBox], [DNSB], [Complete], [Short], [FilePath], [DoorOverDist], [DoorInDoor], [PageNumber] from [PRL4] where [GO]='" + Scan.Text.Substring(2, 10) + "' order by [GO_Item],[PageNumber]");
+                        GetGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], [SpecialCustomer], [AMO], [ServiceEntrance], [RatedNeutral200], [PaintedBox], [DNSB], [Complete], [Short], [NameplateRequired], [NameplateOrdered], [FilePath], [DoorOverDist], [DoorInDoor], [PageNumber] from [PRL4] where [GO]='" + Scan.Text.Substring(2, 10) + "' order by [GO_Item],[PageNumber]");
                     }
                     else if (Scan.Text.ToUpper().StartsWith("CS-"))       //PWLCS
                     {
                         PRLCS_Set();
-                        GetGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], [SpecialCustomer], [AMO], [IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], [ThirtyDeepEnclosure], [DNSB], [Complete], [Short], [FilePath], [PageNumber] from [PRLCS] where [GO]='" + Scan.Text.Substring(3, 10) + "' order by [GO_Item],[PageNumber]");
+                        GetGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], [SpecialCustomer], [AMO], [IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], [ThirtyDeepEnclosure], [DNSB], [Complete], [Short], [NameplateRequired], [NameplateOrdered], [FilePath], [PageNumber] from [PRLCS] where [GO]='" + Scan.Text.Substring(3, 10) + "' order by [GO_Item],[PageNumber]");
 
                     }
                     else if (Scan.Text.ToUpper().StartsWith("EC-"))       //PWLEC
@@ -186,7 +188,7 @@ namespace LightningPRO.Views
                     else            //PWL123
                     {
                         PRL123_Set();
-                        GetGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], [SpecialCustomer], [AMO], [ServiceEntrance], [RatedNeutral200], [PaintedBox], [DNSB], [Complete], [Short], [FilePath], [BoxEarly], [Box Sent], [DoubleSection] from [PRL123] where [GO]='" + Scan.Text.Substring(0, 10) + "' order by [GO_Item]");
+                        GetGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], [SpecialCustomer], [AMO], [ServiceEntrance], [RatedNeutral200], [PaintedBox], [DNSB], [Complete], [Short], [NameplateRequired], [NameplateOrdered], [FilePath], [BoxEarly], [Box Sent], [DoubleSection] from [PRL123] where [GO]='" + Scan.Text.Substring(0, 10) + "' order by [GO_Item]");
                     }
 
                     if (SuccessPull == true)
@@ -301,6 +303,8 @@ namespace LightningPRO.Views
             DNSBArr = new Boolean[pages];
             CompleteArr = new Boolean[pages];
             ShortArr = new Boolean[pages];
+            NameplateRequiredArr = new Boolean[pages]; ;
+            NameplateOrderedArr = new Boolean[pages]; ;
 
             //PRL123 Specific
             BoxEarlyArr = new Boolean[pages];
@@ -348,10 +352,12 @@ namespace LightningPRO.Views
                         DNSBArr[counter] = (Boolean)rb[14];
                         CompleteArr[counter] = (Boolean)rb[15];
                         ShortArr[counter] = (Boolean)rb[16];
-                        FilePath = rb[17].ToString();
-                        BoxEarlyArr[counter] = (Boolean)rb[18];
-                        BoxSentArr[counter] = (Boolean)rb[19];
-                        DoubleSectionArr[counter] = (Boolean)rb[20];
+                        NameplateRequiredArr[counter] = (Boolean)rb[17];
+                        NameplateOrderedArr[counter] = (Boolean)rb[18];
+                        FilePath = rb[19].ToString();
+                        BoxEarlyArr[counter] = (Boolean)rb[20];
+                        BoxSentArr[counter] = (Boolean)rb[21];
+                        DoubleSectionArr[counter] = (Boolean)rb[22];
                     }
                     else if (CurrentProduct == Utility.ProductGroup.PRL4)
                     {
@@ -361,10 +367,12 @@ namespace LightningPRO.Views
                         DNSBArr[counter] = (Boolean)rb[14];
                         CompleteArr[counter] = (Boolean)rb[15];
                         ShortArr[counter] = (Boolean)rb[16];
-                        FilePath = rb[17].ToString();                                             
-                        DoorOverDistArr[counter] = (Boolean)rb[18];
-                        DoorInDoorArr[counter] = (Boolean)rb[19];
-                        MultiPageNumber[counter] = (int)rb[20];
+                        NameplateRequiredArr[counter] = (Boolean)rb[17];
+                        NameplateOrderedArr[counter] = (Boolean)rb[18];
+                        FilePath = rb[19].ToString();                                             
+                        DoorOverDistArr[counter] = (Boolean)rb[20];
+                        DoorInDoorArr[counter] = (Boolean)rb[21];
+                        MultiPageNumber[counter] = (int)rb[22];
                     }
                     else if(CurrentProduct == Utility.ProductGroup.PRLCS)
                     {
@@ -378,8 +386,10 @@ namespace LightningPRO.Views
                         DNSBArr[counter] = (Boolean)rb[18];
                         CompleteArr[counter] = (Boolean)rb[19];
                         ShortArr[counter] = (Boolean)rb[20];
-                        FilePath = rb[21].ToString();
-                        MultiPageNumber[counter] = (int)rb[22];
+                        NameplateRequiredArr[counter] = (Boolean)rb[21];
+                        NameplateOrderedArr[counter] = (Boolean)rb[22];
+                        FilePath = rb[23].ToString();
+                        MultiPageNumber[counter] = (int)rb[24];
                     }
                     counter++;
                 }
@@ -463,6 +473,8 @@ namespace LightningPRO.Views
                 DNSB.IsChecked = DNSBArr[page];
                 Complete.IsChecked = CompleteArr[page];
                 Short.IsChecked = ShortArr[page];
+                NameplateRequired.IsChecked = NameplateRequiredArr[page];
+                NameplateOrdered.IsChecked = NameplateOrderedArr[page];
             }
             else if (CurrentProduct == Utility.ProductGroup.PRL4)
             {
@@ -474,6 +486,8 @@ namespace LightningPRO.Views
                 DoorInDoor_4.IsChecked = DoorInDoorArr[page];
                 Complete_4.IsChecked = CompleteArr[page];
                 Short_4.IsChecked = ShortArr[page];
+                NameplateRequired_4.IsChecked = NameplateRequiredArr[page];
+                NameplateOrdered_4.IsChecked = NameplateOrderedArr[page];
                 DNSB_4.IsChecked = DNSBArr[page];
             }
             else if (CurrentProduct == Utility.ProductGroup.PRLCS)
@@ -489,6 +503,8 @@ namespace LightningPRO.Views
                 DNSB_CS.IsChecked = DNSBArr[page];
                 Complete_CS.IsChecked = CompleteArr[page];
                 Short_CS.IsChecked = ShortArr[page];
+                NameplateRequired_CS.IsChecked = NameplateRequiredArr[page];
+                NameplateOrdered_CS.IsChecked = NameplateOrderedArr[page];
             }
 
 
@@ -525,15 +541,15 @@ namespace LightningPRO.Views
         {
             if (CurrentProduct == Utility.ProductGroup.PRL123)
             {
-                GetGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], [SpecialCustomer], [AMO], [ServiceEntrance], [RatedNeutral200], [PaintedBox], [DNSB], [Complete], [Short], [FilePath], [BoxEarly], [Box Sent], [DoubleSection] from [PRL123] where [GO]='" + GO_Item.Text.Substring(0, 10) + "' order by [GO_Item]");
+                GetGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], [SpecialCustomer], [AMO], [ServiceEntrance], [RatedNeutral200], [PaintedBox], [DNSB], [Complete], [Short], [NameplateRequired], [NameplateOrdered], [FilePath], [BoxEarly], [Box Sent], [DoubleSection] from [PRL123] where [GO]='" + GO_Item.Text.Substring(0, 10) + "' order by [GO_Item]");
             }
             else if (CurrentProduct == Utility.ProductGroup.PRL4)
             {
-                GetGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], [SpecialCustomer], [AMO], [ServiceEntrance], [RatedNeutral200], [PaintedBox], [DNSB], [Complete], [Short], [FilePath], [DoorOverDist], [DoorInDoor], [PageNumber] from [PRL4] where [GO]='" + GO_Item.Text.Substring(0, 10) + "' order by [GO_Item],[PageNumber]");
+                GetGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], [SpecialCustomer], [AMO], [ServiceEntrance], [RatedNeutral200], [PaintedBox], [DNSB], [Complete], [Short], [NameplateRequired], [NameplateOrdered], [FilePath], [DoorOverDist], [DoorInDoor], [PageNumber] from [PRL4] where [GO]='" + GO_Item.Text.Substring(0, 10) + "' order by [GO_Item],[PageNumber]");
             }
             else if(CurrentProduct == Utility.ProductGroup.PRLCS)
             {
-                GetGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], [SpecialCustomer], [AMO], [IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], [ThirtyDeepEnclosure], [DNSB], [Complete], [Short], [FilePath], [PageNumber] from [PRLCS] where [GO]='" + GO_Item.Text.Substring(0, 10) + "' order by [GO_Item],[PageNumber]");
+                GetGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], [SpecialCustomer], [AMO], [IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], [ThirtyDeepEnclosure], [DNSB], [Complete], [Short], [NameplateRequired], [NameplateOrdered], [FilePath], [PageNumber] from [PRLCS] where [GO]='" + GO_Item.Text.Substring(0, 10) + "' order by [GO_Item],[PageNumber]");
             }
         }
 
@@ -625,15 +641,15 @@ namespace LightningPRO.Views
                 string commandStr = "";
                 if (CurrentProduct == Utility.ProductGroup.PRL123)
                 {
-                    commandStr = "update [PRL123] set [Type]= ?, [Volts]= ?, [Amps]= ?, [Torque]= ?, [Appearance]= ?, [Bus]= ?, [SpecialCustomer]= ?, [AMO]= ?, [ServiceEntrance]= ?, [RatedNeutral200]= ?, [PaintedBox]= ?, [DNSB]= ?, [Complete]= ?, [Short]= ?, [BoxEarly]= ?, [Box Sent]= ?, [DoubleSection]= ? where [GO_Item]='" + GOItemsArr[page] + "'";
+                    commandStr = "update [PRL123] set [Type]= ?, [Volts]= ?, [Amps]= ?, [Torque]= ?, [Appearance]= ?, [Bus]= ?, [SpecialCustomer]= ?, [AMO]= ?, [ServiceEntrance]= ?, [RatedNeutral200]= ?, [PaintedBox]= ?, [DNSB]= ?, [Complete]= ?, [Short]= ?, [NameplateRequired]= ?, [NameplateOrdered]= ?, [BoxEarly]= ?, [Box Sent]= ?, [DoubleSection]= ? where [GO_Item]='" + GOItemsArr[page] + "'";
                 }
                 else if (CurrentProduct == Utility.ProductGroup.PRL4)
                 {
-                    commandStr = "update [PRL4] set [Type]= ?, [Volts]= ?, [Amps]= ?, [Torque]= ?, [Appearance]= ?, [Bus]= ?, [SpecialCustomer]= ?, [AMO]= ?, [ServiceEntrance]= ?, [RatedNeutral200]= ?, [PaintedBox]= ?, [DNSB]= ?, [Complete]= ?, [Short]= ?, [DoorOverDist]= ?, [DoorInDoor]= ? where [GO_Item]='" + GOItemsArr[page] + "'";
+                    commandStr = "update [PRL4] set [Type]= ?, [Volts]= ?, [Amps]= ?, [Torque]= ?, [Appearance]= ?, [Bus]= ?, [SpecialCustomer]= ?, [AMO]= ?, [ServiceEntrance]= ?, [RatedNeutral200]= ?, [PaintedBox]= ?, [DNSB]= ?, [Complete]= ?, [Short]= ?, [NameplateRequired]= ?, [NameplateOrdered]= ?, [DoorOverDist]= ?, [DoorInDoor]= ? where [GO_Item]='" + GOItemsArr[page] + "'";
                 }
                 else if (CurrentProduct == Utility.ProductGroup.PRLCS)
                 {
-                    commandStr = "update [PRLCS] set [Type]= ?, [Volts]= ?, [Amps]= ?, [Torque]= ?, [Appearance]= ?, [Bus]= ?, [SpecialCustomer]= ?, [AMO]= ?, [IncLocLeft]= ?, [IncLocRight]= ?, [CrossBus]= ?, [OpenBottom]= ?, [ExtendedTop]= ?, [PaintedBox]= ?, [ThirtyDeepEnclosure]= ?, [DNSB]= ?, [Complete]= ?, [Short]= ? where [GO_Item]='" + GOItemsArr[page] + "'";
+                    commandStr = "update [PRLCS] set [Type]= ?, [Volts]= ?, [Amps]= ?, [Torque]= ?, [Appearance]= ?, [Bus]= ?, [SpecialCustomer]= ?, [AMO]= ?, [IncLocLeft]= ?, [IncLocRight]= ?, [CrossBus]= ?, [OpenBottom]= ?, [ExtendedTop]= ?, [PaintedBox]= ?, [ThirtyDeepEnclosure]= ?, [DNSB]= ?, [Complete]= ?, [Short]= ?, [NameplateRequired]= ?, [NameplateOrdered]= ? where [GO_Item]='" + GOItemsArr[page] + "'";
                 }
                 using (OleDbCommand cmd = new OleDbCommand(commandStr, MainWindow.LPcon))
                 {
@@ -654,6 +670,8 @@ namespace LightningPRO.Views
                         cmd.Parameters.AddWithValue("[DNSB]", DNSB.IsChecked);
                         cmd.Parameters.AddWithValue("[Complete]", Complete.IsChecked);
                         cmd.Parameters.AddWithValue("[Short]", Short.IsChecked);
+                        cmd.Parameters.AddWithValue("[NameplateRequired]", NameplateRequired.IsChecked);
+                        cmd.Parameters.AddWithValue("[NameplateOrdered]", NameplateOrdered.IsChecked);
                         cmd.Parameters.AddWithValue("[BoxEarly]", BoxEarly.IsChecked);
                         cmd.Parameters.AddWithValue("[Box Sent]", BoxSent.IsChecked);
                         cmd.Parameters.AddWithValue("[DoubleSection]", DoubleSection.IsChecked);
@@ -666,6 +684,8 @@ namespace LightningPRO.Views
                         cmd.Parameters.AddWithValue("[DNSB]", DNSB_4.IsChecked);
                         cmd.Parameters.AddWithValue("[Complete]", Complete_4.IsChecked);
                         cmd.Parameters.AddWithValue("[Short]", Short_4.IsChecked);
+                        cmd.Parameters.AddWithValue("[NameplateRequired]", NameplateRequired_4.IsChecked);
+                        cmd.Parameters.AddWithValue("[NameplateOrdered]", NameplateOrdered_4.IsChecked);
                         cmd.Parameters.AddWithValue("[DoorOverDist]", DoorOverDist_4.IsChecked);
                         cmd.Parameters.AddWithValue("[DoorInDoor]", DoorInDoor_4.IsChecked);
                     }
@@ -681,6 +701,8 @@ namespace LightningPRO.Views
                         cmd.Parameters.AddWithValue("[DNSB]", DNSB_CS.IsChecked);
                         cmd.Parameters.AddWithValue("[Complete]", Complete_CS.IsChecked);
                         cmd.Parameters.AddWithValue("[Short]", Short_CS.IsChecked);
+                        cmd.Parameters.AddWithValue("[NameplateRequired]", NameplateRequired_CS.IsChecked);
+                        cmd.Parameters.AddWithValue("[NameplateOrdered]", NameplateOrdered_CS.IsChecked);
                     }
                     cmd.ExecuteNonQuery();
                 } //end using command
