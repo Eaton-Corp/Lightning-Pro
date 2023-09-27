@@ -51,6 +51,8 @@ namespace LightningPRO
         Boolean[] DNSBArr;
         Boolean[] CompleteArr;
         Boolean[] ShortArr;
+        Boolean[] NameplateRequiredArr;
+        Boolean[] NameplateOrderedArr;
 
         //PRL123 Specific
         Boolean[] BoxEarlyArr;
@@ -129,7 +131,7 @@ namespace LightningPRO
                 GetGOs("select [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Quantity], " +
                     "[EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [ProductSpecialist], [Customer], " +
                     "[SpecialCustomer], [AMO], [ServiceEntrance], [RatedNeutral200], [PaintedBox], " +
-                    "[DNSB], [Complete], [Short], [FilePath], [BoxEarly], [Box Sent], [DoubleSection] " +
+                    "[DNSB], [Complete], [Short], [NameplateRequired], [NameplateOrdered], [FilePath], [BoxEarly], [Box Sent], [DoubleSection] " +
                     "from [PRL123] where [GO]='" + current_ID.Substring(0, 10) + "' order by [GO_Item]");
             }
             else if (CurrentProduct == Utility.ProductGroup.PRL4)
@@ -137,7 +139,7 @@ namespace LightningPRO
                 GetGOs("select [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Quantity], " +
                     "[EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [ProductSpecialist], [Customer], " +
                     "[SpecialCustomer], [AMO], [ServiceEntrance], [RatedNeutral200], [PaintedBox], " +
-                    "[DNSB], [Complete], [Short], [FilePath], [DoorOverDist], [DoorInDoor], [PageNumber] " +
+                    "[DNSB], [Complete], [Short], [NameplateRequired], [NameplateOrdered], [FilePath], [DoorOverDist], [DoorInDoor], [PageNumber] " +
                     "from [PRL4] where [GO]='" + current_ID.Substring(0, 10) + "' order by [GO_Item],[PageNumber]");
             }
             else if(CurrentProduct == Utility.ProductGroup.PRLCS)
@@ -145,7 +147,7 @@ namespace LightningPRO
                 GetGOs("select [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Quantity], " +
                     "[EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [ProductSpecialist], [Customer], " +
                     "[SpecialCustomer], [AMO], [IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], " +
-                    "[ThirtyDeepEnclosure], [DNSB], [Complete], [Short], [FilePath], [PageNumber] " +
+                    "[ThirtyDeepEnclosure], [DNSB], [Complete], [Short], [NameplateRequired], [NameplateOrdered], [FilePath], [PageNumber] " +
                     "from [PRLCS] where [GO]='" + current_ID.Substring(0, 10) + "' order by [GO_Item],[PageNumber]");
             }
         }
@@ -191,6 +193,8 @@ namespace LightningPRO
             DNSBArr = new Boolean[pages];
             CompleteArr = new Boolean[pages];
             ShortArr = new Boolean[pages];
+            NameplateRequiredArr = new Boolean[pages];
+            NameplateOrderedArr = new Boolean[pages];
 
             //PRL123 Specific
             BoxEarlyArr = new Boolean[pages];
@@ -256,13 +260,15 @@ namespace LightningPRO
                         DNSBArr[counter] = (Boolean)rb[18];
                         CompleteArr[counter] = (Boolean)rb[19];
                         ShortArr[counter] = (Boolean)rb[20];
+                        NameplateRequiredArr[counter] = (Boolean)rb[21];
+                        NameplateOrderedArr[counter] = (Boolean)rb[22];
 
-                        FilePath = rb[21].ToString();
+                        FilePath = rb[23].ToString();
 
                         //PRL123 Specific
-                        BoxEarlyArr[counter] = (Boolean)rb[22];
-                        BoxSentArr[counter] = (Boolean)rb[23];
-                        DoubleSectionArr[counter] = (Boolean)rb[24];
+                        BoxEarlyArr[counter] = (Boolean)rb[24];
+                        BoxSentArr[counter] = (Boolean)rb[25];
+                        DoubleSectionArr[counter] = (Boolean)rb[26];
                     }
                     else if (CurrentProduct == Utility.ProductGroup.PRL4)
                     {
@@ -272,14 +278,16 @@ namespace LightningPRO
                         DNSBArr[counter] = (Boolean)rb[18];
                         CompleteArr[counter] = (Boolean)rb[19];
                         ShortArr[counter] = (Boolean)rb[20];
+                        NameplateRequiredArr[counter] = (Boolean)rb[21];
+                        NameplateOrderedArr[counter] = (Boolean)rb[22];
 
-                        FilePath = rb[21].ToString();
+                        FilePath = rb[23].ToString();
 
                         //PRL4 Specific 
-                        DoorOverDistArr[counter] = (Boolean)rb[22];
-                        DoorInDoorArr[counter] = (Boolean)rb[23];
+                        DoorOverDistArr[counter] = (Boolean)rb[24];
+                        DoorInDoorArr[counter] = (Boolean)rb[25];
 
-                        pgNumber[counter] = (int)rb[24];
+                        pgNumber[counter] = (int)rb[26];
                     }
                     else if(CurrentProduct == Utility.ProductGroup.PRLCS)
                     {
@@ -293,9 +301,11 @@ namespace LightningPRO
                         DNSBArr[counter] = (Boolean)rb[22];
                         CompleteArr[counter] = (Boolean)rb[23];
                         ShortArr[counter] = (Boolean)rb[24];
-                        
-                        FilePath = rb[25].ToString();
-                        pgNumber[counter] = (int)rb[26];
+                        NameplateRequiredArr[counter] = (Boolean)rb[25];
+                        NameplateOrderedArr[counter] = (Boolean)rb[26];
+
+                        FilePath = rb[27].ToString();
+                        pgNumber[counter] = (int)rb[28];
 
                         ProductID[counter] = "Pow - R - LineCS";
                     }
@@ -498,6 +508,8 @@ namespace LightningPRO
                 DNSB.IsChecked = DNSBArr[page];
                 Complete.IsChecked = CompleteArr[page];
                 Short.IsChecked = ShortArr[page];
+                NameplateRequired.IsChecked = NameplateRequiredArr[page];
+                NameplateOrdered.IsChecked = NameplateOrderedArr[page];
             }
             else if (CurrentProduct == Utility.ProductGroup.PRL4)
             {
@@ -510,6 +522,8 @@ namespace LightningPRO
                 DoorInDoor_4.IsChecked = DoorInDoorArr[page];
                 Complete_4.IsChecked = CompleteArr[page];
                 Short_4.IsChecked = ShortArr[page];
+                NameplateRequired_4.IsChecked = NameplateRequiredArr[page];
+                NameplateOrdered_4.IsChecked = NameplateOrderedArr[page];
                 DNSB_4.IsChecked = DNSBArr[page];
             }
             else if (CurrentProduct == Utility.ProductGroup.PRLCS)
@@ -526,6 +540,8 @@ namespace LightningPRO
                 DNSB_CS.IsChecked = DNSBArr[page];
                 Complete_CS.IsChecked = CompleteArr[page];
                 Short_CS.IsChecked = ShortArr[page];
+                NameplateRequired_CS.IsChecked = NameplateRequiredArr[page];
+                NameplateOrdered_CS.IsChecked = NameplateOrderedArr[page];
             }
 
             CurrentBidman = GetBidman(GOItemArr[page]);
@@ -698,14 +714,14 @@ namespace LightningPRO
                 {
                     commandStr = "update [PRL123] set [ShopOrderInterior]= ?, [ShopOrderBox]= ?, [ShopOrderTrim]= ?, [Quantity]= ?, " +
                         "[Tracking]= ?, [Urgency]= ?, [ProductSpecialist] = ?, [Customer]= ?, [SpecialCustomer]= ?, [AMO]= ?, [ServiceEntrance]= ?, " +
-                        "[RatedNeutral200]= ?, [PaintedBox]= ?, [DNSB]= ?, [Complete]= ?, [Short]= ?, [BoxEarly]= ?, [Box Sent]= ?, " +
+                        "[RatedNeutral200]= ?, [PaintedBox]= ?, [DNSB]= ?, [Complete]= ?, [Short]= ?, [NameplateRequired]= ?, [NameplateOrdered]= ?, [BoxEarly]= ?, [Box Sent]= ?, " +
                         "[DoubleSection]= ? where [GO_Item]='" + current_ID + "'";
                 }
                 else if (CurrentProduct == Utility.ProductGroup.PRL4)
                 {
                     commandStr = "update [PRL4] set [ShopOrderInterior]= ?, [ShopOrderBox]= ?, [ShopOrderTrim]= ?, [Quantity]= ?, " +
                         "[Tracking]= ?, [Urgency]= ?, [ProductSpecialist] = ?, [Customer]= ?, [SpecialCustomer]= ?, [AMO]= ?, [ServiceEntrance]= ?, " +
-                        "[RatedNeutral200]= ?, [PaintedBox]= ?, [DNSB]= ?, [Complete]= ?, [Short]= ?, [DoorOverDist]= ?, " +
+                        "[RatedNeutral200]= ?, [PaintedBox]= ?, [DNSB]= ?, [Complete]= ?, [Short]= ?, [NameplateRequired]= ?, [NameplateOrdered]= ?, [DoorOverDist]= ?, " +
                         "[DoorInDoor]= ? where [GO_Item]='" + current_ID + "'";
                 }
                 else if (CurrentProduct == Utility.ProductGroup.PRLCS)
@@ -713,7 +729,7 @@ namespace LightningPRO
                     commandStr = "update [PRLCS] set [ShopOrderInterior]= ?, [ShopOrderBox]= ?, [ShopOrderTrim]= ?, [Quantity]= ?, " +
                         "[Tracking]= ?, [Urgency]= ?, [ProductSpecialist] = ?, [Customer]= ?, [SpecialCustomer]= ?, [AMO]= ?, [IncLocLeft]= ?, "+ 
                         "[IncLocRight]= ?, [CrossBus]= ?, [OpenBottom]= ?, [ExtendedTop]= ?, [PaintedBox]= ?, [ThirtyDeepEnclosure]= ?, [DNSB]= ?, " +
-                        "[Complete]= ?, [Short] = ? where [GO_Item]='" + current_ID + "'";
+                        "[Complete]= ?, [Short] = ?, [NameplateRequired]= ?, [NameplateOrdered]= ? where [GO_Item]='" + current_ID + "'";
                 }
                 using (OleDbCommand cmd = new OleDbCommand(commandStr, MainWindow.LPcon))
                 {
@@ -736,6 +752,8 @@ namespace LightningPRO
                         cmd.Parameters.AddWithValue("[DNSB]", DNSB.IsChecked);
                         cmd.Parameters.AddWithValue("[Complete]", Complete.IsChecked);
                         cmd.Parameters.AddWithValue("[Short]", Short.IsChecked);
+                        cmd.Parameters.AddWithValue("[NameplateRequired]", NameplateRequired.IsChecked);
+                        cmd.Parameters.AddWithValue("[NameplateOrdered]", NameplateOrdered.IsChecked);
                         cmd.Parameters.AddWithValue("[BoxEarly]", BoxEarly.IsChecked);
                         cmd.Parameters.AddWithValue("[Box Sent]", BoxSent.IsChecked);
                         cmd.Parameters.AddWithValue("[DoubleSection]", DoubleSection.IsChecked);
@@ -749,6 +767,8 @@ namespace LightningPRO
                         cmd.Parameters.AddWithValue("[DNSB]", DNSB_4.IsChecked);
                         cmd.Parameters.AddWithValue("[Complete]", Complete_4.IsChecked);
                         cmd.Parameters.AddWithValue("[Short]", Short_4.IsChecked);
+                        cmd.Parameters.AddWithValue("[NameplateRequired]", NameplateRequired_4.IsChecked);
+                        cmd.Parameters.AddWithValue("[NameplateOrdered]", NameplateOrdered_4.IsChecked);
                         cmd.Parameters.AddWithValue("[DoorOverDist]", DoorOverDist_4.IsChecked);
                         cmd.Parameters.AddWithValue("[DoorInDoor]", DoorInDoor_4.IsChecked);
                     }
@@ -765,6 +785,8 @@ namespace LightningPRO
                         cmd.Parameters.AddWithValue("[DNSB]", DNSB_CS.IsChecked);
                         cmd.Parameters.AddWithValue("[Complete]", Complete_CS.IsChecked);
                         cmd.Parameters.AddWithValue("[Short]", Short_CS.IsChecked);
+                        cmd.Parameters.AddWithValue("[NameplateRequired]", NameplateRequired_CS.IsChecked);
+                        cmd.Parameters.AddWithValue("[NameplateOrdered]", NameplateOrdered_CS.IsChecked);
                     }
                     cmd.ExecuteNonQuery();
                 } //end using command
