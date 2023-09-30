@@ -25,6 +25,7 @@
             <RowDefinition Height="26"/>
             <RowDefinition Height="26"/>
             <RowDefinition Height="26"/>
+            <RowDefinition Height="26"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
@@ -45,14 +46,15 @@
         <Label Content="Shop Order Interior:" FontSize="12"  Grid.Row="3" Grid.Column="0"/>
         <Label Content="Shop Order Box:" FontSize="12"  Grid.Row="4" Grid.Column="0"/>
         <Label Content="Shop Order Trim:" FontSize="12"  Grid.Row="5" Grid.Column="0"/>
-        <Label Content="Qty:" FontSize="12"  Grid.Row="6" Grid.Column="0"/>
-        <Label Content="Entered Date:" FontSize="12"  Grid.Row="7" Grid.Column="0"/>
-        <Label Content="Release Date:" FontSize="12"  Grid.Row="8" Grid.Column="0"/>
-        <Label Content="Commit Date:" FontSize="12"  Grid.Row="9" Grid.Column="0"/>
-        <Label Content="Tracking:" FontSize="12"  Grid.Row="10" Grid.Column="0"/>
-        <Label Content="Urgency:" FontSize="12"  Grid.Row="11" Grid.Column="0"/>
-        <Label Content="Product ID:" FontSize="12"  Grid.Row="12" Grid.Column="0"/>
-        <Label Content="Specialist:" FontSize="12"  Grid.Row="13" Grid.Column="0"/>
+        <Label Content="Scheduling Group:" FontSize="12"  Grid.Row="6" Grid.Column="0"/>
+        <Label Content="Qty:" FontSize="12"  Grid.Row="7" Grid.Column="0"/>
+        <Label Content="Entered Date:" FontSize="12"  Grid.Row="8" Grid.Column="0"/>
+        <Label Content="Release Date:" FontSize="12"  Grid.Row="9" Grid.Column="0"/>
+        <Label Content="Commit Date:" FontSize="12"  Grid.Row="10" Grid.Column="0"/>
+        <Label Content="Tracking:" FontSize="12"  Grid.Row="11" Grid.Column="0"/>
+        <Label Content="Urgency:" FontSize="12"  Grid.Row="12" Grid.Column="0"/>
+        <Label Content="Product ID:" FontSize="12"  Grid.Row="13" Grid.Column="0"/>
+        <Label Content="Specialist:" FontSize="12"  Grid.Row="14" Grid.Column="0"/>
 
 
         <TextBox x:Name="GO_Item" IsReadOnly = "True" TextWrapping="Wrap" Grid.Column="1" Grid.Row="1" Height="25" VerticalAlignment="Top"/>
@@ -60,28 +62,29 @@
         <TextBox x:Name="ShopOrderInterior" TextWrapping="Wrap" Grid.Column="1" Grid.Row="3" Height="25" VerticalAlignment="Top"/>
         <TextBox x:Name="ShopOrderBox" TextWrapping="Wrap" Grid.Column="1" Grid.Row="4" Height="25" VerticalAlignment="Top"/>
         <TextBox x:Name="ShopOrderTrim" TextWrapping="Wrap" Grid.Column="1" Grid.Row="5" Height="25" VerticalAlignment="Top"/>
-        <TextBox x:Name="Quantity" TextWrapping="Wrap" Grid.Column="1" Grid.Row="6" Height="25" VerticalAlignment="Top"/>
-        <TextBox x:Name="EnteredDate" TextWrapping="Wrap" Grid.Column="1" Grid.Row="7" Height="25" VerticalAlignment="Top"/>
-        <TextBox x:Name="ReleaseDate" TextWrapping="Wrap" Grid.Column="1" Grid.Row="8" Height="25" VerticalAlignment="Top"/>
-        <TextBox x:Name="CommitDate" TextWrapping="Wrap" Grid.Column="1" Grid.Row="9" Height="25" VerticalAlignment="Top"/>
-        <TextBox x:Name="Tracking" TextWrapping="Wrap" Grid.Column="1" Grid.Row="10" Height="25" VerticalAlignment="Top"/>
-        <ComboBox Name="Urgency" Grid.Column="1" Grid.Row="11" Height="25" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top">
+        <TextBox x:Name="SchedulingGroup" TextWrapping="Wrap" Grid.Column="1" Grid.Row="6" Height="25" VerticalAlignment="Top"/>
+        <TextBox x:Name="Quantity" TextWrapping="Wrap" Grid.Column="1" Grid.Row="7" Height="25" VerticalAlignment="Top"/>
+        <TextBox x:Name="EnteredDate" TextWrapping="Wrap" Grid.Column="1" Grid.Row="8" Height="25" VerticalAlignment="Top"/>
+        <TextBox x:Name="ReleaseDate" TextWrapping="Wrap" Grid.Column="1" Grid.Row="9" Height="25" VerticalAlignment="Top"/>
+        <TextBox x:Name="CommitDate" TextWrapping="Wrap" Grid.Column="1" Grid.Row="10" Height="25" VerticalAlignment="Top"/>
+        <TextBox x:Name="Tracking" TextWrapping="Wrap" Grid.Column="1" Grid.Row="11" Height="25" VerticalAlignment="Top"/>
+        <ComboBox Name="Urgency" Grid.Column="1" Grid.Row="12" Height="25" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top">
             <ComboBoxItem Content="N"></ComboBoxItem>
             <ComboBoxItem Content="UP"></ComboBoxItem>
             <ComboBoxItem Content="UU"></ComboBoxItem>
             <ComboBoxItem Content="HOLD"></ComboBoxItem>
         </ComboBox>
-        <TextBox x:Name="ProductIDBox" TextWrapping="Wrap" Grid.Column="1" Grid.Row="12" Height="25" VerticalAlignment="Top"/>
-        <TextBox x:Name="SpecialistBox" TextWrapping="Wrap" Grid.Column="1" Grid.Row="13" Height="25" VerticalAlignment="Top"/>
+        <TextBox x:Name="ProductIDBox" TextWrapping="Wrap" Grid.Column="1" Grid.Row="13" Height="25" VerticalAlignment="Top"/>
+        <TextBox x:Name="SpecialistBox" TextWrapping="Wrap" Grid.Column="1" Grid.Row="14" Height="25" VerticalAlignment="Top"/>
 
-        <CheckBox x:Name="SpecialCustomer" Content="Special Customer" Grid.Column="0" Grid.Row="14" Grid.ColumnSpan="2" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <Label Content="Customer:" FontSize="12" Grid.Column="0" Grid.Row="15"/>
-        <TextBox x:Name="Customer" TextWrapping="Wrap" Grid.Column="1" Grid.Row="15" Height="25" VerticalAlignment="Top"/>
+        <CheckBox x:Name="SpecialCustomer" Content="Special Customer" Grid.Column="0" Grid.Row="15" Grid.ColumnSpan="2" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Label Content="Customer:" FontSize="12" Grid.Column="0" Grid.Row="16"/>
+        <TextBox x:Name="Customer" TextWrapping="Wrap" Grid.Column="1" Grid.Row="16" Height="25" VerticalAlignment="Top"/>
 
 
 
         <!-- PRL123 / PRL4 UI -->
-        <Grid x:Name="PRL1234Schema" Visibility="Hidden" Grid.Row="16" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="1">
+        <Grid x:Name="PRL1234Schema" Visibility="Hidden" Grid.Row="17" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="28"/>
@@ -192,7 +195,7 @@
 
 
         <!-- PRLCS UI -->
-        <Grid x:Name="PRLCSSchema" Visibility="Visible" Grid.Row="16" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="1">
+        <Grid x:Name="PRLCSSchema" Visibility="Hidden" Grid.Row="17" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="120"/>
                 <RowDefinition Height="23"/>
@@ -289,11 +292,11 @@
         </Grid>
 
 
-        <Label x:Name="Status" Grid.Column="0" Grid.Row="17" Grid.ColumnSpan="2" VerticalAlignment="Center"/>
+        <Label x:Name="Status" Grid.Column="0" Grid.Row="18" Grid.ColumnSpan="2" VerticalAlignment="Center"/>
 
-        <ImageEditor:Editor x:Name="imgEditor" Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="4" Grid.RowSpan="17"/>
+        <ImageEditor:Editor x:Name="imgEditor" Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="4" Grid.RowSpan="18"/>
 
-        <Grid Grid.Row="17" Grid.Column="2" Grid.ColumnSpan="4">
+        <Grid Grid.Row="18" Grid.Column="2" Grid.ColumnSpan="4">
             <Grid.RowDefinitions>
                 <RowDefinition/>
             </Grid.RowDefinitions>

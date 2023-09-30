@@ -30,6 +30,7 @@ namespace LightningPRO
         string[] SOIArr;
         string[] SOBArr;
         string[] SOTArr;
+        string[] SchedGroupArr;
         string[] QuantityArr;
         string[] EnteredDateArr;
         string[] ReleaseDateArr;
@@ -128,7 +129,7 @@ namespace LightningPRO
         {
             if (CurrentProduct == Utility.ProductGroup.PRL123)
             {
-                GetGOs("select [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Quantity], " +
+                GetGOs("select [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [SchedulingGroup], [Quantity], " +
                     "[EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [ProductSpecialist], [Customer], " +
                     "[SpecialCustomer], [AMO], [ServiceEntrance], [RatedNeutral200], [PaintedBox], " +
                     "[DNSB], [Complete], [Short], [NameplateRequired], [NameplateOrdered], [FilePath], [BoxEarly], [Box Sent], [DoubleSection] " +
@@ -136,7 +137,7 @@ namespace LightningPRO
             }
             else if (CurrentProduct == Utility.ProductGroup.PRL4)
             {
-                GetGOs("select [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Quantity], " +
+                GetGOs("select [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [SchedulingGroup], [Quantity], " +
                     "[EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [ProductSpecialist], [Customer], " +
                     "[SpecialCustomer], [AMO], [ServiceEntrance], [RatedNeutral200], [PaintedBox], " +
                     "[DNSB], [Complete], [Short], [NameplateRequired], [NameplateOrdered], [FilePath], [DoorOverDist], [DoorInDoor], [PageNumber] " +
@@ -144,7 +145,7 @@ namespace LightningPRO
             }
             else if(CurrentProduct == Utility.ProductGroup.PRLCS)
             {
-                GetGOs("select [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Quantity], " +
+                GetGOs("select [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [SchedulingGroup], [Quantity], " +
                     "[EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [ProductSpecialist], [Customer], " +
                     "[SpecialCustomer], [AMO], [IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], " +
                     "[ThirtyDeepEnclosure], [DNSB], [Complete], [Short], [NameplateRequired], [NameplateOrdered], [FilePath], [PageNumber] " +
@@ -176,6 +177,7 @@ namespace LightningPRO
             SOIArr = new string[pages];
             SOBArr = new string[pages];
             SOTArr = new string[pages];
+            SchedGroupArr = new string[pages];
             QuantityArr = new string[pages];
             EnteredDateArr = new string[pages];
             ReleaseDateArr = new string[pages];
@@ -240,72 +242,73 @@ namespace LightningPRO
                     SOIArr[counter] = rb[2].ToString();
                     SOBArr[counter] = rb[3].ToString();
                     SOTArr[counter] = rb[4].ToString();
-                    QuantityArr[counter] = rb[5].ToString();
-                    EnteredDateArr[counter] = rb[6].ToString();
-                    ReleaseDateArr[counter] = rb[7].ToString();
-                    CommitDateArr[counter] = rb[8].ToString();
-                    TrackingArr[counter] = rb[9].ToString();
-                    UrgencyArr[counter] = rb[10].ToString();
-                    SpecialistArr[counter] = rb[11].ToString();
-                    CustomerArr[counter] = rb[12].ToString();
+                    SchedGroupArr[counter] = rb[5].ToString();
+                    QuantityArr[counter] = rb[6].ToString();
+                    EnteredDateArr[counter] = rb[7].ToString();
+                    ReleaseDateArr[counter] = rb[8].ToString();
+                    CommitDateArr[counter] = rb[9].ToString();
+                    TrackingArr[counter] = rb[10].ToString();
+                    UrgencyArr[counter] = rb[11].ToString();
+                    SpecialistArr[counter] = rb[12].ToString();
+                    CustomerArr[counter] = rb[13].ToString();
 
-                    SpecialCustomerArr[counter] = (Boolean)rb[13];
-                    AMOArr[counter] = (Boolean)rb[14];
+                    SpecialCustomerArr[counter] = (Boolean)rb[14];
+                    AMOArr[counter] = (Boolean)rb[15];
 
                     if (CurrentProduct == Utility.ProductGroup.PRL123)
                     {
-                        ServiceEntranceArr[counter] = (Boolean)rb[15];
-                        RatedNeutral200Arr[counter] = (Boolean)rb[16];
-                        PaintedBoxArr[counter] = (Boolean)rb[17];
-                        DNSBArr[counter] = (Boolean)rb[18];
-                        CompleteArr[counter] = (Boolean)rb[19];
-                        ShortArr[counter] = (Boolean)rb[20];
-                        NameplateRequiredArr[counter] = (Boolean)rb[21];
-                        NameplateOrderedArr[counter] = (Boolean)rb[22];
+                        ServiceEntranceArr[counter] = (Boolean)rb[16];
+                        RatedNeutral200Arr[counter] = (Boolean)rb[17];
+                        PaintedBoxArr[counter] = (Boolean)rb[18];
+                        DNSBArr[counter] = (Boolean)rb[19];
+                        CompleteArr[counter] = (Boolean)rb[20];
+                        ShortArr[counter] = (Boolean)rb[21];
+                        NameplateRequiredArr[counter] = (Boolean)rb[22];
+                        NameplateOrderedArr[counter] = (Boolean)rb[23];
 
-                        FilePath = rb[23].ToString();
+                        FilePath = rb[24].ToString();
 
                         //PRL123 Specific
-                        BoxEarlyArr[counter] = (Boolean)rb[24];
-                        BoxSentArr[counter] = (Boolean)rb[25];
-                        DoubleSectionArr[counter] = (Boolean)rb[26];
+                        BoxEarlyArr[counter] = (Boolean)rb[25];
+                        BoxSentArr[counter] = (Boolean)rb[26];
+                        DoubleSectionArr[counter] = (Boolean)rb[27];
                     }
                     else if (CurrentProduct == Utility.ProductGroup.PRL4)
                     {
-                        ServiceEntranceArr[counter] = (Boolean)rb[15];
-                        RatedNeutral200Arr[counter] = (Boolean)rb[16];
-                        PaintedBoxArr[counter] = (Boolean)rb[17];
-                        DNSBArr[counter] = (Boolean)rb[18];
-                        CompleteArr[counter] = (Boolean)rb[19];
-                        ShortArr[counter] = (Boolean)rb[20];
-                        NameplateRequiredArr[counter] = (Boolean)rb[21];
-                        NameplateOrderedArr[counter] = (Boolean)rb[22];
+                        ServiceEntranceArr[counter] = (Boolean)rb[16];
+                        RatedNeutral200Arr[counter] = (Boolean)rb[17];
+                        PaintedBoxArr[counter] = (Boolean)rb[18];
+                        DNSBArr[counter] = (Boolean)rb[19];
+                        CompleteArr[counter] = (Boolean)rb[20];
+                        ShortArr[counter] = (Boolean)rb[21];
+                        NameplateRequiredArr[counter] = (Boolean)rb[22];
+                        NameplateOrderedArr[counter] = (Boolean)rb[23];
 
-                        FilePath = rb[23].ToString();
+                        FilePath = rb[24].ToString();
 
                         //PRL4 Specific 
-                        DoorOverDistArr[counter] = (Boolean)rb[24];
-                        DoorInDoorArr[counter] = (Boolean)rb[25];
+                        DoorOverDistArr[counter] = (Boolean)rb[25];
+                        DoorInDoorArr[counter] = (Boolean)rb[26];
 
-                        pgNumber[counter] = (int)rb[26];
+                        pgNumber[counter] = (int)rb[27];
                     }
                     else if(CurrentProduct == Utility.ProductGroup.PRLCS)
                     {
-                        IncLocLeftArr[counter] = (Boolean)rb[15];
-                        IncLocRightArr[counter] = (Boolean)rb[16];
-                        CrossBusArr[counter] = (Boolean)rb[17];
-                        OpenBottomArr[counter] = (Boolean)rb[18];
-                        ExtendedTopArr[counter] = (Boolean)rb[19];
-                        PaintedBoxArr[counter] = (Boolean)rb[20];
-                        ThirtyDeepEnclosureArr[counter] = (Boolean)rb[21];
-                        DNSBArr[counter] = (Boolean)rb[22];
-                        CompleteArr[counter] = (Boolean)rb[23];
-                        ShortArr[counter] = (Boolean)rb[24];
-                        NameplateRequiredArr[counter] = (Boolean)rb[25];
-                        NameplateOrderedArr[counter] = (Boolean)rb[26];
+                        IncLocLeftArr[counter] = (Boolean)rb[16];
+                        IncLocRightArr[counter] = (Boolean)rb[17];
+                        CrossBusArr[counter] = (Boolean)rb[18];
+                        OpenBottomArr[counter] = (Boolean)rb[19];
+                        ExtendedTopArr[counter] = (Boolean)rb[20];
+                        PaintedBoxArr[counter] = (Boolean)rb[21];
+                        ThirtyDeepEnclosureArr[counter] = (Boolean)rb[22];
+                        DNSBArr[counter] = (Boolean)rb[23];
+                        CompleteArr[counter] = (Boolean)rb[24];
+                        ShortArr[counter] = (Boolean)rb[25];
+                        NameplateRequiredArr[counter] = (Boolean)rb[26];
+                        NameplateOrderedArr[counter] = (Boolean)rb[27];
 
-                        FilePath = rb[27].ToString();
-                        pgNumber[counter] = (int)rb[28];
+                        FilePath = rb[28].ToString();
+                        pgNumber[counter] = (int)rb[29];
 
                         ProductID[counter] = "Pow - R - LineCS";
                     }
@@ -464,6 +467,7 @@ namespace LightningPRO
             ShopOrderInterior.Text = SOIArr[page];
             ShopOrderBox.Text = SOBArr[page];
             ShopOrderTrim.Text = SOTArr[page];
+            SchedulingGroup.Text = SchedGroupArr[page];
             Quantity.Text = QuantityArr[page];
             EnteredDate.Text = EnteredDateArr[page];
             ReleaseDate.Text = ReleaseDateArr[page];
@@ -712,21 +716,21 @@ namespace LightningPRO
                 string commandStr = "";
                 if (CurrentProduct == Utility.ProductGroup.PRL123)
                 {
-                    commandStr = "update [PRL123] set [ShopOrderInterior]= ?, [ShopOrderBox]= ?, [ShopOrderTrim]= ?, [Quantity]= ?, " +
+                    commandStr = "update [PRL123] set [ShopOrderInterior]= ?, [ShopOrderBox]= ?, [ShopOrderTrim]= ?, [SchedulingGroup]= ?, [Quantity]= ?, " +
                         "[Tracking]= ?, [Urgency]= ?, [ProductSpecialist] = ?, [Customer]= ?, [SpecialCustomer]= ?, [AMO]= ?, [ServiceEntrance]= ?, " +
                         "[RatedNeutral200]= ?, [PaintedBox]= ?, [DNSB]= ?, [Complete]= ?, [Short]= ?, [NameplateRequired]= ?, [NameplateOrdered]= ?, [BoxEarly]= ?, [Box Sent]= ?, " +
                         "[DoubleSection]= ? where [GO_Item]='" + current_ID + "'";
                 }
                 else if (CurrentProduct == Utility.ProductGroup.PRL4)
                 {
-                    commandStr = "update [PRL4] set [ShopOrderInterior]= ?, [ShopOrderBox]= ?, [ShopOrderTrim]= ?, [Quantity]= ?, " +
+                    commandStr = "update [PRL4] set [ShopOrderInterior]= ?, [ShopOrderBox]= ?, [ShopOrderTrim]= ?, [SchedulingGroup]= ?, [Quantity]= ?, " +
                         "[Tracking]= ?, [Urgency]= ?, [ProductSpecialist] = ?, [Customer]= ?, [SpecialCustomer]= ?, [AMO]= ?, [ServiceEntrance]= ?, " +
                         "[RatedNeutral200]= ?, [PaintedBox]= ?, [DNSB]= ?, [Complete]= ?, [Short]= ?, [NameplateRequired]= ?, [NameplateOrdered]= ?, [DoorOverDist]= ?, " +
                         "[DoorInDoor]= ? where [GO_Item]='" + current_ID + "'";
                 }
                 else if (CurrentProduct == Utility.ProductGroup.PRLCS)
                 {
-                    commandStr = "update [PRLCS] set [ShopOrderInterior]= ?, [ShopOrderBox]= ?, [ShopOrderTrim]= ?, [Quantity]= ?, " +
+                    commandStr = "update [PRLCS] set [ShopOrderInterior]= ?, [ShopOrderBox]= ?, [ShopOrderTrim]= ?, [SchedulingGroup]= ?, [Quantity]= ?, " +
                         "[Tracking]= ?, [Urgency]= ?, [ProductSpecialist] = ?, [Customer]= ?, [SpecialCustomer]= ?, [AMO]= ?, [IncLocLeft]= ?, "+ 
                         "[IncLocRight]= ?, [CrossBus]= ?, [OpenBottom]= ?, [ExtendedTop]= ?, [PaintedBox]= ?, [ThirtyDeepEnclosure]= ?, [DNSB]= ?, " +
                         "[Complete]= ?, [Short] = ?, [NameplateRequired]= ?, [NameplateOrdered]= ? where [GO_Item]='" + current_ID + "'";
@@ -736,6 +740,7 @@ namespace LightningPRO
                     cmd.Parameters.AddWithValue("ShopOrderInterior", ShopOrderInterior.Text);
                     cmd.Parameters.AddWithValue("ShopOrderBox", ShopOrderBox.Text);
                     cmd.Parameters.AddWithValue("ShopOrderTrim", ShopOrderTrim.Text);
+                    cmd.Parameters.AddWithValue("SchedulingGroup", SchedulingGroup.Text);
                     cmd.Parameters.AddWithValue("Quantity", Quantity.Text);
                     cmd.Parameters.AddWithValue("Tracking", Tracking.Text);
                     cmd.Parameters.AddWithValue("Urgency", Urgency.Text);
@@ -841,7 +846,7 @@ namespace LightningPRO
             {
                 MessageBox.Show("An Error Occurred Trying To SaveData");
             }
-}
+        }
 
 
         private void SavePDF()
@@ -904,52 +909,48 @@ namespace LightningPRO
             }
         }
 
-
         private void Retrieve_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                string SOI = "";
-                string SOB = "";
-                string SOT = "";
-                string qty = "";
-                DateTime? enterDate = null;
-                DateTime? releaseDate = null;
-                DateTime? commitDate = null;
-                string customer = "";
-                DataTable dt = Utility.SearchMasterDB("select [Shop Order],[Shop Order B],[Shop Order T],[Qty],[Entered Date],[Release Date],[Commit Date],[Customer] from [tblOrderStatus] where [GO Item]='"+ GO_Item.Text +"'");
-                using (DataTableReader dtr = new DataTableReader(dt)) 
+                // Execute the modified query to get all GO items for the given GO
+                DataTable dt = Utility.SearchMasterDB("select [GO Item],[Shop Order],[Shop Order B],[Shop Order T],[Attribute1],[Qty],[Entered Date],[Release Date],[Commit Date],[Customer] from [tblOrderStatus] where [GO]='" + GO.Text + "'");
+                using (DataTableReader dtr = new DataTableReader(dt))
                 {
-                    while (dtr.Read()) 
-                    { 
-                        SOI = dtr[0].ToString();
-                        SOB = dtr[1].ToString();
-                        SOT = dtr[2].ToString();
-                        qty = dtr[3].ToString();
-                        enterDate = string.IsNullOrEmpty(dtr[4].ToString()) ? null : (DateTime?)Convert.ToDateTime(dtr[4].ToString());
-                        releaseDate = string.IsNullOrEmpty(dtr[5].ToString()) ? null : (DateTime?)Convert.ToDateTime(dtr[5].ToString());
-                        commitDate = string.IsNullOrEmpty(dtr[6].ToString()) ? null : (DateTime?)Convert.ToDateTime(dtr[6].ToString());
-                        customer = dtr[7].ToString();
+                    while (dtr.Read())
+                    {
+                        string GOItem = dtr[0].ToString();
+                        string SOI = dtr[1].ToString();
+                        string SOB = dtr[2].ToString();
+                        string SOT = dtr[3].ToString();
+                        string SchedGroup = dtr[4].ToString();
+                        string qty = dtr[5].ToString();
+                        DateTime? enterDate = string.IsNullOrEmpty(dtr[6].ToString()) ? null : (DateTime?)Convert.ToDateTime(dtr[6].ToString());
+                        DateTime? releaseDate = string.IsNullOrEmpty(dtr[7].ToString()) ? null : (DateTime?)Convert.ToDateTime(dtr[7].ToString());
+                        DateTime? commitDate = string.IsNullOrEmpty(dtr[8].ToString()) ? null : (DateTime?)Convert.ToDateTime(dtr[8].ToString());
+                        string customer = dtr[9].ToString();
+
+                        string commandStr = "update [" + ProductTable + "] set [ShopOrderInterior] = ?,[ShopOrderBox] = ?,[ShopOrderTrim] = ?,[SchedulingGroup] = ?,[Quantity] = ?,[EnteredDate] = ?,[ReleaseDate] = ?,[CommitDate] = ?,[Customer] = ? where [GO_Item]='" + GOItem + "'";
+
+                        using (OleDbCommand cmd = new OleDbCommand(commandStr, MainWindow.LPcon))
+                        {
+                            cmd.Parameters.AddWithValue("[ShopOrderInterior]", SOI);
+                            cmd.Parameters.AddWithValue("[ShopOrderBox]", SOB);
+                            cmd.Parameters.AddWithValue("[ShopOrderTrim]", SOT);
+                            cmd.Parameters.AddWithValue("[SchedulingGroup]", SchedGroup);
+                            cmd.Parameters.AddWithValue("[Quantity]", qty);
+                            if (enterDate == null) cmd.Parameters.AddWithValue("[EnteredDate]", DBNull.Value); else cmd.Parameters.AddWithValue("[EnteredDate]", enterDate);
+                            if (releaseDate == null) cmd.Parameters.AddWithValue("[ReleaseDate]", DBNull.Value); else cmd.Parameters.AddWithValue("[ReleaseDate]", releaseDate);
+                            if (commitDate == null) cmd.Parameters.AddWithValue("[CommitDate]", DBNull.Value); else cmd.Parameters.AddWithValue("[CommitDate]", commitDate);
+                            cmd.Parameters.AddWithValue("[Customer]", customer);
+                            cmd.ExecuteNonQuery();
+                        }
                     }
                 }
 
-                string commandStr = "update [" + ProductTable + "] set [ShopOrderInterior] = ?,[ShopOrderBox] = ?,[ShopOrderTrim] = ?,[Quantity] = ?,[EnteredDate] = ?,[ReleaseDate] = ?,[CommitDate] = ?,[Customer] = ? where [GO_Item]='" + GO_Item.Text + "'";
-
-
-                using (OleDbCommand cmd = new OleDbCommand(commandStr, MainWindow.LPcon))
-                {
-                    cmd.Parameters.AddWithValue("[ShopOrderInterior]", SOI);
-                    cmd.Parameters.AddWithValue("[ShopOrderBox]", SOB);
-                    cmd.Parameters.AddWithValue("[ShopOrderTrim]", SOT);
-                    cmd.Parameters.AddWithValue("[Quantity]", qty);
-                    if (enterDate == null) cmd.Parameters.AddWithValue("[EnteredDate]", DBNull.Value); else cmd.Parameters.AddWithValue("[EnteredDate]", enterDate);
-                    if (releaseDate == null) cmd.Parameters.AddWithValue("[ReleaseDate]", DBNull.Value); else cmd.Parameters.AddWithValue("[ReleaseDate]", releaseDate);
-                    if (commitDate == null) cmd.Parameters.AddWithValue("[CommitDate]", DBNull.Value); else cmd.Parameters.AddWithValue("[CommitDate]", commitDate);
-                    cmd.Parameters.AddWithValue("[Customer]", customer);
-                    cmd.ExecuteNonQuery();
-                } //end using command
 
                 MessageBox.Show("Updating Fields From Oracle ... ");
+
 
                 LoadDataForPage();
                 PageData();
