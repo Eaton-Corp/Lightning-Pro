@@ -969,7 +969,7 @@ namespace LightningPRO
                 LoadDataForPage();
                 PageData();
 
-                UpdateStatus(current_ID + " AUTO RETRIEVED DATA");
+                UpdateStatus(current_ID.Substring(0, 10) + " AUTO RETRIEVED DATA");
             }
             catch
             {
