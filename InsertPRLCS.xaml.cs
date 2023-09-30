@@ -1196,7 +1196,7 @@ namespace LightningPRO
                 GO1.Text = row["GO"];
                 GO_Item.Text = row["GO Item"];
                 Item.Text = row["Item"];
-                SchedulingGroup.Text = row["Attribute1"];
+                SchedulingGroup.Text = row["Attribute1"].ToString();
                 ShopOrder.Text = row["Shop Order"].ToString();
                 ShopOrderTrim.Text = row["Shop Order T"].ToString();
                 ShopOrderBox.Text = row["Shop Order B"].ToString();
@@ -1307,7 +1307,7 @@ namespace LightningPRO
                 Utility.SaveBitmapAsPNGinImages(PathIMAGE.Text + "_" + Item.Text + "_" + pgNumStr + ".png", img);
 
 
-                string StrInsertCommand = "Insert into PRLCS ([GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [SchedulingGroup], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], [ThirtyDeepEnclosure], [FilePath], [ProductSpecialist], [PageNumber], [ImageFilePath]) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                string StrInsertCommand = "Insert into PRLCS ([GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [SchedulingGroup], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [NameplateRequired], [NameplateOrdered], [SpecialCustomer], [IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], [ThirtyDeepEnclosure], [FilePath], [ProductSpecialist], [PageNumber], [ImageFilePath]) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 using (OleDbCommand InsertCommand = new OleDbCommand(StrInsertCommand, MainWindow.LPcon))
                 {
                     InsertCommand.Parameters.AddWithValue("GO_Item", GO_Item.Text);
@@ -1333,6 +1333,8 @@ namespace LightningPRO
 
                     //can use checkbox.isChecked option if you cannot do it automatically
                     InsertCommand.Parameters.AddWithValue("[AMO]", AMO.IsChecked);
+                    InsertCommand.Parameters.AddWithValue("[NameplateRequired]", NameplateRequired.IsChecked);
+                    InsertCommand.Parameters.AddWithValue("[NameplateOrdered]", NameplateOrdered.IsChecked);
                     InsertCommand.Parameters.AddWithValue("[SpecialCustomer]", (Boolean)isSpecialCustomer);
                     InsertCommand.Parameters.AddWithValue("[IncLocLeft]", (Boolean)isIncLocLeft);
                     InsertCommand.Parameters.AddWithValue("[IncLocRight]", (Boolean)isIncLocRight);
@@ -1385,7 +1387,7 @@ namespace LightningPRO
                     Utility.SaveBitmapAsPNGinImages(PathIMAGE.Text + "_" + Item.Text + "_" + pgNumStr + ".png", (BitmapImage)image[pageNumber]);
                 }
 
-                string StrInsertCommand = "Insert into PRLCS ([GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [SchedulingGroup], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], [ThirtyDeepEnclosure], [FilePath], [ProductSpecialist], [PageNumber], [ImageFilePath]) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                string StrInsertCommand = "Insert into PRLCS ([GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [SchedulingGroup], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [NameplateRequired], [NameplateOrdered], [SpecialCustomer], [IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], [ThirtyDeepEnclosure], [FilePath], [ProductSpecialist], [PageNumber], [ImageFilePath]) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 using (OleDbCommand InsertCommand = new OleDbCommand(StrInsertCommand, MainWindow.LPcon))
                 {
                     InsertCommand.Parameters.AddWithValue("GO_Item", GO_Item.Text);
@@ -1411,6 +1413,8 @@ namespace LightningPRO
 
                     //can use checkbox.isChecked option if you cannot do it automatically
                     InsertCommand.Parameters.AddWithValue("[AMO]", AMO.IsChecked);
+                    InsertCommand.Parameters.AddWithValue("[NameplateRequired]", NameplateRequired.IsChecked);
+                    InsertCommand.Parameters.AddWithValue("[NameplateOrdered]", NameplateOrdered.IsChecked);
                     InsertCommand.Parameters.AddWithValue("[SpecialCustomer]", (Boolean)isSpecialCustomer);
                     InsertCommand.Parameters.AddWithValue("[IncLocLeft]", (Boolean)isIncLocLeft);
                     InsertCommand.Parameters.AddWithValue("[IncLocRight]", (Boolean)isIncLocRight);
