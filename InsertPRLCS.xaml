@@ -163,11 +163,26 @@
         <Label Content="GO Item XML:" Grid.Row="13" Grid.Column="2" Grid.RowSpan="1"/>
         <Label Content="Item Status:" Grid.Row="14" Grid.Column="2" Grid.RowSpan="1"/>
 
-        <CheckBox x:Name="Approve" Content="Approve" Grid.Row="16" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-        <CheckBox x:Name="AMO" Content="AMO" Grid.Column="1" Grid.Row="16" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-        <CheckBox x:Name="CrossBus" Content="CrossBus" Grid.Column="2" Grid.Row="16" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-        <CheckBox x:Name="ThirtyDeepEnclosure" Content="ThirtyDeepEnclosure" Grid.Column="3" Grid.Row="16" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
+        <Grid Grid.Row="16" Grid.Column="0" Grid.ColumnSpan="4" Grid.RowSpan="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="70"/>
+                <ColumnDefinition Width="55"/>
+                <ColumnDefinition Width="75"/>
+                <ColumnDefinition Width="135"/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <CheckBox x:Name="Approve" Content="Approve" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <CheckBox x:Name="AMO" Content="AMO" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <CheckBox x:Name="CrossBus" Content="CrossBus" Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <CheckBox x:Name="ThirtyDeepEnclosure" Content="ThirtyDeepEnclosure" Grid.Column="3" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <CheckBox x:Name="NameplateRequired" Content="Nameplate Required" Grid.Column="4" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <CheckBox x:Name="NameplateOrdered" Content="Nameplate Ordered" Grid.Column="5" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Grid>
 
         <TextBox x:Name="GO_Item" TextWrapping="Wrap" Grid.Row="3" Grid.Column="1" Width="160" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.RowSpan="1"/>
         <TextBox x:Name="GO1" TextWrapping="Wrap" Grid.Row="4" Grid.Column="1" Width="160" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.RowSpan="1"/>
