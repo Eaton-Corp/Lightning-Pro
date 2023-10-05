@@ -920,10 +920,10 @@ namespace LightningPRO
         {
             try
             {
-                string SOI = "";
-                string SOB = "";
-                string SOT = "";
-                string qty = "";
+                // Execute the modified query to get all GO items for the given GO
+                DataTable dt = Utility.SearchMasterDB("select [GO Item],[Shop Order],[Shop Order B],[Shop Order T],[Attribute1],[Qty],[Entered Date],[Release Date],[Commit Date],[Customer] from [tblOrderStatus] where [GO]='" + GO.Text + "'");
+                using (DataTableReader dtr = new DataTableReader(dt))
+                {
                     while (dtr.Read())
                     {
                         string GOItem = dtr[0].ToString();
@@ -936,9 +936,9 @@ namespace LightningPRO
                         DateTime? releaseDate = string.IsNullOrEmpty(dtr[7].ToString()) ? null : (DateTime?)Convert.ToDateTime(dtr[7].ToString());
                         DateTime? commitDate = string.IsNullOrEmpty(dtr[8].ToString()) ? null : (DateTime?)Convert.ToDateTime(dtr[8].ToString());
                         string customer = dtr[9].ToString();
-                        releaseDate = string.IsNullOrEmpty(dtr[5].ToString()) ? null : (DateTime?)Convert.ToDateTime(dtr[5].ToString());
+
                         string commandStr = "update [" + ProductTable + "] set [ShopOrderInterior] = ?,[ShopOrderBox] = ?,[ShopOrderTrim] = ?,[SchedulingGroup] = ?,[Quantity] = ?,[EnteredDate] = ?,[ReleaseDate] = ?,[CommitDate] = ?,[Customer] = ? where [GO_Item]='" + GOItem + "'";
-                        commitDate = string.IsNullOrEmpty(dtr[6].ToString()) ? null : (DateTime?)Convert.ToDateTime(dtr[6].ToString());
+
                         using (OleDbCommand cmd = new OleDbCommand(commandStr, MainWindow.LPcon))
                         {
                             cmd.Parameters.AddWithValue("[ShopOrderInterior]", SOI);
@@ -955,13 +955,6 @@ namespace LightningPRO
                     }
                 }
 
-                    cmd.Parameters.AddWithValue("[Quantity]", qty);
-                    if (enterDate == null) cmd.Parameters.AddWithValue("[EnteredDate]", DBNull.Value); else cmd.Parameters.AddWithValue("[EnteredDate]", enterDate);
-                    if (releaseDate == null) cmd.Parameters.AddWithValue("[ReleaseDate]", DBNull.Value); else cmd.Parameters.AddWithValue("[ReleaseDate]", releaseDate);
-                    if (commitDate == null) cmd.Parameters.AddWithValue("[CommitDate]", DBNull.Value); else cmd.Parameters.AddWithValue("[CommitDate]", commitDate);
-                    cmd.Parameters.AddWithValue("[Customer]", customer);
-                    cmd.ExecuteNonQuery();
-                } //end using command
 
                 MessageBox.Show("Updating Fields From Oracle ... ");
 
@@ -977,6 +970,7 @@ namespace LightningPRO
                 MessageBox.Show("An Error Occurred Trying To AutoRetrieveData");
             }
         }
+
 
         private void Notes_Click(object sender, RoutedEventArgs e)
         {
