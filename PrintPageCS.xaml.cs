@@ -30,15 +30,15 @@ namespace LightningPRO
     public partial class PrintPageCS : Window
     {
         System.Windows.Controls.Image im;
-        
-        PrintDialog accessPrintDialog;
 
-        string customer;
+        readonly PrintDialog accessPrintDialog;
+
+        readonly string customer;
 
 
         //constructor for a single line item
 
-        string GOI;
+        readonly string GOI;
 
         public PrintPageCS(string GO_Item, string client)
         {
@@ -60,7 +60,7 @@ namespace LightningPRO
 
         //constructor to print multiple line items
 
-        List<string> All_GOs;
+        readonly List<string> All_GOs;
 
         public PrintPageCS(List<string> GOs, string client)
         {
@@ -254,23 +254,25 @@ namespace LightningPRO
                 RenderTargetBitmap renderBmap = new RenderTargetBitmap(img.PixelWidth * 8, img.PixelHeight * 8, 768, 768, PixelFormats.Pbgra32);
                 renderBmap.Render(drawingVisual);
 
-                im = new System.Windows.Controls.Image();
-                im.Source = renderBmap;
-                im.Width = img.Width - 20;
-                im.Height = img.Height;
-                im.HorizontalAlignment = HorizontalAlignment.Left;
-                im.VerticalAlignment = VerticalAlignment.Top;
+                im = new System.Windows.Controls.Image
+                {
+                    Source = renderBmap,
+                    Width = img.Width - 20,
+                    Height = img.Height,
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    VerticalAlignment = VerticalAlignment.Top
+                };
 
 
                 accessPrintDialog.PrintTicket.PageOrientation = PageOrientation.Landscape;
                 accessPrintDialog.PrintVisual(im, "Image Print");
 
-                updateExcelDoc(GONumber[i], ItemNumber[i], Enclosure[i], sDate);
+                UpdateExcelDoc(GONumber[i], ItemNumber[i], Enclosure[i], sDate);
             }
         }
 
 
-        private void updateExcelDoc(string GO, string item, string enclosure, string date) 
+        private void UpdateExcelDoc(string GO, string item, string enclosure, string date) 
         {
             string command = "insert into [CSANamePlateRecord259P075H01] ([Job Number], [GO Number], [SWBD Type], [Enclosure Type], [Customer], [Print Date]) values (?, ?, ?, ?, ?, ?)";
             using (OleDbCommand InsertCSA = new OleDbCommand(command, MainWindow.LPcon))

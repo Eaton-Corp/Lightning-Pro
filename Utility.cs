@@ -1161,7 +1161,7 @@ namespace LightningPRO
 
 
 
-        // The following is used to access the ReplacementParts table
+        // The following is used to access the ReplacementParts table - 1-1 mapping only
         public static string ReplacePart(string part)
         {
             string replacement = part;
@@ -1185,6 +1185,39 @@ namespace LightningPRO
             }
             return replacement;
         }
+
+
+
+        // The following is used to access the ReplacementParts table - with the possibility of mapping 1-1 or 1-Many
+        public static List<string> ReplacementParts(string part)
+        {
+            List<string> ReplacementPartsList = new List<string>();
+            try
+            {
+                string query = "select [Replace] from [ReplacementParts] where [Find]='" + part + "'";
+                using (DataTableReader dtr = LoadData(query))
+                {
+                    if (dtr.HasRows == false)
+                    {
+                        ReplacementPartsList.Add(part);
+                        return ReplacementPartsList;
+                    }
+                    while (dtr.Read())
+                    {
+                        if (dtr[0] != null)             //there is a replacement available
+                        {
+                            ReplacementPartsList.Add(dtr[0].ToString());    
+                        }
+                    }
+                } //end using reader
+            }
+            catch
+            {
+                MessageBox.Show("Unable To Execute ReplacementParts");
+            }
+            return ReplacementPartsList;
+        }
+
 
 
 

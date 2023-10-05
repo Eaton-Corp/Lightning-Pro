@@ -68,7 +68,7 @@ namespace LightningPRO.Views
             string query = "";
             if (Current_Tab == "Search")
             {
-                search();
+                Search();
                 return;
             }
             else
@@ -210,7 +210,7 @@ namespace LightningPRO.Views
             }
         }
 
-        private void updateStatus(string command)
+        private void UpdateStatus(string command)
         {
             Status.Content = command;
             Status.Foreground = Brushes.Green;
@@ -319,7 +319,7 @@ namespace LightningPRO.Views
                 dynamic row = gd.SelectedItem;
                 Selected = row["ID"];
                 SelectedGO = row["GO_Item"];
-                updateStatus(SelectedGO + " SELECTED");
+                UpdateStatus(SelectedGO + " SELECTED");
             }
         }
 
@@ -337,7 +337,7 @@ namespace LightningPRO.Views
                             Utility.ExecuteNonQueryLP(query);
                         }
                         LoadGrid();
-                        updateStatus("MULTIPLE SUCCESSFULLY APPROVED");
+                        UpdateStatus("MULTIPLE SUCCESSFULLY APPROVED");
                     }
                     else
                     {
@@ -345,7 +345,7 @@ namespace LightningPRO.Views
                         Utility.ExecuteNonQueryLP(query);
 
                         LoadGrid();
-                        updateStatus(SelectedGO + " SUCCESSFULLY APPROVED");
+                        UpdateStatus(SelectedGO + " SUCCESSFULLY APPROVED");
                     }
                 }
                 else
@@ -358,7 +358,7 @@ namespace LightningPRO.Views
                             Utility.ExecuteNonQueryLP(query);
                         }
                         LoadGrid();
-                        updateStatus("MULTIPLE SUCCESSFULLY APPROVED");
+                        UpdateStatus("MULTIPLE SUCCESSFULLY APPROVED");
                     }
                     else
                     {
@@ -366,7 +366,7 @@ namespace LightningPRO.Views
                         Utility.ExecuteNonQueryLP(query);
 
                         LoadGrid();
-                        updateStatus(SelectedGO + " SUCCESSFULLY APPROVED");
+                        UpdateStatus(SelectedGO + " SUCCESSFULLY APPROVED");
                     }
                 }
             }
@@ -387,7 +387,7 @@ namespace LightningPRO.Views
                             Utility.ExecuteNonQueryLP(query);
                         }
                         LoadGrid();
-                        updateStatus("MULTIPLE SUCCESSFULLY RECALLED");
+                        UpdateStatus("MULTIPLE SUCCESSFULLY RECALLED");
                     }
                     else
                     {
@@ -395,7 +395,7 @@ namespace LightningPRO.Views
                         Utility.ExecuteNonQueryLP(query);
 
                         LoadGrid();
-                        updateStatus(SelectedGO + " RECALLED");
+                        UpdateStatus(SelectedGO + " RECALLED");
                     }
                 }
                 else
@@ -408,7 +408,7 @@ namespace LightningPRO.Views
                             Utility.ExecuteNonQueryLP(query);
                         }
                         LoadGrid();
-                        updateStatus("MULTIPLE SUCCESSFULLY RECALLED");
+                        UpdateStatus("MULTIPLE SUCCESSFULLY RECALLED");
                     }
                     else
                     {
@@ -416,7 +416,7 @@ namespace LightningPRO.Views
                         Utility.ExecuteNonQueryLP(query);
 
                         LoadGrid();
-                        updateStatus(SelectedGO + " RECALLED");
+                        UpdateStatus(SelectedGO + " RECALLED");
                     }
                 }
             }
@@ -435,7 +435,7 @@ namespace LightningPRO.Views
                     Utility.DeleteCSAValues(SelectedGO, CurrentProduct);
 
                     LoadGrid();
-                    updateStatus(SelectedGO + " SUCCESSFULLY DELETED");
+                    UpdateStatus(SelectedGO + " SUCCESSFULLY DELETED");
                 }
             }
         }
@@ -443,22 +443,22 @@ namespace LightningPRO.Views
                     
         private void Search_Click(object sender, RoutedEventArgs e)
         {
-            search();
+            Search();
         }
 
         private void KeyDownClick(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
-                search();
+                Search();
             }
         }
 
-        private void search()
+        private void Search()
         {
             Current_Tab = "Search";
             DataTable dt;
-            string query = Utility.SearchQueryGenerator(CurrentProduct, Field.Text, Search.Text);
+            string query = Utility.SearchQueryGenerator(CurrentProduct, Field.Text, SearchBox.Text);
             dt = Utility.SearchLP(query);
             dg.ItemsSource = dt.DefaultView;
             HideFullNotesColoumn();
@@ -476,11 +476,11 @@ namespace LightningPRO.Views
 
                     if (check == 1)
                     {
-                        updateStatus(SelectedGO + " PAGE ADDED");
+                        UpdateStatus(SelectedGO + " PAGE ADDED");
                     }
                     else if (check == -2)
                     {
-                        updateStatus(SelectedGO + " PAGE ADD ERROR");
+                        UpdateStatus(SelectedGO + " PAGE ADD ERROR");
                     }
                 }
                 else 
@@ -500,11 +500,11 @@ namespace LightningPRO.Views
 
                 if (check == 1) 
                 {
-                    updateStatus(SelectedGO + " CONSTR ADDED");
+                    UpdateStatus(SelectedGO + " CONSTR ADDED");
                 }
                 else if (check == -2)
                 {
-                    updateStatus(SelectedGO + " CONSTR ERROR");
+                    UpdateStatus(SelectedGO + " CONSTR ERROR");
                 }
             }
         }
@@ -518,11 +518,11 @@ namespace LightningPRO.Views
 
                 if (check == 1)
                 {
-                    updateStatus(SelectedGO + " BLT ADDED");
+                    UpdateStatus(SelectedGO + " BLT ADDED");
                 }
                 else if (check == -2)
                 {
-                    updateStatus(SelectedGO + " BLT ERROR");
+                    UpdateStatus(SelectedGO + " BLT ERROR");
                 }
             }
         }

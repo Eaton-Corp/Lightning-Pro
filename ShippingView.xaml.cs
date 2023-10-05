@@ -27,7 +27,7 @@ namespace LightningPRO
     /// </summary>
     public partial class ShippingView : Window
     {
-        string GO_Item;
+        readonly string GO_Item;
 
         string[] GOs;
         string[] ShopOrderBoxArr;
@@ -66,7 +66,7 @@ namespace LightningPRO
 
         }
 
-        private void getGOs(string query)
+        private void GetGOs(string query)
         {
             DataTableReader rd = Utility.LoadData(query);
             DataTableReader rb = Utility.LoadData(query);

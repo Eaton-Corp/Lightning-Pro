@@ -19,8 +19,8 @@ namespace LightningPRO
     /// </summary>
     public partial class NotesWindow : Window
     {
-        string ProductTable;
-        System.Windows.Controls.Button btnNotes;
+        readonly string ProductTable;
+        readonly System.Windows.Controls.Button btnNotes;
 
         public NotesWindow(string GOI, string productTBL, System.Windows.Controls.Button NotesButton)
         {

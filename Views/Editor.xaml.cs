@@ -25,7 +25,7 @@ namespace LightningPRO.Views
         public Editor()
         {
             InitializeComponent();
-            orderedChildren = new List<childDrawing>();
+            orderedChildren = new List<ChildDrawing>();
             childrenCounter = 0;
         }
 
@@ -46,13 +46,13 @@ namespace LightningPRO.Views
         ColourSelected CurrentColour = ColourSelected.Red;
 
 
-        public class childDrawing
+        public class ChildDrawing
         {
             public int Index { get; set; }
             public int Length { get; set; }
         }
 
-        List<childDrawing> orderedChildren;
+        readonly List<ChildDrawing> orderedChildren;
         int childrenCounter;
 
        
@@ -95,32 +95,36 @@ namespace LightningPRO.Views
                 int rectIndex = Drawing.Children.Add(rect);
                 int rectRange = 1;
 
-                orderedChildren.Insert(0, new childDrawing() { Index = rectIndex, Length = rectRange });
+                orderedChildren.Insert(0, new ChildDrawing() { Index = rectIndex, Length = rectRange });
                 childrenCounter++;
             }
             else if(CurrItem == Item.Text)
             {
-                TextBox box = new TextBox();
-                box.HorizontalAlignment = HorizontalAlignment.Left;
-                box.VerticalAlignment = VerticalAlignment.Top;
+                TextBox box = new TextBox
+                {
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    VerticalAlignment = VerticalAlignment.Top
+                };
                 Thickness margin = new Thickness(e.GetPosition(Drawing).X, e.GetPosition(Drawing).Y, 0, 0);
                 box.Margin = margin;
                 
                 int textIndex = Drawing.Children.Add(box);
                 int textRange = 1;
 
-                orderedChildren.Insert(0, new childDrawing() { Index = textIndex, Length = textRange });
+                orderedChildren.Insert(0, new ChildDrawing() { Index = textIndex, Length = textRange });
                 childrenCounter++;
             }
             else if (CurrItem == Item.Check)
             {
-                TextBlock textBlock = new TextBlock();
-                textBlock.Text = "✔";                
-                textBlock.HorizontalAlignment = HorizontalAlignment.Left;
-                textBlock.VerticalAlignment = VerticalAlignment.Top;
-                textBlock.Height = 22;
-                textBlock.Width = 28;
-                textBlock.FontSize = 20;
+                TextBlock textBlock = new TextBlock
+                {
+                    Text = "✔",
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    VerticalAlignment = VerticalAlignment.Top,
+                    Height = 22,
+                    Width = 28,
+                    FontSize = 20
+                };
 
                 if (CurrentColour == ColourSelected.Red)
                 {
@@ -145,16 +149,18 @@ namespace LightningPRO.Views
                 int checkIndex = Drawing.Children.Add(textBlock);
                 int checkRange = 1;
 
-                orderedChildren.Insert(0, new childDrawing() { Index = checkIndex, Length = checkRange });
+                orderedChildren.Insert(0, new ChildDrawing() { Index = checkIndex, Length = checkRange });
                 childrenCounter++;
             }
             else if (CurrItem == Item.Cross)
             {
-                TextBlock textBlock = new TextBlock();
-                textBlock.Text = "❌";
-                textBlock.HorizontalAlignment = HorizontalAlignment.Left;
-                textBlock.VerticalAlignment = VerticalAlignment.Top;
-                textBlock.FontSize = 14;
+                TextBlock textBlock = new TextBlock
+                {
+                    Text = "❌",
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    VerticalAlignment = VerticalAlignment.Top,
+                    FontSize = 14
+                };
 
                 if (CurrentColour == ColourSelected.Green)
                 {
@@ -179,17 +185,19 @@ namespace LightningPRO.Views
                 int crossIndex = Drawing.Children.Add(textBlock);
                 int crossRange = 1;
 
-                orderedChildren.Insert(0, new childDrawing() { Index = crossIndex, Length = crossRange });
+                orderedChildren.Insert(0, new ChildDrawing() { Index = crossIndex, Length = crossRange });
                 childrenCounter++;
             }
             else if (CurrItem == Item.Short)
             {
-                TextBlock textBlock = new TextBlock();
-                textBlock.Text = "SHORT";
-                textBlock.HorizontalAlignment = HorizontalAlignment.Left;
-                textBlock.VerticalAlignment = VerticalAlignment.Top;
-                textBlock.FontWeight = FontWeights.Bold;
-                textBlock.FontSize = 20;
+                TextBlock textBlock = new TextBlock
+                {
+                    Text = "SHORT",
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    VerticalAlignment = VerticalAlignment.Top,
+                    FontWeight = FontWeights.Bold,
+                    FontSize = 20
+                };
 
                 if (CurrentColour == ColourSelected.Green)
                 {
@@ -214,7 +222,7 @@ namespace LightningPRO.Views
                 int shortageIndex = Drawing.Children.Add(textBlock);
                 int shortageRange = 1;
 
-                orderedChildren.Insert(0, new childDrawing() { Index = shortageIndex, Length = shortageRange });
+                orderedChildren.Insert(0, new ChildDrawing() { Index = shortageIndex, Length = shortageRange });
                 childrenCounter++;
             }
 
@@ -312,7 +320,7 @@ namespace LightningPRO.Views
             {
                 if (lineIndexCounter != 0)
                 {
-                    orderedChildren.Insert(0, new childDrawing() { Index = lineIndex, Length = lineIndexCounter });
+                    orderedChildren.Insert(0, new ChildDrawing() { Index = lineIndex, Length = lineIndexCounter });
                     childrenCounter++;
                 }
             }
@@ -321,7 +329,7 @@ namespace LightningPRO.Views
 
 
         //sets the image Back source to inputed BitmapImage
-        public void loadImage(BitmapImage img) 
+        public void LoadImage(BitmapImage img) 
         {
             border.Reset();
 
@@ -347,7 +355,7 @@ namespace LightningPRO.Views
             Back.Source = img;
         }
 
-        public BitmapImage save()
+        public BitmapImage Save()
         {
             DrawingVisual drawingVisual = new DrawingVisual();
             DrawingContext drawingContext = drawingVisual.RenderOpen();
@@ -371,7 +379,7 @@ namespace LightningPRO.Views
 
 
         //used as a check as to not unnecessarily save images
-        public Boolean hasDrawings() 
+        public Boolean HasDrawings() 
         {
             if (childrenCounter > 0)
             {
@@ -503,8 +511,8 @@ namespace LightningPRO.Views
             {
                 CurrItem = Item.Pan;
                 border.CanMove = true;
-                border.zoomIn(ZoomAmount.Value / 100.0 - 0.5, new Point(border.ActualWidth / 2, border.ActualHeight / 2));
-                ZoomAmount.Value = ZoomAmount.Value - 50;
+                border.ZoomIn(ZoomAmount.Value / 100.0 - 0.5, new Point(border.ActualWidth / 2, border.ActualHeight / 2));
+                ZoomAmount.Value -= 50;
                 percentage.Content = ((int)ZoomAmount.Value).ToString() + " %";
             }
         }
@@ -513,8 +521,8 @@ namespace LightningPRO.Views
         {
             CurrItem = Item.Pan;
             border.CanMove = true;
-            border.zoomIn(ZoomAmount.Value / 100.0 + 0.5, new Point(border.ActualWidth / 2, border.ActualHeight / 2));
-            ZoomAmount.Value = ZoomAmount.Value + 50;
+            border.ZoomIn(ZoomAmount.Value / 100.0 + 0.5, new Point(border.ActualWidth / 2, border.ActualHeight / 2));
+            ZoomAmount.Value += 50;
             percentage.Content = ((int)ZoomAmount.Value).ToString() + " %";
         }
 
@@ -522,7 +530,7 @@ namespace LightningPRO.Views
         {
             CurrItem = Item.Pan;
             border.CanMove = true;
-            border.zoomIn(ZoomAmount.Value/100.0, new Point(border.ActualWidth/2,border.ActualHeight/2));
+            border.ZoomIn(ZoomAmount.Value/100.0, new Point(border.ActualWidth/2,border.ActualHeight/2));
             percentage.Content = ((int)ZoomAmount.Value).ToString() + " %";
         }
 

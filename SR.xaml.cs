@@ -14,11 +14,11 @@ namespace LightningPRO
     /// </summary>
     public partial class SR : Window
     {
-        int Id;
+        readonly int Id;
         string CommitDate = "";
         string ProductSpecialist = "";
-        Utility.ProductGroup CurrentProduct;
-        string ProductTable;
+        readonly Utility.ProductGroup CurrentProduct;
+        readonly string ProductTable;
 
         public SR(int ID, Utility.ProductGroup Product, string ProdTable)
         {
@@ -34,7 +34,7 @@ namespace LightningPRO
             BitmapImage img = new BitmapImage(image);
 
             string GO = Utility.IDtoGO(Id, ProductTable);
-            getCommitAndSpecialist();
+            GetCommitAndSpecialist();
 
             DrawingVisual drawingVisual = new DrawingVisual();
             DrawingContext drawingContext = drawingVisual.RenderOpen();
@@ -65,11 +65,11 @@ namespace LightningPRO
 
             if(CurrentProduct == Utility.ProductGroup.PRL123)
             {
-                getGOs("select [GO_Item] from [PRL123] where [GO]='" + GO + "' and Tracking='Production'", drawingContext);
+                GetGOs("select [GO_Item] from [PRL123] where [GO]='" + GO + "' and Tracking='Production'", drawingContext);
             }
             else
             {
-                getGOs("select [GO_Item] from [" + ProductTable + "] where [GO]='" + GO + "' and Tracking='Production' and [PageNumber]=0", drawingContext);
+                GetGOs("select [GO_Item] from [" + ProductTable + "] where [GO]='" + GO + "' and Tracking='Production' and [PageNumber]=0", drawingContext);
             }
 
             drawingContext.Close();
@@ -82,7 +82,7 @@ namespace LightningPRO
 
 
       
-        private void getCommitAndSpecialist()
+        private void GetCommitAndSpecialist()
         {
             string query = "select [CommitDate], [ProductSpecialist] from [" + ProductTable + "] where [ID]=" + Id.ToString();
             using (DataTableReader dtr = Utility.LoadData(query))
@@ -101,7 +101,7 @@ namespace LightningPRO
             return new FormattedText(input, CultureInfo.GetCultureInfo("en-us"), FlowDirection.LeftToRight, new Typeface("Verdana"), 36, System.Windows.Media.Brushes.Black, VisualTreeHelper.GetDpi(this).PixelsPerDip);
         }
 
-        private void getGOs(string query, DrawingContext drawingContext)
+        private void GetGOs(string query, DrawingContext drawingContext)
         {
             int y = 280;
 

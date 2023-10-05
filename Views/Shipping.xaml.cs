@@ -83,7 +83,7 @@ namespace LightningPRO.Views
                     page = 0;
                     if (CurrentProduct == Utility.ProductGroup.PRL123)
                     {
-                        getGOs("select [GO_Item], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Quantity], [Urgency], [BoxEarly] from [PRL123] where [GO]='" + Scan.Text.Substring(0, 10) + "' order by [GO_Item]");
+                        GetGOs("select [GO_Item], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Quantity], [Urgency], [BoxEarly] from [PRL123] where [GO]='" + Scan.Text.Substring(0, 10) + "' order by [GO_Item]");
                     }
                     else if(CurrentProduct == Utility.ProductGroup.PRL4)
                     {
@@ -91,22 +91,22 @@ namespace LightningPRO.Views
                     }
                     else
                     {
-                        getGOs("select [GO_Item], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Quantity], [Urgency] from [" + ProductTable + "] where [GO]='" + Scan.Text.Substring(0, 10) + "' and [PageNumber] = 0 order by [GO_Item]");
+                        GetGOs("select [GO_Item], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Quantity], [Urgency] from [" + ProductTable + "] where [GO]='" + Scan.Text.Substring(0, 10) + "' and [PageNumber] = 0 order by [GO_Item]");
                     }
                     if (SuccessPull == false)
                     {
-                        updateStatus(Scan.Text + " ENTRY NOT FOUND");
+                        UpdateStatus(Scan.Text + " ENTRY NOT FOUND");
                     }
                     else
                     {
                         InfoLoaded = true;
                         InsertData();
-                        updateStatus(Scan.Text + " SCANNED SUCCESSFULLY");
+                        UpdateStatus(Scan.Text + " SCANNED SUCCESSFULLY");
                     }
                 }
                 else
                 {
-                    updateStatus("INVALID SCAN");
+                    UpdateStatus("INVALID SCAN");
                 }
             }
             catch
@@ -120,7 +120,7 @@ namespace LightningPRO.Views
         }
 
 
-        private void getGOs(string query)
+        private void GetGOs(string query)
         {
             DataTableReader rd = Utility.LoadData(query);
             DataTableReader rb = Utility.LoadData(query);
@@ -179,8 +179,8 @@ namespace LightningPRO.Views
         private void InsertData() 
         {
             GOI.Text = GOItemsArr[page];
-            setQRs();
-            setUrgency();
+            SetQRs();
+            SetUrgency();
 
             pg.Content = "Page: " + (page + 1).ToString() + "/" + GOItemsArr.Length.ToString();
         }
@@ -359,7 +359,7 @@ namespace LightningPRO.Views
         
  
 
-        private void updateStatus(string command)
+        private void UpdateStatus(string command)
         {
             Status.Content = command;
             Status.Foreground = System.Windows.Media.Brushes.Green;
@@ -436,7 +436,7 @@ namespace LightningPRO.Views
 
 
 
-        private void setUrgency()
+        private void SetUrgency()
         {
             if (UrgencyArr[page] == "UP")
             {
@@ -461,7 +461,7 @@ namespace LightningPRO.Views
         }
 
 
-        private void setQRs()
+        private void SetQRs()
         {
             if ((BoxEarly[page] == false) && (string.IsNullOrEmpty(ShopOrderBox[page]) == false))
             {
@@ -677,10 +677,10 @@ namespace LightningPRO.Views
                     try
                     {
                         SetupDirectoriesDate();
-                        getDataFromLPDB();
-                        getCSAinfo();
+                        GetDataFromLPDB();
+                        GetCSAinfo();
 
-                        cleanUpDirectories();
+                        CleanUpDirectories();
                         Ship();
 
                         ReLoadPage();
@@ -688,7 +688,7 @@ namespace LightningPRO.Views
                     catch
                     {
                         MessageBox.Show("Unable To Ship The Line Item\nPlease Try Again");
-                        updateStatus(GOI.Text + " SHIPPING ERROR");
+                        UpdateStatus(GOI.Text + " SHIPPING ERROR");
                     }
                 }
             }
@@ -705,7 +705,7 @@ namespace LightningPRO.Views
 
         
 
-        private void getDataFromLPDB()
+        private void GetDataFromLPDB()
         {
             //base query for all similar fields 
             string query = "select [GO_Item], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Urgency], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Catalogue], [ProductSpecialist], [SpecialCustomer], [AMO], [PaintedBox], [DNSB], [Complete], [Short], [Notes], ";
@@ -794,7 +794,7 @@ namespace LightningPRO.Views
 
 
 
-        private void getCSAinfo()
+        private void GetCSAinfo()
         {
             DataTableReader values = Utility.GetCSAValues(GOI.Text, CurrentProduct);
             using (values)
@@ -838,7 +838,7 @@ namespace LightningPRO.Views
 
 
 
-        private void cleanUpDirectories()
+        private void CleanUpDirectories()
         {
             var pdfDir = new DirectoryInfo(pdfDirectory);
 
@@ -846,15 +846,15 @@ namespace LightningPRO.Views
             string txtPath = pdfDirectory + @"\Z_FinalShippedDocuments\QualityInfo_" + GOI.Text + ".txt";
             if (CurrentProduct == Utility.ProductGroup.PRL123)
             {
-                writeQualityInfoTXTprl123(txtPath);
+                WriteQualityInfoTXTprl123(txtPath);
             }
             else if (CurrentProduct == Utility.ProductGroup.PRL4)
             {
-                writeQualityInfoTXTprl4(txtPath);
+                WriteQualityInfoTXTprl4(txtPath);
             }
             else if (CurrentProduct == Utility.ProductGroup.PRLCS)
             {
-                writeQualityInfoTXTprlCS(txtPath);
+                WriteQualityInfoTXTprlCS(txtPath);
             }
 
 
@@ -901,7 +901,7 @@ namespace LightningPRO.Views
         }
 
 
-        private void writeQualityInfoTXTprl123(string documentPath)
+        private void WriteQualityInfoTXTprl123(string documentPath)
         {
             //PRL123
             string[] lines = {"QUALITY INFORMATION REPORT"," ", "Go Item: " + GO_Item, "Product ID: " + ProductID, "Shop Order Interior: " + interior,
@@ -917,7 +917,7 @@ namespace LightningPRO.Views
             Utility.WriteLinesToTXT(lines, documentPath);
         }
 
-        private void writeQualityInfoTXTprl4(string documentPath)
+        private void WriteQualityInfoTXTprl4(string documentPath)
         {
             //PRL4
             string[] lines = {"QUALITY INFORMATION REPORT"," ", "Go Item: " + GO_Item, "Product ID: " + ProductID, "Shop Order Interior: " + interior,
@@ -933,7 +933,7 @@ namespace LightningPRO.Views
             Utility.WriteLinesToTXT(lines, documentPath);
         }
 
-        private void writeQualityInfoTXTprlCS(string documentPath)
+        private void WriteQualityInfoTXTprlCS(string documentPath)
         {
             //PRLCS
             string[] lines = {"QUALITY INFORMATION REPORT"," ", "Go Item: " + GO_Item, "Product ID: " + ProductID, "Shop Order Interior: " + interior,
@@ -957,7 +957,7 @@ namespace LightningPRO.Views
             Utility.ExecuteNonQueryLP(command);
             Utility.DeleteCSAValues(GOI.Text, CurrentProduct);
             LoadGrid(null);
-            updateStatus(GOI.Text + " SUCCESSFULLY SHIPPED");
+            UpdateStatus(GOI.Text + " SUCCESSFULLY SHIPPED");
         }
 
 
@@ -967,7 +967,7 @@ namespace LightningPRO.Views
             page = 0;
             if (CurrentProduct == Utility.ProductGroup.PRL123)
             {
-                getGOs("select [GO_Item], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Quantity], [Urgency], [BoxEarly] from [PRL123] where [GO]='" + GOI.Text.Substring(0, 10) + "' order by [GO_Item]");
+                GetGOs("select [GO_Item], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Quantity], [Urgency], [BoxEarly] from [PRL123] where [GO]='" + GOI.Text.Substring(0, 10) + "' order by [GO_Item]");
             }
             else if (CurrentProduct == Utility.ProductGroup.PRL4)
             {
@@ -975,7 +975,7 @@ namespace LightningPRO.Views
             }
             else
             {
-                getGOs("select [GO_Item], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Quantity], [Urgency] from [" + ProductTable + "] where [GO]='" + GOI.Text.Substring(0, 10) + "' and [PageNumber] = 0 order by [GO_Item]");
+                GetGOs("select [GO_Item], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Quantity], [Urgency] from [" + ProductTable + "] where [GO]='" + GOI.Text.Substring(0, 10) + "' and [PageNumber] = 0 order by [GO_Item]");
             }
 
             if (SuccessPull == true)

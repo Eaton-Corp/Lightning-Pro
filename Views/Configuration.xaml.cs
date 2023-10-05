@@ -47,14 +47,16 @@ namespace LightningPRO.Views
         public Configuration()
         {
             InitializeComponent();
-            populateLabels();
+            PopulateLabels();
             Status.Visibility = Visibility.Hidden;
         }
 
-        private void upload_txtClicked(object sender, RoutedEventArgs e)
+        private void Upload_txtClicked(object sender, RoutedEventArgs e)
         {
-            Microsoft.Win32.OpenFileDialog ofg = new Microsoft.Win32.OpenFileDialog();
-            ofg.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+            Microsoft.Win32.OpenFileDialog ofg = new Microsoft.Win32.OpenFileDialog
+            {
+                Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*"
+            };
             bool? response = ofg.ShowDialog();
 
             if (response == true)           //if the user selects a file and clicks OK
@@ -89,7 +91,7 @@ namespace LightningPRO.Views
         }
 
       
-        private void populateLabels() 
+        private void PopulateLabels() 
         {
             Location.Content = ConfigurationManager.ConnectionStrings["Location"].ToString();
             MasterDB.Text = ConfigurationManager.ConnectionStrings["MasterDB"].ToString();
