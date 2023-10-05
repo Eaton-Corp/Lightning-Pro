@@ -1086,7 +1086,7 @@ namespace LightningPRO
             GO1.Text = row["GO"];
             GO_Item.Text = row["GO Item"];
             Item.Text = row["Item"];
-            Suffix.Text = row["Suffix"];
+            SchedulingGroup.Text = row["Suffix"];
             ShopOrder.Text = row["Shop Order"].ToString();
             ShopOrderTrim.Text = row["Shop Order T"].ToString();
             ShopOrderBox.Text = row["Shop Order B"].ToString();
@@ -1166,6 +1166,7 @@ namespace LightningPRO
                     }
                     InsertTestReport(amountOfPages);
                 }
+                return true;
             }
             else 
             {

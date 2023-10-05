@@ -273,13 +273,10 @@
     </Compile>
     <Compile Include="Views\ZoomBorder.cs" />
     <Page Include="AMOList.xaml">
-<<<<<<< HEAD:LightningPRO.csproj
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CSArecords.xaml">
-=======
->>>>>>> 29921f4 (everything but insert):PRL123_Final.csproj
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -520,12 +517,9 @@
     <Resource Include="Assets\bolt %281%29.ico" />
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD:LightningPRO.csproj
-=======
     <Resource Include="Assets\bolt.png" />
   </ItemGroup>
   <ItemGroup>
->>>>>>> 29921f4 (everything but insert):PRL123_Final.csproj
     <Resource Include="Assets\WorldMap.png" />
   </ItemGroup>
   <ItemGroup>
