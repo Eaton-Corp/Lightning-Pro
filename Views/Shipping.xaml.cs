@@ -198,19 +198,20 @@ namespace PRL123_Final.Views
             {
                 if (CurrentProduct == Utility.ProductGroup.PRL123)
                 {
-                    query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [BoxEarly], [Box Sent], [SpecialCustomer], [ServiceEntrance], [DoubleSection], [PaintedBox], [RatedNeutral200], [DNSB], [Complete], [Short], [LabelsPrinted] from [PRL123] where [Tracking]='Shipping'";
+                    query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [BoxEarly], [Box Sent], [SpecialCustomer], [ServiceEntrance], [DoubleSection], [PaintedBox], [RatedNeutral200], [DNSB], [Complete], [Short], [LabelsPrinted], [Notes] from [PRL123] where [Tracking]='Shipping'";
                 }
                 else if (CurrentProduct == Utility.ProductGroup.PRL4)
                 {
-                    query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], [DNSB], [Complete], [Short], [LabelsPrinted], [BoxEarly], [BoxSent] from [PRL4] where [Tracking]='Shipping' and [PageNumber] = 0";
+                    query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], [DNSB], [Complete], [Short], [LabelsPrinted], [BoxEarly], [BoxSent], [Notes] from [PRL4] where [Tracking]='Shipping' and [PageNumber] = 0";
                 }
                 else if (CurrentProduct == Utility.ProductGroup.PRLCS)
                 {
-                    query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], [ThirtyDeepEnclosure], [DNSB], [Complete], [Short], [LabelsPrinted] from [PRLCS] where [Tracking]='Shipping' and [PageNumber] = 0";
+                    query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], [ThirtyDeepEnclosure], [DNSB], [Complete], [Short], [LabelsPrinted], [Notes] from [PRLCS] where [Tracking]='Shipping' and [PageNumber] = 0";
                 }
             }
             dt = Utility.SearchLP(query);
             dg.ItemsSource = dt.DefaultView;
+            HideFullNotesColoumn();
         }
 
         private void PRL123_Click(object sender, RoutedEventArgs e)
@@ -395,7 +396,7 @@ namespace PRL123_Final.Views
             {
                 if (CurrentProduct == Utility.ProductGroup.PRL123)
                 {
-                    string query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [Catalogue], [AMO], [BoxEarly], [Box Sent], [SpecialCustomer], [ServiceEntrance], [DoubleSection], [PaintedBox], [RatedNeutral200], [DNSB], [Complete], [Short], [LabelsPrinted] from [PRL123] where [BoxEarly]=True and [Box Sent]=False";
+                    string query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [Catalogue], [AMO], [BoxEarly], [Box Sent], [SpecialCustomer], [ServiceEntrance], [DoubleSection], [PaintedBox], [RatedNeutral200], [DNSB], [Complete], [Short], [LabelsPrinted], [Notes] from [PRL123] where [BoxEarly]=True and [Box Sent]=False";
                     LoadGrid(query);
                     Current_Tab = "Ship Early";
                     //ButtonColorChanges();
@@ -552,6 +553,28 @@ namespace PRL123_Final.Views
             sf.Show();
         }
 
+
+        private void HideFullNotesColoumn()
+        {
+            //Get the columns collection
+            ObservableCollection<DataGridColumn> columns = dg.Columns;
+
+            //set the visibility for end Notes coloumn to hidden
+            foreach (DataGridColumn col in columns)
+            {
+                switch (col.Header.ToString())
+                {
+                    case "Notes":
+                        col.Visibility = Visibility.Hidden;
+                        break;
+                }
+            }
+        }
+
+        private void DG_Loaded(object sender, RoutedEventArgs e)
+        {
+            HideFullNotesColoumn();
+        }
 
 
 

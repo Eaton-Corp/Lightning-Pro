@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Collections.ObjectModel;
 
 namespace PRL123_Final.Views
 {
@@ -61,8 +62,7 @@ namespace PRL123_Final.Views
 
         }
 
-
-        private void loadGrid()
+        private void LoadGrid()
         {
             DataTable dt;
             string query = "";
@@ -75,47 +75,48 @@ namespace PRL123_Final.Views
             {
                 if (CurrentProduct == Utility.ProductGroup.PRL123)
                 {
-                    query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [BoxEarly], [Box Sent], [SpecialCustomer], [ServiceEntrance], [DoubleSection], [PaintedBox], [RatedNeutral200], [DNSB], [Complete], [Short], [LabelsPrinted] from [PRL123] where [Tracking]='" + Current_Tab + "'";
+                    query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [BoxEarly], [Box Sent], [SpecialCustomer], [ServiceEntrance], [DoubleSection], [PaintedBox], [RatedNeutral200], [DNSB], [Complete], [Short], [LabelsPrinted], [Notes] from [PRL123] where [Tracking]='" + Current_Tab + "'";
                 }
                 else if (CurrentProduct == Utility.ProductGroup.PRL4)
                 {
-                    query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], [DNSB], [Complete], [Short], [LabelsPrinted], [BoxEarly], [BoxSent] from [PRL4] where [Tracking]='" + Current_Tab + "' and [PageNumber] = 0";
+                    query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], [DNSB], [Complete], [Short], [LabelsPrinted], [BoxEarly], [BoxSent], [Notes] from [PRL4] where [Tracking]='" + Current_Tab + "' and [PageNumber] = 0";
                 }
                 else if (CurrentProduct == Utility.ProductGroup.PRLCS)
                 {
-                    query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], [ThirtyDeepEnclosure], [DNSB], [Complete], [Short], [LabelsPrinted] from [PRLCS] where [Tracking]='" + Current_Tab + "' and [PageNumber] = 0";
+                    query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], [ThirtyDeepEnclosure], [DNSB], [Complete], [Short], [LabelsPrinted], [Notes] from [PRLCS] where [Tracking]='" + Current_Tab + "' and [PageNumber] = 0";
                 }
             }
             dt = Utility.SearchLP(query);
             dg.ItemsSource = dt.DefaultView;
+            HideFullNotesColoumn();
         }
 
         private void Development_Clicked(object sender, RoutedEventArgs e)
         {
             Current_Tab = "InDevelopment";
-            loadGrid();
-            //ButtonColorChanges();
+            LoadGrid();
+            ButtonColorChanges();
         }
 
         private void MI_Clicked(object sender, RoutedEventArgs e)
         {
             Current_Tab = "MIComplete";
-            loadGrid();
-            //ButtonColorChanges();
+            LoadGrid();
+            ButtonColorChanges();
         }
 
         private void Production_Clicked(object sender, RoutedEventArgs e)
         {
             Current_Tab = "Production";
-            loadGrid();
-            //ButtonColorChanges();
+            LoadGrid();
+            ButtonColorChanges();
         }
 
         private void Shipping_Clicked(object sender, RoutedEventArgs e)
         {
             Current_Tab = "Shipping";
-            loadGrid();
-            //ButtonColorChanges();
+            LoadGrid();
+            ButtonColorChanges();
         }
 
 
@@ -239,10 +240,10 @@ namespace PRL123_Final.Views
             CurrentProduct = Utility.ProductGroup.PRL123;
             MainWindow.ProductGroup = Utility.ProductGroup.PRL123;
             ProductTable = "PRL123";
-            //PWL123.Background = Brushes.DarkBlue;
-            //PWL4.Background = Brushes.Blue;
-            //PWLCS.Background = Brushes.Blue;
-            loadGrid();
+            PWL123.Background = Brushes.DarkBlue;
+            PWL4.Background = Brushes.Blue;
+            PWLCS.Background = Brushes.Blue;
+            LoadGrid();
         }
 
         private void PRL4_Set()
@@ -250,10 +251,10 @@ namespace PRL123_Final.Views
             CurrentProduct = Utility.ProductGroup.PRL4;
             MainWindow.ProductGroup = Utility.ProductGroup.PRL4;
             ProductTable = "PRL4";
-            //PWL4.Background = Brushes.DarkBlue;
-            //PWL123.Background = Brushes.Blue;
-            //PWLCS.Background = Brushes.Blue;
-            loadGrid();
+            PWL4.Background = Brushes.DarkBlue;
+            PWL123.Background = Brushes.Blue;
+            PWLCS.Background = Brushes.Blue;
+            LoadGrid();
         }
 
         private void PRLCS_Set()
@@ -261,10 +262,10 @@ namespace PRL123_Final.Views
             CurrentProduct = Utility.ProductGroup.PRLCS;
             MainWindow.ProductGroup = Utility.ProductGroup.PRLCS;
             ProductTable = "PRLCS";
-            //PWL4.Background = Brushes.Blue;
-            //PWL123.Background = Brushes.Blue;
-            //PWLCS.Background = Brushes.DarkBlue;
-            loadGrid();
+            PWL4.Background = Brushes.Blue;
+            PWL123.Background = Brushes.Blue;
+            PWLCS.Background = Brushes.DarkBlue;
+            LoadGrid();
         }
 
 
@@ -335,7 +336,7 @@ namespace PRL123_Final.Views
                             string query = "update [PRL123] set [Tracking]='MIComplete' where [ID]=" + id.ToString();
                             Utility.executeNonQueryLP(query);
                         }
-                        loadGrid();
+                        LoadGrid();
                         updateStatus("MULTIPLE SUCCESSFULLY APPROVED");
                     }
                     else
@@ -343,7 +344,7 @@ namespace PRL123_Final.Views
                         string query = "update [PRL123] set [Tracking]='MIComplete' where [ID]=" + Selected.ToString();
                         Utility.executeNonQueryLP(query);
 
-                        loadGrid();
+                        LoadGrid();
                         updateStatus(SelectedGO + " SUCCESSFULLY APPROVED");
                     }
                 }
@@ -356,7 +357,7 @@ namespace PRL123_Final.Views
                             string query = "update [" + ProductTable + "] set [Tracking]='MIComplete' where [GO_Item]='" + goItem + "'";
                             Utility.executeNonQueryLP(query);
                         }
-                        loadGrid();
+                        LoadGrid();
                         updateStatus("MULTIPLE SUCCESSFULLY APPROVED");
                     }
                     else
@@ -364,7 +365,7 @@ namespace PRL123_Final.Views
                         string query = "update [" + ProductTable + "] set [Tracking]='MIComplete' where [GO_Item]='" + SelectedGO + "'";
                         Utility.executeNonQueryLP(query);
 
-                        loadGrid();
+                        LoadGrid();
                         updateStatus(SelectedGO + " SUCCESSFULLY APPROVED");
                     }
                 }
@@ -385,7 +386,7 @@ namespace PRL123_Final.Views
                             string query = "update [PRL123] set [Tracking]='InDevelopment' where [ID]=" + id.ToString();
                             Utility.executeNonQueryLP(query);
                         }
-                        loadGrid();
+                        LoadGrid();
                         updateStatus("MULTIPLE SUCCESSFULLY RECALLED");
                     }
                     else
@@ -393,7 +394,7 @@ namespace PRL123_Final.Views
                         string query = "update [PRL123] set [Tracking]='InDevelopment' where [ID]=" + Selected.ToString();
                         Utility.executeNonQueryLP(query);
 
-                        loadGrid();
+                        LoadGrid();
                         updateStatus(SelectedGO + " RECALLED");
                     }
                 }
@@ -406,7 +407,7 @@ namespace PRL123_Final.Views
                             string query = "update [" + ProductTable + "] set [Tracking]='InDevelopment' where [GO_Item]='" + goItem + "'";
                             Utility.executeNonQueryLP(query);
                         }
-                        loadGrid();
+                        LoadGrid();
                         updateStatus("MULTIPLE SUCCESSFULLY RECALLED");
                     }
                     else
@@ -414,7 +415,7 @@ namespace PRL123_Final.Views
                         string query = "update [" + ProductTable + "] set [Tracking]='InDevelopment' where [GO_Item]='" + SelectedGO + "'";
                         Utility.executeNonQueryLP(query);
 
-                        loadGrid();
+                        LoadGrid();
                         updateStatus(SelectedGO + " RECALLED");
                     }
                 }
@@ -433,7 +434,7 @@ namespace PRL123_Final.Views
                     Utility.executeNonQueryLP(query);
                     Utility.DeleteCSAValues(SelectedGO, CurrentProduct);
 
-                    loadGrid();
+                    LoadGrid();
                     updateStatus(SelectedGO + " SUCCESSFULLY DELETED");
                 }
             }
@@ -460,7 +461,8 @@ namespace PRL123_Final.Views
             string query = Utility.searchQueryGenerator(CurrentProduct, Field.Text, Search.Text);
             dt = Utility.SearchLP(query);
             dg.ItemsSource = dt.DefaultView;
-            //ButtonColorChanges();
+            HideFullNotesColoumn();
+            ButtonColorChanges();
         }
 
 
@@ -539,6 +541,28 @@ namespace PRL123_Final.Views
             {
                 Utility.AccessFolderGO(SelectedGO.Substring(0,10));
             }
+        }
+
+        private void HideFullNotesColoumn()
+        {
+            //Get the columns collection
+            ObservableCollection<DataGridColumn> columns = dg.Columns;
+
+            //set the visibility for end Notes coloumn to hidden
+            foreach (DataGridColumn col in columns)
+            {
+                switch (col.Header.ToString())
+                {
+                    case "Notes":
+                        col.Visibility = Visibility.Hidden;
+                        break;
+                }
+            }
+        }
+
+        private void DG_Loaded(object sender, RoutedEventArgs e)
+        {
+            HideFullNotesColoumn();
         }
 
         private void Click_MassUpdateGO(object sender, RoutedEventArgs e)

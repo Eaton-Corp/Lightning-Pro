@@ -205,7 +205,7 @@ namespace PRL123_Final
                 CurrentShippingWindow.PRL123_Set();
                 CurrentShippingWindow.LoadGrid(query);
                 CurrentShippingWindow.Current_Tab = "Ship Early";
-                //CurrentShippingWindow.ButtonColorChanges();
+                CurrentShippingWindow.ButtonColorChanges();
             }
         }
 
