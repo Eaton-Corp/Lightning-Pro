@@ -17,6 +17,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using PRL123_Final.ViewModels;
 using Squirrel;
+using static PRL123_Final.Utility;
 
 namespace PRL123_Final
 {
@@ -33,6 +34,8 @@ namespace PRL123_Final
 
         //single instance of connection to Master Database
         public static OleDbConnection Mcon = new OleDbConnection(ConfigurationManager.ConnectionStrings["MasterDB"].ToString());
+
+        public static Utility.ProductGroup ProductGroup { get; set; } = Utility.ProductGroup.PRL123;
 
         private void ConnectLPdatabase()
         {

@@ -113,6 +113,7 @@ namespace PRL123_Final
 
 
 
+
         //quickly written code
 
         private void IsSpecialCustomer()
@@ -1189,7 +1190,7 @@ namespace PRL123_Final
                 Utility.SaveBitmapAsPNGinImages(PathIMAGE.Text + "_" + Item.Text + "_" + pgNumStr + ".png", img);
 
 
-                string StrInsertCommand = "Insert into PRL4 (GO_Item, [GO], ShopOrderInterior, ShopOrderBox, ShopOrderTrim, Customer, Quantity, Tracking, Urgency, [AMO], [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], ReleaseDate, CommitDate, EnteredDate, FilePath, ProductSpecialist, PageNumber, ImageFilePath) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                string StrInsertCommand = "Insert into PRL4 (GO_Item, [GO], ShopOrderInterior, ShopOrderBox, ShopOrderTrim, Customer, Quantity, Tracking, Urgency, [AMO], [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], ReleaseDate, CommitDate, EnteredDate, FilePath, ProductSpecialist, PageNumber, ImageFilePath, [BoxEarly], [BoxSent]) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 using (OleDbCommand InsertCommand = new OleDbCommand(StrInsertCommand, MainWindow.LPcon))
                 {
                     InsertCommand.Parameters.AddWithValue("GO_Item", GO_Item.Text);
@@ -1221,6 +1222,9 @@ namespace PRL123_Final
                     //InsertCommand.Parameters.AddWithValue("Suffix", Suffix.Text);
                     InsertCommand.Parameters.AddWithValue("PageNumber", pageNumber);
                     InsertCommand.Parameters.AddWithValue("ImageFilePath", PathIMAGE.Text + "_" + Item.Text + "_" + pgNumStr + ".png");
+                    InsertCommand.Parameters.AddWithValue("BoxEarly", BoxEarly.IsChecked);
+                    InsertCommand.Parameters.AddWithValue("BoxSent", BoxSent.IsChecked);
+
                     InsertCommand.ExecuteNonQuery();
                 }//end using command
 
@@ -1259,7 +1263,7 @@ namespace PRL123_Final
                     Utility.SaveBitmapAsPNGinImages(PathIMAGE.Text + "_" + Item.Text + "_" + pgNumStr + ".png", (BitmapImage)image[pageNumber]);
                 }
 
-                string StrInsertCommand = "Insert into PRL4 (GO_Item, [GO], ShopOrderInterior, ShopOrderBox, ShopOrderTrim, Customer, Quantity, Tracking, Urgency, [AMO], [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], ReleaseDate, CommitDate, EnteredDate, FilePath, ProductSpecialist, PageNumber, ImageFilePath) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                string StrInsertCommand = "Insert into PRL4 (GO_Item, [GO], ShopOrderInterior, ShopOrderBox, ShopOrderTrim, Customer, Quantity, Tracking, Urgency, [AMO], [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], ReleaseDate, CommitDate, EnteredDate, FilePath, ProductSpecialist, PageNumber, ImageFilePath, BoxEarly, BoxSent) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 using (OleDbCommand InsertCommand = new OleDbCommand(StrInsertCommand, MainWindow.LPcon))
                 {
                     InsertCommand.Parameters.AddWithValue("GO_Item", GO_Item.Text);
@@ -1291,6 +1295,8 @@ namespace PRL123_Final
                     //InsertCommand.Parameters.AddWithValue("Suffix", Suffix.Text);
                     InsertCommand.Parameters.AddWithValue("PageNumber", pageNumber - firstPgIndex);
                     InsertCommand.Parameters.AddWithValue("ImageFilePath", PathIMAGE.Text + "_" + Item.Text + "_" + pgNumStr + ".png");
+                    InsertCommand.Parameters.AddWithValue("BoxEarly", BoxEarly.IsChecked);
+                    InsertCommand.Parameters.AddWithValue("BoxSent", BoxSent.IsChecked);
                     InsertCommand.ExecuteNonQuery();
                 }//end using command
 

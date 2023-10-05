@@ -137,7 +137,7 @@ namespace PRL123_Final
                 getGOs("select [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Quantity], " +
                     "[EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [ProductSpecialist], [Customer], " +
                     "[SpecialCustomer], [AMO], [ServiceEntrance], [RatedNeutral200], [PaintedBox], " +
-                    "[DNSB], [Complete], [Short], [FilePath], [DoorOverDist], [DoorInDoor], [PageNumber] " +
+                    "[DNSB], [Complete], [Short], [FilePath], [DoorOverDist], [DoorInDoor], [PageNumber], [BoxEarly], [BoxSent] " +
                     "from [PRL4] where [GO]='" + current_ID.Substring(0, 10) + "' order by [GO_Item],[PageNumber]");
             }
             else if(CurrentProduct == Utility.ProductGroup.PRLCS)
@@ -259,10 +259,9 @@ namespace PRL123_Final
                         ShortArr[counter] = (Boolean)rb[20];
 
                         FilePath = rb[21].ToString();
-
-                        //PRL123 Specific
                         BoxEarlyArr[counter] = (Boolean)rb[22];
                         BoxSentArr[counter] = (Boolean)rb[23];
+                        //PRL123 Specific
                         DoubleSectionArr[counter] = (Boolean)rb[24];
                     }
                     else if (CurrentProduct == Utility.ProductGroup.PRL4)
@@ -281,6 +280,9 @@ namespace PRL123_Final
                         DoorInDoorArr[counter] = (Boolean)rb[23];
 
                         pgNumber[counter] = (int)rb[24];
+
+                        BoxEarlyArr[counter] = (Boolean)rb[25];
+                        BoxSentArr[counter] = (Boolean)rb[26];
                     }
                     else if(CurrentProduct == Utility.ProductGroup.PRLCS)
                     {
@@ -503,6 +505,8 @@ namespace PRL123_Final
             else if (CurrentProduct == Utility.ProductGroup.PRL4)
             {
                 //checkBoxGridPRL4
+                BoxEarly_4.IsChecked = BoxEarlyArr[page];
+                BoxSent_4.IsChecked = BoxSentArr[page];
                 AMO_4.IsChecked = AMOArr[page];
                 ServiceEntrance_4.IsChecked = ServiceEntranceArr[page];
                 RatedNeutral200_4.IsChecked = RatedNeutral200Arr[page];
@@ -706,8 +710,8 @@ namespace PRL123_Final
                 {
                     commandStr = "update [PRL4] set [ShopOrderInterior]= ?, [ShopOrderBox]= ?, [ShopOrderTrim]= ?, [Quantity]= ?, " +
                         "[Tracking]= ?, [Urgency]= ?, [ProductSpecialist] = ?, [Customer]= ?, [SpecialCustomer]= ?, [AMO]= ?, [ServiceEntrance]= ?, " +
-                        "[RatedNeutral200]= ?, [PaintedBox]= ?, [DNSB]= ?, [Complete]= ?, [Short]= ?, [DoorOverDist]= ?, " +
-                        "[DoorInDoor]= ? where [GO_Item]='" + current_ID + "'";
+                        "[RatedNeutral200]= ?, [PaintedBox]= ?, [DNSB]= ?, [Complete]= ?, [Short]= ?, [DoorOverDist]= ?,  " +
+                        "[DoorInDoor]= ?, [BoxEarly]= ?, [BoxSent]= ? where [GO_Item]='" + current_ID + "'";
                 }
                 else if (CurrentProduct == Utility.ProductGroup.PRLCS)
                 {
@@ -752,6 +756,8 @@ namespace PRL123_Final
                         cmd.Parameters.AddWithValue("[Short]", Short_4.IsChecked);
                         cmd.Parameters.AddWithValue("[DoorOverDist]", DoorOverDist_4.IsChecked);
                         cmd.Parameters.AddWithValue("[DoorInDoor]", DoorInDoor_4.IsChecked);
+                        cmd.Parameters.AddWithValue("[BoxEarly]", BoxEarly_4.IsChecked);
+                        cmd.Parameters.AddWithValue("[BoxSent]", BoxSent_4.IsChecked);
                     }
                     else if(CurrentProduct == Utility.ProductGroup.PRLCS)
                     {

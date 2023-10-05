@@ -170,7 +170,7 @@ namespace PRL123_Final.Views
                     if (Scan.Text.StartsWith("4-"))     //PWL4
                     {
                         PRL4_Set();
-                        getGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], [SpecialCustomer], [AMO], [ServiceEntrance], [RatedNeutral200], [PaintedBox], [DNSB], [Complete], [Short], [FilePath], [DoorOverDist], [DoorInDoor], [PageNumber] from [PRL4] where [GO]='" + Scan.Text.Substring(2, 10) + "' order by [GO_Item],[PageNumber]");
+                        getGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], [SpecialCustomer], [AMO], [ServiceEntrance], [RatedNeutral200], [PaintedBox], [DNSB], [Complete], [Short], [FilePath], [DoorOverDist], [DoorInDoor], [PageNumber], [BoxEarly], [BoxSent] from [PRL4] where [GO]='" + Scan.Text.Substring(2, 10) + "' order by [GO_Item],[PageNumber]");
                     }
                     else if (Scan.Text.ToUpper().StartsWith("CS-"))       //PWLCS
                     {
@@ -345,6 +345,8 @@ namespace PRL123_Final.Views
                         DoorOverDistArr[counter] = (Boolean)rb[18];
                         DoorInDoorArr[counter] = (Boolean)rb[19];
                         MultiPageNumber[counter] = (int)rb[20];
+                        BoxEarlyArr[counter] = (Boolean)rb[21];
+                        BoxSentArr[counter] = (Boolean)rb[22];
                     }
                     else if(CurrentProduct == Utility.ProductGroup.PRLCS)
                     {
@@ -454,6 +456,8 @@ namespace PRL123_Final.Views
                 Complete_4.IsChecked = CompleteArr[page];
                 Short_4.IsChecked = ShortArr[page];
                 DNSB_4.IsChecked = DNSBArr[page];
+                BoxEarly_4.IsChecked = BoxEarlyArr[page];
+                BoxSent_4.IsChecked = BoxSentArr[page];
             }
             else if (CurrentProduct == Utility.ProductGroup.PRLCS)
             {
@@ -508,7 +512,7 @@ namespace PRL123_Final.Views
             }
             else if (CurrentProduct == Utility.ProductGroup.PRL4)
             {
-                getGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], [SpecialCustomer], [AMO], [ServiceEntrance], [RatedNeutral200], [PaintedBox], [DNSB], [Complete], [Short], [FilePath], [DoorOverDist], [DoorInDoor], [PageNumber] from [PRL4] where [GO]='" + GO_Item.Text.Substring(0, 10) + "' order by [GO_Item],[PageNumber]");
+                getGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], [SpecialCustomer], [AMO], [ServiceEntrance], [RatedNeutral200], [PaintedBox], [DNSB], [Complete], [Short], [FilePath], [DoorOverDist], [DoorInDoor], [PageNumber], [BoxEarly], [BoxSent] from [PRL4] where [GO]='" + GO_Item.Text.Substring(0, 10) + "' order by [GO_Item],[PageNumber]");
             }
             else if(CurrentProduct == Utility.ProductGroup.PRLCS)
             {
@@ -608,7 +612,7 @@ namespace PRL123_Final.Views
                 }
                 else if (CurrentProduct == Utility.ProductGroup.PRL4)
                 {
-                    commandStr = "update [PRL4] set [Type]= ?, [Volts]= ?, [Amps]= ?, [Torque]= ?, [Appearance]= ?, [Bus]= ?, [SpecialCustomer]= ?, [AMO]= ?, [ServiceEntrance]= ?, [RatedNeutral200]= ?, [PaintedBox]= ?, [DNSB]= ?, [Complete]= ?, [Short]= ?, [DoorOverDist]= ?, [DoorInDoor]= ? where [GO_Item]='" + GOItemsArr[page] + "'";
+                    commandStr = "update [PRL4] set [Type]= ?, [Volts]= ?, [Amps]= ?, [Torque]= ?, [Appearance]= ?, [Bus]= ?, [SpecialCustomer]= ?, [AMO]= ?, [ServiceEntrance]= ?, [RatedNeutral200]= ?, [PaintedBox]= ?, [DNSB]= ?, [Complete]= ?, [Short]= ?, [DoorOverDist]= ?, [DoorInDoor]= ?, [BoxEarly]= ?, [BoxSent]= ? where [GO_Item]='" + GOItemsArr[page] + "'";
                 }
                 else if (CurrentProduct == Utility.ProductGroup.PRLCS)
                 {
@@ -647,6 +651,8 @@ namespace PRL123_Final.Views
                         cmd.Parameters.AddWithValue("[Short]", Short_4.IsChecked);
                         cmd.Parameters.AddWithValue("[DoorOverDist]", DoorOverDist_4.IsChecked);
                         cmd.Parameters.AddWithValue("[DoorInDoor]", DoorInDoor_4.IsChecked);
+                        cmd.Parameters.AddWithValue("[BoxEarly]", BoxEarly_4.IsChecked);
+                        cmd.Parameters.AddWithValue("[BoxSent]", BoxSent_4.IsChecked);
                     }
                     else if (CurrentProduct == Utility.ProductGroup.PRLCS)
                     {

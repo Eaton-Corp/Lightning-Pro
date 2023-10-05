@@ -43,15 +43,27 @@ namespace PRL123_Final
         int pg;
         Boolean isLoaded;
         Views.Shipping CurrentShippingWindow;
+        Utility.ProductGroup CurrentProduct;
 
-        
-        public ShippingView(string GOI, Views.Shipping ShippingWindow)
+
+
+        public ShippingView(string GOI, Views.Shipping ShippingWindow, Utility.ProductGroup currentProduct)
         {
             InitializeComponent();
             GO_Item = GOI;
             CurrentShippingWindow = ShippingWindow;
+            CurrentProduct = currentProduct;
+            if(currentProduct == Utility.ProductGroup.PRL123)
+            {
+                getGOs("select [GO_Item], [ShopOrderBox], [Customer], [Quantity], [Urgency], [Bidman], [Catalogue], [ImageFilePath] from [PRL123] where [GO]='" + GO_Item.Substring(0, 10) + "' and [BoxEarly]=True and [Box Sent]=False");
 
-            getGOs("select [GO_Item], [ShopOrderBox], [Customer], [Quantity], [Urgency], [Bidman], [Catalogue], [ImageFilePath] from [PRL123] where [GO]='" + GO_Item.Substring(0, 10) + "' and [BoxEarly]=True and [Box Sent]=False");         
+            }
+            else if(currentProduct == Utility.ProductGroup.PRL4)
+            {
+                getGOs("select [GO_Item], [ShopOrderBox], [Customer], [Quantity], [Urgency], [Bidman], [Catalogue], [ImageFilePath] from [PRL4] where [GO]='" + GO_Item.Substring(0, 10) + "' and [BoxEarly]=True and [BoxSent]=False and [PageNumber] = 0");
+
+            }
+
         }
 
         private void getGOs(string query)
@@ -173,15 +185,27 @@ namespace PRL123_Final
         {
             if (isLoaded == true)
             {
-                string command = "update [PRL123] set [Box Sent]=True where [GO_Item]='" + GOI.Text + "'";
+                string command = "";
+                string query = "";
+                if (CurrentProduct == Utility.ProductGroup.PRL123) {
+                    command = "update [PRL123] set [Box Sent]=True where [GO_Item]='" + GOI.Text + "'";
+                    query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [Catalogue], [AMO], [BoxEarly], [Box Sent], [SpecialCustomer], [ServiceEntrance], [DoubleSection], [PaintedBox], [RatedNeutral200], [DNSB], [Complete], [Short], [LabelsPrinted] from [PRL123] where [BoxEarly]=True and [Box Sent]=False";
+                }
+                else
+                {
+                    command = "update [PRL4] set [Box Sent]=True where [GO_Item]='" + GOI.Text + "'";
+                    query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], [DNSB], [Complete], [Short], [LabelsPrinted], [BoxEarly], [BoxSent]  from [PRL4] where [BoxEarly]=True and [BoxSent]=False and [PageNumber] = 0";
+                    //query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [Catalogue], [AMO], [BoxEarly], [Box Sent], [SpecialCustomer], [ServiceEntrance], [DoubleSection], [PaintedBox], [RatedNeutral200], [DNSB], [Complete], [Short], [LabelsPrinted] from [PRL123] where [BoxEarly]=True and [Box Sent]=False";
+                }
+                
+
                 Utility.executeNonQueryLP(command);
                 Status.Content = GOI.Text + " TUBS SUCCESSFULLY SHIPPED";
 
                 CurrentShippingWindow.PRL123_Set();
-                string query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [Catalogue], [AMO], [BoxEarly], [Box Sent], [SpecialCustomer], [ServiceEntrance], [DoubleSection], [PaintedBox], [RatedNeutral200], [DNSB], [Complete], [Short], [LabelsPrinted] from [PRL123] where [BoxEarly]=True and [Box Sent]=False";
                 CurrentShippingWindow.LoadGrid(query);
                 CurrentShippingWindow.Current_Tab = "Ship Early";
-                CurrentShippingWindow.ButtonColorChanges();
+                //CurrentShippingWindow.ButtonColorChanges();
             }
         }
 

@@ -38,11 +38,27 @@ namespace PRL123_Final.Views
         public Specialist()
         {
             InitializeComponent();
-
             Field.Text = "GO_Item";
             Current_Tab = "InDevelopment";
-            PRL123_Set();
-            ButtonColorChanges();
+            intializeProduct();
+            //ButtonColorChanges();
+        }
+
+        public void intializeProduct()
+        {
+            if (MainWindow.ProductGroup.Equals(Utility.ProductGroup.PRLCS))
+            {
+                PRLCS_Set();
+            }
+            else if (MainWindow.ProductGroup.Equals(Utility.ProductGroup.PRL4))
+            {
+                PRL4_Set();
+            }
+            else if (MainWindow.ProductGroup.Equals(Utility.ProductGroup.PRL123))
+            {
+                PRL123_Set();
+            }
+
         }
 
 
@@ -63,7 +79,7 @@ namespace PRL123_Final.Views
                 }
                 else if (CurrentProduct == Utility.ProductGroup.PRL4)
                 {
-                    query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], [DNSB], [Complete], [Short], [LabelsPrinted] from [PRL4] where [Tracking]='" + Current_Tab + "' and [PageNumber] = 0";
+                    query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], [DNSB], [Complete], [Short], [LabelsPrinted], [BoxEarly], [BoxSent] from [PRL4] where [Tracking]='" + Current_Tab + "' and [PageNumber] = 0";
                 }
                 else if (CurrentProduct == Utility.ProductGroup.PRLCS)
                 {
@@ -78,72 +94,118 @@ namespace PRL123_Final.Views
         {
             Current_Tab = "InDevelopment";
             loadGrid();
-            ButtonColorChanges();
+            //ButtonColorChanges();
         }
 
         private void MI_Clicked(object sender, RoutedEventArgs e)
         {
             Current_Tab = "MIComplete";
             loadGrid();
-            ButtonColorChanges();
+            //ButtonColorChanges();
         }
 
         private void Production_Clicked(object sender, RoutedEventArgs e)
         {
             Current_Tab = "Production";
             loadGrid();
-            ButtonColorChanges();
+            //ButtonColorChanges();
         }
 
         private void Shipping_Clicked(object sender, RoutedEventArgs e)
         {
             Current_Tab = "Shipping";
             loadGrid();
-            ButtonColorChanges();
+            //ButtonColorChanges();
         }
 
 
-        private void ButtonColorChanges()
+        //private void ButtonColorChanges()
+        //{
+        //if (Current_Tab.Equals("Shipping"))
+        //{
+        //  Shipping.Background = Brushes.DarkBlue;
+        // Production.Background = Brushes.Blue;
+        //MIComplete.Background = Brushes.Blue;
+        //Development.Background = Brushes.Blue;
+        //SearchButton.Background = Brushes.LightGray;
+        //}
+        //else if (Current_Tab.Equals("Production"))
+        //{
+        // Shipping.Background = Brushes.Blue;
+        // Production.Background = Brushes.DarkBlue;
+        // MIComplete.Background = Brushes.Blue;
+        //Development.Background = Brushes.Blue;
+        //SearchButton.Background = Brushes.LightGray;
+        //}
+        //else if (Current_Tab.Equals("MIComplete"))
+        //{
+        //Shipping.Background = Brushes.Blue;
+        //Production.Background = Brushes.Blue;
+        //  MIComplete.Background = Brushes.DarkBlue;
+        //  Development.Background = Brushes.Blue;
+        //   SearchButton.Background = Brushes.LightGray;
+        //}
+        //else if (Current_Tab.Equals("InDevelopment"))
+        //{
+        //Shipping.Background = Brushes.Blue;
+        //Production.Background = Brushes.Blue;
+        //MIComplete.Background = Brushes.Blue;
+        //Development.Background = Brushes.DarkBlue;
+        //SearchButton.Background = Brushes.LightGray;
+        //}
+        //else if (Current_Tab.Equals("Search"))
+        //{
+        //Shipping.Background = Brushes.Blue;
+        //Production.Background = Brushes.Blue;
+        //MIComplete.Background = Brushes.Blue;
+        //Development.Background = Brushes.Blue;
+        //  SearchButton.Background = Brushes.Gray;
+        //}
+        //}
+
+
+
+        public void Filter_click(object sender, RoutedEventArgs e)
         {
-            if (Current_Tab.Equals("Shipping"))
+            if (sender is ComboBox selectedItem)
             {
-                Shipping.Background = Brushes.DarkBlue;
-                Production.Background = Brushes.Blue;
-                MIComplete.Background = Brushes.Blue;
-                Development.Background = Brushes.Blue;
-                SearchButton.Background = Brushes.LightGray;
+                if (selectedItem.SelectedItem is ComboBoxItem selectedComboBoxItem)
+                {
+                    string selectedValue = selectedComboBoxItem.Content.ToString();
+                    Current_Tab = selectedValue;  // Assuming Current_Tab is a string
+                    loadGrid();
+                }
             }
-            else if (Current_Tab.Equals("Production"))
+        }
+        private void DataGrid_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            // Get the visual element that was clicked
+            var hitTestResult = VisualTreeHelper.HitTest(dg, e.GetPosition(dg));
+            var clickedElement = hitTestResult.VisualHit;
+
+            // Traverse up the visual tree to find the DataGridRow that contains the clicked element
+            DataGridRow clickedRow = null;
+            while (clickedElement != null)
             {
-                Shipping.Background = Brushes.Blue;
-                Production.Background = Brushes.DarkBlue;
-                MIComplete.Background = Brushes.Blue;
-                Development.Background = Brushes.Blue;
-                SearchButton.Background = Brushes.LightGray;
+                if (clickedElement is DataGridRow row)
+                {
+                    clickedRow = row;
+                    break;
+                }
+                clickedElement = VisualTreeHelper.GetParent(clickedElement);
             }
-            else if (Current_Tab.Equals("MIComplete"))
+
+            // If a DataGridRow was found, select it
+            if (clickedRow != null)
             {
-                Shipping.Background = Brushes.Blue;
-                Production.Background = Brushes.Blue;
-                MIComplete.Background = Brushes.DarkBlue;
-                Development.Background = Brushes.Blue;
-                SearchButton.Background = Brushes.LightGray;
-            }
-            else if (Current_Tab.Equals("InDevelopment"))
-            {
-                Shipping.Background = Brushes.Blue;
-                Production.Background = Brushes.Blue;
-                MIComplete.Background = Brushes.Blue;
-                Development.Background = Brushes.DarkBlue;
-                SearchButton.Background = Brushes.LightGray;
-            }
-            else if (Current_Tab.Equals("Search"))
-            {
-                Shipping.Background = Brushes.Blue;
-                Production.Background = Brushes.Blue;
-                MIComplete.Background = Brushes.Blue;
-                Development.Background = Brushes.Blue;
-                SearchButton.Background = Brushes.Gray;
+                DataGrid gd = (DataGrid)sender;
+                int rowIndex = clickedRow.GetIndex();
+
+                // Override the current selected index
+                dg.SelectedIndex = rowIndex;
+
+                // Trigger the SelectionChanged event
+                dg.SelectedItem = dg.Items[rowIndex];
             }
         }
 
@@ -175,30 +237,33 @@ namespace PRL123_Final.Views
         private void PRL123_Set()
         {
             CurrentProduct = Utility.ProductGroup.PRL123;
+            MainWindow.ProductGroup = Utility.ProductGroup.PRL123;
             ProductTable = "PRL123";
-            PWL123.Background = Brushes.DarkBlue;
-            PWL4.Background = Brushes.Blue;
-            PWLCS.Background = Brushes.Blue;
+            //PWL123.Background = Brushes.DarkBlue;
+            //PWL4.Background = Brushes.Blue;
+            //PWLCS.Background = Brushes.Blue;
             loadGrid();
         }
 
         private void PRL4_Set()
         {
             CurrentProduct = Utility.ProductGroup.PRL4;
+            MainWindow.ProductGroup = Utility.ProductGroup.PRL4;
             ProductTable = "PRL4";
-            PWL4.Background = Brushes.DarkBlue;
-            PWL123.Background = Brushes.Blue;
-            PWLCS.Background = Brushes.Blue;
+            //PWL4.Background = Brushes.DarkBlue;
+            //PWL123.Background = Brushes.Blue;
+            //PWLCS.Background = Brushes.Blue;
             loadGrid();
         }
 
         private void PRLCS_Set()
         {
             CurrentProduct = Utility.ProductGroup.PRLCS;
+            MainWindow.ProductGroup = Utility.ProductGroup.PRLCS;
             ProductTable = "PRLCS";
-            PWL4.Background = Brushes.Blue;
-            PWL123.Background = Brushes.Blue;
-            PWLCS.Background = Brushes.DarkBlue;
+            //PWL4.Background = Brushes.Blue;
+            //PWL123.Background = Brushes.Blue;
+            //PWLCS.Background = Brushes.DarkBlue;
             loadGrid();
         }
 
@@ -395,7 +460,7 @@ namespace PRL123_Final.Views
             string query = Utility.searchQueryGenerator(CurrentProduct, Field.Text, Search.Text);
             dt = Utility.SearchLP(query);
             dg.ItemsSource = dt.DefaultView;
-            ButtonColorChanges();
+            //ButtonColorChanges();
         }
 
 
@@ -476,5 +541,13 @@ namespace PRL123_Final.Views
             }
         }
 
+        private void Click_MassUpdateGO(object sender, RoutedEventArgs e)
+        {
+            MassUpdateGO window = new MassUpdateGO(SelectedGO.Substring(0,10));
+            window.ShowDialog(); // Show the window modally
+
+            //Edit sf = new Edit(SelectedGO, CurrentProduct);
+            //sf.Show();
+        }
     }
 }

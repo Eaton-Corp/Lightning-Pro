@@ -50,9 +50,9 @@ namespace PRL123_Final
                 } //end using command
                 return dt;
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("An Error Occurred Trying To Get Data From LPdatabase");
+                MessageBox.Show($"An error occurred trying to get data from LPdatabase: {ex.Message}");
                 return null;
             }
         }

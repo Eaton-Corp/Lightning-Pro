@@ -178,6 +178,17 @@
                 <CheckBox x:Name="Complete_4" Content="Complete" Grid.Row="4" Grid.Column="0" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 <CheckBox x:Name="Short_4" Content="Short" Grid.Row="4" Grid.Column="1" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 <CheckBox x:Name="DNSB_4" Content="DNSB" Grid.Row="5" Grid.Column="0" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Grid  Grid.Row="5" Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <CheckBox x:Name="BoxEarly_4" Content="Box Early" Grid.Row="0" Grid.Column="0" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <CheckBox x:Name="BoxSent_4" Content="Box Sent" Grid.Row="0" Grid.Column="1" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Grid>
+
+
             </Grid>
 
         </Grid>

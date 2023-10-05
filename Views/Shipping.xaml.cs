@@ -8,6 +8,8 @@ using System.Windows;
 using System.Windows.Controls;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
+using System.Windows.Input;
+using System.Windows.Media;
 
 namespace PRL123_Final.Views
 {
@@ -39,8 +41,24 @@ namespace PRL123_Final.Views
         public Shipping()
         {
             InitializeComponent();
+            intializeProduct();
+        }
 
-            PRL123_Set();
+        public void intializeProduct()
+        {
+            if (MainWindow.ProductGroup.Equals(Utility.ProductGroup.PRLCS))
+            {
+                PRLCS_Set();
+            }
+            else if (MainWindow.ProductGroup.Equals(Utility.ProductGroup.PRL4))
+            {
+                PRL4_Set();
+            }
+            else if (MainWindow.ProductGroup.Equals(Utility.ProductGroup.PRL123))
+            {
+                PRL123_Set();
+            }
+
         }
 
 
@@ -66,6 +84,10 @@ namespace PRL123_Final.Views
                     if (CurrentProduct == Utility.ProductGroup.PRL123)
                     {
                         getGOs("select [GO_Item], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Quantity], [Urgency], [BoxEarly] from [PRL123] where [GO]='" + Scan.Text.Substring(0, 10) + "' order by [GO_Item]");
+                    }
+                    else if(CurrentProduct == Utility.ProductGroup.PRL4)
+                    {
+                        getGOs("select [GO_Item], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Quantity], [Urgency], [BoxEarly] from [" + ProductTable + "] where [GO]='" + Scan.Text.Substring(0, 10) + "' and [PageNumber] = 0 order by [GO_Item]");
                     }
                     else
                     {
@@ -143,9 +165,9 @@ namespace PRL123_Final.Views
                     Quantity[counter] = rb[4].ToString();
                     UrgencyArr[counter] = rb[5].ToString();
 
-                    if (CurrentProduct == Utility.ProductGroup.PRL123)
+                    if (CurrentProduct == Utility.ProductGroup.PRL123 || CurrentProduct == Utility.ProductGroup.PRL4)
                     {
-                        //PRL123 Specific
+                        //PRL123/4 Specific
                         BoxEarly[counter] = (Boolean)rb[6];
                     }
                     counter++;
@@ -180,7 +202,7 @@ namespace PRL123_Final.Views
                 }
                 else if (CurrentProduct == Utility.ProductGroup.PRL4)
                 {
-                    query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], [DNSB], [Complete], [Short], [LabelsPrinted] from [PRL4] where [Tracking]='Shipping' and [PageNumber] = 0";
+                    query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], [DNSB], [Complete], [Short], [LabelsPrinted], [BoxEarly], [BoxSent] from [PRL4] where [Tracking]='Shipping' and [PageNumber] = 0";
                 }
                 else if (CurrentProduct == Utility.ProductGroup.PRLCS)
                 {
@@ -208,15 +230,102 @@ namespace PRL123_Final.Views
             Refresh();
         }
 
+
+
+        private void ViewSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox comboBox = (ComboBox)sender;
+            ComboBoxItem selectedItem = (ComboBoxItem)comboBox.SelectedItem;
+            string selectedContent = (string)selectedItem.Content;
+
+            try
+            {
+                switch (selectedContent)
+                {
+                    case "Ship Early":
+                        if (CurrentProduct == Utility.ProductGroup.PRL123)
+                        {
+                            string query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [Catalogue], [AMO], [BoxEarly], [Box Sent], [SpecialCustomer], [ServiceEntrance], [DoubleSection], [PaintedBox], [RatedNeutral200], [DNSB], [Complete], [Short], [LabelsPrinted] from [PRL123] where [BoxEarly]=True and [Box Sent]=False";
+                            LoadGrid(query);
+                            Current_Tab = "Ship Early";
+                            //ButtonColorChanges();
+                        }
+                        if (CurrentProduct == Utility.ProductGroup.PRL4)
+                        {
+                            string query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], [DNSB], [Complete], [Short], [LabelsPrinted], [BoxEarly], [BoxSent]  from [PRL4] where [BoxEarly]=True and [BoxSent]=False and [PageNumber] = 0";
+                            LoadGrid(query);
+                            Current_Tab = "Ship Early";
+                            //ButtonColorChanges();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Ship Early View Is Only Available For PRL123 and PRL4");
+                        }
+                        break;
+
+                    case "Shipping":
+                        LoadGrid(null);
+                        Current_Tab = "Shipping";
+                        //ButtonColorChanges();
+                        break;
+
+                    // Add more cases here if needed
+
+                    default:
+                        MessageBox.Show("Invalid selection");
+                        break;
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Unable To Switch Tab\nPlease Try Again");
+            }
+        }
+
+
+
+        private void DataGrid_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            // Get the visual element that was clicked
+            var hitTestResult = VisualTreeHelper.HitTest(dg, e.GetPosition(dg));
+            var clickedElement = hitTestResult.VisualHit;
+
+            // Traverse up the visual tree to find the DataGridRow that contains the clicked element
+            DataGridRow clickedRow = null;
+            while (clickedElement != null)
+            {
+                if (clickedElement is DataGridRow row)
+                {
+                    clickedRow = row;
+                    break;
+                }
+                clickedElement = VisualTreeHelper.GetParent(clickedElement);
+            }
+
+            // If a DataGridRow was found, select it
+            if (clickedRow != null)
+            {
+                DataGrid gd = (DataGrid)sender;
+                int rowIndex = clickedRow.GetIndex();
+
+                // Override the current selected index
+                dg.SelectedIndex = rowIndex;
+
+                // Trigger the SelectionChanged event
+                dg.SelectedItem = dg.Items[rowIndex];
+            }
+        }
+
         public void PRL123_Set()
         {
             ProductTable = "PRL123";
             CurrentProduct = Utility.ProductGroup.PRL123;
-            PWL123.Background = System.Windows.Media.Brushes.DarkBlue;
-            PWL4.Background = System.Windows.Media.Brushes.Blue;
-            PWLCS.Background = System.Windows.Media.Brushes.Blue;
+            MainWindow.ProductGroup = Utility.ProductGroup.PRL123;
+            //PWL123.Background = System.Windows.Media.Brushes.DarkBlue;
+            //PWL4.Background = System.Windows.Media.Brushes.Blue;
+            //PWLCS.Background = System.Windows.Media.Brushes.Blue;
             Current_Tab = "Shipping";
-            ButtonColorChanges();
+            //ButtonColorChanges();
             LoadGrid(null);
         }
 
@@ -224,11 +333,12 @@ namespace PRL123_Final.Views
         {
             ProductTable = "PRL4";
             CurrentProduct = Utility.ProductGroup.PRL4;
-            PWL4.Background = System.Windows.Media.Brushes.DarkBlue;
-            PWL123.Background = System.Windows.Media.Brushes.Blue;
-            PWLCS.Background = System.Windows.Media.Brushes.Blue;
+            MainWindow.ProductGroup = Utility.ProductGroup.PRL4;
+            //PWL4.Background = System.Windows.Media.Brushes.DarkBlue;
+            //PWL123.Background = System.Windows.Media.Brushes.Blue;
+            //PWLCS.Background = System.Windows.Media.Brushes.Blue;
             Current_Tab = "Shipping";
-            ButtonColorChanges();
+            //ButtonColorChanges();
             LoadGrid(null);
         }
 
@@ -236,27 +346,17 @@ namespace PRL123_Final.Views
         {
             ProductTable = "PRLCS";
             CurrentProduct = Utility.ProductGroup.PRLCS;
-            PWL4.Background = System.Windows.Media.Brushes.Blue;
-            PWL123.Background = System.Windows.Media.Brushes.Blue;
-            PWLCS.Background = System.Windows.Media.Brushes.DarkBlue;
+            MainWindow.ProductGroup = Utility.ProductGroup.PRLCS;
+            //PWL4.Background = System.Windows.Media.Brushes.Blue;
+            //PWL123.Background = System.Windows.Media.Brushes.Blue;
+            //PWLCS.Background = System.Windows.Media.Brushes.DarkBlue;
             Current_Tab = "Shipping";
-            ButtonColorChanges();
+            //ButtonColorChanges();
             LoadGrid(null);
         }
 
-        public void ButtonColorChanges()
-        {
-            if (Current_Tab.Equals("Ship Early"))
-            {
-                ShipEarlyBtn.Background = System.Windows.Media.Brushes.DarkBlue;
-                ShippingBtn.Background = System.Windows.Media.Brushes.Blue;
-            }
-            else if (Current_Tab.Equals("Shipping"))
-            {
-                ShipEarlyBtn.Background = System.Windows.Media.Brushes.Blue;
-                ShippingBtn.Background = System.Windows.Media.Brushes.DarkBlue;
-            }
-        }
+        
+ 
 
         private void updateStatus(string command)
         {
@@ -272,11 +372,12 @@ namespace PRL123_Final.Views
             {
                 if (BoxSelected == true)
                 {
-                    if (CurrentProduct == Utility.ProductGroup.PRL123)
+                    if (CurrentProduct == Utility.ProductGroup.PRL123 || CurrentProduct == Utility.ProductGroup.PRL4)
                     {
-                        ShippingView SF = new ShippingView(SelectedGO, this);
+                        ShippingView SF = new ShippingView(SelectedGO, this, CurrentProduct);
                         SF.Show();
                     }
+                    
                 }
             }
             catch
@@ -297,11 +398,18 @@ namespace PRL123_Final.Views
                     string query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [Catalogue], [AMO], [BoxEarly], [Box Sent], [SpecialCustomer], [ServiceEntrance], [DoubleSection], [PaintedBox], [RatedNeutral200], [DNSB], [Complete], [Short], [LabelsPrinted] from [PRL123] where [BoxEarly]=True and [Box Sent]=False";
                     LoadGrid(query);
                     Current_Tab = "Ship Early";
-                    ButtonColorChanges();
+                    //ButtonColorChanges();
+                }
+                else if (CurrentProduct == Utility.ProductGroup.PRL4) 
+                {
+                    string query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], [DNSB], [Complete], [Short], [LabelsPrinted], [BoxEarly], [BoxSent] from [PRL4] where [BoxEarly]=True and [Box Sent]=False and [PageNumber] = 0";
+                    LoadGrid(query);
+                    Current_Tab = "Ship Early";
+                    //ButtonColorChanges();
                 }
                 else
                 {
-                    MessageBox.Show("Ship Early View Is Only Available For PRL123");
+                    MessageBox.Show("Ship Early View Is Only Available For PRL123 and PRL4");
                 }
             }
             catch
@@ -317,7 +425,7 @@ namespace PRL123_Final.Views
             {
                 LoadGrid(null);
                 Current_Tab = "Shipping";
-                ButtonColorChanges();
+                //ButtonColorChanges();
             }
             catch
             {
@@ -585,7 +693,7 @@ namespace PRL123_Final.Views
             }
             else if (CurrentProduct == Utility.ProductGroup.PRL4)
             {
-                query += "[ServiceEntrance], [RatedNeutral200], [DoorOverDist], [DoorInDoor] from [PRL4] where [GO_Item]='" + GOI.Text + "' and [PageNumber]=0";
+                query += "[ServiceEntrance], [RatedNeutral200], [DoorOverDist], [DoorInDoor], [BoxEarly], [BoxSent] from [PRL4] where [GO_Item]='" + GOI.Text + "' and [PageNumber]=0";
             }
             else if (CurrentProduct == Utility.ProductGroup.PRLCS)
             {
@@ -643,6 +751,9 @@ namespace PRL123_Final.Views
                         //PRL4 Specific 
                         DoorOverDist = dtr[27].ToString();
                         DoorInDoor = dtr[28].ToString();
+
+                        BoxEarlyInfo = dtr[29].ToString();
+                        BoxSent = dtr[30].ToString();
                     }
                     else if (CurrentProduct == Utility.ProductGroup.PRLCS)
                     {
@@ -794,7 +905,7 @@ namespace PRL123_Final.Views
                 "Service Entrance: " + ServiceEntrance, "200% Rated Neutral: " + RatedNeutral200, "DoorOverDist: " + DoorOverDist, "DoorInDoor: " + DoorInDoor,
                 "Painted Box: " + PaintedBox,  "DNSB: " + DNSB, "Complete: " + Complete, "Short: " + Short," ", "Designation: " + Designation,
                 "Enclosure: " + Enclosure, "N: " + N, "X Space Used: " + XSpaceUsed, "MA: " + MA, "Voltage: " + Voltage, "P: " + P, "W: " + W,
-                "Ground: " + Ground, "Hz: " + Hz," ", "Notes: " + Notes };
+                "Ground: " + Ground,"Box Early: " + BoxEarly,"Box Sent: " + BoxSent, "Hz: " + Hz," ", "Notes: " + Notes };
 
             Utility.WriteLinesToTXT(lines, documentPath);
         }
@@ -834,6 +945,10 @@ namespace PRL123_Final.Views
             if (CurrentProduct == Utility.ProductGroup.PRL123)
             {
                 getGOs("select [GO_Item], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Quantity], [Urgency], [BoxEarly] from [PRL123] where [GO]='" + GOI.Text.Substring(0, 10) + "' order by [GO_Item]");
+            }
+            else if (CurrentProduct == Utility.ProductGroup.PRL4)
+            {
+                getGOs("select [GO_Item], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Quantity], [Urgency], [BoxEarly] from [" + ProductTable + "] where [GO]='" + GOI.Text.Substring(0, 10) + "' and [PageNumber] = 0 order by [GO_Item]");
             }
             else
             {

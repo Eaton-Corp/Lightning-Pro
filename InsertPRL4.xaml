@@ -171,14 +171,24 @@
         <Label Content="Hz:" Grid.Row="15" Grid.Column="2"/>
         <Label Content="GO Item XML:" Grid.Row="4" Grid.Column="2"/>
         <Label Content="Item Status:" Grid.Row="17" Grid.Column="2"/>
+        <Grid Grid.Column="0" Grid.Row="18" Grid.ColumnSpan="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <CheckBox x:Name="Approve" Content="Approve" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <CheckBox x:Name="BoxFirst" Content="200% RN" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <CheckBox x:Name="AMO" Content="AMO" Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <CheckBox x:Name="SpecialCustomer" Content="Special Customer" Grid.Column="3" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <CheckBox x:Name="BoxEarly" Content="Box Early" Grid.Column="4" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <CheckBox x:Name="BoxSent" Content="Box Sent" Grid.Column="5" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
+        </Grid>
 
-
-
-        <CheckBox x:Name="Approve" Content="Approve" Grid.Column="0" Grid.Row="18" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-        <CheckBox x:Name="BoxFirst" Content="200% RN" Grid.Column="1" Grid.Row="18" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-        <CheckBox x:Name="AMO" Content="AMO" Grid.Column="2" Grid.Row="18" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-        <CheckBox x:Name="SpecialCustomer" Content="Special Customer" Grid.Column="3" Grid.Row="18" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
 
         <TextBox x:Name="GO_Item"  TextWrapping="Wrap" Grid.Row="4" Grid.Column="1" Width="160" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top"/>

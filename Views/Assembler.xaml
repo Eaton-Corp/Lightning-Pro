@@ -93,6 +93,7 @@
                     <RowDefinition />
                     <RowDefinition />
                     <RowDefinition />
+                    <RowDefinition />
                 </Grid.RowDefinitions>
                 <CheckBox x:Name="DNSB_4" Content="DNSB" Grid.Row="0" Grid.Column="0" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 <CheckBox x:Name="ServiceEntrance_4" Content="Service Entrance" Grid.Row="0" Grid.Column="1" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
@@ -102,6 +103,8 @@
                 <CheckBox x:Name="DoorInDoor_4" Content="DoorInDoor" Grid.Row="2" Grid.Column="1" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 <CheckBox x:Name="Complete_4" Content="Complete" Grid.Row="3" Grid.Column="0" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 <CheckBox x:Name="Short_4" Content="Short" Grid.Row="3" Grid.Column="1" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <CheckBox x:Name="BoxEarly_4" Content="Box Early" Grid.Row="4" Grid.Column="0" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <CheckBox x:Name="BoxSent_4" Content="Box Sent" Grid.Row="4" Grid.Column="1" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             </Grid>
             
             <Grid x:Name="checkBoxGridPRLCS" Visibility="Hidden" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Grid.RowSpan="1">

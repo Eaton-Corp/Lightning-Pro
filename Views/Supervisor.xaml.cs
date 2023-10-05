@@ -45,8 +45,25 @@ namespace PRL123_Final.Views
 
             Field.Text = "GO_Item";
             Current_Tab = "InDevelopment";
-            PRL123_Set();
-            ButtonColorChanges();
+            intializeProduct();
+            //ButtonColorChanges();
+        }
+
+        public void intializeProduct()
+        {
+            if (MainWindow.ProductGroup.Equals(Utility.ProductGroup.PRLCS))
+            {
+                PRLCS_Set();
+            }
+            else if (MainWindow.ProductGroup.Equals(Utility.ProductGroup.PRL4))
+            {
+                PRL4_Set();
+            }
+            else if (MainWindow.ProductGroup.Equals(Utility.ProductGroup.PRL123))
+            {
+                PRL123_Set();
+            }
+
         }
 
 
@@ -69,7 +86,7 @@ namespace PRL123_Final.Views
                     }
                     else if (CurrentProduct == Utility.ProductGroup.PRL4)
                     {
-                        query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], [DNSB], [Complete], [Short], [LabelsPrinted] from [PRL4] where [Tracking]='" + Current_Tab + "' and [PageNumber] = 0";
+                        query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], [DNSB], [Complete], [Short], [LabelsPrinted], [BoxEarly], [BoxSent] from [PRL4] where [Tracking]='" + Current_Tab + "' and [PageNumber] = 0";
                     }
                     else if (CurrentProduct == Utility.ProductGroup.PRLCS)
                     {
@@ -91,73 +108,31 @@ namespace PRL123_Final.Views
         {
             Current_Tab = "InDevelopment";
             loadGrid();
-            ButtonColorChanges();
+            //ButtonColorChanges();
         }
 
         private void MI_Clicked(object sender, RoutedEventArgs e)
         {
             Current_Tab = "MIComplete";
             loadGrid();
-            ButtonColorChanges();
+            //ButtonColorChanges();
         }
 
         private void Production_Clicked(object sender, RoutedEventArgs e)
         {
             Current_Tab = "Production";
             loadGrid();
-            ButtonColorChanges();
+            //ButtonColorChanges();
         }
 
         private void Shipping_Clicked(object sender, RoutedEventArgs e)
         {
             Current_Tab = "Shipping";
             loadGrid();
-            ButtonColorChanges();
+            //ButtonColorChanges();
         }
 
-        private void ButtonColorChanges()
-        {
-            if (Current_Tab.Equals("Shipping"))
-            {
-                Shipping.Background = System.Windows.Media.Brushes.DarkBlue;
-                Production.Background = System.Windows.Media.Brushes.Blue;
-                MIComplete.Background = System.Windows.Media.Brushes.Blue;
-                Development.Background = System.Windows.Media.Brushes.Blue;
-                SearchButton.Background = System.Windows.Media.Brushes.LightGray;
-            }
-            else if (Current_Tab.Equals("Production"))
-            {
-                Shipping.Background = System.Windows.Media.Brushes.Blue;
-                Production.Background = System.Windows.Media.Brushes.DarkBlue;
-                MIComplete.Background = System.Windows.Media.Brushes.Blue;
-                Development.Background = System.Windows.Media.Brushes.Blue;
-                SearchButton.Background = System.Windows.Media.Brushes.LightGray;
-            }
-            else if (Current_Tab.Equals("MIComplete"))
-            {
-                Shipping.Background = System.Windows.Media.Brushes.Blue;
-                Production.Background = System.Windows.Media.Brushes.Blue;
-                MIComplete.Background = System.Windows.Media.Brushes.DarkBlue;
-                Development.Background = System.Windows.Media.Brushes.Blue;
-                SearchButton.Background = System.Windows.Media.Brushes.LightGray;
-            }
-            else if (Current_Tab.Equals("InDevelopment"))
-            {
-                Shipping.Background = System.Windows.Media.Brushes.Blue;
-                Production.Background = System.Windows.Media.Brushes.Blue;
-                MIComplete.Background = System.Windows.Media.Brushes.Blue;
-                Development.Background = System.Windows.Media.Brushes.DarkBlue;
-                SearchButton.Background = System.Windows.Media.Brushes.LightGray;
-            }
-            else if (Current_Tab.Equals("Search"))
-            {
-                Shipping.Background = System.Windows.Media.Brushes.Blue;
-                Production.Background = System.Windows.Media.Brushes.Blue;
-                MIComplete.Background = System.Windows.Media.Brushes.Blue;
-                Development.Background = System.Windows.Media.Brushes.Blue;
-                SearchButton.Background = System.Windows.Media.Brushes.Gray;
-            }
-        }
+       
 
         private void updateStatus(string command)
         {
@@ -168,30 +143,33 @@ namespace PRL123_Final.Views
         private void PRL123_Set()
         {
             CurrentProduct = Utility.ProductGroup.PRL123;
+            MainWindow.ProductGroup = Utility.ProductGroup.PRL123;
             ProductTable = "PRL123";
-            PWL123.Background = System.Windows.Media.Brushes.DarkBlue;
-            PWL4.Background = System.Windows.Media.Brushes.Blue;
-            PWLCS.Background = System.Windows.Media.Brushes.Blue;
+            //PWL123.Background = System.Windows.Media.Brushes.DarkBlue;
+            //PWL4.Background = System.Windows.Media.Brushes.Blue;
+            //PWLCS.Background = System.Windows.Media.Brushes.Blue;
             loadGrid();
         }
 
         private void PRL4_Set()
         {
             CurrentProduct = Utility.ProductGroup.PRL4;
+            MainWindow.ProductGroup = Utility.ProductGroup.PRL4;
             ProductTable = "PRL4";
-            PWL4.Background = System.Windows.Media.Brushes.DarkBlue;
-            PWL123.Background = System.Windows.Media.Brushes.Blue;
-            PWLCS.Background = System.Windows.Media.Brushes.Blue;
+            //PWL4.Background = System.Windows.Media.Brushes.DarkBlue;
+            //PWL123.Background = System.Windows.Media.Brushes.Blue;
+            //PWLCS.Background = System.Windows.Media.Brushes.Blue;
             loadGrid();
         }
 
         private void PRLCS_Set()
         {
             CurrentProduct = Utility.ProductGroup.PRLCS;
+            MainWindow.ProductGroup = Utility.ProductGroup.PRLCS;
             ProductTable = "PRLCS";
-            PWL4.Background = System.Windows.Media.Brushes.Blue;
-            PWL123.Background = System.Windows.Media.Brushes.Blue;
-            PWLCS.Background = System.Windows.Media.Brushes.DarkBlue;
+            //PWL4.Background = System.Windows.Media.Brushes.Blue;
+            //PWL123.Background = System.Windows.Media.Brushes.Blue;
+            //PWLCS.Background = System.Windows.Media.Brushes.DarkBlue;
             loadGrid();
         }
 
@@ -502,7 +480,53 @@ namespace PRL123_Final.Views
             string query = Utility.searchQueryGenerator(CurrentProduct, Field.Text, Search.Text);
             dt = Utility.SearchLP(query);
             dg.ItemsSource = dt.DefaultView;
-            ButtonColorChanges();
+            //ButtonColorChanges();
+        }
+
+        public void Filter_click(object sender, RoutedEventArgs e)
+        {
+            if (sender is ComboBox selectedItem)
+            {
+                if (selectedItem.SelectedItem is ComboBoxItem selectedComboBoxItem)
+                {
+                    string selectedValue = selectedComboBoxItem.Content.ToString();
+                    Current_Tab = selectedValue;  // Assuming Current_Tab is a string
+                    loadGrid();
+                }
+            }
+        }
+
+
+        private void DataGrid_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            // Get the visual element that was clicked
+            var hitTestResult = VisualTreeHelper.HitTest(dg, e.GetPosition(dg));
+            var clickedElement = hitTestResult.VisualHit;
+
+            // Traverse up the visual tree to find the DataGridRow that contains the clicked element
+            DataGridRow clickedRow = null;
+            while (clickedElement != null)
+            {
+                if (clickedElement is DataGridRow row)
+                {
+                    clickedRow = row;
+                    break;
+                }
+                clickedElement = VisualTreeHelper.GetParent(clickedElement);
+            }
+
+            // If a DataGridRow was found, select it
+            if (clickedRow != null)
+            {
+                DataGrid gd = (DataGrid)sender;
+                int rowIndex = clickedRow.GetIndex();
+
+                // Override the current selected index
+                dg.SelectedIndex = rowIndex;
+
+                // Trigger the SelectionChanged event
+                dg.SelectedItem = dg.Items[rowIndex];
+            }
         }
 
 
