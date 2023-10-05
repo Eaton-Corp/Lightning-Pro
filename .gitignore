@@ -6,6 +6,7 @@ Local_Shop_Packs/
 LocalOrderFiles/
 bin/
 obj/
+.vs/
 
 # User-specific files
 *.suo
