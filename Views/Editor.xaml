@@ -153,9 +153,7 @@
             </Button>
         </Grid>
 
-
-
-        <local:ZoomBorder   x:Name="border" ClipToBounds="True" Background="White" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" Grid.RowSpan="7" >
+        <local:ZoomBorder x:Name="border" ClipToBounds="True" Background="White" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" Grid.RowSpan="7">
             <Grid Name="Component">
                 <Image Name="Back" HorizontalAlignment="Center"/>
                 <Canvas Name="Drawing" HorizontalAlignment="Center" MouseDown="CanvasMouseDown" MouseMove="CanvasMouseMove" MouseUp="Canvas_MouseUp">
@@ -165,6 +163,7 @@
                 </Canvas>
             </Grid>
         </local:ZoomBorder>
+
 
     </Grid>
 </UserControl>

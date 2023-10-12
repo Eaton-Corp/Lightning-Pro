@@ -173,7 +173,7 @@ namespace LightningPRO.Views
                     if (Scan.Text.StartsWith("4-"))     //PWL4
                     {
                         PRL4_Set();
-                        getGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], [SpecialCustomer], [AMO], [ServiceEntrance], [RatedNeutral200], [PaintedBox], [DNSB], [Complete], [Short], [NameplateRequired], [NameplateOrdered], [FilePath], [DoorOverDist], [DoorInDoor], [PageNumber], [BoxEarly], [BoxSent] from [PRL4] where [GO]='" + Scan.Text.Substring(2, 10) + "' order by [GO_Item],[PageNumber]");
+                        GetGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], [SpecialCustomer], [AMO], [ServiceEntrance], [RatedNeutral200], [PaintedBox], [DNSB], [Complete], [Short], [NameplateRequired], [NameplateOrdered], [FilePath], [DoorOverDist], [DoorInDoor], [PageNumber], [BoxEarly], [BoxSent] from [PRL4] where [GO]='" + Scan.Text.Substring(2, 10) + "' order by [GO_Item],[PageNumber]");
                     }
                     else if (Scan.Text.ToUpper().StartsWith("CS-"))       //PWLCS
                     {
@@ -549,7 +549,7 @@ namespace LightningPRO.Views
             }
             else if (CurrentProduct == Utility.ProductGroup.PRL4)
             {
-                getGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], [SpecialCustomer], [AMO], [ServiceEntrance], [RatedNeutral200], [PaintedBox], [DNSB], [Complete], [Short], [NameplateRequired], [NameplateOrdered], [FilePath], [DoorOverDist], [DoorInDoor], [PageNumber], [BoxEarly], [BoxSent] from [PRL4] where [GO]='" + GO_Item.Text.Substring(0, 10) + "' order by [GO_Item],[PageNumber]");
+                GetGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], [SpecialCustomer], [AMO], [ServiceEntrance], [RatedNeutral200], [PaintedBox], [DNSB], [Complete], [Short], [NameplateRequired], [NameplateOrdered], [FilePath], [DoorOverDist], [DoorInDoor], [PageNumber], [BoxEarly], [BoxSent] from [PRL4] where [GO]='" + GO_Item.Text.Substring(0, 10) + "' order by [GO_Item],[PageNumber]");
             }
             else if(CurrentProduct == Utility.ProductGroup.PRLCS)
             {

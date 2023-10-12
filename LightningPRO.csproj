@@ -57,8 +57,7 @@
   <PropertyGroup />
   <PropertyGroup />
   <PropertyGroup>
-    <ApplicationIcon>
-    </ApplicationIcon>
+    <ApplicationIcon>Assets\bolt %281%29.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
@@ -200,6 +199,9 @@
     <Compile Include="InsertPRLCS.xaml.cs">
       <DependentUpon>InsertPRLCS.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MassUpdateGO.xaml.cs">
+      <DependentUpon>MassUpdateGO.xaml</DependentUpon>
+    </Compile>
     <Compile Include="NotesWindow.xaml.cs">
       <DependentUpon>NotesWindow.xaml</DependentUpon>
     </Compile>
@@ -308,6 +310,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="MassUpdateGO.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="NotesWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -657,12 +663,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\updateData.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Assets\bolt.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="bolt %281%29.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -42,8 +42,8 @@ namespace LightningPRO
 
         int pg;
         Boolean isLoaded;
-        Views.Shipping CurrentShippingWindow;
-        Utility.ProductGroup CurrentProduct;
+        readonly Views.Shipping CurrentShippingWindow;
+        readonly Utility.ProductGroup CurrentProduct;
 
 
 
@@ -55,13 +55,11 @@ namespace LightningPRO
             CurrentProduct = currentProduct;
             if(currentProduct == Utility.ProductGroup.PRL123)
             {
-                getGOs("select [GO_Item], [ShopOrderBox], [Customer], [Quantity], [Urgency], [Bidman], [Catalogue], [ImageFilePath] from [PRL123] where [GO]='" + GO_Item.Substring(0, 10) + "' and [BoxEarly]=True and [Box Sent]=False");
-
+                GetGOs("select [GO_Item], [ShopOrderBox], [Customer], [Quantity], [Urgency], [Bidman], [Catalogue], [ImageFilePath] from [PRL123] where [GO]='" + GO_Item.Substring(0, 10) + "' and [BoxEarly]=True and [Box Sent]=False");
             }
             else if(currentProduct == Utility.ProductGroup.PRL4)
             {
-                getGOs("select [GO_Item], [ShopOrderBox], [Customer], [Quantity], [Urgency], [Bidman], [Catalogue], [ImageFilePath] from [PRL4] where [GO]='" + GO_Item.Substring(0, 10) + "' and [BoxEarly]=True and [BoxSent]=False and [PageNumber] = 0");
-
+                GetGOs("select [GO_Item], [ShopOrderBox], [Customer], [Quantity], [Urgency], [Bidman], [Catalogue], [ImageFilePath] from [PRL4] where [GO]='" + GO_Item.Substring(0, 10) + "' and [BoxEarly]=True and [BoxSent]=False and [PageNumber] = 0");
             }
 
         }
@@ -185,8 +183,8 @@ namespace LightningPRO
         {
             if (isLoaded == true)
             {
-                string command = "";
-                string query = "";
+                string command;
+                string query;
                 if (CurrentProduct == Utility.ProductGroup.PRL123) {
                     command = "update [PRL123] set [Box Sent]=True where [GO_Item]='" + GOI.Text + "'";
                     query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [Catalogue], [AMO], [BoxEarly], [Box Sent], [SpecialCustomer], [ServiceEntrance], [DoubleSection], [PaintedBox], [RatedNeutral200], [DNSB], [Complete], [Short], [LabelsPrinted] from [PRL123] where [BoxEarly]=True and [Box Sent]=False";
@@ -195,11 +193,10 @@ namespace LightningPRO
                 {
                     command = "update [PRL4] set [Box Sent]=True where [GO_Item]='" + GOI.Text + "'";
                     query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], [DNSB], [Complete], [Short], [LabelsPrinted], [BoxEarly], [BoxSent]  from [PRL4] where [BoxEarly]=True and [BoxSent]=False and [PageNumber] = 0";
-                    //query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [Catalogue], [AMO], [BoxEarly], [Box Sent], [SpecialCustomer], [ServiceEntrance], [DoubleSection], [PaintedBox], [RatedNeutral200], [DNSB], [Complete], [Short], [LabelsPrinted] from [PRL123] where [BoxEarly]=True and [Box Sent]=False";
                 }
                 
 
-                Utility.executeNonQueryLP(command);
+                Utility.ExecuteNonQueryLP(command);
                 Status.Content = GOI.Text + " TUBS SUCCESSFULLY SHIPPED";
 
                 CurrentShippingWindow.PRL123_Set();

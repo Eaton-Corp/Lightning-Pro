@@ -688,7 +688,6 @@ namespace LightningPRO
         }
 
 
-        //TO DO --> ADD Scheduling Group as well
         // The following is used for the AddToShopPackage feature
         public static int ExecuteAddToShopPack(string SelectedGO, ProductGroup CurrentProduct)
         {
@@ -707,11 +706,14 @@ namespace LightningPRO
                     string SOInterior = "";
                     string SOBox = "";
                     string SOTrim = "";
+                    string SchedGroup = "";
                     string Customer = "";
                     string Quantity = "";
-                    string EnterDate = "";
-                    string ReleaseDate = "";
-                    string CommitDate = "";
+
+                    DateTime? EnterDate = null;
+                    DateTime? ReleaseDate = null;
+                    DateTime? CommitDate = null;
+
                     string Tracking = "";
                     string Urgency = "";
 
@@ -724,7 +726,9 @@ namespace LightningPRO
                     Boolean RatedNeutral200 = false;
                     Boolean DoorOverDist = false;
                     Boolean DoorInDoor = false;
-                    
+                    Boolean BoxEarly = false;
+                    Boolean BoxSent = false;
+                        
                     //PRLCS Checklist
                     Boolean IncLocLeft = false;
                     Boolean IncLocRight = false;
@@ -732,7 +736,9 @@ namespace LightningPRO
                     Boolean OpenBottom = false;
                     Boolean ExtendedTop = false;
                     Boolean ThirtyDeepEncolsure = false;
-                    
+
+                    Boolean NameplateRequired = false;
+                    Boolean NameplateOrdered = false;
                     Boolean DNSB = false;
                     Boolean Complete = false;
                     Boolean Short = false;
@@ -756,11 +762,11 @@ namespace LightningPRO
                     string query = "";
                     if (CurrentProduct == ProductGroup.PRL4)
                     {
-                        query = "select [ShopOrderInterior],[ShopOrderBox],[ShopOrderTrim],[Customer],[Quantity],[EnteredDate],[ReleaseDate],[CommitDate],[Tracking],[Urgency],[SpecialCustomer],[AMO],[PaintedBox],[DNSB],[Complete],[Short],[Type],[Volts],[Amps],[Torque],[Appearance],[Bus],[Catalogue],[ProductSpecialist],[FilePath],[ImageFilePath],[PageNumber],[Notes],[LabelsPrinted],[ServiceEntrance],[RatedNeutral200],[DoorOverDist],[DoorInDoor] from [PRL4] where [GO_Item]='" + SelectedGO + "' order by [GO_Item],[PageNumber]";
+                        query = "select [ShopOrderInterior],[ShopOrderBox],[ShopOrderTrim],[SchedulingGroup],[Customer],[Quantity],[EnteredDate],[ReleaseDate],[CommitDate],[Tracking],[Urgency],[SpecialCustomer],[AMO],[PaintedBox],[NameplateRequired],[NameplateOrdered],[DNSB],[Complete],[Short],[Type],[Volts],[Amps],[Torque],[Appearance],[Bus],[Catalogue],[ProductSpecialist],[FilePath],[ImageFilePath],[PageNumber],[Notes],[LabelsPrinted],[ServiceEntrance],[RatedNeutral200],[DoorOverDist],[DoorInDoor],[BoxEarly],[BoxSent] from [PRL4] where [GO_Item]='" + SelectedGO + "' order by [GO_Item],[PageNumber]";
                     }
                     else if(CurrentProduct == ProductGroup.PRLCS)
                     {                        
-                        query = "select [ShopOrderInterior],[ShopOrderBox],[ShopOrderTrim],[Customer],[Quantity],[EnteredDate],[ReleaseDate],[CommitDate],[Tracking],[Urgency],[SpecialCustomer],[AMO],[PaintedBox],[DNSB],[Complete],[Short],[Type],[Volts],[Amps],[Torque],[Appearance],[Bus],[Catalogue],[ProductSpecialist],[FilePath],[ImageFilePath],[PageNumber],[Notes],[LabelsPrinted],[IncLocLeft],[IncLocRight],[CrossBus],[OpenBottom],[ExtendedTop],[ThirtyDeepEnclosure] from [PRLCS] where [GO_Item]='" + SelectedGO + "' order by [GO_Item],[PageNumber]";
+                        query = "select [ShopOrderInterior],[ShopOrderBox],[ShopOrderTrim],[SchedulingGroup],[Customer],[Quantity],[EnteredDate],[ReleaseDate],[CommitDate],[Tracking],[Urgency],[SpecialCustomer],[AMO],[PaintedBox],[NameplateRequired],[NameplateOrdered],[DNSB],[Complete],[Short],[Type],[Volts],[Amps],[Torque],[Appearance],[Bus],[Catalogue],[ProductSpecialist],[FilePath],[ImageFilePath],[PageNumber],[Notes],[LabelsPrinted],[IncLocLeft],[IncLocRight],[CrossBus],[OpenBottom],[ExtendedTop],[ThirtyDeepEnclosure] from [PRLCS] where [GO_Item]='" + SelectedGO + "' order by [GO_Item],[PageNumber]";
                     }
                     using (DataTableReader dtr = LoadData(query))
                     {
@@ -769,52 +775,59 @@ namespace LightningPRO
                             SOInterior = dtr[0].ToString();
                             SOBox = dtr[1].ToString();
                             SOTrim = dtr[2].ToString();
-                            Customer = dtr[3].ToString();
-                            Quantity = dtr[4].ToString();
-                            EnterDate = dtr[5].ToString();
-                            ReleaseDate = dtr[6].ToString();
-                            CommitDate = dtr[7].ToString();
-                            Tracking = dtr[8].ToString();
-                            Urgency = dtr[9].ToString();
+                            SchedGroup = dtr[3].ToString();
+                            Customer = dtr[4].ToString();
+                            Quantity = dtr[5].ToString();
 
-                            SpecialCustomer = (Boolean)dtr[10];
-                            AMO = (Boolean)dtr[11];
-                            PaintedBox = (Boolean)dtr[12];
-                            DNSB = (Boolean)dtr[13];
-                            Complete = (Boolean)dtr[14];
-                            Short = (Boolean)dtr[15];
+                            if (string.IsNullOrEmpty(dtr[6].ToString())) EnterDate = null; else EnterDate = (DateTime?)Convert.ToDateTime(dtr[6].ToString());
+                            if (string.IsNullOrEmpty(dtr[7].ToString())) ReleaseDate = null; else ReleaseDate = (DateTime?)Convert.ToDateTime(dtr[7].ToString());
+                            if (string.IsNullOrEmpty(dtr[8].ToString())) CommitDate = null; else CommitDate = (DateTime?)Convert.ToDateTime(dtr[8].ToString());
 
-                            type = dtr[16].ToString();
-                            volts = dtr[17].ToString();
-                            amps = dtr[18].ToString();
-                            torque = dtr[19].ToString();
-                            appearance = dtr[20].ToString();
-                            bus = dtr[21].ToString();
-                            catalogue = dtr[22].ToString();
-                            prodSpecialist = dtr[23].ToString();
+                            Tracking = dtr[9].ToString();
+                            Urgency = dtr[10].ToString();
 
-                            pdfFilepath = dtr[24].ToString();
-                            imageFilepath = dtr[25].ToString();
-                            pageNumber = (int)dtr[26];
+                            SpecialCustomer = (Boolean)dtr[11];
+                            AMO = (Boolean)dtr[12];
+                            PaintedBox = (Boolean)dtr[13];
+                            NameplateRequired = (Boolean)dtr[14];
+                            NameplateOrdered = (Boolean)dtr[15];
+                            DNSB = (Boolean)dtr[16];
+                            Complete = (Boolean)dtr[17];
+                            Short = (Boolean)dtr[18];
 
-                            notes = dtr[27].ToString();
-                            LabelsPrinted = (Boolean)dtr[28];
+                            type = dtr[19].ToString();
+                            volts = dtr[20].ToString();
+                            amps = dtr[21].ToString();
+                            torque = dtr[22].ToString();
+                            appearance = dtr[23].ToString();
+                            bus = dtr[24].ToString();
+                            catalogue = dtr[25].ToString();
+                            prodSpecialist = dtr[26].ToString();
+
+                            pdfFilepath = dtr[27].ToString();
+                            imageFilepath = dtr[28].ToString();
+                            pageNumber = (int)dtr[29];
+
+                            notes = dtr[30].ToString();
+                            LabelsPrinted = (Boolean)dtr[31];
 
                             if (CurrentProduct == ProductGroup.PRL4)
                             {
-                                ServiceEntrance = (Boolean)dtr[29];
-                                RatedNeutral200 = (Boolean)dtr[30];
-                                DoorOverDist = (Boolean)dtr[31];
-                                DoorInDoor = (Boolean)dtr[32];
+                                ServiceEntrance = (Boolean)dtr[32];
+                                RatedNeutral200 = (Boolean)dtr[33];
+                                DoorOverDist = (Boolean)dtr[34];
+                                DoorInDoor = (Boolean)dtr[35];
+                                BoxEarly = (Boolean)dtr[36];
+                                BoxSent = (Boolean)dtr[37];
                             }
                             else if(CurrentProduct == ProductGroup.PRLCS)
                             {
-                                IncLocLeft = (Boolean)dtr[29];
-                                IncLocRight = (Boolean)dtr[30];
-                                CrossBus = (Boolean)dtr[31];
-                                OpenBottom = (Boolean)dtr[32];
-                                ExtendedTop = (Boolean)dtr[33];
-                                ThirtyDeepEncolsure = (Boolean)dtr[34];                          
+                                IncLocLeft = (Boolean)dtr[32];
+                                IncLocRight = (Boolean)dtr[33];
+                                CrossBus = (Boolean)dtr[34];
+                                OpenBottom = (Boolean)dtr[35];
+                                ExtendedTop = (Boolean)dtr[36];
+                                ThirtyDeepEncolsure = (Boolean)dtr[37];                          
                             }                            
                         }
                     }
@@ -822,16 +835,113 @@ namespace LightningPRO
                     pageNumber += 1;
                     imageFilepath = System.IO.Path.GetFullPath(System.IO.Path.Combine(imageFilepath, @"..\" + SelectedGO.Substring(0, 10) + "_" + SelectedGO.Substring(11, SelectedGO.Length - 11) + "_" + pageNumber.ToString() + ".png"));
 
-                    string command = "";
+                    
                     if (CurrentProduct == ProductGroup.PRL4)
                     {
-                        command = "INSERT INTO [PRL4]([GO_Item],[GO],[ShopOrderInterior],[ShopOrderBox],[ShopOrderTrim],[Customer],[Quantity],[EnteredDate],[ReleaseDate],[CommitDate],[Tracking],[Urgency],[SpecialCustomer],[AMO],[ServiceEntrance],[PaintedBox],[RatedNeutral200],[DoorOverDist],[DoorInDoor],[DNSB],[Complete],[Short],[Type],[Volts],[Amps],[Torque],[Appearance],[Bus],[Catalogue],[ProductSpecialist],[FilePath],[ImageFilePath],[PageNumber],[Notes],[LabelsPrinted]) VALUES('" + insertGOI + "','" + insertGO + "','" + SOInterior + "','" + SOBox + "','" + SOTrim + "','" + Customer + "','" + Quantity + "','" + EnterDate + "','" + ReleaseDate + "','" + CommitDate + "','" + Tracking + "','" + Urgency + "'," + SpecialCustomer.ToString() + "," + AMO.ToString() + "," + ServiceEntrance.ToString() + "," + PaintedBox.ToString() + "," + RatedNeutral200.ToString() + "," + DoorOverDist.ToString() + "," + DoorInDoor.ToString() + "," + DNSB.ToString() + "," + Complete.ToString() + "," + Short.ToString() + ",'" + type + "','" + volts + "','" + amps + "','" + torque + "','" + appearance + "','" + bus + "','" + catalogue + "','" + prodSpecialist + "','" + pdfFilepath + "','" + imageFilepath + "'," + pageNumber.ToString() + ",'" + notes + "'," + LabelsPrinted.ToString() + ")";
+                        string command = "INSERT INTO [PRL4]([GO_Item],[GO],[ShopOrderInterior],[ShopOrderBox],[ShopOrderTrim],[SchedulingGroup],[Customer],[Quantity],[EnteredDate],[ReleaseDate],[CommitDate],[Tracking],[Urgency],[SpecialCustomer],[AMO],[ServiceEntrance],[PaintedBox],[RatedNeutral200],[DoorOverDist],[DoorInDoor],[BoxEarly],[BoxSent],[NameplateRequired],[NameplateOrdered],[DNSB],[Complete],[Short],[Type],[Volts],[Amps],[Torque],[Appearance],[Bus],[Catalogue],[ProductSpecialist],[FilePath],[ImageFilePath],[PageNumber],[Notes],[LabelsPrinted]) " +
+                                  "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+
+                        using (OleDbCommand cmd = new OleDbCommand(command, MainWindow.LPcon))
+                        {
+                            cmd.Parameters.AddWithValue("GO_Item", insertGOI);
+                            cmd.Parameters.AddWithValue("GO", insertGO);
+                            cmd.Parameters.AddWithValue("ShopOrderInterior", SOInterior);
+                            cmd.Parameters.AddWithValue("ShopOrderBox", SOBox);
+                            cmd.Parameters.AddWithValue("ShopOrderTrim", SOTrim);
+                            cmd.Parameters.AddWithValue("SchedulingGroup", SchedGroup);
+                            cmd.Parameters.AddWithValue("Customer", Customer);
+                            cmd.Parameters.AddWithValue("Quantity", Quantity);
+
+                            if (EnterDate == null) cmd.Parameters.AddWithValue("EnteredDate", DBNull.Value); else cmd.Parameters.AddWithValue("EnteredDate", EnterDate);
+                            if (ReleaseDate == null) cmd.Parameters.AddWithValue("ReleaseDate", DBNull.Value); else cmd.Parameters.AddWithValue("ReleaseDate", ReleaseDate);
+                            if (CommitDate == null) cmd.Parameters.AddWithValue("CommitDate", DBNull.Value); else cmd.Parameters.AddWithValue("CommitDate", CommitDate);
+
+                            cmd.Parameters.AddWithValue("Tracking", Tracking);
+                            cmd.Parameters.AddWithValue("Urgency", Urgency);
+                            cmd.Parameters.AddWithValue("SpecialCustomer", SpecialCustomer);
+                            cmd.Parameters.AddWithValue("AMO", AMO);
+                            cmd.Parameters.AddWithValue("ServiceEntrance", ServiceEntrance);
+                            cmd.Parameters.AddWithValue("PaintedBox", PaintedBox);
+                            cmd.Parameters.AddWithValue("RatedNeutral200", RatedNeutral200);
+                            cmd.Parameters.AddWithValue("DoorOverDist", DoorOverDist);
+                            cmd.Parameters.AddWithValue("DoorInDoor", DoorInDoor);
+                            cmd.Parameters.AddWithValue("BoxEarly", BoxEarly);
+                            cmd.Parameters.AddWithValue("BoxSent", BoxSent);
+                            cmd.Parameters.AddWithValue("NameplateRequired", NameplateRequired);
+                            cmd.Parameters.AddWithValue("NameplateOrdered", NameplateOrdered);
+                            cmd.Parameters.AddWithValue("DNSB", DNSB);
+                            cmd.Parameters.AddWithValue("Complete", Complete);
+                            cmd.Parameters.AddWithValue("Short", Short);
+                            cmd.Parameters.AddWithValue("Type", type);
+                            cmd.Parameters.AddWithValue("Volts", volts);
+                            cmd.Parameters.AddWithValue("Amps", amps);
+                            cmd.Parameters.AddWithValue("Torque", torque);
+                            cmd.Parameters.AddWithValue("Appearance", appearance);
+                            cmd.Parameters.AddWithValue("Bus", bus);
+                            cmd.Parameters.AddWithValue("Catalogue", catalogue);
+                            cmd.Parameters.AddWithValue("ProductSpecialist", prodSpecialist);
+                            cmd.Parameters.AddWithValue("FilePath", pdfFilepath);
+                            cmd.Parameters.AddWithValue("ImageFilePath", imageFilepath);
+                            cmd.Parameters.AddWithValue("PageNumber", pageNumber);
+                            cmd.Parameters.AddWithValue("Notes", notes);
+                            cmd.Parameters.AddWithValue("LabelsPrinted", LabelsPrinted);
+
+                            cmd.ExecuteNonQuery();
+                        }
                     }
-                    else if(CurrentProduct == ProductGroup.PRLCS)
+                    else if (CurrentProduct == ProductGroup.PRLCS)
                     {
-                        command = "INSERT INTO [PRLCS]([GO_Item],[GO],[ShopOrderInterior],[ShopOrderBox],[ShopOrderTrim],[Customer],[Quantity],[EnteredDate],[ReleaseDate],[CommitDate],[Tracking],[Urgency],[SpecialCustomer],[AMO],[IncLocLeft],[IncLocRight],[CrossBus],[OpenBottom],[ExtendedTop],[PaintedBox],[ThirtyDeepEnclosure],[DNSB],[Complete],[Short],[Type],[Volts],[Amps],[Torque],[Appearance],[Bus],[Catalogue],[ProductSpecialist],[FilePath],[ImageFilePath],[PageNumber],[Notes],[LabelsPrinted]) VALUES('" + insertGOI + "','" + insertGO + "','" + SOInterior + "','" + SOBox + "','" + SOTrim + "','" + Customer + "','" + Quantity + "','" + EnterDate + "','" + ReleaseDate + "','" + CommitDate + "','" + Tracking + "','" + Urgency + "'," + SpecialCustomer.ToString() + "," + AMO.ToString() + "," + IncLocLeft.ToString() + "," + IncLocRight.ToString() + "," + CrossBus.ToString() + "," + OpenBottom.ToString() + "," + ExtendedTop.ToString() + "," + PaintedBox.ToString() + "," + ThirtyDeepEncolsure.ToString() + "," + DNSB.ToString() + "," + Complete.ToString() + "," + Short.ToString() + ",'" + type + "','" + volts + "','" + amps + "','" + torque + "','" + appearance + "','" + bus + "','" + catalogue + "','" + prodSpecialist + "','" + pdfFilepath + "','" + imageFilepath + "'," + pageNumber.ToString() + ",'" + notes + "'," + LabelsPrinted.ToString() + ")";
+                        string command = "INSERT INTO [PRLCS]([GO_Item],[GO],[ShopOrderInterior],[ShopOrderBox],[ShopOrderTrim],[SchedulingGroup],[Customer],[Quantity],[EnteredDate],[ReleaseDate],[CommitDate],[Tracking],[Urgency],[SpecialCustomer],[AMO],[IncLocLeft],[IncLocRight],[CrossBus],[OpenBottom],[ExtendedTop],[PaintedBox],[ThirtyDeepEnclosure],[NameplateRequired],[NameplateOrdered],[DNSB],[Complete],[Short],[Type],[Volts],[Amps],[Torque],[Appearance],[Bus],[Catalogue],[ProductSpecialist],[FilePath],[ImageFilePath],[PageNumber],[Notes],[LabelsPrinted]) " +
+                                  "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+
+                        using (OleDbCommand cmd = new OleDbCommand(command, MainWindow.LPcon))
+                        {
+                            cmd.Parameters.AddWithValue("GO_Item", insertGOI);
+                            cmd.Parameters.AddWithValue("GO", insertGO);
+                            cmd.Parameters.AddWithValue("ShopOrderInterior", SOInterior);
+                            cmd.Parameters.AddWithValue("ShopOrderBox", SOBox);
+                            cmd.Parameters.AddWithValue("ShopOrderTrim", SOTrim);
+                            cmd.Parameters.AddWithValue("SchedulingGroup", SchedGroup);
+                            cmd.Parameters.AddWithValue("Customer", Customer);
+                            cmd.Parameters.AddWithValue("Quantity", Quantity);
+
+                            if (EnterDate == null) cmd.Parameters.AddWithValue("EnteredDate", DBNull.Value); else cmd.Parameters.AddWithValue("EnteredDate", EnterDate);
+                            if (ReleaseDate == null) cmd.Parameters.AddWithValue("ReleaseDate", DBNull.Value); else cmd.Parameters.AddWithValue("ReleaseDate", ReleaseDate);
+                            if (CommitDate == null) cmd.Parameters.AddWithValue("CommitDate", DBNull.Value); else cmd.Parameters.AddWithValue("CommitDate", CommitDate);
+
+                            cmd.Parameters.AddWithValue("Tracking", Tracking);
+                            cmd.Parameters.AddWithValue("Urgency", Urgency);
+                            cmd.Parameters.AddWithValue("SpecialCustomer", SpecialCustomer);
+                            cmd.Parameters.AddWithValue("AMO", AMO);
+                            cmd.Parameters.AddWithValue("IncLocLeft", IncLocLeft);
+                            cmd.Parameters.AddWithValue("IncLocRight", IncLocRight);
+                            cmd.Parameters.AddWithValue("CrossBus", CrossBus);
+                            cmd.Parameters.AddWithValue("OpenBottom", OpenBottom);
+                            cmd.Parameters.AddWithValue("ExtendedTop", ExtendedTop);
+                            cmd.Parameters.AddWithValue("PaintedBox", PaintedBox);
+                            cmd.Parameters.AddWithValue("ThirtyDeepEncolsure", ThirtyDeepEncolsure);
+                            cmd.Parameters.AddWithValue("NameplateRequired", NameplateRequired);
+                            cmd.Parameters.AddWithValue("NameplateOrdered", NameplateOrdered);
+                            cmd.Parameters.AddWithValue("DNSB", DNSB);
+                            cmd.Parameters.AddWithValue("Complete", Complete);
+                            cmd.Parameters.AddWithValue("Short", Short);
+                            cmd.Parameters.AddWithValue("Type", type);
+                            cmd.Parameters.AddWithValue("Volts", volts);
+                            cmd.Parameters.AddWithValue("Amps", amps);
+                            cmd.Parameters.AddWithValue("Torque", torque);
+                            cmd.Parameters.AddWithValue("Appearance", appearance);
+                            cmd.Parameters.AddWithValue("Bus", bus);
+                            cmd.Parameters.AddWithValue("Catalogue", catalogue);
+                            cmd.Parameters.AddWithValue("ProductSpecialist", prodSpecialist);
+                            cmd.Parameters.AddWithValue("FilePath", pdfFilepath);
+                            cmd.Parameters.AddWithValue("ImageFilePath", imageFilepath);
+                            cmd.Parameters.AddWithValue("PageNumber", pageNumber);
+                            cmd.Parameters.AddWithValue("Notes", notes);
+                            cmd.Parameters.AddWithValue("LabelsPrinted", LabelsPrinted);
+
+                            cmd.ExecuteNonQuery();
+                        }
                     }
-                    ExecuteNonQueryLP(command);
 
 
                     string filepath = ofg.FileName;
@@ -1162,29 +1272,29 @@ namespace LightningPRO
 
 
         // The following is used to access the ReplacementParts table - 1-1 mapping only
-        public static string ReplacePart(string part)
-        {
-            string replacement = part;
-            try
-            {
-                string query = "select [Replace] from [ReplacementParts] where [Find]='" + part + "'";
-                using (DataTableReader dtr = LoadData(query))
-                {
-                    while (dtr.Read())
-                    {
-                        if (dtr[0] != null)
-                        {
-                            replacement = dtr[0].ToString();    //there is a replacement available
-                        }
-                    }
-                } //end using reader
-            }
-            catch
-            {
-                MessageBox.Show("Unable To Replace Part");
-            }
-            return replacement;
-        }
+        //public static string ReplacePart(string part)
+        //{
+        //    string replacement = part;
+        //    try
+        //    {
+        //        string query = "select [Replace] from [ReplacementParts] where [Find]='" + part + "'";
+        //        using (DataTableReader dtr = LoadData(query))
+        //        {
+        //            while (dtr.Read())
+        //            {
+        //                if (dtr[0] != null)
+        //                {
+        //                    replacement = dtr[0].ToString();    //there is a replacement available
+        //                }
+        //            }
+        //        } //end using reader
+        //    }
+        //    catch
+        //    {
+        //        MessageBox.Show("Unable To Replace Part");
+        //    }
+        //    return replacement;
+        //}
 
 
 

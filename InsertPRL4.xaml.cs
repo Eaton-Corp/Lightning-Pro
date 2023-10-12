@@ -30,7 +30,7 @@ using System.Net.Mail;
 using System.Net;
 using static LightningPRO.Insert;
 using iTextSharp.text.pdf.qrcode;
-//using System.Windows.Forms;
+
 
 namespace LightningPRO
 {
@@ -511,7 +511,7 @@ namespace LightningPRO
             GOItemXML.Text = GoItemXmlArr[XMLpage];
         }
 
-        private void matchXMLPage(string GOItem)
+        private void MatchXMLPage(string GOItem)
         {
             for(int i = 0; i < GoItemXmlArr.Length; i++)
             {
@@ -624,7 +624,7 @@ namespace LightningPRO
                     //sets global variable BMLines to XMLNodesList where each node has the list of materials for a line item
                     BMLines = xDoc.GetElementsByTagName("BMLineItems");
                     strPathPDF = FilePathFinder(SearchBox.Text);
-                    isAMO();
+                    IsAMO();
 
 
                     XmlUploaded = true;
@@ -1058,24 +1058,6 @@ namespace LightningPRO
             {
                 dynamic row = gd.SelectedItem;
                 SetRow(row);
-
-                /*GO1.Text = row["GO"];
-                GO_Item.Text = row["GO Item"];
-                Item.Text = row["Item"];
-                SchedulingGroup.Text = row["Attribute1"].ToString();
-                ShopOrder.Text = row["Shop Order"].ToString();
-                ShopOrderTrim.Text = row["Shop Order T"].ToString();
-                ShopOrderBox.Text = row["Shop Order B"].ToString();
-                Customer.Text = row["Customer"];
-                Qty.Text = row["Qty"].ToString();
-                ReleaseDate.Text = row["Release Date"].ToString();
-                CommitDate.Text = row["Commit Date"].ToString();
-                EnteredDate.Text = row["Entered Date"].ToString();
-                Urgency.Text = "N";
-                Status.Content = GO_Item.Text + " SELECTED";
-                ProductSpecialist = row["Product Specialist"].ToString();
-                jobName.Text = row["Job Name"].ToString();
-                */
             }
 
         }
@@ -1086,7 +1068,7 @@ namespace LightningPRO
             GO1.Text = row["GO"];
             GO_Item.Text = row["GO Item"];
             Item.Text = row["Item"];
-            SchedulingGroup.Text = row["Suffix"];
+            SchedulingGroup.Text = row["Attribute1"].ToString();
             ShopOrder.Text = row["Shop Order"].ToString();
             ShopOrderTrim.Text = row["Shop Order T"].ToString();
             ShopOrderBox.Text = row["Shop Order B"].ToString();
@@ -1102,7 +1084,7 @@ namespace LightningPRO
         }
 
        
-        private int getFirstPageIndex() 
+        private int GetFirstPageIndex() 
         {
             for (int i = 0; i < SelectedPages.Length; i++)
             {
@@ -1114,9 +1096,10 @@ namespace LightningPRO
             return -1;
         }
 
-        bool HasDates = true;
+        bool HasDates;
         private Boolean PassPrerequisites () 
         {
+            HasDates = true;
             if (string.IsNullOrEmpty(ShopOrder.Text))
             {
                 if (MessageBox.Show("You Are About To Insert\nWithout A ShopOrderInterior Number\nWould You Like To Continue?", "No ShopOrderInterior Number",
@@ -1145,28 +1128,36 @@ namespace LightningPRO
 
         private void Insert_Entry(object sender, RoutedEventArgs e)
         {
-            insertSingleEntry();
+            if (PDFLoaded && XmlUploaded) 
+            {
+                InsertSingleEntry();
+                ClearSelectedPages();
+            }
         }
 
-        private Boolean insertSingleEntry()
+        private Boolean InsertSingleEntry()
         {
             if (Utility.IsDuplicate(GO_Item.Text, Utility.ProductGroup.PRL4) == false)
             {
-                int amountOfPages = 0;
-                int firstPageIndex = getFirstPageIndex();
-                if (firstPageIndex != -1)
+                if (PassPrerequisites())
                 {
-                    for (int i = 0; i < SelectedPages.Length; i++)
+                    int amountOfPages = 0;
+                    int firstPageIndex = GetFirstPageIndex();
+                    if (firstPageIndex != -1)
                     {
-                        if (SelectedPages[i] == true)
+                        for (int i = 0; i < SelectedPages.Length; i++)
                         {
-                            InsertPage(i, firstPageIndex);
-                            amountOfPages++;
+                            if (SelectedPages[i] == true)
+                            {
+                                InsertPage(i, firstPageIndex);
+                                amountOfPages++;
+                            }
                         }
+                        InsertTestReport(amountOfPages);
                     }
-                    InsertTestReport(amountOfPages);
+                    return true;
                 }
-                return true;
+                else { return false; }
             }
             else 
             {
@@ -1263,9 +1254,14 @@ namespace LightningPRO
                     InsertCommand.Parameters.AddWithValue("[DoorInDoor]", (Boolean)DoorInDoor);
 
 
-                    InsertCommand.Parameters.AddWithValue("ReleaseDate", ReleaseDate.Text);
-                    InsertCommand.Parameters.AddWithValue("CommitDate", CommitDate.Text);
-                    InsertCommand.Parameters.AddWithValue("EnteredDate", ReleaseDate.Text);
+                    if (HasDates) 
+                    {
+                        InsertCommand.Parameters.AddWithValue("ReleaseDate", ReleaseDate.Text);
+                        InsertCommand.Parameters.AddWithValue("CommitDate", CommitDate.Text);
+                        InsertCommand.Parameters.AddWithValue("EnteredDate", ReleaseDate.Text);
+                    }
+
+
                     InsertCommand.Parameters.AddWithValue("FilePath", PathPDF.Text);
                     //MessageBox.Show(PathPDF.Text);
                     InsertCommand.Parameters.AddWithValue("ProductSpecialist", ProductSpecialist);
@@ -1347,10 +1343,13 @@ namespace LightningPRO
                     InsertCommand.Parameters.AddWithValue("[DoorOverDist]", (Boolean)DoorOverDistribution);
                     InsertCommand.Parameters.AddWithValue("[DoorInDoor]", (Boolean)DoorInDoor);
 
+                    if (HasDates)
+                    {
+                        InsertCommand.Parameters.AddWithValue("ReleaseDate", ReleaseDate.Text);
+                        InsertCommand.Parameters.AddWithValue("CommitDate", CommitDate.Text);
+                        InsertCommand.Parameters.AddWithValue("EnteredDate", ReleaseDate.Text);
+                    }
 
-                    InsertCommand.Parameters.AddWithValue("ReleaseDate", ReleaseDate.Text);
-                    InsertCommand.Parameters.AddWithValue("CommitDate", CommitDate.Text);
-                    InsertCommand.Parameters.AddWithValue("EnteredDate", ReleaseDate.Text);
                     InsertCommand.Parameters.AddWithValue("FilePath", PathPDF.Text);
                     //MessageBox.Show(PathPDF.Text);
                     InsertCommand.Parameters.AddWithValue("ProductSpecialist", ProductSpecialist);
@@ -1404,7 +1403,10 @@ namespace LightningPRO
 
         private void Auto_Insert(object sender, RoutedEventArgs e)
         {
-            AutomaticInsert();
+            if (PDFLoaded) 
+            {
+                AutomaticInsert();
+            }
         }
 
 
@@ -1440,8 +1442,8 @@ namespace LightningPRO
                     if (match.Success)
                     {
                         string GOItem = match.Groups["GOItem"].Value;
-                        string PageNumber = match.Groups["Page"].Value;
-                        string TotalPages = match.Groups["TotalPages"].Value;
+                        //string PageNumber = match.Groups["Page"].Value;
+                        //string TotalPages = match.Groups["TotalPages"].Value;
 
                         if (!goData.GOItems.ContainsKey(GOItem))
                         {
@@ -1474,9 +1476,7 @@ namespace LightningPRO
         {
             foreach (var dataGridRow in dataGrid.Items)
             {
-                DataRowView rowView = dataGridRow as DataRowView;
-
-                if (rowView != null && rowView.Row.Table.Columns.Contains("GO"))
+                if (dataGridRow is DataRowView rowView && rowView.Row.Table.Columns.Contains("GO"))
                 {
                     return rowView["GO"].ToString();
                 }
@@ -1519,23 +1519,21 @@ namespace LightningPRO
 
                 foreach (var dataGridRow in dg.Items)
                 {
-                    DataRowView rowView = dataGridRow as DataRowView;
-
-                    if (rowView != null)
+                    if (dataGridRow is DataRowView rowView)
                     {
                         List<int> matchingPage = GetGOItemPages(rowView["Item"].ToString(), result);
 
                         if (matchingPage.Count > 0)
                         {
-                            
+
                             SetRow(rowView);
-                            matchXMLPage(rowView["GO Item"].ToString());
+                            MatchXMLPage(rowView["GO Item"].ToString());
 
                             foreach (int pageNumber in matchingPage)
                             {
                                 SelectedPages[pageNumber] = true;
                             }
-                            Boolean insertionStatus = insertSingleEntry();
+                            Boolean insertionStatus = InsertSingleEntry();
                             if (insertionStatus)
                             {
                                 status += rowView["Item"] + "\n"; // Append the item name with a newline
@@ -1559,7 +1557,7 @@ namespace LightningPRO
         }
 
 
-        private string convertToRequired(string partname, int enclosure, int paint, int mount, int multiple)
+        private string ConvertToRequired(string partname, int enclosure, int paint, int mount, int multiple)
         {
             string output = partname;
 
@@ -1665,8 +1663,9 @@ namespace LightningPRO
 
             if (enclosure == 0 || enclosure == 2)
             {
-                string RainCover = Utility.ReplacePart("CE24331H01");
-                DictionaryLoop(RainCover, 1);
+                List<string> RainCoverList = Utility.ReplacementParts("CE24331H01");
+                foreach (string part in RainCoverList)
+                    DictionaryLoop(part, 1);
             }
             return a;
         }
@@ -1704,8 +1703,9 @@ namespace LightningPRO
 
             if (enclosure == 0 || enclosure == 2)
             {
-                string RainCover = Utility.ReplacePart("CE24331H01");
-                DictionaryLoop(RainCover, 1);
+                List<string> RainCoverList = Utility.ReplacementParts("CE24331H01");
+                foreach (string part in RainCoverList)
+                    DictionaryLoop(part, 1);
             }
             return a;
         }
@@ -1742,8 +1742,9 @@ namespace LightningPRO
 
             if (enclosure == 0 || enclosure == 2)
             {
-                string RainCover = Utility.ReplacePart("CE24331H01");
-                DictionaryLoop(RainCover, 1);
+                List<string> RainCoverList = Utility.ReplacementParts("CE24331H01");
+                foreach (string part in RainCoverList)
+                    DictionaryLoop(part, 1);
             }
             return a;
         }
@@ -1770,7 +1771,7 @@ namespace LightningPRO
                 a = a.Replace("RC", "S");
             }
             else if (enclosure == 1 || enclosure == 2 && !(paint == 1))
-            {p
+            {
                 a = a.Replace("SPEC", "RC");
             }
             else if (enclosure == 1 || enclosure == 2 && paint == 1)
@@ -1781,8 +1782,9 @@ namespace LightningPRO
 
             if (enclosure == 0 || enclosure == 2)
             {
-                string RainCover = Utility.ReplacePart("CE24331H01");
-                DictionaryLoop(RainCover, 1);
+                List<string> RainCoverList = Utility.ReplacementParts("CE24331H01");
+                foreach (string part in RainCoverList)
+                    DictionaryLoop(part, 1);
             }
             return a;
         }
@@ -1810,8 +1812,9 @@ namespace LightningPRO
 
             if (enclosure == 1 && enclosure == 2)
             {
-                string RainCover = Utility.ReplacePart("CE24331H03");
-                DictionaryLoop(RainCover, 1);
+                List<string> RainCoverList = Utility.ReplacementParts("CE24331H03");
+                foreach (string part in RainCoverList)
+                    DictionaryLoop(part, 1);
             }
             return a;
         }
@@ -1846,8 +1849,9 @@ namespace LightningPRO
 
             if (enclosure == 1 && enclosure == 2)
             {
-                string RainCover = Utility.ReplacePart("CE24331H03");
-                DictionaryLoop(RainCover, 1);
+                List<string> RainCoverList = Utility.ReplacementParts("CE24331H03");
+                foreach (string part in RainCoverList)
+                    DictionaryLoop(part, 1);
             }
             return a;
         }
@@ -1871,10 +1875,11 @@ namespace LightningPRO
                 DictionaryLoop(a, 1);
             }
 
-            if (e == 0 || e == 2)
+            if (enclosure == 0 || enclosure == 2)
             {
-                string RainCover = Utility.ReplacePart("CE24331H02");
-                DictionaryLoop(RainCover, 1);
+                List<string> RainCoverList = Utility.ReplacementParts("CE24331H02");
+                foreach (string part in RainCoverList)
+                    DictionaryLoop(part, 1);
             }
             return a;
         }
@@ -1904,8 +1909,9 @@ namespace LightningPRO
             }
             if (enclosure == 0 || enclosure == 2)
             {
-                string RainCover = Utility.ReplacePart("CE24331H02");
-                DictionaryLoop(RainCover, 1);
+                List<string> RainCoverList = Utility.ReplacementParts("CE24331H02");
+                foreach (string part in RainCoverList)
+                    DictionaryLoop(part, 1);
             }
             return a;
         }
@@ -1917,21 +1923,21 @@ namespace LightningPRO
             {
                 if (ContainsPart(partslist, par))
                 {
-                    partslist[FindIndexPartsList(partslist, par)].addToQuantity(1);
+                    partslist[FindIndexPartsList(partslist, par)].AddToQuantity(1);
                 }
                 else
                 {
-                    partslist.Add(new part(par, quantity));
+                    partslist.Add(new Part(par, quantity));
                 }
             }
         }
 
-        public class part
+        public class Part
         {
             private string partName;
             private int Quantity;
 
-            public part(string partNumber, int Amount)
+            public Part(string partNumber, int Amount)
             {
                 partName = partNumber;
                 Quantity = Amount;
@@ -1947,12 +1953,12 @@ namespace LightningPRO
                 return this.partName;
             }
 
-            public void addToQuantity(int numberOfPeices)
+            public void AddToQuantity(int numberOfPeices)
             {
                 this.Quantity += numberOfPeices;
             }
 
-            public void setName(string name)
+            public void SetName(string name)
             {
                 this.partName = name;
             }
@@ -1960,11 +1966,11 @@ namespace LightningPRO
 
 
         // Used to determine if a list of parts contains a given part
-        public Boolean ContainsPart(List<part> parts, string part)
+        public Boolean ContainsPart(List<Part> parts, string part)
         {
             if (parts != null)
             {
-                foreach (part p in parts)
+                foreach (Part p in parts)
                 {
                     if (p.Get_partName().Contains(part))
                     {
@@ -1976,10 +1982,10 @@ namespace LightningPRO
         }
 
         // Used to determine the index of a part within a parts list
-        public int FindIndexPartsList(List<part> parts, string part)
+        public int FindIndexPartsList(List<Part> parts, string part)
         {
             int counter = 0;
-            foreach (part p in parts)
+            foreach (Part p in parts)
             {
                 if (p.Get_partName().Contains(part))
                 {
@@ -1992,7 +1998,7 @@ namespace LightningPRO
 
 
 
-        public enum info
+        public enum Info
         {
             None, AMO, KanbanSpike
         }
@@ -2006,15 +2012,15 @@ namespace LightningPRO
         {
             public string PartName { get; set; }
             public int Quantity { get; set; }
-            public info Status { get; set; }
+            public Info Status { get; set; }
             public string IsActive { get; set;}
             public string Description { get; set; }
             public string GO {get; set;}
         }
 
 
-        List<part> partslist;
-        private void isAMO()
+        List<Part> partslist;
+        private void IsAMO()
         {
 
             //look through to find all parts with amount 
@@ -2026,7 +2032,7 @@ namespace LightningPRO
 
 
             string AMOreport = "";
-            partslist = new List<part>();
+            partslist = new List<Part>();
 
             int counter = 0;
             foreach (XmlNode node in BMLines)    //iterate through BMLines (BMLineItems -> Materials List Information)
@@ -2115,7 +2121,7 @@ namespace LightningPRO
                     {
                         XmlNodeList m = x.ChildNodes;      //Attributes of BMLineItem
 
-                        part currentpart = new part("HOLDUP", 0);
+                        Part currentpart = new Part("HOLDUP", 0);
 
                         foreach (XmlNode child in m)    //loop each attribute line in BMLineItem
                         {
@@ -2124,18 +2130,18 @@ namespace LightningPRO
                                 string output = Utility.GetBetween(child.OuterXml.ToString(), "V=\"", "\"");
                                 if (!(output.StartsWith("CN")) && !(output.Contains("-")) && !(output.Contains("PROV")) && !(output.Contains("start")) && !(output.StartsWith("S3")) && !(output.StartsWith("P2")) && !(output == "C1") && !(output.StartsWith("A29")) && !(output.StartsWith("H5")) && !(output.StartsWith("SP")) && !(output.StartsWith("BX")))
                                 {
-                                    currentpart.setName(convertToRequired(output, encl, paint, mount, multiple));
+                                    currentpart.SetName(ConvertToRequired(output, encl, paint, mount, multiple));
                                 }
                             }
                             if (child.OuterXml.ToString().Contains("\"Quantity\""))             //get quantity value of current part
                             {
-                                currentpart.addToQuantity(Int32.Parse(Utility.GetBetween(child.OuterXml.ToString(), "V=\"", "\"")));
+                                currentpart.AddToQuantity(Int32.Parse(Utility.GetBetween(child.OuterXml.ToString(), "V=\"", "\"")));
                             }
                         }//end for loop attributes
 
                         if (ContainsPart(partslist, currentpart.Get_partName()))
                         {
-                            partslist[FindIndexPartsList(partslist, currentpart.Get_partName())].addToQuantity(currentpart.Get_Amount());
+                            partslist[FindIndexPartsList(partslist, currentpart.Get_partName())].AddToQuantity(currentpart.Get_Amount());
                         }
                         else if (!currentpart.Get_partName().Contains("HOLDUP"))
                         {
@@ -2149,25 +2155,43 @@ namespace LightningPRO
 
 
             //get parts list ready for AMOdg; get IsActive and Description + get status info -> AMO, KanBanKpike, or None
-            List<info> statuses = new List<info>();
+            List<Info> statuses = new List<Info>();
             List<string> EnableOrDisable = new List<string>();
             List<string> Description = new List<string>();
 
+
+            int ListSize = partslist.Count;  //partslist.Count will be variable within the loop
+            //loop first to replace parts
+            for (int i = 0; i < ListSize; i++)
+            {
+                List<string> ReplacePartsList = Utility.ReplacementParts(partslist[i].Get_partName());
+                for (int j = 0; j < ReplacePartsList.Count; j++)
+                {
+                    if (j == 0)
+                    {
+                        partslist[i].SetName(ReplacePartsList[j]);
+                    }
+                    else
+                    {
+                        partslist.Add(new Part(ReplacePartsList[j], partslist[i].Get_Amount()));
+                    }
+                }
+            }
+
+
             for (int i = 0; i < partslist.Count; i++)
             {
-                partslist[i].setName(Utility.ReplacePart(partslist[i].Get_partName()));     //look for replacement part
-
                 if (Utility.StandardAMO(partslist[i].Get_partName()))                                //check PullSequence if standardAMO
                 {
-                    statuses.Add(info.AMO);
+                    statuses.Add(Info.AMO);
                 }
                 else if (Utility.KanBanSpike(partslist[i].Get_partName(), partslist[i].Get_Amount()))       //check PullSequence if KanBanSpike
                 {
-                    statuses.Add(info.KanbanSpike);
+                    statuses.Add(Info.KanbanSpike);
                 }
                 else
                 {
-                    statuses.Add(info.None);
+                    statuses.Add(Info.None);
                 }
 
                 string[] outputPullPartStatus = Utility.PullPartStatus(partslist[i].Get_partName());
@@ -2236,31 +2260,84 @@ namespace LightningPRO
 
             if (AMOreport.Contains("AMO") || AMOreport.Contains("Kanban"))
             {
-                AMO.IsChecked = true;
                 AMOFound = true;
             }
             else
             {
-                AMO.IsChecked = false;
                 AMOFound = false;
             }
+            AMO.IsChecked = AMOFound;
+        }
+
+        private void ClearSelectedPages() 
+        {
+            for (int i = 0; i < SelectedPages.Length; i++)
+            {
+                SelectedPages[i] = false;
+            }
+            pg1OverLay.Visibility = Visibility.Hidden;
+            pg2OverLay.Visibility = Visibility.Hidden;
+            pg3OverLay.Visibility = Visibility.Hidden;
+            pg4OverLay.Visibility = Visibility.Hidden;
+            pg5OverLay.Visibility = Visibility.Hidden;
         }
 
         private void PageSelectDeselect(int pageOffset)
         {
             try
             {
-                if (SelectedPages.Length > page + pageOffset)
+                if (PDFLoaded) 
                 {
-                    if (SelectedPages[page + pageOffset] == false)
+                    if (SelectedPages.Length > page + pageOffset)
                     {
-                        SelectedPages[page + pageOffset] = true;
-                        pg2OverLay.Visibility = Visibility.Visible;
-                    }
-                    else
-                    {
-                        SelectedPages[page + pageOffset] = false;
-                        pg2OverLay.Visibility = Visibility.Hidden;
+                        if (SelectedPages[page + pageOffset] == false)
+                        {
+                            SelectedPages[page + pageOffset] = true;
+                            if (pageOffset == 0)
+                            {
+                                pg1OverLay.Visibility = Visibility.Visible;
+                            }
+                            else if (pageOffset == 1)
+                            {
+                                pg2OverLay.Visibility = Visibility.Visible;
+                            }
+                            else if (pageOffset == 2)
+                            {
+                                pg3OverLay.Visibility = Visibility.Visible;
+                            }
+                            else if (pageOffset == 3)
+                            {
+                                pg4OverLay.Visibility = Visibility.Visible;
+                            }
+                            else if (pageOffset == 4)
+                            {
+                                pg5OverLay.Visibility = Visibility.Visible;
+                            }
+                        }
+                        else
+                        {
+                            SelectedPages[page + pageOffset] = false;
+                            if (pageOffset == 0)
+                            {
+                                pg1OverLay.Visibility = Visibility.Hidden;
+                            }
+                            else if (pageOffset == 1)
+                            {
+                                pg2OverLay.Visibility = Visibility.Hidden;
+                            }
+                            else if (pageOffset == 2)
+                            {
+                                pg3OverLay.Visibility = Visibility.Hidden;
+                            }
+                            else if (pageOffset == 3)
+                            {
+                                pg4OverLay.Visibility = Visibility.Hidden;
+                            }
+                            else if (pageOffset == 4)
+                            {
+                                pg5OverLay.Visibility = Visibility.Hidden;
+                            }
+                        }
                     }
                 }
             }

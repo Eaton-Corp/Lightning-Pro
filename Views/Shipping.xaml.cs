@@ -10,6 +10,7 @@ using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Collections.ObjectModel;
 
 namespace LightningPRO.Views
 {
@@ -41,10 +42,10 @@ namespace LightningPRO.Views
         public Shipping()
         {
             InitializeComponent();
-            intializeProduct();
+            IntializeProduct();
         }
 
-        public void intializeProduct()
+        public void IntializeProduct()
         {
             if (MainWindow.ProductGroup.Equals(Utility.ProductGroup.PRLCS))
             {
@@ -87,7 +88,7 @@ namespace LightningPRO.Views
                     }
                     else if(CurrentProduct == Utility.ProductGroup.PRL4)
                     {
-                        getGOs("select [GO_Item], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Quantity], [Urgency], [BoxEarly] from [" + ProductTable + "] where [GO]='" + Scan.Text.Substring(0, 10) + "' and [PageNumber] = 0 order by [GO_Item]");
+                        GetGOs("select [GO_Item], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Quantity], [Urgency], [BoxEarly] from [" + ProductTable + "] where [GO]='" + Scan.Text.Substring(0, 10) + "' and [PageNumber] = 0 order by [GO_Item]");
                     }
                     else
                     {
@@ -249,14 +250,14 @@ namespace LightningPRO.Views
                             string query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [Catalogue], [AMO], [BoxEarly], [Box Sent], [SpecialCustomer], [ServiceEntrance], [DoubleSection], [PaintedBox], [RatedNeutral200], [DNSB], [Complete], [Short], [LabelsPrinted] from [PRL123] where [BoxEarly]=True and [Box Sent]=False";
                             LoadGrid(query);
                             Current_Tab = "Ship Early";
-                            //ButtonColorChanges();
+                            ButtonColorChanges();
                         }
                         if (CurrentProduct == Utility.ProductGroup.PRL4)
                         {
                             string query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], [DNSB], [Complete], [Short], [LabelsPrinted], [BoxEarly], [BoxSent]  from [PRL4] where [BoxEarly]=True and [BoxSent]=False and [PageNumber] = 0";
                             LoadGrid(query);
                             Current_Tab = "Ship Early";
-                            //ButtonColorChanges();
+                            ButtonColorChanges();
                         }
                         else
                         {
@@ -267,7 +268,7 @@ namespace LightningPRO.Views
                     case "Shipping":
                         LoadGrid(null);
                         Current_Tab = "Shipping";
-                        //ButtonColorChanges();
+                        ButtonColorChanges();
                         break;
 
                     // Add more cases here if needed
@@ -306,7 +307,6 @@ namespace LightningPRO.Views
             // If a DataGridRow was found, select it
             if (clickedRow != null)
             {
-                DataGrid gd = (DataGrid)sender;
                 int rowIndex = clickedRow.GetIndex();
 
                 // Override the current selected index
@@ -322,11 +322,11 @@ namespace LightningPRO.Views
             ProductTable = "PRL123";
             CurrentProduct = Utility.ProductGroup.PRL123;
             MainWindow.ProductGroup = Utility.ProductGroup.PRL123;
-            //PWL123.Background = System.Windows.Media.Brushes.DarkBlue;
-            //PWL4.Background = System.Windows.Media.Brushes.Blue;
-            //PWLCS.Background = System.Windows.Media.Brushes.Blue;
+            PWL123.Background = System.Windows.Media.Brushes.DarkBlue;
+            PWL4.Background = System.Windows.Media.Brushes.Blue;
+            PWLCS.Background = System.Windows.Media.Brushes.Blue;
             Current_Tab = "Shipping";
-            //ButtonColorChanges();
+            ButtonColorChanges();
             LoadGrid(null);
         }
 
@@ -335,11 +335,11 @@ namespace LightningPRO.Views
             ProductTable = "PRL4";
             CurrentProduct = Utility.ProductGroup.PRL4;
             MainWindow.ProductGroup = Utility.ProductGroup.PRL4;
-            //PWL4.Background = System.Windows.Media.Brushes.DarkBlue;
-            //PWL123.Background = System.Windows.Media.Brushes.Blue;
-            //PWLCS.Background = System.Windows.Media.Brushes.Blue;
+            PWL4.Background = System.Windows.Media.Brushes.DarkBlue;
+            PWL123.Background = System.Windows.Media.Brushes.Blue;
+            PWLCS.Background = System.Windows.Media.Brushes.Blue;
             Current_Tab = "Shipping";
-            //ButtonColorChanges();
+            ButtonColorChanges();
             LoadGrid(null);
         }
 
@@ -348,16 +348,30 @@ namespace LightningPRO.Views
             ProductTable = "PRLCS";
             CurrentProduct = Utility.ProductGroup.PRLCS;
             MainWindow.ProductGroup = Utility.ProductGroup.PRLCS;
-            //PWL4.Background = System.Windows.Media.Brushes.Blue;
-            //PWL123.Background = System.Windows.Media.Brushes.Blue;
-            //PWLCS.Background = System.Windows.Media.Brushes.DarkBlue;
+            PWL4.Background = System.Windows.Media.Brushes.Blue;
+            PWL123.Background = System.Windows.Media.Brushes.Blue;
+            PWLCS.Background = System.Windows.Media.Brushes.DarkBlue;
             Current_Tab = "Shipping";
-            //ButtonColorChanges();
+            ButtonColorChanges();
             LoadGrid(null);
         }
 
-        
- 
+
+        public void ButtonColorChanges()
+        {
+            if (Current_Tab.Equals("Ship Early"))
+            {
+                ShipEarlyBtn.Background = System.Windows.Media.Brushes.DarkBlue;
+                ShippingBtn.Background = System.Windows.Media.Brushes.Blue;
+            }
+            else if (Current_Tab.Equals("Shipping"))
+            {
+                ShipEarlyBtn.Background = System.Windows.Media.Brushes.Blue;
+                ShippingBtn.Background = System.Windows.Media.Brushes.DarkBlue;
+            }
+        }
+
+
 
         private void UpdateStatus(string command)
         {
@@ -399,14 +413,14 @@ namespace LightningPRO.Views
                     string query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [SchedulingGroup], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [Catalogue], [AMO], [BoxEarly], [Box Sent], [SpecialCustomer], [ServiceEntrance], [DoubleSection], [PaintedBox], [RatedNeutral200], [DNSB], [Complete], [Short], [NameplateRequired], [NameplateOrdered], [LabelsPrinted], [Notes] from [PRL123] where [BoxEarly]=True and [Box Sent]=False";
                     LoadGrid(query);
                     Current_Tab = "Ship Early";
-                    //ButtonColorChanges();
+                    ButtonColorChanges();
                 }
                 else if (CurrentProduct == Utility.ProductGroup.PRL4) 
                 {
-                    string query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], [DNSB], [Complete], [Short], [LabelsPrinted], [BoxEarly], [BoxSent] from [PRL4] where [BoxEarly]=True and [Box Sent]=False and [PageNumber] = 0";
+                    string query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [SchedulingGroup], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], [DNSB], [Complete], [Short], [LabelsPrinted], [BoxEarly], [BoxSent] from [PRL4] where [BoxEarly]=True and [BoxSent]=False and [PageNumber] = 0";
                     LoadGrid(query);
                     Current_Tab = "Ship Early";
-                    //ButtonColorChanges();
+                    ButtonColorChanges();
                 }
                 else
                 {
@@ -426,7 +440,7 @@ namespace LightningPRO.Views
             {
                 LoadGrid(null);
                 Current_Tab = "Shipping";
-                //ButtonColorChanges();
+                ButtonColorChanges();
             }
             catch
             {
@@ -971,7 +985,7 @@ namespace LightningPRO.Views
             }
             else if (CurrentProduct == Utility.ProductGroup.PRL4)
             {
-                getGOs("select [GO_Item], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Quantity], [Urgency], [BoxEarly] from [" + ProductTable + "] where [GO]='" + GOI.Text.Substring(0, 10) + "' and [PageNumber] = 0 order by [GO_Item]");
+                GetGOs("select [GO_Item], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Quantity], [Urgency], [BoxEarly] from [" + ProductTable + "] where [GO]='" + GOI.Text.Substring(0, 10) + "' and [PageNumber] = 0 order by [GO_Item]");
             }
             else
             {

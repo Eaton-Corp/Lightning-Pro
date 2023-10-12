@@ -41,11 +41,11 @@ namespace LightningPRO.Views
             InitializeComponent();
             Field.Text = "GO_Item";
             Current_Tab = "InDevelopment";
-            intializeProduct();
-            //ButtonColorChanges();
+            IntializeProduct();
+            ButtonColorChanges();
         }
 
-        public void intializeProduct()
+        public void IntializeProduct()
         {
             if (MainWindow.ProductGroup.Equals(Utility.ProductGroup.PRLCS))
             {
@@ -120,49 +120,49 @@ namespace LightningPRO.Views
         }
 
 
-        //private void ButtonColorChanges()
-        //{
-        //if (Current_Tab.Equals("Shipping"))
-        //{
-        //  Shipping.Background = Brushes.DarkBlue;
-        // Production.Background = Brushes.Blue;
-        //MIComplete.Background = Brushes.Blue;
-        //Development.Background = Brushes.Blue;
-        //SearchButton.Background = Brushes.LightGray;
-        //}
-        //else if (Current_Tab.Equals("Production"))
-        //{
-        // Shipping.Background = Brushes.Blue;
-        // Production.Background = Brushes.DarkBlue;
-        // MIComplete.Background = Brushes.Blue;
-        //Development.Background = Brushes.Blue;
-        //SearchButton.Background = Brushes.LightGray;
-        //}
-        //else if (Current_Tab.Equals("MIComplete"))
-        //{
-        //Shipping.Background = Brushes.Blue;
-        //Production.Background = Brushes.Blue;
-        //  MIComplete.Background = Brushes.DarkBlue;
-        //  Development.Background = Brushes.Blue;
-        //   SearchButton.Background = Brushes.LightGray;
-        //}
-        //else if (Current_Tab.Equals("InDevelopment"))
-        //{
-        //Shipping.Background = Brushes.Blue;
-        //Production.Background = Brushes.Blue;
-        //MIComplete.Background = Brushes.Blue;
-        //Development.Background = Brushes.DarkBlue;
-        //SearchButton.Background = Brushes.LightGray;
-        //}
-        //else if (Current_Tab.Equals("Search"))
-        //{
-        //Shipping.Background = Brushes.Blue;
-        //Production.Background = Brushes.Blue;
-        //MIComplete.Background = Brushes.Blue;
-        //Development.Background = Brushes.Blue;
-        //  SearchButton.Background = Brushes.Gray;
-        //}
-        //}
+        private void ButtonColorChanges()
+        {
+            if (Current_Tab.Equals("Shipping"))
+            {
+                Shipping.Background = Brushes.DarkBlue;
+                Production.Background = Brushes.Blue;
+                MIComplete.Background = Brushes.Blue;
+                Development.Background = Brushes.Blue;
+                SearchButton.Background = Brushes.LightGray;
+            }
+            else if (Current_Tab.Equals("Production"))
+            {
+                Shipping.Background = Brushes.Blue;
+                Production.Background = Brushes.DarkBlue;
+                MIComplete.Background = Brushes.Blue;
+                Development.Background = Brushes.Blue;
+                SearchButton.Background = Brushes.LightGray;
+            }
+            else if (Current_Tab.Equals("MIComplete"))
+            {
+                Shipping.Background = Brushes.Blue;
+                Production.Background = Brushes.Blue;
+                MIComplete.Background = Brushes.DarkBlue;
+                Development.Background = Brushes.Blue;
+                SearchButton.Background = Brushes.LightGray;
+            }
+            else if (Current_Tab.Equals("InDevelopment"))
+            {
+                Shipping.Background = Brushes.Blue;
+                Production.Background = Brushes.Blue;
+                MIComplete.Background = Brushes.Blue;
+                Development.Background = Brushes.DarkBlue;
+                SearchButton.Background = Brushes.LightGray;
+            }
+            else if (Current_Tab.Equals("Search"))
+            {
+                Shipping.Background = Brushes.Blue;
+                Production.Background = Brushes.Blue;
+                MIComplete.Background = Brushes.Blue;
+                Development.Background = Brushes.Blue;
+                SearchButton.Background = Brushes.Gray;
+            }
+        }
 
 
 
@@ -174,7 +174,7 @@ namespace LightningPRO.Views
                 {
                     string selectedValue = selectedComboBoxItem.Content.ToString();
                     Current_Tab = selectedValue;  // Assuming Current_Tab is a string
-                    loadGrid();
+                    LoadGrid();
                 }
             }
         }
@@ -199,7 +199,6 @@ namespace LightningPRO.Views
             // If a DataGridRow was found, select it
             if (clickedRow != null)
             {
-                DataGrid gd = (DataGrid)sender;
                 int rowIndex = clickedRow.GetIndex();
 
                 // Override the current selected index
@@ -567,11 +566,13 @@ namespace LightningPRO.Views
 
         private void Click_MassUpdateGO(object sender, RoutedEventArgs e)
         {
-            MassUpdateGO window = new MassUpdateGO(SelectedGO.Substring(0,10));
-            window.ShowDialog(); // Show the window modally
-
-            //Edit sf = new Edit(SelectedGO, CurrentProduct);
-            //sf.Show();
+            if(Selected != -1)
+            {
+                MassUpdateGO window = new MassUpdateGO(SelectedGO.Substring(0, 10), CurrentProduct);
+                window.ShowDialog(); // Show the window modally
+            }
+            
+            
         }
     }
 }

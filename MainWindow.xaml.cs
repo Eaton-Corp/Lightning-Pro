@@ -17,7 +17,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using LightningPRO.ViewModels;
 using Squirrel;
-using static PRL123_Final.Utility;
+using static LightningPRO.Utility;
 
 namespace LightningPRO
 {
@@ -50,7 +50,6 @@ namespace LightningPRO
             OleDbCommand cmd = new OleDbCommand("SELECT * FROM tblDepartments", Mcon);
             cmd.ExecuteReader();
         }
-
 
 
         public MainWindow()
@@ -91,7 +90,6 @@ namespace LightningPRO
                 DataContext = new EatonViewModel();
             }
         }
-
 
         private bool CheckConfigured()
         {

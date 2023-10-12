@@ -53,7 +53,7 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <ProgressBar Grid.Row="0" Grid.Column="2" Minimum="0"  Maximum="100" Height="25" Visibility="Hidden"  Name="pbStatus" Foreground="Blue"  IsIndeterminate="True"/>
+            <ProgressBar Grid.Row="0" Grid.Column="2" Minimum="0" Maximum="100" Height="25" Visibility="Hidden" Name="pbStatus" Foreground="Blue" IsIndeterminate="True"/>
         </Grid>
 
         <Image x:Name="ImagePreviewer" Grid.Row="0" Grid.Column="4" Grid.RowSpan="20" Grid.ColumnSpan="3"/>
@@ -67,12 +67,12 @@
             <Grid.RowDefinitions>
                 
             </Grid.RowDefinitions>
-            <Button Background="LightGray" Foreground="White"  HorizontalAlignment="Center" Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" Width="40" Height="40" Click="Forward_Click" ToolTip="Next Page">
+            <Button Background="LightGray" Foreground="White" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" Width="40" Height="40" Click="Forward_Click" ToolTip="Next Page">
                 <DockPanel>
                     <Image Width="25" Height="25" Source="/Assets/right-arrow (3).png"/>
                 </DockPanel>
             </Button>
-            <Button  Background="LightGray" Foreground="White"  HorizontalAlignment="Center"  Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Width="40" Height="40" Click="Back_Click" ToolTip="Previous Page">
+            <Button  Background="LightGray" Foreground="White" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Width="40" Height="40" Click="Back_Click" ToolTip="Previous Page">
                 <DockPanel>
                     <Image Width="25" Height="25" Source="/Assets/left-arrow (1).png"/>
                 </DockPanel>
@@ -86,16 +86,15 @@
                 <ColumnDefinition Width="50"/>
                 <ColumnDefinition Width="50"/>
                 <ColumnDefinition Width="50"/>
-                <ColumnDefinition Width="50"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <Button Background="LightGray" Foreground="White"   Grid.Column="0" Grid.Row="0" Width="45" Height="45" Click="Button_Upload" ToolTip="Upload PDF">
+            <Button Background="LightGray" Foreground="White" Grid.Column="0" Grid.Row="0" Width="45" Height="45" Click="Button_Upload" ToolTip="Upload PDF">
                 <DockPanel>
                     <Image Width="25" Height="25" Source="/Assets/pdf.png"/>
                 </DockPanel>
             </Button>
-            <Button Background="LightGray" Foreground="White"  Grid.Row="0" Grid.Column="1"   Width="45" Height="45" Click="XML_Upload" ToolTip="Upload XML">
+            <Button Background="LightGray" Foreground="White" Grid.Row="0" Grid.Column="1" Width="45" Height="45" Click="XML_Upload" ToolTip="Upload XML">
                 <DockPanel>
                     <Image Width="25" Height="25" Source="/Assets/xml.png"/>
                 </DockPanel>
@@ -105,14 +104,12 @@
                     <Image Width="25" Height="25" Source="/Assets/submit.png"/>
                 </DockPanel>
             </Button>
-            <Button Background="LightGray" Foreground="White"  Grid.Row="0" Grid.Column="3" Click="Auto_Insert" Width="45" Height="45" ToolTip="Automatic Insertion">
+            <Button Background="LightGray" Foreground="White" Grid.Row="0" Grid.Column="3" Click="Auto_Insert" Width="45" Height="45" ToolTip="Automatic Insertion">
                 <DockPanel>
                     <Image Width="25" Height="25" Source="/Assets/auto.png"/>
                 </DockPanel>
             </Button>
         </Grid>
-
-
 
 
 
@@ -218,9 +215,7 @@
         <TextBox x:Name="BoxCatalogue" TextWrapping="Wrap" Grid.Row="16" Grid.Column="3" Width="160" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <TextBox x:Name="ItemStatus" TextWrapping="Wrap" Grid.Row="17" Grid.Column="3" Width="160" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
-
         <Label x:Name="Status"  Grid.Column="0" Grid.Row="20" FontSize="16" FontWeight="DemiBold" HorizontalAlignment="Left" Foreground="Green" Grid.ColumnSpan="3" />
-
 
         <Label Name="pg" Content="Page:"  Grid.Column="5" Grid.Row="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 

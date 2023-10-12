@@ -233,7 +233,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="50"/>
-                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="50"/>
                 <ColumnDefinition Width="50"/>
                 <ColumnDefinition Width="50"/>
                 <ColumnDefinition Width="50"/>
@@ -253,6 +253,11 @@
             <Button  Background="LightGray" Foreground="White" Grid.Column="1" Height="40" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Top" Width="40" Click="Click_ProductRecall" ToolTip="Bring Back To InDevelopment">
                 <DockPanel>
                     <Image Width="25" Height="25" Source="/Assets/ProductRecall.png"/>
+                </DockPanel>
+            </Button>
+            <Button  Background="LightGray" Foreground="White" Grid.Column="2" Height="40" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Top" Width="40" Click="Click_MassUpdateGO" ToolTip="Mass Update GO">
+                <DockPanel>
+                    <Image Width="25" Height="25" Source="/Assets/upload.png"/>
                 </DockPanel>
             </Button>
             <Button  Background="LightGray" Foreground="White" Grid.Column="3" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Top" Width="40" Height="40" Click="Click_FindFolder" ToolTip="Navigate To GO Folder">

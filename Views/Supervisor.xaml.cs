@@ -46,11 +46,11 @@ namespace LightningPRO.Views
 
             Field.Text = "GO_Item";
             Current_Tab = "InDevelopment";
-            intializeProduct();
-            //ButtonColorChanges();
+            IntializeProduct();
+            ButtonColorChanges();
         }
 
-        public void intializeProduct()
+        public void IntializeProduct()
         {
             if (MainWindow.ProductGroup.Equals(Utility.ProductGroup.PRLCS))
             {
@@ -585,5 +585,49 @@ namespace LightningPRO.Views
             HideFullNotesColoumn();
         }
 
+
+        private void ButtonColorChanges()
+        {
+            if (Current_Tab.Equals("Shipping"))
+            {
+                Shipping.Background = System.Windows.Media.Brushes.DarkBlue;
+                Production.Background = System.Windows.Media.Brushes.Blue;
+                MIComplete.Background = System.Windows.Media.Brushes.Blue;
+                Development.Background = System.Windows.Media.Brushes.Blue;
+                SearchButton.Background = System.Windows.Media.Brushes.LightGray;
+            }
+            else if (Current_Tab.Equals("Production"))
+            {
+                Shipping.Background = System.Windows.Media.Brushes.Blue;
+                Production.Background = System.Windows.Media.Brushes.DarkBlue;
+                MIComplete.Background = System.Windows.Media.Brushes.Blue;
+                Development.Background = System.Windows.Media.Brushes.Blue;
+                SearchButton.Background = System.Windows.Media.Brushes.LightGray;
+            }
+            else if (Current_Tab.Equals("MIComplete"))
+            {
+                Shipping.Background = System.Windows.Media.Brushes.Blue;
+                Production.Background = System.Windows.Media.Brushes.Blue;
+                MIComplete.Background = System.Windows.Media.Brushes.DarkBlue;
+                Development.Background = System.Windows.Media.Brushes.Blue;
+                SearchButton.Background = System.Windows.Media.Brushes.LightGray;
+            }
+            else if (Current_Tab.Equals("InDevelopment"))
+            {
+                Shipping.Background = System.Windows.Media.Brushes.Blue;
+                Production.Background = System.Windows.Media.Brushes.Blue;
+                MIComplete.Background = System.Windows.Media.Brushes.Blue;
+                Development.Background = System.Windows.Media.Brushes.DarkBlue;
+                SearchButton.Background = System.Windows.Media.Brushes.LightGray;
+            }
+            else if (Current_Tab.Equals("Search"))
+            {
+                Shipping.Background = System.Windows.Media.Brushes.Blue;
+                Production.Background = System.Windows.Media.Brushes.Blue;
+                MIComplete.Background = System.Windows.Media.Brushes.Blue;
+                Development.Background = System.Windows.Media.Brushes.Blue;
+                SearchButton.Background = System.Windows.Media.Brushes.Gray;
+            }
+        }
     }
 }

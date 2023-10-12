@@ -151,15 +151,6 @@ namespace LightningPRO
         }
 
 
-
-
-
-
-
-
-
-
-
         private async Task<int> TurnOnStatusBar()
         {
             pbStatus.Visibility = Visibility.Visible;
