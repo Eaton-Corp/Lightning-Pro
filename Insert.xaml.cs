@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Data.OleDb;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Xml;
-using iTextSharp.text;
-using iTextSharp.text.pdf;
-using System.Data;
 
 namespace LightningPRO
 {
@@ -21,7 +18,7 @@ namespace LightningPRO
     /// </summary>
     public partial class Insert : Window
     {
-        
+
         //image is an array full of bitmap images, each index contains a bitmap image of a page we care about
         BitmapSource[] image;
 
@@ -78,10 +75,10 @@ namespace LightningPRO
 
         //quickly written code
 
-        private void IsSpecialCustomer() 
+        private void IsSpecialCustomer()
         {
             isSpecialCustomer = false;
-            foreach (string client in Views.Configuration.specialCustomer)
+            foreach (string client in ConfigurationStorage.specialCustomer)
             {
                 if (Customer.Text.Contains(client))
                 {
@@ -93,7 +90,7 @@ namespace LightningPRO
 
         private void IsMultiSectional()
         {
-            if (ImagesInText[page].Contains(" of 2)") || ImagesInText[page].Contains(" of 3)") || ImagesInText[page].Contains(" of 4)") )
+            if (ImagesInText[page].Contains(" of 2)") || ImagesInText[page].Contains(" of 3)") || ImagesInText[page].Contains(" of 4)"))
             {
                 isMuliSection = true;
             }
@@ -141,7 +138,7 @@ namespace LightningPRO
 
 
         //call this before inserting boolean values 
-        private void LoadAllBooleanValues() 
+        private void LoadAllBooleanValues()
         {
             IsSpecialCustomer();
             IsMultiSectional();
@@ -195,7 +192,7 @@ namespace LightningPRO
                     {
                         if (((parsePDF[i].Contains("PRL1")) || (parsePDF[i].Contains("PRL2")) || (parsePDF[i].Contains("PRL3"))) && (!parsePDF[i].Contains("Detail Bill")))
                         {
-                            pages[counter] = i;     
+                            pages[counter] = i;
                             counter++;
                         }
                     }
@@ -213,7 +210,7 @@ namespace LightningPRO
 
                     //get text version of image array
                     ImagesInText = new string[pages.Length];
-                    for (int i = 0; i < pages.Length; i++)           
+                    for (int i = 0; i < pages.Length; i++)
                     {
                         ImagesInText[i] = parsePDF[pages[i]];
                     }
@@ -254,27 +251,27 @@ namespace LightningPRO
 
 
 
-   
-       
+
+
         private void FilePathFinder(string GO)
         {
             string OrderFilesPath = ConfigurationManager.ConnectionStrings["orderFiles"].ToString();
             var dir = new DirectoryInfo(OrderFilesPath);
-                        
+
             Boolean Found = false;
             foreach (var file in dir.EnumerateDirectories(GO + "*"))  //all files in target directory that begin with GO
             {
                 if (file.Exists && (file.FullName.Equals(dir + @"\" + GO)))
                 {
                     Found = true;
-                    DirectoryInfo[] arr = file.GetDirectories();        
+                    DirectoryInfo[] arr = file.GetDirectories();
                     Boolean Contains = false;
                     Boolean ContainsImageFolder = false;
                     Boolean ContainsPDFstorage = false;
                     Boolean ContainsAMO = false;
                     Boolean ContainsProjectDocuments = false;
 
-                    for (int i = 0; i < arr.Length; i++)                
+                    for (int i = 0; i < arr.Length; i++)
                     {
                         if (arr[i].Name == "Communication")        //checks if the folder already contains other standard folders
                         {
@@ -310,7 +307,7 @@ namespace LightningPRO
                         }
                     }
 
-                    
+
                     if (!Contains)
                     {
                         Directory.CreateDirectory(file.FullName + @"\Communication");
@@ -353,7 +350,7 @@ namespace LightningPRO
 
 
         //new function POWELL ERROR
-        private void FindImageIndex(string GoItemKey) 
+        private void FindImageIndex(string GoItemKey)
         {
             int i;
             for (i = 0; i < ImagesInText.Length; i++)
@@ -438,11 +435,6 @@ namespace LightningPRO
 
 
 
-
-
-
-
-
         private async void XML_Upload(object sender, RoutedEventArgs e)
         {
             try
@@ -503,9 +495,9 @@ namespace LightningPRO
                     XmlNodeList name = xDoc.GetElementsByTagName("OrderInfo");
                     string outputQuery = name[0].FirstChild.OuterXml.Substring(22, 10);
                     GOnum = outputQuery;
-                    
+
                     //load grid with all relavent jobs; deal with directories and filepaths
-                    LoadGrid("select * from [tblOrderStatus] where [Prod Group] in " + Utility.GetProductNameListInString(Views.Configuration.PRL123names) + " and [GO]='" + GOnum + "'");
+                    LoadGrid("select * from [tblOrderStatus] where [Prod Group] in " + Utility.GetProductNameListInString(ConfigurationStorage.PRL123names) + " and [GO]='" + GOnum + "'");
                     FilePathFinder(GOnum);
 
                     //sets global variable lines to XMLNodesList where each node is a line item
@@ -535,7 +527,7 @@ namespace LightningPRO
                 pbStatus.Visibility = Visibility.Hidden;
                 MessageBox.Show("Error Occurred Uploading XML");
             }
-}
+        }
 
 
 
@@ -579,16 +571,6 @@ namespace LightningPRO
 
 
 
-
-
-
-
-
-
-
-
-
-
         private void LoadXML(int page)
         {
             try
@@ -596,7 +578,7 @@ namespace LightningPRO
                 string Enc = "";
                 Boolean CatalogFound = false;
                 List<int> activeLines = new List<int>();
-                
+
                 for (int i = 0; i < lines.Count; i++)
                 {
                     foreach (XmlNode node in lines[i])
@@ -633,7 +615,7 @@ namespace LightningPRO
                     {
 
                         Designation.Text = Utility.GetBetween(node.OuterXml.ToString(), "V=\"", "\"");
-                       
+
                     }
                     if (node.OuterXml.ToString().Contains("ItemNumber"))
                     {
@@ -693,11 +675,11 @@ namespace LightningPRO
                     if (node.OuterXml.ToString().Contains("BMLineItem"))
                     {
                         string V = "nothing";
-                       
+
                         string line = node.FirstChild.OuterXml.ToString();
                         string line2 = node.FirstChild.NextSibling.OuterXml.ToString();
 
-                      
+
                         if (line.Contains("208Y/120V"))
                         {
                             V = "208Y/120V 3Ph 4W";
@@ -873,10 +855,10 @@ namespace LightningPRO
                             if ((line.Contains("4W") || line.Contains("3W")) && line.Contains("DC") == false)
                             {
 
-                                    Neut.Text = "100A";                                
-                                
+                                Neut.Text = "100A";
+
                             }
-                            
+
                             MA.Text = "100A";
                         }
                         else if (line.Contains("225A"))
@@ -885,7 +867,7 @@ namespace LightningPRO
                             {
                                 Neut.Text = "225A";
                             }
-                            
+
                             MA.Text = "225A";
                         }
                         else if (line.Contains("250A"))
@@ -894,7 +876,7 @@ namespace LightningPRO
                             {
                                 Neut.Text = "250A";
                             }
-                            
+
                             MA.Text = "250A";
                         }
                         else if (line.Contains("400A"))
@@ -903,7 +885,7 @@ namespace LightningPRO
                             {
                                 Neut.Text = "400A";
                             }
-                            
+
                             MA.Text = "400A";
                         }
                         else if (line.Contains("600A"))
@@ -912,7 +894,7 @@ namespace LightningPRO
                             {
                                 Neut.Text = "600A";
                             }
-                            
+
                             MA.Text = "600A";
                         }
 
@@ -924,13 +906,13 @@ namespace LightningPRO
                             Hz.Text = "-";
                         }
 
-                        if(line.Contains("Max X-Space for Branch Devices:"))
+                        if (line.Contains("Max X-Space for Branch Devices:"))
                         {
-                            
+
                             if (duplicates[activeLines[page]] == 2)
                             {
                                 string str = Utility.GetBetween(line, "Max X-Space for Branch Devices:", "\"");
-                                if(str.Contains("X"))
+                                if (str.Contains("X"))
                                 {
                                     str.Remove(str.Length - 1);
                                     Xspace.Text = (Int32.Parse(str) * 2).ToString() + "X";
@@ -944,10 +926,10 @@ namespace LightningPRO
                             else
                             {
                                 Xspace.Text = Utility.GetBetween(line, "Max X-Space for Branch Devices: ", "\"");
-                                CatalogFound = true;                                
+                                CatalogFound = true;
                             }
 
-                                
+
                         }
                         else
                         {
@@ -979,7 +961,7 @@ namespace LightningPRO
 
 
 
-                        if(flag200 == 1)
+                        if (flag200 == 1)
                         {
                             Neut.Text = (Int32.Parse(Regex.Replace(Neut.Text.Substring(0, 3), "[^0-9]", "")) * 2).ToString() + "A";
                         }
@@ -994,7 +976,7 @@ namespace LightningPRO
                         Enc = val.FirstChild.OuterXml.ToString();
                     }
                 }
-                
+
 
 
                 if (Enc.Contains("Type 12") && (Enc.Contains("TYPE 4X") == false))
@@ -1025,7 +1007,7 @@ namespace LightningPRO
                 {
                     Enclosure.Text = "TYPE4";
                 }
-                
+
                 else
                 {
                     Enclosure.Text = "No Box";
@@ -1053,29 +1035,10 @@ namespace LightningPRO
             catch
             {
                 MessageBox.Show("Unable To Load XML");
-            }   
+            }
         }
 
 
-
-
-
-
-
-
-
-        
-
-
-
-
-
-
-      
-
-        
-
-     
 
 
         private void Insert_Entry(object sender, RoutedEventArgs e)
@@ -1083,9 +1046,9 @@ namespace LightningPRO
             if (XMLLoaded == true && PDFLoaded == true)
             {
                 try
-                {                 
+                {
                     Boolean Duplicate = false;
-                    if (Utility.IsDuplicate(GO_Item.Text,Utility.ProductGroup.PRL123))
+                    if (Utility.IsDuplicate(GO_Item.Text, Utility.ProductGroup.PRL123))
                     {
                         MessageBox.Show("You Have A Duplicate. GO Items Must Be Unique.", "Duplicate Detected", MessageBoxButton.OK, MessageBoxImage.Information);
                         Duplicate = true;
@@ -1093,7 +1056,7 @@ namespace LightningPRO
 
                     if (Duplicate == false)
                     {
-                        if (string.IsNullOrEmpty(ShopOrder.Text)) 
+                        if (string.IsNullOrEmpty(ShopOrder.Text))
                         {
                             if (MessageBox.Show("You Are About To Insert\nWithout A ShopOrderInterior Number\nWould You Like To Continue?", "No ShopOrderInterior Number",
                                 MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
@@ -1112,8 +1075,8 @@ namespace LightningPRO
                                 Status.Content = GO_Item.Text + " INSERT CANCELLED";
                                 return;
                             }
-                            else 
-                            { 
+                            else
+                            {
                                 hasDates = false;
                             }
                         }
@@ -1138,12 +1101,12 @@ namespace LightningPRO
                         {
                             commandStr = "insert into PRL123 (GO_Item, [GO], ShopOrderInterior, ShopOrderBox, ShopOrderTrim, SchedulingGroup, Customer, Quantity, Tracking, Urgency, BoxEarly, NameplateRequired, NameplateOrdered, [AMO], [SpecialCustomer], [ServiceEntrance], [DoubleSection], [PaintedBox], [RatedNeutral200], ReleaseDate, CommitDate, EnteredDate, FilePath, ProductSpecialist, Catalogue, ImageFilePath) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                         }
-                        else 
+                        else
                         {
                             commandStr = "insert into PRL123 (GO_Item, [GO], ShopOrderInterior, ShopOrderBox, ShopOrderTrim, SchedulingGroup, Customer, Quantity, Tracking, Urgency, BoxEarly, NameplateRequired, NameplateOrdered, [AMO], [SpecialCustomer], [ServiceEntrance], [DoubleSection], [PaintedBox], [RatedNeutral200], FilePath, ProductSpecialist, Catalogue, ImageFilePath) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                         }
 
-                        using (OleDbCommand InsertCommand = new OleDbCommand(commandStr,MainWindow.LPcon))
+                        using (OleDbCommand InsertCommand = new OleDbCommand(commandStr, MainWindow.LPcon))
                         {
                             InsertCommand.Parameters.AddWithValue("GO_Item", GO_Item.Text);
                             InsertCommand.Parameters.AddWithValue("GO", GO1.Text);
@@ -1168,7 +1131,7 @@ namespace LightningPRO
                             InsertCommand.Parameters.AddWithValue("[PaintedBox]", (Boolean)PaintedBox);
                             InsertCommand.Parameters.AddWithValue("[RatedNeutral200]", (Boolean)RatedNeutral200);
 
-                            if (hasDates) 
+                            if (hasDates)
                             {
                                 InsertCommand.Parameters.AddWithValue("ReleaseDate", ReleaseDate.Text);
                                 InsertCommand.Parameters.AddWithValue("CommitDate", CommitDate.Text);
@@ -1224,30 +1187,42 @@ namespace LightningPRO
 
 
 
-        private void UpdateDB(int p) 
+        private void UpdateDB(int p)
         {
             try
             {
                 Boolean Duplicate = false;
-                if (Utility.IsDuplicate(GO_Item.Text,Utility.ProductGroup.PRL123))
+                if (Utility.IsDuplicate(GO_Item.Text, Utility.ProductGroup.PRL123))
                 {
                     MessageBox.Show("You Have A Duplicate. GO Items Must Be Unique.", "Duplicate Detected", MessageBoxButton.OK, MessageBoxImage.Information);
                     Duplicate = true;
-                }          
+                }
 
                 if (Duplicate == false)
                 {
+                    bool hasDates = true;
+                    if (string.IsNullOrEmpty(ReleaseDate.Text) || string.IsNullOrEmpty(CommitDate.Text) || string.IsNullOrEmpty(EnteredDate.Text))
+                    {
+                        hasDates = false;
+                    }
+
                     LoadAllBooleanValues();
 
-
                     string Tracking = "InDevelopment";
-
 
                     Utility.SaveImageToPdf(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(strPathPDF), GO_Item.Text + "_CONSTR.pdf"), (BitmapImage)image[p]);
                     Utility.SaveBitmapAsPNGinImages(strPathImage + "_" + Item.Text + ".png", (BitmapImage)image[p]);
 
+                    string commandStr = "";
+                    if (hasDates)
+                    {
+                        commandStr = "insert into PRL123 (GO_Item, [GO], ShopOrderInterior, ShopOrderBox, ShopOrderTrim, SchedulingGroup, Customer, Quantity, Tracking, Urgency, BoxEarly, NameplateRequired, NameplateOrdered, [AMO], [SpecialCustomer], [ServiceEntrance], [DoubleSection], [PaintedBox], [RatedNeutral200], ReleaseDate, CommitDate, EnteredDate, FilePath, ProductSpecialist, Catalogue, ImageFilePath) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    }
+                    else
+                    {
+                        commandStr = "insert into PRL123 (GO_Item, [GO], ShopOrderInterior, ShopOrderBox, ShopOrderTrim, SchedulingGroup, Customer, Quantity, Tracking, Urgency, BoxEarly, NameplateRequired, NameplateOrdered, [AMO], [SpecialCustomer], [ServiceEntrance], [DoubleSection], [PaintedBox], [RatedNeutral200], FilePath, ProductSpecialist, Catalogue, ImageFilePath) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    }
 
-                    string commandStr = "insert into PRL123 (GO_Item, [GO], ShopOrderInterior, ShopOrderBox, ShopOrderTrim, SchedulingGroup, Customer, Quantity, Tracking, Urgency, BoxEarly, NameplateRequired, NameplateOrdered, [AMO], [SpecialCustomer], [ServiceEntrance], [DoubleSection], [PaintedBox], [RatedNeutral200], ReleaseDate, CommitDate, EnteredDate, FilePath, ProductSpecialist, Catalogue, ImageFilePath) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                     using (OleDbCommand InsertCommand = new OleDbCommand(commandStr, MainWindow.LPcon))
                     {
                         InsertCommand.Parameters.AddWithValue("GO_Item", GO_Item.Text);
@@ -1273,9 +1248,13 @@ namespace LightningPRO
                         InsertCommand.Parameters.AddWithValue("[PaintedBox]", PaintedBox);
                         InsertCommand.Parameters.AddWithValue("[RatedNeutral200]", RatedNeutral200);
 
-                        InsertCommand.Parameters.AddWithValue("ReleaseDate", ReleaseDate.Text);
-                        InsertCommand.Parameters.AddWithValue("CommitDate", CommitDate.Text);
-                        InsertCommand.Parameters.AddWithValue("EnteredDate", EnteredDate.Text);
+                        if (hasDates)
+                        {
+                            InsertCommand.Parameters.AddWithValue("ReleaseDate", ReleaseDate.Text);
+                            InsertCommand.Parameters.AddWithValue("CommitDate", CommitDate.Text);
+                            InsertCommand.Parameters.AddWithValue("EnteredDate", ReleaseDate.Text);
+                        }
+
                         InsertCommand.Parameters.AddWithValue("FilePath", strPathPDF);
                         InsertCommand.Parameters.AddWithValue("ProductSpecialist", ProductSpecialist);
                         //InsertCommand.Parameters.AddWithValue("Suffix", Suffix.Text);
@@ -1322,32 +1301,16 @@ namespace LightningPRO
 
 
 
-
-
-       
-
-      
-
-        
-   
-
-
-
-
-
-
-
-
         //used to alter partNames in isAMO
         private string ConvertToRequired(string partname, int enclosure, int paint, int mount, int multiple)
         {
             string output = partname;
-            
+
             if (output != null)
             {
                 if (!(output.StartsWith("CN")) && !(output.StartsWith("ItemNumber")) && !(output.Contains("-")) && !(output.Contains("PROV")) && !(output.Contains("start")) && !(output.StartsWith("S3")) && !(output.StartsWith("P25")) && !(output.StartsWith("A29")) && !(output.StartsWith("H5")))
                 {
-                    if(output.StartsWith("JD3") || output.StartsWith("JDB3") || output.StartsWith("HJD3") || output.StartsWith("KD3") || output.StartsWith("KDB3") && !(output.StartsWith("JDB3070") || output.StartsWith("JDB3090") || output.StartsWith("JD3070") || output.StartsWith("JD3090") || output.StartsWith("HJD3070") || output.StartsWith("HJD3090")))
+                    if (output.StartsWith("JD3") || output.StartsWith("JDB3") || output.StartsWith("HJD3") || output.StartsWith("KD3") || output.StartsWith("KDB3") && !(output.StartsWith("JDB3070") || output.StartsWith("JDB3090") || output.StartsWith("JD3070") || output.StartsWith("JD3090") || output.StartsWith("HJD3070") || output.StartsWith("HJD3090")))
                     {
                         output = "HKD3400F";
                     }
@@ -1388,7 +1351,7 @@ namespace LightningPRO
                         output = EnclosureSurface(output, enclosure, paint);
                     }
 
-                    else if(output.StartsWith("EZB") && multiple == 3 && mount == 0)
+                    else if (output.StartsWith("EZB") && multiple == 3 && mount == 0)
                     {
                         output = TripleFlush(output, enclosure, paint);
                     }
@@ -1396,11 +1359,11 @@ namespace LightningPRO
                     {
                         output = TripleSurface(output, enclosure, paint);
                     }
-                    else if (output.StartsWith("EZB") && multiple==2 && mount == 0)
+                    else if (output.StartsWith("EZB") && multiple == 2 && mount == 0)
                     {
                         output = DoubleFlush(output, enclosure, paint);
                     }
-                    else if (output.StartsWith("EZB") && multiple==2 && mount == 1)
+                    else if (output.StartsWith("EZB") && multiple == 2 && mount == 1)
                     {
                         output = DoubleSurface(output, enclosure, paint);
                     }
@@ -1448,7 +1411,7 @@ namespace LightningPRO
             {
                 List<string> RainCoverList = Utility.ReplacementParts("CE24331H01");
                 foreach (string part in RainCoverList)
-                    DictionaryLoop(part,1);
+                    DictionaryLoop(part, 1);
             }
             return a;
         }
@@ -1467,7 +1430,7 @@ namespace LightningPRO
                 a = a.Replace("EZBP", "EZT");
                 a = a.Replace("RC", "F");
             }
-            else if(enclosure == 0 && !(paint == 1))
+            else if (enclosure == 0 && !(paint == 1))
             {
                 a = a.Replace("RCSP", "RC");
                 DictionaryLoop(a, 1);
@@ -1478,7 +1441,7 @@ namespace LightningPRO
             {
                 a = a.Replace("RCSP", "RC");
             }
-            else if ((enclosure == 1|| enclosure == 2) && paint == 1)
+            else if ((enclosure == 1 || enclosure == 2) && paint == 1)
             {
                 a = a.Replace("EZB", "EZBP");
                 a = a.Replace("RCSP", "RC");
@@ -1578,7 +1541,7 @@ namespace LightningPRO
             string a = partname;
             int enclosure = e;
             int paint = p;
-            if(!(paint == 1))
+            if (!(paint == 1))
             {
                 a = a.Replace("EZB", "CTR-EZB");
                 a = a.Replace("SPEC", "RC");
@@ -1627,7 +1590,7 @@ namespace LightningPRO
                 a = a.Replace("CTR-EZBP", "C-EZBP");
                 DictionaryLoop(a, 1);
                 a = a.Replace("C-EZBP", "EZT");
-                a = a.Replace("RC", "S");    
+                a = a.Replace("RC", "S");
             }
 
             if (enclosure == 1 && enclosure == 2)
@@ -1685,12 +1648,12 @@ namespace LightningPRO
             {
                 a = a.Replace("EZB", "C-EZBP");
                 a = a.Replace("SPEC", "RC");
-                DictionaryLoop(a,1);
+                DictionaryLoop(a, 1);
 
                 a = a.Replace("C-EZBP", "EZT");
                 a = a.Replace("RC", "S");
             }
-            if (enclosure == 0 || enclosure ==2)
+            if (enclosure == 0 || enclosure == 2)
             {
                 List<string> RainCoverList = Utility.ReplacementParts("CE24331H02");
                 foreach (string part in RainCoverList)
@@ -1698,7 +1661,6 @@ namespace LightningPRO
             }
             return a;
         }
-
 
 
 
@@ -1820,15 +1782,15 @@ namespace LightningPRO
 
             string AMOreport = "";
             partslist = new List<Part>();
-            
+
             int counter = 0;
-            foreach(XmlNode node in BMLines)    //iterate through BMLines (BMLineItems -> Materials List Information)
+            foreach (XmlNode node in BMLines)    //iterate through BMLines (BMLineItems -> Materials List Information)
             {
-                if(node.OuterXml.ToString().Contains("PRL1") || node.OuterXml.ToString().Contains("PRL2") ||  node.OuterXml.ToString().Contains("PRL3"))
+                if (node.OuterXml.ToString().Contains("PRL1") || node.OuterXml.ToString().Contains("PRL2") || node.OuterXml.ToString().Contains("PRL3"))
                 {
-                    
+
                     XmlNodeList n = node.ChildNodes;    //NodeList of all BMLineItem under BMLineItems
-                    
+
                     int mount = -1;
                     int encl = -1;
                     int paint = -1;
@@ -1902,19 +1864,19 @@ namespace LightningPRO
                             multiple = 3;
                         }
                     }// end for loop for line item
-                    
+
 
                     foreach (XmlNode x in n)    //n is NodeList of all BMLineItem under BMLineItems
                     {
                         XmlNodeList m = x.ChildNodes;      //Attributes of BMLineItem
-                        
+
                         Part currentpart = new Part("HOLDUP", 0);
-                   
+
                         foreach (XmlNode child in m)    //loop each attribute line in BMLineItem
                         {
                             if (child.OuterXml.ToString().Contains("\"CatalogNumber\""))                    //get CatalogNumber value and alter it using convertToRequired
                             {
-                                string output = Utility.GetBetween(child.OuterXml.ToString(), "V=\"", "\"");    
+                                string output = Utility.GetBetween(child.OuterXml.ToString(), "V=\"", "\"");
                                 if (!(output.StartsWith("CN")) && !(output.Contains("-")) && !(output.Contains("PROV")) && !(output.Contains("start")) && !(output.StartsWith("S3")) && !(output.StartsWith("P2")) && !(output == "C1") && !(output.StartsWith("A29")) && !(output.StartsWith("H5")))
                                 {
                                     currentpart.SetName(ConvertToRequired(output, encl, paint, mount, multiple));
@@ -1966,19 +1928,19 @@ namespace LightningPRO
             }
 
             for (int i = 0; i < partslist.Count; i++)
-            {                
-                if(Utility.StandardAMO(partslist[i].Get_partName()))                                //check PullSequence if standardAMO
+            {
+                if (Utility.StandardAMO(partslist[i].Get_partName()))                                //check PullSequence if standardAMO
                 {
                     statuses.Add(Info.AMO);
                 }
-                else if(Utility.KanBanSpike(partslist[i].Get_partName(), partslist[i].Get_Amount()))       //check PullSequence if KanBanSpike
+                else if (Utility.KanBanSpike(partslist[i].Get_partName(), partslist[i].Get_Amount()))       //check PullSequence if KanBanSpike
                 {
                     statuses.Add(Info.KanbanSpike);
                 }
                 else
                 {
                     statuses.Add(Info.None);
-                }    
+                }
 
                 string[] outputPullPartStatus = Utility.PullPartStatus(partslist[i].Get_partName());
                 EnableOrDisable.Add(outputPullPartStatus[0]);
@@ -1997,35 +1959,35 @@ namespace LightningPRO
             //write AMOreport
             for (int i = 0; i < 3; i++)
             {
-                if(i == 0)
+                if (i == 0)
                 {
-                        for (int n = 0; n < partslist.Count; n++)
+                    for (int n = 0; n < partslist.Count; n++)
+                    {
+                        if (statuses[n] == Info.AMO)
                         {
-                            if (statuses[n] == Info.AMO)
-                            {
-                                AMOreport = AMOreport + partslist[n].Get_partName() + ": " + partslist[n].Get_Amount().ToString() + ": " + statuses[n].ToString() + ": " + EnableOrDisable[n] + ": " + Description[n] + "\n";
-                            }
+                            AMOreport = AMOreport + partslist[n].Get_partName() + ": " + partslist[n].Get_Amount().ToString() + ": " + statuses[n].ToString() + ": " + EnableOrDisable[n] + ": " + Description[n] + "\n";
                         }
+                    }
                 }
                 else if (i == 1)
                 {
-                        for (int n = 0; n < partslist.Count; n++)
+                    for (int n = 0; n < partslist.Count; n++)
+                    {
+                        if (statuses[n] == Info.KanbanSpike)
                         {
-                            if (statuses[n] == Info.KanbanSpike)
-                            {
-                                AMOreport = AMOreport + partslist[n].Get_partName() + ": " + partslist[n].Get_Amount().ToString() + ": " + statuses[n].ToString() + ": " + EnableOrDisable[n] + ": " + Description[n] + "\n";
-                            }
+                            AMOreport = AMOreport + partslist[n].Get_partName() + ": " + partslist[n].Get_Amount().ToString() + ": " + statuses[n].ToString() + ": " + EnableOrDisable[n] + ": " + Description[n] + "\n";
                         }
+                    }
                 }
                 else
                 {
-                        for (int n = 0; n < partslist.Count; n++)
+                    for (int n = 0; n < partslist.Count; n++)
+                    {
+                        if (statuses[n] == Info.None)
                         {
-                            if (statuses[n] == Info.None)
-                            {
-                                AMOreport = AMOreport + partslist[n].Get_partName() + ": " + partslist[n].Get_Amount().ToString() + ": " + statuses[n].ToString() + ": " + EnableOrDisable[n] + ": " + Description[n] + "\n";
-                            }
+                            AMOreport = AMOreport + partslist[n].Get_partName() + ": " + partslist[n].Get_Amount().ToString() + ": " + statuses[n].ToString() + ": " + EnableOrDisable[n] + ": " + Description[n] + "\n";
                         }
+                    }
                 }
             }
 
@@ -2040,7 +2002,7 @@ namespace LightningPRO
             string pdfPathAMOReport = documentPath + @"\AMO\AMO_Report.pdf";
             Utility.ConvertTXTtoPDF(txtPathAMOReport, pdfPathAMOReport);
 
-          
+
 
             if (AMOreport.Contains("AMO") || AMOreport.Contains("Kanban"))
             {
@@ -2058,202 +2020,66 @@ namespace LightningPRO
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         private void Automatic_Insert()
         {
-                try
+            try
+            {
+                if (PDFLoaded == false || XMLLoaded == false)
                 {
-                    if (PDFLoaded == false || XMLLoaded == false)
+                    MessageBox.Show("Cannot Automatically Insert");
+                }
+                else
+                {
+
+                    string commandText = "select [GO Item],[GO],[Item],[Attribute1],[Shop Order],[Shop Order B],[Shop Order T],[Customer],[Qty],[Entered Date],[Release Date],[Commit Date],[Product Specialist] from [tblOrderStatus] where [Prod Group] in " + Utility.GetProductNameListInString(ConfigurationStorage.PRL123names) + " and [GO]='" + GOnum + "'";
+                    using (OleDbCommand cmd = new OleDbCommand(commandText, MainWindow.Mcon))
                     {
-                        MessageBox.Show("Cannot Automatically Insert");
-                    }
-                    else
-                    {
-                           
-                            string commandText = "select [GO Item],[GO],[Item],[Attribute1],[Shop Order],[Shop Order B],[Shop Order T],[Customer],[Qty],[Entered Date],[Release Date],[Commit Date],[Product Specialist] from [tblOrderStatus] where [Prod Group] in " + Utility.GetProductNameListInString(Views.Configuration.PRL123names) + " and [GO]='" + GOnum + "'";
-                            using (OleDbCommand cmd = new OleDbCommand(commandText, MainWindow.Mcon))
+                        for (int i = 0; i < pages.Length; i++)
+                        {
+                            LoadXML(i);
+                            using (OleDbDataReader rd = cmd.ExecuteReader())
                             {
-                                for (int i = 0; i < pages.Length; i++)
+                                while (rd.Read())
                                 {
-                                    LoadXML(i);
-                                    using (OleDbDataReader rd = cmd.ExecuteReader())
+                                    if (rd[2].ToString() == Item.Text)
                                     {
-                                        while (rd.Read())
-                                        {
-                                            if (rd[2].ToString() == Item.Text)
-                                            {
 
-                                                GO1.Text = rd[1].ToString();
-                                                GO_Item.Text = rd[0].ToString();
-                                                Item.Text = rd[2].ToString();
-                                                SchedulingGroup.Text = rd[3].ToString();
-                                                ShopOrder.Text = rd[4].ToString();
-                                                ShopOrderBox.Text = rd[5].ToString();
-                                                ShopOrderTrim.Text = rd[6].ToString();
-                                                Customer.Text = rd[7].ToString();
-                                                Qty.Text = rd[8].ToString();
-                                                EnteredDate.Text = rd[9].ToString();
-                                                ReleaseDate.Text = rd[10].ToString();
-                                                CommitDate.Text = rd[11].ToString();
-                                                ProductSpecialist = rd[12].ToString();
-                                                Urgency.Text = "N";
-                                            }
-                                        }
-                                    }   //end using reader
-                                    UpdateDB(i);
+                                        GO1.Text = rd[1].ToString();
+                                        GO_Item.Text = rd[0].ToString();
+                                        Item.Text = rd[2].ToString();
+                                        SchedulingGroup.Text = rd[3].ToString();
+                                        ShopOrder.Text = rd[4].ToString();
+                                        ShopOrderBox.Text = rd[5].ToString();
+                                        ShopOrderTrim.Text = rd[6].ToString();
+                                        Customer.Text = rd[7].ToString();
+                                        Qty.Text = rd[8].ToString();
+                                        EnteredDate.Text = rd[9].ToString();
+                                        ReleaseDate.Text = rd[10].ToString();
+                                        CommitDate.Text = rd[11].ToString();
+                                        ProductSpecialist = rd[12].ToString();
+                                        Urgency.Text = "N";
+                                    }
                                 }
-                            } //end using command
+                            }   //end using reader
+                            UpdateDB(i);
+                        }
+                    } //end using command
 
-                        Status.Content = GOnum + " AUTO INSERTED SUCCESSFULLY";
-                    }
+                    Status.Content = GOnum + " AUTO INSERTED SUCCESSFULLY";
                 }
-                catch
-                {
-                    Status.Content = GOnum + " INSERTION ERROR";
-                    MessageBox.Show("An Error Occurred Trying To Automatically Insert An Entry");
-                }
+            }
+            catch
+            {
+                Status.Content = GOnum + " INSERTION ERROR";
+                MessageBox.Show("An Error Occurred Trying To Automatically Insert An Entry");
+            }
         }
 
 
         private void Auto_Insert(object sender, RoutedEventArgs e)
         {
-           Automatic_Insert();
+            Automatic_Insert();
         }
-
-
-
-
-        private void DoubleClickInsert(object sender, MouseButtonEventArgs e)
-        {
-            if (XMLLoaded == true && PDFLoaded == true)
-            {
-                try
-                {
-                    Boolean Duplicate = false;
-                    if (Utility.IsDuplicate(GO_Item.Text,Utility.ProductGroup.PRL123))
-                    {
-                        MessageBox.Show("You Have A Duplicate. GO Items Must Be Unique.", "Duplicate Detected", MessageBoxButton.OK, MessageBoxImage.Information);
-                        Duplicate = true;
-                    }
-
-                    if (Duplicate == false)
-                    {
-                        LoadAllBooleanValues();
-
-
-                        string Tracking;
-                        if (Approve.IsChecked == true)
-                        {
-                            Tracking = "MIComplete";
-                        }
-                        else
-                        {
-                            Tracking = "InDevelopment";
-                        }
-
-                        Utility.SaveImageToPdf(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(strPathPDF), GO_Item.Text + "_CONSTR.pdf"), (BitmapImage)image[ImagePage]);
-                        Utility.SaveBitmapAsPNGinImages(strPathImage + "_" + Item.Text + ".png", (BitmapImage)image[ImagePage]);
-
-
-                        string commandStr = "insert into PRL123 (GO_Item, [GO], ShopOrderInterior, ShopOrderBox, ShopOrderTrim, SchedulingGroup, Customer, Quantity, Tracking, Urgency, BoxEarly, NameplateRequired, NameplateOrdered, [AMO], [SpecialCustomer], [ServiceEntrance], [DoubleSection], [PaintedBox], [RatedNeutral200], ReleaseDate, CommitDate, EnteredDate, FilePath, ProductSpecialist, Catalogue, ImageFilePath) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                        using (OleDbCommand InsertCommand = new OleDbCommand(commandStr, MainWindow.LPcon))
-                        {
-                            InsertCommand.Parameters.AddWithValue("GO_Item", GO_Item.Text);
-                            InsertCommand.Parameters.AddWithValue("GO", GO1.Text);
-                            InsertCommand.Parameters.AddWithValue("ShopOrderInterior", ShopOrder.Text);
-                            InsertCommand.Parameters.AddWithValue("ShopOrderBox", ShopOrderBox.Text);
-                            InsertCommand.Parameters.AddWithValue("ShopOrderTrim", ShopOrderTrim.Text);
-                            InsertCommand.Parameters.AddWithValue("SchedulingGroup", SchedulingGroup.Text);
-                            InsertCommand.Parameters.AddWithValue("Customer", Customer.Text);
-                            InsertCommand.Parameters.AddWithValue("Quantity", Qty.Text);
-                            InsertCommand.Parameters.AddWithValue("Tracking", Tracking);
-                            InsertCommand.Parameters.AddWithValue("Urgency", Urgency.Text);
-                            //InsertCommand.Parameters.AddWithValue("Bidman", ToByteArray(DrawInfo(image[page])));
-                            InsertCommand.Parameters.AddWithValue("BoxEarly", BoxFirst.IsChecked);
-                            InsertCommand.Parameters.AddWithValue("NameplateRequired", NameplateRequired.IsChecked);
-                            InsertCommand.Parameters.AddWithValue("NameplateOrdered", NameplateOrdered.IsChecked);
-                            InsertCommand.Parameters.AddWithValue("[AMO]", AMO.IsChecked);
-
-                            InsertCommand.Parameters.AddWithValue("[SpecialCustomer]", isSpecialCustomer);
-
-                            InsertCommand.Parameters.AddWithValue("[ServiceEntrance]", isServiceEntrance);
-                            InsertCommand.Parameters.AddWithValue("[DoubleSection]", isMuliSection);
-                            InsertCommand.Parameters.AddWithValue("[PaintedBox]", PaintedBox);
-                            InsertCommand.Parameters.AddWithValue("[RatedNeutral200]", RatedNeutral200);
-
-
-                            InsertCommand.Parameters.AddWithValue("ReleaseDate", ReleaseDate.Text);
-                            InsertCommand.Parameters.AddWithValue("CommitDate", CommitDate.Text);
-                            InsertCommand.Parameters.AddWithValue("EnteredDate", ReleaseDate.Text);
-                            InsertCommand.Parameters.AddWithValue("FilePath", strPathPDF);
-                            InsertCommand.Parameters.AddWithValue("ProductSpecialist", ProductSpecialist);
-                            //InsertCommand.Parameters.AddWithValue("Suffix", Suffix.Text);
-                            InsertCommand.Parameters.AddWithValue("Catalogue", BoxCatalogue.Text);
-                            InsertCommand.Parameters.AddWithValue("ImageFilePath", strPathImage + "_" + Item.Text + ".png");
-
-                            InsertCommand.ExecuteNonQuery();
-                        } //end using command
-
-
-                        string command = "insert into CSALabel ([GONumber], ItemNumber, Designation, [MA], Voltage, [P], [W], ground, [Hz], GO_Item, ProductID, Enclosure, XSpaceUsed, [N]) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                        using (OleDbCommand InsertCSA = new OleDbCommand(command, MainWindow.LPcon))
-                        {
-                            InsertCSA.Parameters.AddWithValue("[GONumber]", GO1.Text);
-                            InsertCSA.Parameters.AddWithValue("ItemNumber", Item.Text);
-                            InsertCSA.Parameters.AddWithValue("Designation", Designation.Text);
-                            InsertCSA.Parameters.AddWithValue("[MA]", MA.Text);
-                            InsertCSA.Parameters.AddWithValue("Voltage", Voltage.Text);
-                            InsertCSA.Parameters.AddWithValue("[P]", P.Text);
-                            InsertCSA.Parameters.AddWithValue("[W]", W.Text);
-                            InsertCSA.Parameters.AddWithValue("ground", Ground.Text);
-                            InsertCSA.Parameters.AddWithValue("[Hz]", Hz.Text);
-                            InsertCSA.Parameters.AddWithValue("GO_Item", GO_Item.Text);
-                            InsertCSA.Parameters.AddWithValue("ProductID", ProductID.Text);
-                            InsertCSA.Parameters.AddWithValue("Enclosure", Enclosure.Text);
-                            InsertCSA.Parameters.AddWithValue("XSpaceUsed", Xspace.Text);
-                            InsertCSA.Parameters.AddWithValue("[N]", Neut.Text);
-
-                            InsertCSA.ExecuteNonQuery();
-
-                        } //end using command
-
-
-                        Status.Content = GO_Item.Text + " SUCCESSFULLY INSERTED";
-
-                        if (dg.ItemContainerGenerator.ContainerFromItem(dg.SelectedItem) is DataGridRow dataGridRow)
-                            dataGridRow.Background = System.Windows.Media.Brushes.LightGreen;
-                    }
-                }
-                catch
-                {
-                    Status.Content = GO_Item.Text + " INSERTION ERROR";
-                    MessageBox.Show("Error Occurred While Double-Click Inserting Entry");
-                }
-            }
-        }
-
-
-
-
-
-
 
 
     }

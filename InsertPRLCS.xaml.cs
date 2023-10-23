@@ -109,7 +109,7 @@ namespace LightningPRO
         private void IsSpecialCustomer()
         {
             isSpecialCustomer = false;
-            foreach (string client in Views.Configuration.specialCustomer)
+            foreach (string client in ConfigurationStorage.specialCustomer)
             {
                 if (Customer.Text.Contains(client))
                 {
@@ -837,6 +837,8 @@ namespace LightningPRO
             Amps.Text = AmpsArr[XMLpage];
             Enclosure.Text = EnclosureArr[XMLpage];
             GoItemXML.Text = GoItemXmlArr[XMLpage];
+            GoItemXML.Text = GoItemXmlArr[XMLpage];
+            ProductID.Text = ProdIDArr[XMLpage];
         }
 
 
@@ -873,6 +875,8 @@ namespace LightningPRO
 
         string[] GoItemXmlArr;
 
+        string[] ProdIDArr;
+
 
         //quick solution implementation
 
@@ -903,7 +907,7 @@ namespace LightningPRO
                     string outputQuery = name[0].FirstChild.OuterXml.Substring(22, 10);
                     SearchBox.Text = outputQuery;
 
-                    LoadGrid("select * from [tblOrderStatus] where [Prod Group] in " + Utility.GetProductNameListInString(Views.Configuration.PRLCSnames) + " and [GO]='" + SearchBox.Text + "'");
+                    LoadGrid("select * from [tblOrderStatus] where [Prod Group] in " + Utility.GetProductNameListInString(ConfigurationStorage.PRLCSnames) + " and [GO]='" + SearchBox.Text + "'");
 
                     //each node is a line item
                     XmlNodeList BMConfiguredLineItemNodes = xDoc.GetElementsByTagName("BMConfiguredLineItem");
@@ -916,7 +920,23 @@ namespace LightningPRO
                             NumberOfLineItems++;
                         }
                     }
-             
+
+                    ProdIDArr = new string[NumberOfLineItems];
+                    int i = 0;
+                    foreach (XmlNode lineItemNode in BMConfiguredLineItemNodes)
+                    {
+                        if (lineItemNode.OuterXml.ToString().Contains("Pow-R-Line CSX") || lineItemNode.OuterXml.ToString().Contains("PRLCSX") || lineItemNode.OuterXml.ToString().Contains("Pow-R-Line CSx") || lineItemNode.OuterXml.ToString().Contains("PRLCSx"))
+                        {
+                            ProdIDArr[i] = "Pow-R-Line CSX";
+                            i++;
+                        }
+                        else if (lineItemNode.OuterXml.ToString().Contains("Pow-R-Line CS") || lineItemNode.OuterXml.ToString().Contains("PRLCS"))
+                        {
+                            ProdIDArr[i] = "Pow-R-Line CS";
+                            i++;
+                        }
+                    }
+
                     MainBusBarCapacityArr = new string[NumberOfLineItems];
                     VoltageArr = new string[NumberOfLineItems];
                     HzArr = new string[NumberOfLineItems];
@@ -1164,24 +1184,12 @@ namespace LightningPRO
 
 
 
-
-
-
-
-
-
-
-
         private void LoadGrid(string query)
         {
             DataTable dt = Utility.SearchMasterDB(query);
             dg.ItemsSource = dt.DefaultView;
             Urgency.Text = "N";     //default to normal urgency
-            ProductID.Text = "Pow-R-LineCS";   //always PRL-CS
         }
-
-
-
 
 
 
@@ -1206,7 +1214,6 @@ namespace LightningPRO
                 CommitDate.Text = row["Commit Date"].ToString();
                 EnteredDate.Text = row["Entered Date"].ToString();
                 Urgency.Text = "N";
-                ProductID.Text = "Pow-R-LineCS";   //always PRL-CS
                 Status.Content = GO_Item.Text + " SELECTED";
                 ProductSpecialist = row["Product Specialist"].ToString();
                 jobName.Text = row["Job Name"].ToString();
@@ -1279,9 +1286,9 @@ namespace LightningPRO
                 drawingContext.DrawText(TestReportText(Customer.Text), new System.Windows.Point(385, 520));
                 drawingContext.DrawText(TestReportText(GO_Item.Text), new System.Windows.Point(1900, 520));
 
-                drawingContext.DrawText(TestReportText(Views.Configuration.addressLocation[0]), new System.Windows.Point(1620, 70));
-                drawingContext.DrawText(TestReportText(Views.Configuration.addressLocation[1]), new System.Windows.Point(1620, 120));
-                drawingContext.DrawText(TestReportText(Views.Configuration.addressLocation[2]), new System.Windows.Point(1620, 195));
+                drawingContext.DrawText(TestReportText(ConfigurationStorage.addressLocation[0]), new System.Windows.Point(1620, 70));
+                drawingContext.DrawText(TestReportText(ConfigurationStorage.addressLocation[1]), new System.Windows.Point(1620, 120));
+                drawingContext.DrawText(TestReportText(ConfigurationStorage.addressLocation[2]), new System.Windows.Point(1620, 195));
 
                 drawingContext.Close();
                 RenderTargetBitmap renderBmap = new RenderTargetBitmap(initailIMG.PixelWidth, initailIMG.PixelHeight, 96, 96, PixelFormats.Pbgra32);
@@ -1475,7 +1482,7 @@ namespace LightningPRO
 
         private void Search_GOs(object sender, RoutedEventArgs e)
         {
-            LoadGrid("select * from [tblOrderStatus] where [Prod Group] in " + Utility.GetProductNameListInString(Views.Configuration.PRLCSnames) + " and [GO]='" + SearchBox.Text + "'");
+            LoadGrid("select * from [tblOrderStatus] where [Prod Group] in " + Utility.GetProductNameListInString(ConfigurationStorage.PRLCSnames) + " and [GO]='" + SearchBox.Text + "'");
         }
 
         private void Pg1_Click(object sender, RoutedEventArgs e)

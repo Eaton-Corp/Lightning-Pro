@@ -42,6 +42,10 @@ namespace LightningPRO.Views
         public Shipping()
         {
             InitializeComponent();
+        }
+
+        private void Shipping_OnLoaded(object sender, RoutedEventArgs e)
+        {
             IntializeProduct();
         }
 
@@ -511,7 +515,7 @@ namespace LightningPRO.Views
         {
             string output;
             string Tab = "\t";
-            output = Order + Tab + Views.Configuration.addressLocation[3] + "-FG" + Tab + Tab + "XX.XX.FG.FG" + Tab + Qty;
+            output = Order + Tab + ConfigurationStorage.addressLocation[3] + "-FG" + Tab + Tab + "XX.XX.FG.FG" + Tab + Qty;
             return output;
         }
 
@@ -1015,7 +1019,6 @@ namespace LightningPRO.Views
             Box.Source = null;
             Trim.Source = null;
         }
-
 
     }
 }

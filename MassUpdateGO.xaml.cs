@@ -35,9 +35,9 @@ namespace LightningPRO
 
         private void LoadData()
         {
-            string queryPRL123 = "select [ID], [GO_Item], [Notes], [ProductSpecialist], [AMO], [BoxEarly], [Box Sent], [SpecialCustomer], [ServiceEntrance], [DoubleSection], [PaintedBox], [RatedNeutral200], [DNSB], [Complete], [Short], [LabelsPrinted], [NameplateRequired], [NameplateOrdered] from [PRL123] where [GO] = '" + GO + "'";
-            string queryPRL4 = "select [ID], [GO_Item], [Notes], [ProductSpecialist], [AMO], [BoxEarly], [BoxSent], [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], [DNSB], [Complete], [Short], [LabelsPrinted], [NameplateRequired], [NameplateOrdered] from [PRL4] where [GO] = '" + GO + "' and [PageNumber] = 0";
-            string queryPRLCS = "select [ID], [GO_Item], [Notes], [ProductSpecialist], [AMO], [SpecialCustomer], [IncLocLeft], [IncLocRight], [CrossBus], [OpenBottom], [ExtendedTop], [PaintedBox], [ThirtyDeepEnclosure], [DNSB], [Complete], [Short], [LabelsPrinted], [NameplateRequired], [NameplateOrdered] from [PRLCS] where [GO] = '" + GO + "' and [PageNumber] = 0";
+            string queryPRL123 = "select Distinct PRL123.[ID], PRL123.[GO_Item], PRL123.[Notes], CSALabel.[ProductID], PRL123.[ProductSpecialist], PRL123.[AMO], PRL123.[BoxEarly], PRL123.[Box Sent], PRL123.[SpecialCustomer], PRL123.[ServiceEntrance], PRL123.[DoubleSection], PRL123.[PaintedBox], PRL123.[RatedNeutral200], PRL123.[DNSB], PRL123.[Complete], PRL123.[Short], PRL123.[LabelsPrinted], PRL123.[NameplateRequired], PRL123.[NameplateOrdered] from [PRL123] inner join [CSALabel] on PRL123.[GO_Item] = CSALabel.[GO_Item] where PRL123.[GO] = '" + GO + "'";
+            string queryPRL4 = "select Distinct PRL4.[ID], PRL4.[GO_Item], PRL4.[Notes], CSALabel.[ProductID], PRL4.[ProductSpecialist], PRL4.[AMO], PRL4.[BoxEarly], PRL4.[BoxSent], PRL4.[SpecialCustomer], PRL4.[ServiceEntrance], PRL4.[PaintedBox], PRL4.[RatedNeutral200], PRL4.[DoorOverDist], PRL4.[DoorInDoor], PRL4.[DNSB], PRL4.[Complete], PRL4.[Short], PRL4.[LabelsPrinted], PRL4.[NameplateRequired], PRL4.[NameplateOrdered] from [PRL4] inner join [CSALabel] on PRL4.[GO_Item] = CSALabel.[GO_Item] where PRL4.[GO] = '" + GO + "' and PRL4.[PageNumber] = 0";
+            string queryPRLCS = "select Distinct PRLCS.[ID], PRLCS.[GO_Item], PRLCS.[Notes], CSALabelPRLCS.[ProductID], PRLCS.[ProductSpecialist], PRLCS.[AMO], PRLCS.[SpecialCustomer], PRLCS.[IncLocLeft], PRLCS.[IncLocRight], PRLCS.[CrossBus], PRLCS.[OpenBottom], PRLCS.[ExtendedTop], PRLCS.[PaintedBox], PRLCS.[ThirtyDeepEnclosure], PRLCS.[DNSB], PRLCS.[Complete], PRLCS.[Short], PRLCS.[LabelsPrinted], PRLCS.[NameplateRequired], PRLCS.[NameplateOrdered] from [PRLCS] inner join [CSALabelPRLCS] on PRLCS.[GO_Item] = CSALabelPRLCS.[GO_Item] where PRLCS.[GO] = '" + GO + "' and PRLCS.[PageNumber] = 0";
 
 
             DataTable dtPRL123 = Utility.SearchLP(queryPRL123);
@@ -105,7 +105,7 @@ namespace LightningPRO
                     bool isFirst = true;
                     foreach (DataColumn col in row.Table.Columns)
                     {
-                        if (col.ColumnName != "ID" && row[col, DataRowVersion.Original] != row[col, DataRowVersion.Current])
+                        if ((col.ColumnName != "ID" && col.ColumnName != "ProductID") && row[col, DataRowVersion.Original] != row[col, DataRowVersion.Current])
                         {
                             if (!isFirst) queryBuilder.Append(", ");
                             if (col.DataType == typeof(bool))

@@ -63,7 +63,7 @@ namespace LightningPRO
 
             if (isConfigured)
             {
-                Views.Configuration.SetProductNames();
+                ConfigurationStorage.SetProductNames();
 
                 ConnectLPdatabase();
                 ConnectMasterDatabase();

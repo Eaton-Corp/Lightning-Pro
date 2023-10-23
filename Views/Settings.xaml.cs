@@ -36,9 +36,14 @@ namespace LightningPRO.Views
         public Settings()
         {
             InitializeComponent();
+        }
+
+        private void Settings_OnLoaded(object sender, RoutedEventArgs e)
+        {
             PRL123_Set();
             LoadGrid("select * from [Employee]");
         }
+
 
         private void LoadGrid(string query)
         {
