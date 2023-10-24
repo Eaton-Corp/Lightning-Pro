@@ -86,6 +86,10 @@ namespace LightningPRO.Views
         public Assembler()
         {
             InitializeComponent();
+        }
+
+        private void Assembler_OnLoaded(object sender, RoutedEventArgs e)
+        {
             LoadComboBox();
         }
 

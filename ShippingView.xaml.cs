@@ -125,7 +125,7 @@ namespace LightningPRO
         {
             string output;
             string Tab = "\t";
-            output = Order + Tab + Views.Configuration.addressLocation[3] + "-FG" + Tab + Tab + "XX.XX.FG.FG" + Tab + Qty;
+            output = Order + Tab + ConfigurationStorage.addressLocation[3] + "-FG" + Tab + Tab + "XX.XX.FG.FG" + Tab + Qty;
             return output;
         }
 

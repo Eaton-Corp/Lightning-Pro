@@ -22,31 +22,13 @@ namespace LightningPRO.Views
     /// </summary>
     public partial class Configuration : UserControl
     {
-        
-        //access these fields globally in the app
-        public static string[] addressLocation = ConfigurationManager.ConnectionStrings["locationAddress"].ToString().Split('/');          //each index has an address line for TEST Report and last index has location abbreviation 
-        public static string[] specialCustomer = ConfigurationManager.ConnectionStrings["specialCustomersList"].ToString().Split('/');         //each index has a special customer - or index[0] has "NONE"
-
-
-        //product names as they appear under [Prod Group] in [tblOrderStatus] 
-        public static string[] PRL123names;
-        public static string[] PRL4names;
-        public static string[] PRLCSnames;
-        public static string[] ECnames;
-
-        public static void SetProductNames() 
-        { 
-            string[] productlines = ConfigurationManager.ConnectionStrings["productNameList"].ToString().Split('/');
-            PRL123names = productlines[0].Split(',');
-            PRL4names = productlines[1].Split(',');
-            PRLCSnames = productlines[2].Split(',');
-            ECnames = productlines[3].Split(',');
-        }
-
-
         public Configuration()
         {
             InitializeComponent();
+        }
+
+        private void Configuration_OnLoaded(object sender, RoutedEventArgs e)
+        {
             PopulateLabels();
             Status.Visibility = Visibility.Hidden;
         }

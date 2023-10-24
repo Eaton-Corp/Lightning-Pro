@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:LightningPRO.Views"
              xmlns:syncfusion="http://schemas.syncfusion.com/wpf" x:Class="LightningPRO.Views.Eaton"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800" KeyDown="KeyDownClick">
+             d:DesignHeight="450" d:DesignWidth="800" KeyDown="KeyDownClick" Loaded="Eaton_OnLoaded">
     <Grid Background="White">
         <Grid.ColumnDefinitions>
             <ColumnDefinition />

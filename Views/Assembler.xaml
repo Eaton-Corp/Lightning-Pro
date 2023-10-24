@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:LightningPRO.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="1920" d:DesignWidth="1080" KeyDown="KeyDownClick">
+             d:DesignHeight="1920" d:DesignWidth="1080" KeyDown="KeyDownClick" Loaded="Assembler_OnLoaded">
     <Grid Background="White" >
         
         <Grid.ColumnDefinitions>

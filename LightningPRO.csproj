@@ -197,6 +197,7 @@
     <Compile Include="AMOList.xaml.cs">
       <DependentUpon>AMOList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ConfigurationStorage.cs" />
     <Compile Include="CSArecords.xaml.cs">
       <DependentUpon>CSArecords.xaml</DependentUpon>
     </Compile>

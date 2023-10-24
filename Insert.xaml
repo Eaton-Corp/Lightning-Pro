@@ -124,7 +124,7 @@
                 <RowDefinition/>
                 <RowDefinition Height="20"/>
             </Grid.RowDefinitions>
-            <DataGrid x:Name="dg"  CanUserReorderColumns="False" CanUserResizeRows="False" CanUserResizeColumns="False" CanUserAddRows="False" Grid.Row="1" Grid.Column="1" SelectionChanged="Selection_Changed" MouseDoubleClick="DoubleClickInsert"/>
+            <DataGrid x:Name="dg"  CanUserReorderColumns="False" CanUserResizeRows="False" CanUserResizeColumns="False" CanUserAddRows="False" Grid.Row="1" Grid.Column="1" SelectionChanged="Selection_Changed" />
         </Grid>
         <Label Content="GO Item:" Grid.Row="4" Grid.Column="0" />
         <Label Content="GO:" Grid.Row="5" Grid.Column="0"/>

@@ -119,7 +119,7 @@ namespace LightningPRO
         private void IsSpecialCustomer()
         {
             isSpecialCustomer = false;
-            foreach (string client in Views.Configuration.specialCustomer)
+            foreach (string client in ConfigurationStorage.specialCustomer)
             {
                 if (Customer.Text.Contains(client))
                 {
@@ -509,6 +509,7 @@ namespace LightningPRO
             Xspace.Text = XSpaceUsedArr[XMLpage];
             Neut.Text = Narr[XMLpage];
             GOItemXML.Text = GoItemXmlArr[XMLpage];
+            ProductID.Text = ProdIDArr[XMLpage];
         }
 
         private void MatchXMLPage(string GOItem)
@@ -554,6 +555,8 @@ namespace LightningPRO
         string[] XSpaceUsedArr;
         string[] Narr;
 
+        string[] ProdIDArr;
+
         string[] GoItemXmlArr;
 
 
@@ -586,7 +589,7 @@ namespace LightningPRO
                     string outputQuery = name[0].FirstChild.OuterXml.Substring(22, 10);
                     SearchBox.Text = outputQuery;
 
-                    LoadGrid("select * from [tblOrderStatus] where [Prod Group] in " + Utility.GetProductNameListInString(Views.Configuration.PRL4names) + " and [GO]='" + SearchBox.Text + "'");
+                    LoadGrid("select * from [tblOrderStatus] where [Prod Group] in " + Utility.GetProductNameListInString(ConfigurationStorage.PRL4names) + " and [GO]='" + SearchBox.Text + "'");
 
                     //each node is a line item
                     XmlNodeList BMConfiguredLineItemNodes = xDoc.GetElementsByTagName("BMConfiguredLineItem");
@@ -600,6 +603,22 @@ namespace LightningPRO
                         if (lineItemNode.OuterXml.ToString().Contains("Pow-R-Line4") || lineItemNode.OuterXml.ToString().Contains("PRL4"))
                         {
                             NumberOfLineItems++;
+                        }
+                    }
+                    
+                    ProdIDArr = new string[NumberOfLineItems];
+                    int i = 0;
+                    foreach (XmlNode lineItemNode in BMConfiguredLineItemNodes)
+                    {
+                        if (lineItemNode.OuterXml.ToString().Contains("Pow-R-Line4X") || lineItemNode.OuterXml.ToString().Contains("PRL4X") || lineItemNode.OuterXml.ToString().Contains("Pow-R-Line4x") || lineItemNode.OuterXml.ToString().Contains("PRL4x"))
+                        {
+                            ProdIDArr[i] = "Pow-R-Line4X";
+                            i++;
+                        }
+                        else if (lineItemNode.OuterXml.ToString().Contains("Pow-R-Line4") || lineItemNode.OuterXml.ToString().Contains("PRL4"))
+                        {
+                            ProdIDArr[i] = "Pow-R-Line4";
+                            i++;
                         }
                     }
 
@@ -1042,7 +1061,6 @@ namespace LightningPRO
             DataTable dt = Utility.SearchMasterDB(query);
             dg.ItemsSource = dt.DefaultView;
             Urgency.Text = "N";     //default to normal urgency
-            ProductID.Text = "Pow-R-Line4";   //always PRL4
         }
 
 
@@ -1190,9 +1208,9 @@ namespace LightningPRO
                 drawingContext.DrawText(TestReportText(Customer.Text), new System.Windows.Point(385, 520));
                 drawingContext.DrawText(TestReportText(GO_Item.Text), new System.Windows.Point(1900, 520));
 
-                drawingContext.DrawText(TestReportText(Views.Configuration.addressLocation[0]), new System.Windows.Point(1620, 70));
-                drawingContext.DrawText(TestReportText(Views.Configuration.addressLocation[1]), new System.Windows.Point(1620, 120));
-                drawingContext.DrawText(TestReportText(Views.Configuration.addressLocation[2]), new System.Windows.Point(1620, 195));
+                drawingContext.DrawText(TestReportText(ConfigurationStorage.addressLocation[0]), new System.Windows.Point(1620, 70));
+                drawingContext.DrawText(TestReportText(ConfigurationStorage.addressLocation[1]), new System.Windows.Point(1620, 120));
+                drawingContext.DrawText(TestReportText(ConfigurationStorage.addressLocation[2]), new System.Windows.Point(1620, 195));
 
                 drawingContext.Close();
                 RenderTargetBitmap renderBmap = new RenderTargetBitmap(initailIMG.PixelWidth, initailIMG.PixelHeight, 96, 96, PixelFormats.Pbgra32);
@@ -1398,7 +1416,7 @@ namespace LightningPRO
 
         private void Search_GOs(object sender, RoutedEventArgs e)
         {
-            LoadGrid("select * from [tblOrderStatus] where [Prod Group] in " + Utility.GetProductNameListInString(Views.Configuration.PRL4names) + " and [GO]='" + SearchBox.Text + "'");
+            LoadGrid("select * from [tblOrderStatus] where [Prod Group] in " + Utility.GetProductNameListInString(ConfigurationStorage.PRL4names) + " and [GO]='" + SearchBox.Text + "'");
         }
 
         private void Auto_Insert(object sender, RoutedEventArgs e)
@@ -2209,7 +2227,8 @@ namespace LightningPRO
          
             AMOdg.ItemsSource = listOfParts;
 
-          
+
+            //TO DO sort this out
             //Writing AMO report is currently disabled
             //write AMOreport
             /*for (int i = 0; i < 3; i++)
