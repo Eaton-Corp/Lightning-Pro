@@ -18,6 +18,9 @@ using System.Windows.Shapes;
 using LightningPRO.ViewModels;
 using Squirrel;
 using static LightningPRO.Utility;
+using LightningPRO.Models;
+using LinqToDB.Data;
+using LinqToDB;
 
 namespace LightningPRO
 {

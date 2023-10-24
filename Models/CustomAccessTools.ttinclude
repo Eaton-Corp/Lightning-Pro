@@ -1,0 +1,25 @@
+<#+
+LinqToDB.Data.DataConnection GetCustomAccessConnection(string connectionString)
+{
+    return LinqToDB.DataProvider.Access.AccessTools.CreateDataConnection(connectionString);
+}
+
+LinqToDB.Data.DataConnection GetCustomAccessConnection(string path, string database)
+{
+    return GetCustomAccessConnection(string.Format(
+        "Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};Locale Identifier=1033;Jet OLEDB:Engine Type=5;Persist Security Info=True",
+        System.IO.Path.Combine(path, database)));
+}
+
+void LoadCustomAccessMetadata(string connectionString)
+{
+    var dataConnection = GetCustomAccessConnection(connectionString);
+    LoadMetadata(dataConnection);
+}
+
+void LoadCustomAccessMetadata(string path, string database)
+{
+    var dataConnection = GetCustomAccessConnection(path, database);
+    LoadMetadata(dataConnection);
+}
+#>

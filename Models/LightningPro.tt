@@ -1,0 +1,10 @@
+﻿<#@ template language="C#" debug="True" hostSpecific="True"                        #>
+<#@ output extension=".generated.cs"                                               #>
+<#@ include file="$(ProjectDir)LinqToDB.Templates\LinqToDB.Access.Tools.ttinclude" #>
+<#@ include file="$(ProjectDir)LinqToDB.Templates\PluralizationService.ttinclude"  #>
+<#@ include file="CustomAccessTools.ttinclude"  #>
+<#
+	NamespaceName = "Models";
+	LoadCustomAccessMetadata(@"C:\Users\e0637402\repos\Databases", "LightningProDatabase.accdb");
+	GenerateModel();
+#>

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PRL123_Final.Models
+namespace LightningPRO.Models
 {
-    class MSSEntry
+    internal class PRLCS
     {
     }
 }
