@@ -32,7 +32,7 @@
                 <RowDefinition/>
                 <RowDefinition Height="20"/>
             </Grid.RowDefinitions>
-            <Button Background="LightGray" Foreground="White" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="65" Height="40" Click="Update_Commits" ToolTip="Update All Commit Dates">
+            <Button Background="LightGray" Foreground="White" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="65" Height="40" Click="Update_Jobs" ToolTip="Retrieve All Oracle Information">
                 <DockPanel>
                     <Image Width="35" Height="35" Source="/Assets/updateData.png"/>
                 </DockPanel>

@@ -1239,11 +1239,11 @@ namespace LightningPRO
                 string StrInsertCommand;
                 if (HasDates)
                 {
-                    StrInsertCommand = "Insert into PRL4 (GO_Item, [GO], ShopOrderInterior, ShopOrderBox, ShopOrderTrim, SchedulingGroup, Customer, Quantity, Tracking, Urgency, [AMO], NameplateRequired, NameplateOrdered, [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], ReleaseDate, CommitDate, EnteredDate, FilePath, ProductSpecialist, PageNumber, ImageFilePath, [BoxEarly], [BoxSent]) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    StrInsertCommand = "Insert into PRL4 (GO_Item, [GO], ShopOrderInterior, ShopOrderBox, ShopOrderTrim, SchedulingGroup, JobName, Customer, Quantity, Tracking, Urgency, [AMO], NameplateRequired, NameplateOrdered, [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], ReleaseDate, CommitDate, EnteredDate, FilePath, ProductSpecialist, PageNumber, ImageFilePath, [BoxEarly], [BoxSent]) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 }
                 else
                 {
-                    StrInsertCommand = "Insert into PRL4 (GO_Item, [GO], ShopOrderInterior, ShopOrderBox, ShopOrderTrim, SchedulingGroup, Customer, Quantity, Tracking, Urgency, [AMO], NameplateRequired, NameplateOrdered, [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], FilePath, ProductSpecialist, PageNumber, ImageFilePath, [BoxEarly], [BoxSent]) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    StrInsertCommand = "Insert into PRL4 (GO_Item, [GO], ShopOrderInterior, ShopOrderBox, ShopOrderTrim, SchedulingGroup, JobName, Customer, Quantity, Tracking, Urgency, [AMO], NameplateRequired, NameplateOrdered, [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], FilePath, ProductSpecialist, PageNumber, ImageFilePath, [BoxEarly], [BoxSent]) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 }
 
                 using (OleDbCommand InsertCommand = new OleDbCommand(StrInsertCommand, MainWindow.LPcon))
@@ -1254,6 +1254,7 @@ namespace LightningPRO
                     InsertCommand.Parameters.AddWithValue("ShopOrderBox", ShopOrderBox.Text);
                     InsertCommand.Parameters.AddWithValue("ShopOrderTrim", ShopOrderTrim.Text);
                     InsertCommand.Parameters.AddWithValue("SchedulingGroup", SchedulingGroup.Text);
+                    InsertCommand.Parameters.AddWithValue("JobName", jobName.Text);
                     InsertCommand.Parameters.AddWithValue("Customer", Customer.Text);
                     InsertCommand.Parameters.AddWithValue("Quantity", Qty.Text);
                     InsertCommand.Parameters.AddWithValue("Tracking", Tracking);
@@ -1329,11 +1330,11 @@ namespace LightningPRO
                 string StrInsertCommand;
                 if (HasDates)
                 {
-                    StrInsertCommand = "Insert into PRL4 (GO_Item, [GO], ShopOrderInterior, ShopOrderBox, ShopOrderTrim, SchedulingGroup, Customer, Quantity, Tracking, Urgency, [AMO], NameplateRequired, NameplateOrdered, [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], ReleaseDate, CommitDate, EnteredDate, FilePath, ProductSpecialist, PageNumber, ImageFilePath, BoxEarly, BoxSent) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    StrInsertCommand = "Insert into PRL4 (GO_Item, [GO], ShopOrderInterior, ShopOrderBox, ShopOrderTrim, SchedulingGroup, JobName, Customer, Quantity, Tracking, Urgency, [AMO], NameplateRequired, NameplateOrdered, [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], ReleaseDate, CommitDate, EnteredDate, FilePath, ProductSpecialist, PageNumber, ImageFilePath, BoxEarly, BoxSent) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 }
                 else
                 {
-                    StrInsertCommand = "Insert into PRL4 (GO_Item, [GO], ShopOrderInterior, ShopOrderBox, ShopOrderTrim, SchedulingGroup, Customer, Quantity, Tracking, Urgency, [AMO], NameplateRequired, NameplateOrdered, [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], FilePath, ProductSpecialist, PageNumber, ImageFilePath, BoxEarly, BoxSent) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    StrInsertCommand = "Insert into PRL4 (GO_Item, [GO], ShopOrderInterior, ShopOrderBox, ShopOrderTrim, SchedulingGroup, JobName, Customer, Quantity, Tracking, Urgency, [AMO], NameplateRequired, NameplateOrdered, [SpecialCustomer], [ServiceEntrance], [PaintedBox], [RatedNeutral200], [DoorOverDist], [DoorInDoor], FilePath, ProductSpecialist, PageNumber, ImageFilePath, BoxEarly, BoxSent) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 }
 
                 using (OleDbCommand InsertCommand = new OleDbCommand(StrInsertCommand, MainWindow.LPcon))
@@ -1344,6 +1345,7 @@ namespace LightningPRO
                     InsertCommand.Parameters.AddWithValue("ShopOrderBox", ShopOrderBox.Text);
                     InsertCommand.Parameters.AddWithValue("ShopOrderTrim", ShopOrderTrim.Text);
                     InsertCommand.Parameters.AddWithValue("SchedulingGroup", SchedulingGroup.Text);
+                    InsertCommand.Parameters.AddWithValue("JobName", jobName.Text);
                     InsertCommand.Parameters.AddWithValue("Customer", Customer.Text);
                     InsertCommand.Parameters.AddWithValue("Quantity", Qty.Text);
                     InsertCommand.Parameters.AddWithValue("Tracking", Tracking);
