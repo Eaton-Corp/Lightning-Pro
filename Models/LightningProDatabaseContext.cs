@@ -13,6 +13,9 @@ namespace LightningPRO.Models
     {
         public LightningProDatabaseContext() : base("LPdatabase"){}
         public ITable<PRL123> Product => this.GetTable<PRL123>();
+        public ITable<PRL4> PRL4Product => this.GetTable<PRL4>();
+        public ITable<PRLCS> PRLCSProduct => this.GetTable<PRLCS>();
+
     }
 }
 

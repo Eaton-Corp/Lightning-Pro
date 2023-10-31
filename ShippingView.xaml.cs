@@ -55,13 +55,12 @@ namespace LightningPRO
             CurrentProduct = currentProduct;
             if(currentProduct == Utility.ProductGroup.PRL123)
             {
-                GetGOs("select [GO_Item], [ShopOrderBox], [Customer], [Quantity], [Urgency], [Bidman], [Catalogue], [ImageFilePath] from [PRL123] where [GO]='" + GO_Item.Substring(0, 10) + "' and [BoxEarly]=True and [Box Sent]=False");
+                GetGOs("select [GO_Item], [ShopOrderBox], [Customer], [Quantity], [Urgency], [Bidman], [Catalogue], [ImageFilePath] from [PRL123] where [GO]='" + GO_Item.Substring(0, 10) + "' and [BoxEarly]=True and [Box Sent]=False and [PageNumber] = 0");
             }
             else if(currentProduct == Utility.ProductGroup.PRL4)
             {
                 GetGOs("select [GO_Item], [ShopOrderBox], [Customer], [Quantity], [Urgency], [Bidman], [Catalogue], [ImageFilePath] from [PRL4] where [GO]='" + GO_Item.Substring(0, 10) + "' and [BoxEarly]=True and [BoxSent]=False and [PageNumber] = 0");
             }
-
         }
 
         private void GetGOs(string query)
@@ -187,7 +186,7 @@ namespace LightningPRO
                 string query;
                 if (CurrentProduct == Utility.ProductGroup.PRL123) {
                     command = "update [PRL123] set [Box Sent]=True where [GO_Item]='" + GOI.Text + "'";
-                    query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [Catalogue], [AMO], [BoxEarly], [Box Sent], [SpecialCustomer], [ServiceEntrance], [DoubleSection], [PaintedBox], [RatedNeutral200], [DNSB], [Complete], [Short], [LabelsPrinted] from [PRL123] where [BoxEarly]=True and [Box Sent]=False";
+                    query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [Catalogue], [AMO], [BoxEarly], [Box Sent], [SpecialCustomer], [ServiceEntrance], [DoubleSection], [PaintedBox], [RatedNeutral200], [DNSB], [Complete], [Short], [LabelsPrinted] from [PRL123] where [BoxEarly]=True and [Box Sent]=False and [PageNumber] = 0";
                 }
                 else
                 {

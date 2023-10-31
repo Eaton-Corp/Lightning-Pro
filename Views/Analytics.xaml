@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:local="clr-namespace:LightningPRO.Views"
              mc:Ignorable="d" 
              d:DesignHeight="1080" d:DesignWidth="1920">
@@ -13,18 +14,20 @@
             <TextBlock Text="Analytics Dashboard" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="32" FontWeight="Bold"/>
         </Border>
 
-        <!-- Key Metrics Section -->
-        <StackPanel Margin="20,120,20,20">
-            <TextBlock Text="Key Metrics" FontWeight="Bold" FontSize="24" Margin="10"/>
-            <Grid>
+        <Grid Margin="20,120,20,20">
+            <!-- Key Metrics Section -->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*"/>
                     <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="2*"/>
                 </Grid.ColumnDefinitions>
-                <!-- Each Grid will represent a Key Metric, you can adjust as needed -->
+
                 <!-- Total Orders -->
                 <Border Grid.Column="0" Margin="10" Background="#E5E5E5" CornerRadius="5">
                     <StackPanel Margin="20">
@@ -41,8 +44,23 @@
                     </StackPanel>
                 </Border>
 
-                <!-- ... and so on for other metrics -->
-                <lvc:CartesianChart x:Name="TrackingChart" LegendLocation="Right" Grid.Column="2">
+                <!-- Date Range Selection Section -->
+                <StackPanel Orientation="Horizontal" Grid.Column="2" Margin="20,70,20,0">
+                    <TextBlock Text="Select Date Range:" FontWeight="Bold" Margin="10,0,10,0"/>
+                    <DatePicker x:Name="StartDatePicker" SelectedDate="{x:Static sys:DateTime.Now}" Margin="0,0,10,0"/>
+                    <TextBlock Text="to" Margin="10,0"/>
+                    <DatePicker x:Name="EndDatePicker" SelectedDate="{x:Static sys:DateTime.Now}" Margin="0,0,10,0"/>
+                    <Button Content="Load Data" Click="OnLoadDataButtonClick"/>
+                </StackPanel>
+            </Grid>
+
+            <!-- Graphs Section -->
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <lvc:CartesianChart x:Name="TrackingChart" LegendLocation="Right" Grid.Column="0">
                     <lvc:CartesianChart.AxisX>
                         <lvc:Axis Title="Tracking Stage" Labels="{Binding StageLabels}"></lvc:Axis>
                     </lvc:CartesianChart.AxisX>
@@ -51,7 +69,15 @@
                     </lvc:CartesianChart.AxisY>
                 </lvc:CartesianChart>
 
+                <lvc:CartesianChart x:Name="DateBasedChart" LegendLocation="Right" Grid.Column="1">
+                    <lvc:CartesianChart.AxisX>
+                        <lvc:Axis Title="Date" Labels="{Binding DateLabels}"></lvc:Axis>
+                    </lvc:CartesianChart.AxisX>
+                    <lvc:CartesianChart.AxisY>
+                        <lvc:Axis Title="Number of Products"></lvc:Axis>
+                    </lvc:CartesianChart.AxisY>
+                </lvc:CartesianChart>
             </Grid>
-        </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>

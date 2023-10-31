@@ -39,7 +39,7 @@ namespace LightningPRO.Views
         string[] TypeArr;
         string[] UrgencyArr;
         string[] CustomerArr;
-
+        string[] DesignationArr;
         //Overlapping
         Boolean[] SpecialCustomerArr;
         Boolean[] AMOArr;
@@ -51,6 +51,7 @@ namespace LightningPRO.Views
         Boolean[] ShortArr;
         Boolean[] NameplateRequiredArr;
         Boolean[] NameplateOrderedArr;
+        
 
         //PRL123 Specific
         Boolean[] BoxEarlyArr;
@@ -177,7 +178,47 @@ namespace LightningPRO.Views
                     if (Scan.Text.StartsWith("4-"))     //PWL4
                     {
                         PRL4_Set();
-                        GetGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], [SpecialCustomer], [AMO], [ServiceEntrance], [RatedNeutral200], [PaintedBox], [DNSB], [Complete], [Short], [NameplateRequired], [NameplateOrdered], [FilePath], [DoorOverDist], [DoorInDoor], [PageNumber], [BoxEarly], [BoxSent] from [PRL4] where [GO]='" + Scan.Text.Substring(2, 10) + "' order by [GO_Item],[PageNumber]");
+                        //GetGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], [SpecialCustomer], [AMO], [ServiceEntrance], [RatedNeutral200], [PaintedBox], [DNSB], [Complete], [Short], [NameplateRequired], [NameplateOrdered], [FilePath], [DoorOverDist], [DoorInDoor], [PageNumber], [BoxEarly], [BoxSent] from [PRL4] where [GO]='" + Scan.Text.Substring(2, 10) + "' order by [GO_Item],[PageNumber]");
+                        string queryPRL4 = @"
+                        SELECT 
+                            PRL4.[GO_Item], 
+                            PRL4.[Type], 
+                            PRL4.[Volts], 
+                            PRL4.[Amps], 
+                            PRL4.[Torque], 
+                            PRL4.[Appearance], 
+                            PRL4.[Bus], 
+                            PRL4.[Urgency], 
+                            PRL4.[Customer], 
+                            PRL4.[SpecialCustomer], 
+                            PRL4.[AMO], 
+                            PRL4.[ServiceEntrance], 
+                            PRL4.[RatedNeutral200], 
+                            PRL4.[PaintedBox], 
+                            PRL4.[DNSB], 
+                            PRL4.[Complete], 
+                            PRL4.[Short], 
+                            PRL4.[NameplateRequired], 
+                            PRL4.[NameplateOrdered], 
+                            PRL4.[FilePath], 
+                            PRL4.[DoorOverDist], 
+                            PRL4.[DoorInDoor], 
+                            PRL4.[PageNumber], 
+                            PRL4.[BoxEarly], 
+                            PRL4.[BoxSent],
+                            CSALabel.[Designation]
+                        FROM 
+                            [PRL4]
+                        INNER JOIN [CSALabel]
+                        ON PRL4.[GO_Item] = CSALabel.[GO_Item]
+                        WHERE 
+                            PRL4.[GO] = '" + Scan.Text.Substring(2, 10) + @"' 
+                        ORDER BY 
+                            PRL4.[GO_Item],PRL4.[PageNumber];
+                        ";
+
+                        GetGOs(queryPRL4);
+
                     }
                     else if (Scan.Text.ToUpper().StartsWith("CS-"))       //PWLCS
                     {
@@ -192,7 +233,45 @@ namespace LightningPRO.Views
                     else            //PWL123
                     {
                         PRL123_Set();
-                        GetGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], [SpecialCustomer], [AMO], [ServiceEntrance], [RatedNeutral200], [PaintedBox], [DNSB], [Complete], [Short], [NameplateRequired], [NameplateOrdered], [FilePath], [BoxEarly], [Box Sent], [DoubleSection] from [PRL123] where [GO]='" + Scan.Text.Substring(0, 10) + "' order by [GO_Item]");
+
+                        string query = @"
+                        SELECT 
+                            PRL123.[GO_Item], 
+                            PRL123.[Type], 
+                            PRL123.[Volts], 
+                            PRL123.[Amps], 
+                            PRL123.[Torque], 
+                            PRL123.[Appearance], 
+                            PRL123.[Bus], 
+                            PRL123.[Urgency], 
+                            PRL123.[Customer], 
+                            PRL123.[SpecialCustomer], 
+                            PRL123.[AMO], 
+                            PRL123.[ServiceEntrance], 
+                            PRL123.[RatedNeutral200], 
+                            PRL123.[PaintedBox], 
+                            PRL123.[DNSB], 
+                            PRL123.[Complete], 
+                            PRL123.[Short], 
+                            PRL123.[NameplateRequired], 
+                            PRL123.[NameplateOrdered], 
+                            PRL123.[FilePath], 
+                            PRL123.[BoxEarly], 
+                            PRL123.[Box Sent], 
+                            PRL123.[DoubleSection], 
+                            PRL123.[PageNumber],
+                            CSALabel.[Designation]
+                        FROM 
+                            [PRL123] 
+                        INNER JOIN [CSALabel]
+                        ON PRL123.[GO_Item] = CSALabel.[GO_Item]
+                        WHERE 
+                            PRL123.[GO] = '" + Scan.Text.Substring(0, 10) + @"' 
+                        ORDER BY 
+                            PRL123.[GO_Item],PRL123.[PageNumber];
+                        ";
+
+                        GetGOs(query);
                     }
 
                     if (SuccessPull == true)
@@ -296,6 +375,7 @@ namespace LightningPRO.Views
             TypeArr = new string[pages];
             UrgencyArr = new string[pages];
             CustomerArr = new string[pages];
+            DesignationArr = new string[pages];
 
             //Overlapping
             SpecialCustomerArr = new Boolean[pages];
@@ -362,6 +442,8 @@ namespace LightningPRO.Views
                         BoxEarlyArr[counter] = (Boolean)rb[20];
                         BoxSentArr[counter] = (Boolean)rb[21];
                         DoubleSectionArr[counter] = (Boolean)rb[22];
+                        MultiPageNumber[counter] = (int)rb[23];
+                        DesignationArr[counter] = rb[24].ToString();
                     }
                     else if (CurrentProduct == Utility.ProductGroup.PRL4)
                     {
@@ -379,6 +461,7 @@ namespace LightningPRO.Views
                         MultiPageNumber[counter] = (int)rb[22];
                         BoxEarlyArr[counter] = (Boolean)rb[23];
                         BoxSentArr[counter] = (Boolean)rb[24];
+                        DesignationArr[counter] = rb[25].ToString();
                     }
                     else if(CurrentProduct == Utility.ProductGroup.PRLCS)
                     {
@@ -450,6 +533,7 @@ namespace LightningPRO.Views
         private void InsertData()
         {
             GO_Item.Text = GOItemsArr[page];
+            GO_Item_QR.Source = Utility.GenerateQRCode(GOItemsArr[page].ToString());
             Amps.Text = AmpsArr[page];
             Bus.Text = BusArr[page];
             Appearance.Text = AppearanceArr[page];
@@ -470,6 +554,9 @@ namespace LightningPRO.Views
             if (CurrentProduct == Utility.ProductGroup.PRL123)
             {
                 //checkBoxGridPRL123
+                Designation.Content = DesignationArr[page];
+                Designation_QR.Source = Utility.GenerateQRCode(DesignationArr[page].ToString());
+
                 BoxEarly.IsChecked = BoxEarlyArr[page];
                 BoxSent.IsChecked = BoxSentArr[page];
                 ServiceEntrance.IsChecked = ServiceEntranceArr[page];
@@ -481,10 +568,12 @@ namespace LightningPRO.Views
                 Short.IsChecked = ShortArr[page];
                 NameplateRequired.IsChecked = NameplateRequiredArr[page];
                 NameplateOrdered.IsChecked = NameplateOrderedArr[page];
+
             }
             else if (CurrentProduct == Utility.ProductGroup.PRL4)
             {
                 //checkBoxGridPRL4
+                Designation.Content = DesignationArr[page];
                 ServiceEntrance_4.IsChecked = ServiceEntranceArr[page];
                 RatedNeutral200_4.IsChecked = RatedNeutral200Arr[page];
                 PaintedBox_4.IsChecked = PaintedBoxArr[page];
@@ -549,11 +638,88 @@ namespace LightningPRO.Views
         {
             if (CurrentProduct == Utility.ProductGroup.PRL123)
             {
-                GetGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], [SpecialCustomer], [AMO], [ServiceEntrance], [RatedNeutral200], [PaintedBox], [DNSB], [Complete], [Short], [NameplateRequired], [NameplateOrdered], [FilePath], [BoxEarly], [Box Sent], [DoubleSection] from [PRL123] where [GO]='" + GO_Item.Text.Substring(0, 10) + "' order by [GO_Item]");
+
+                string query = @"
+                        SELECT 
+                            PRL123.[GO_Item], 
+                            PRL123.[Type], 
+                            PRL123.[Volts], 
+                            PRL123.[Amps], 
+                            PRL123.[Torque], 
+                            PRL123.[Appearance], 
+                            PRL123.[Bus], 
+                            PRL123.[Urgency], 
+                            PRL123.[Customer], 
+                            PRL123.[SpecialCustomer], 
+                            PRL123.[AMO], 
+                            PRL123.[ServiceEntrance], 
+                            PRL123.[RatedNeutral200], 
+                            PRL123.[PaintedBox], 
+                            PRL123.[DNSB], 
+                            PRL123.[Complete], 
+                            PRL123.[Short], 
+                            PRL123.[NameplateRequired], 
+                            PRL123.[NameplateOrdered], 
+                            PRL123.[FilePath], 
+                            PRL123.[BoxEarly], 
+                            PRL123.[Box Sent], 
+                            PRL123.[DoubleSection], 
+                            PRL123.[PageNumber],
+                            CSALabel.[Designation]
+                        FROM 
+                            [PRL123] 
+                        INNER JOIN [CSALabel]
+                        ON PRL123.[GO_Item] = CSALabel.[GO_Item]
+                        WHERE 
+                            PRL123.[GO] = '" + Scan.Text.Substring(0, 10) + @"' 
+                        ORDER BY 
+                            PRL123.[GO_Item],PRL123.[PageNumber];
+                        ";
+
+                GetGOs(query);
+                //GetGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], [SpecialCustomer], [AMO], [ServiceEntrance], [RatedNeutral200], [PaintedBox], [DNSB], [Complete], [Short], [NameplateRequired], [NameplateOrdered], [FilePath], [BoxEarly], [Box Sent], [DoubleSection], [PageNumber] from [PRL123] where [GO]='" + GO_Item.Text.Substring(0, 10) + "' order by [GO_Item],[PageNumber]");
             }
             else if (CurrentProduct == Utility.ProductGroup.PRL4)
             {
-                GetGOs("select [GO_Item], [Type], [Volts], [Amps], [Torque], [Appearance], [Bus], [Urgency], [Customer], [SpecialCustomer], [AMO], [ServiceEntrance], [RatedNeutral200], [PaintedBox], [DNSB], [Complete], [Short], [NameplateRequired], [NameplateOrdered], [FilePath], [DoorOverDist], [DoorInDoor], [PageNumber], [BoxEarly], [BoxSent] from [PRL4] where [GO]='" + GO_Item.Text.Substring(0, 10) + "' order by [GO_Item],[PageNumber]");
+                string queryPRL4 = @"
+                        SELECT 
+                            PRL4.[GO_Item], 
+                            PRL4.[Type], 
+                            PRL4.[Volts], 
+                            PRL4.[Amps], 
+                            PRL4.[Torque], 
+                            PRL4.[Appearance], 
+                            PRL4.[Bus], 
+                            PRL4.[Urgency], 
+                            PRL4.[Customer], 
+                            PRL4.[SpecialCustomer], 
+                            PRL4.[AMO], 
+                            PRL4.[ServiceEntrance], 
+                            PRL4.[RatedNeutral200], 
+                            PRL4.[PaintedBox], 
+                            PRL4.[DNSB], 
+                            PRL4.[Complete], 
+                            PRL4.[Short], 
+                            PRL4.[NameplateRequired], 
+                            PRL4.[NameplateOrdered], 
+                            PRL4.[FilePath], 
+                            PRL4.[DoorOverDist], 
+                            PRL4.[DoorInDoor], 
+                            PRL4.[PageNumber], 
+                            PRL4.[BoxEarly], 
+                            PRL4.[BoxSent],
+                            CSALabel.[Designation]
+                        FROM 
+                            [PRL4]
+                        INNER JOIN [CSALabel]
+                        ON PRL4.[GO_Item] = CSALabel.[GO_Item]
+                        WHERE 
+                            PRL4.[GO] = '" + Scan.Text.Substring(2, 10) + @"' 
+                        ORDER BY 
+                            PRL4.[GO_Item],PRL4.[PageNumber];
+                        ";
+
+                GetGOs(queryPRL4);
             }
             else if(CurrentProduct == Utility.ProductGroup.PRLCS)
             {
@@ -793,7 +959,6 @@ namespace LightningPRO.Views
 
                 string commandStr = "update [" + ProductTable + "] set [Tracking]='Shipping' where [GO_Item]='" + GO_Item.Text + "'";
                 Utility.ExecuteNonQueryLP(commandStr);
-
                 UpdateStatus(GO_Item.Text + " SENT TO SHIPPING");
                 GC.Collect();
             }
@@ -875,6 +1040,5 @@ namespace LightningPRO.Views
             Status.Content = command;
             Status.Foreground = System.Windows.Media.Brushes.Green;
         }
-
     }
 }

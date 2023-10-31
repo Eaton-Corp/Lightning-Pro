@@ -148,28 +148,36 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="65"/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="130"/>
                 <ColumnDefinition Width="50"/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="55"/>
+                <ColumnDefinition Width="85"/>
                 <ColumnDefinition Width="45"/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="75"/>
+                <ColumnDefinition Width="45"/>
                 <ColumnDefinition Width="90"/>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="7"/>
+                <ColumnDefinition Width="70"/>
+                <ColumnDefinition Width="90"/>
             </Grid.ColumnDefinitions>
 
             <Label Content="GO Item:" HorizontalAlignment="Left" Grid.Row="0" Grid.Column="0" FontSize="14" VerticalAlignment="Center" Width="70"/>
-            <Label Content="Amps:" HorizontalAlignment="Left" Grid.Row="0" Grid.Column="2" FontSize="14" VerticalAlignment="Center" Width="70"/>
-            <Label Content="Bus:" HorizontalAlignment="Left" Grid.Row="0" Grid.Column="4"  FontSize="14" VerticalAlignment="Center" Width="70"/>
-            <Label Content="Appearance:" HorizontalAlignment="Left" Grid.Row="0" Grid.Column="6" FontSize="14" VerticalAlignment="Center" Width="90"/>
-            <Label Content="Torque:" HorizontalAlignment="Left" Grid.Row="1" Grid.Column="0" FontSize="14" VerticalAlignment="Center" Width="70"/>
-            <Label Content="Volts:" HorizontalAlignment="Left" Grid.Row="1" Grid.Column="2" FontSize="14" VerticalAlignment="Center" Width="70"/>
-            <Label Content="Type:" HorizontalAlignment="Left" Grid.Row="1" Grid.Column="4" FontSize="14" VerticalAlignment="Center" Width="70"/>
-            <Label Content="Urgency:" HorizontalAlignment="Left" Grid.Row="1" Grid.Column="6" FontSize="14" VerticalAlignment="Center" Width="70"/>
+            <Label Content="Amps:" HorizontalAlignment="Left" Grid.Row="0" Grid.Column="3" FontSize="14" VerticalAlignment="Center" Width="70"/>
+            <Label Content="Bus:" HorizontalAlignment="Left" Grid.Row="0" Grid.Column="6"  FontSize="14" VerticalAlignment="Center" Width="70"/>
+            <Label Content="Appearance:" HorizontalAlignment="Left" Grid.Row="0" Grid.Column="9" FontSize="14" VerticalAlignment="Center" Width="90"/>
+            <Label Content="Torque:" HorizontalAlignment="Left" Grid.Row="1" Grid.Column="3" FontSize="14" VerticalAlignment="Center" Width="70"/>
+            <Label Content="Volts:" HorizontalAlignment="Left" Grid.Row="1" Grid.Column="6" FontSize="14" VerticalAlignment="Center" Width="70"/>
+            <Label Content="Type:" HorizontalAlignment="Left" Grid.Row="1" Grid.Column="8" FontSize="14" VerticalAlignment="Center" Width="70"/>
+            <Label Content="Urgency:" HorizontalAlignment="Left" Grid.Row="1" Grid.Column="10" FontSize="14" VerticalAlignment="Center" Width="70"/>
+            <Label Content="Des:" HorizontalAlignment="Left" Grid.Row="1" Grid.Column="0" FontSize="14" VerticalAlignment="Center" Width="90"/>
+            <Label Name="Designation" Content="" HorizontalAlignment="Left" FontSize="15" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center"/>
+            <Image x:Name="Designation_QR" Grid.Row="1" Grid.Column="2"/>
+
 
             <TextBox x:Name="GO_Item" Grid.Row="0" Grid.Column="1" TextWrapping="Wrap" Height="24"/>
+            <Image x:Name="GO_Item_QR" Grid.Row="0" Grid.Column="2"/>
 
-            <ComboBox Name="Amps" Height="40" Grid.Row="0" Grid.Column="3" FontSize="16" VerticalAlignment="Center">
+            <ComboBox Name="Amps" Height="40" Grid.Row="0" Grid.Column="4" Grid.ColumnSpan="2" FontSize="16" VerticalAlignment="Center">
                 <ComboBoxItem FontSize="20" Content="100A"></ComboBoxItem>
                 <ComboBoxItem FontSize="20" Content="225A"></ComboBoxItem>
                 <ComboBoxItem FontSize="20" Content="250A"></ComboBoxItem>
@@ -178,12 +186,12 @@
                 <ComboBoxItem FontSize="20" Content="800A"></ComboBoxItem>
                 <ComboBoxItem FontSize="20" Content="1200A"></ComboBoxItem>
             </ComboBox>
-            <ComboBox Name="Bus" Height="40" Grid.Row="0" Grid.Column="5" FontSize="16" VerticalAlignment="Center">
+            <ComboBox Name="Bus" Height="40" Grid.Row="0" Grid.Column="7" Grid.ColumnSpan="2" FontSize="16" VerticalAlignment="Center">
                 <ComboBoxItem FontSize="20" Content="ALUMINUM"></ComboBoxItem>
                 <ComboBoxItem FontSize="20" Content="COPPER"></ComboBoxItem>
                 <ComboBoxItem FontSize="20" Content="TIN"></ComboBoxItem>
             </ComboBox>
-            <ComboBox Name="Volts" Height="40" Grid.Row="1" Grid.Column="3" FontSize="16" VerticalAlignment="Center">
+            <ComboBox Name="Volts" Height="40" Grid.Row="1" Grid.Column="7" FontSize="16" VerticalAlignment="Center">
                 <ComboBoxItem FontSize="20" Content="208Y/120V"></ComboBoxItem>
                 <ComboBoxItem FontSize="20" Content="240V/120"></ComboBoxItem>
                 <ComboBoxItem FontSize="20" Content="600Y/347V"></ComboBoxItem>
@@ -192,7 +200,7 @@
                 <ComboBoxItem FontSize="20" Content="480V"></ComboBoxItem>
                 <ComboBoxItem FontSize="20" Content="240V"></ComboBoxItem>
             </ComboBox>
-            <ComboBox Name="Type" Height="40" Grid.Row="1" Grid.Column="5" FontSize="16" VerticalAlignment="Center">
+            <ComboBox Name="Type" Height="40" Grid.Row="1" Grid.Column="9" FontSize="16" VerticalAlignment="Center">
                 <ComboBoxItem FontSize="20" Content="TYPE 1"></ComboBoxItem>
                 <ComboBoxItem FontSize="20" Content="TYPE 2"></ComboBoxItem>
                 <ComboBoxItem FontSize="20" Content="SPRINKLERPROOF"></ComboBoxItem>
@@ -201,9 +209,9 @@
                 <ComboBoxItem FontSize="20" Content="TYPE 4X"></ComboBoxItem>
                 <ComboBoxItem FontSize="20" Content="TYPE 12"></ComboBoxItem>
             </ComboBox>
-            <ComboBox x:Name="Torque" FontSize="16" Height="40" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center"/>
-            <ComboBox x:Name="Appearance" FontSize="16" Height="40" Grid.Row="0" Grid.Column="7" VerticalAlignment="Center"/>
-            <Label Name="Urgency" Content="" HorizontalAlignment="Left" FontSize="15" Grid.Row="1" Grid.Column="7" VerticalAlignment="Center"/>
+            <ComboBox x:Name="Torque" FontSize="16" Height="40" Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="2" VerticalAlignment="Center"/>
+            <ComboBox x:Name="Appearance" FontSize="16" Height="40" Grid.Row="0" Grid.Column="10" Grid.ColumnSpan="2" VerticalAlignment="Center"/>
+            <Label Name="Urgency" Content="" HorizontalAlignment="Left" FontSize="15" Grid.Row="1" Grid.Column="11" VerticalAlignment="Center"/>
         </Grid>
 
 
@@ -224,8 +232,8 @@
                 <ColumnDefinition/>
                 <ColumnDefinition Width="300"/>
                 <ColumnDefinition Width="50"/>
-                <ColumnDefinition Width="50"/>
-                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="55"/>
+                <ColumnDefinition Width="55"/>
             </Grid.ColumnDefinitions>
 
             <Button Background="LightGray" Foreground="White" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Width="40" Height="40" Click="Click_ProductRecall" ToolTip="Send Back To Supervisor">

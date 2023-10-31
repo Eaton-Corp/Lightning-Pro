@@ -132,8 +132,8 @@ namespace LightningPRO
                 GetGOs("select [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [SchedulingGroup], [Quantity], " +
                     "[EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [ProductSpecialist], [Customer], " +
                     "[SpecialCustomer], [AMO], [ServiceEntrance], [RatedNeutral200], [PaintedBox], " +
-                    "[DNSB], [Complete], [Short], [NameplateRequired], [NameplateOrdered], [FilePath], [BoxEarly], [Box Sent], [DoubleSection] " +
-                    "from [PRL123] where [GO]='" + current_ID.Substring(0, 10) + "' order by [GO_Item]");
+                    "[DNSB], [Complete], [Short], [NameplateRequired], [NameplateOrdered], [FilePath], [BoxEarly], [Box Sent], [DoubleSection], [PageNumber] " +
+                    "from [PRL123] where [GO]='" + current_ID.Substring(0, 10) + "' order by [GO_Item],[PageNumber]");
             }
             else if (CurrentProduct == Utility.ProductGroup.PRL4)
             {
@@ -273,6 +273,7 @@ namespace LightningPRO
 
                         //PRL123 Specific
                         DoubleSectionArr[counter] = (Boolean)rb[27];
+                        pgNumber[counter] = (int)rb[28];
                     }
                     else if (CurrentProduct == Utility.ProductGroup.PRL4)
                     {
@@ -860,7 +861,7 @@ namespace LightningPRO
         {
             if (CurrentProduct == Utility.ProductGroup.PRL123)
             {
-                var output = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(FilePath), GOItemArr[page] + "_CONSTR.pdf");
+                var output = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(FilePath), GOItemArr[page] + "_" + pgNumber[page].ToString() + "_CONSTR.pdf");
                 Utility.SaveImageToPdf(output, (BitmapImage)imgEditor.Back.Source);
             }
             else

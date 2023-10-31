@@ -88,7 +88,7 @@ namespace LightningPRO.Views
             string query = "";
             if (CurrentProduct == Utility.ProductGroup.PRL123)
             {
-                query = "SELECT A.[GO_Item], A.[GO], A.[ShopOrderInterior], A.[ShopOrderBox], A.[ShopOrderTrim], A.[Quantity], A.[EnteredDate], A.[ReleaseDate], A.[CommitDate], A.[Tracking], A.[Urgency], A.[Customer], A.[SpecialCustomer], A.[Complete], A.[Short], B.[Closed Date] FROM [" + ProductTable + "] as A LEFT JOIN [tblOrderStatus] as B ON A.[GO_Item] = B.[GO Item] WHERE B.[Closed Date] IS NOT NULL";
+                query = "SELECT A.[GO_Item], A.[GO], A.[ShopOrderInterior], A.[ShopOrderBox], A.[ShopOrderTrim], A.[Quantity], A.[EnteredDate], A.[ReleaseDate], A.[CommitDate], A.[Tracking], A.[Urgency], A.[Customer], A.[SpecialCustomer], A.[Complete], A.[Short], B.[Closed Date] FROM [" + ProductTable + "] as A LEFT JOIN [tblOrderStatus] as B ON A.[GO_Item] = B.[GO Item] WHERE B.[Closed Date] IS NOT NULL AND A.[PageNumber] = 0";
             }
             else if (CurrentProduct == Utility.ProductGroup.PRL4 || CurrentProduct == Utility.ProductGroup.PRLCS) 
             {
@@ -435,11 +435,11 @@ namespace LightningPRO.Views
             
             if (CurrentProduct == Utility.ProductGroup.PRL123)
             {
-                query += "[ServiceEntrance], [RatedNeutral200], [BoxEarly], [Box Sent], [DoubleSection] from [PRL123] where [GO_Item]='" + GOI + "'";
+                query += "[ServiceEntrance], [RatedNeutral200], [BoxEarly], [Box Sent], [DoubleSection] from [PRL123] where [GO_Item]='" + GOI + "' and [PageNumber] = 0";
             }
             else if (CurrentProduct == Utility.ProductGroup.PRL4)
             {
-                query += "[ServiceEntrance], [RatedNeutral200], [DoorOverDist], [DoorInDoor] from [PRL4] where [GO_Item]='" + GOI + "' and [PageNumber]=0";
+                query += "[ServiceEntrance], [RatedNeutral200], [DoorOverDist], [DoorInDoor] from [PRL4] where [GO_Item]='" + GOI + "' and [PageNumber] = 0";
             }
             else if(CurrentProduct == Utility.ProductGroup.PRLCS)
             {

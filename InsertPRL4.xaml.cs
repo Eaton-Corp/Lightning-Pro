@@ -101,6 +101,8 @@ namespace LightningPRO
             };
         }
 
+      
+
 
 
         Boolean isSpecialCustomer = false;
@@ -201,12 +203,6 @@ namespace LightningPRO
             IsPaintedBox(index);
             IsRatedNeutral(index);
         }
-
-
-
-
-
-
 
         public void UpdateSlider()
         {           
@@ -2231,13 +2227,13 @@ namespace LightningPRO
             //TO DO sort this out
             //Writing AMO report is currently disabled
             //write AMOreport
-            /*for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 3; i++)
             {
                 if (i == 0)
                 {
                     for (int n = 0; n < partslist.Count; n++)
                     {
-                        if (statuses[n] == info.AMO)
+                        if (statuses[n] == Info.AMO)
                         {
                             AMOreport = AMOreport + partslist[n].Get_partName() + ": " + partslist[n].Get_Amount().ToString() + ": " + statuses[n].ToString() + ": " + EnableOrDisable[i] + ": " + Description[i] + "\n";
                         }
@@ -2247,7 +2243,7 @@ namespace LightningPRO
                 {
                     for (int n = 0; n < partslist.Count; n++)
                     {
-                        if (statuses[n] == info.KanbanSpike)
+                        if (statuses[n] == Info.KanbanSpike)
                         {
                             AMOreport = AMOreport + partslist[n].Get_partName() + ": " + partslist[n].Get_Amount().ToString() + ": " + statuses[n].ToString() + ": " + EnableOrDisable[i] + ": " + Description[i] + "\n";
                         }
@@ -2257,13 +2253,13 @@ namespace LightningPRO
                 {
                     for (int n = 0; n < partslist.Count; n++)
                     {
-                        if (statuses[n] == info.None)
+                        if (statuses[n] == Info.None)
                         {
                             AMOreport = AMOreport + partslist[n].Get_partName() + ": " + partslist[n].Get_Amount().ToString() + ": " + statuses[n].ToString() + ": " + EnableOrDisable[i] + ": " + Description[i] + "\n";
                         }
                     }
                 }
-            }*/
+            }
 
 
             //write AMOreport to txt file and PDF file

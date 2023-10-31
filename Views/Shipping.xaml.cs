@@ -88,7 +88,7 @@ namespace LightningPRO.Views
                     page = 0;
                     if (CurrentProduct == Utility.ProductGroup.PRL123)
                     {
-                        GetGOs("select [GO_Item], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Quantity], [Urgency], [BoxEarly] from [PRL123] where [GO]='" + Scan.Text.Substring(0, 10) + "' order by [GO_Item]");
+                        GetGOs("select [GO_Item], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Quantity], [Urgency], [BoxEarly] from [PRL123] where [GO]='" + Scan.Text.Substring(0, 10) + "'[PageNumber] = 0 order by [GO_Item]");
                     }
                     else if(CurrentProduct == Utility.ProductGroup.PRL4)
                     {
@@ -203,7 +203,7 @@ namespace LightningPRO.Views
             {
                 if (CurrentProduct == Utility.ProductGroup.PRL123)
                 {
-                    query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [SchedulingGroup], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [BoxEarly], [Box Sent], [SpecialCustomer], [ServiceEntrance], [DoubleSection], [PaintedBox], [RatedNeutral200], [DNSB], [Complete], [Short], [NameplateRequired], [NameplateOrdered], [LabelsPrinted], [Notes] from [PRL123] where [Tracking]='Shipping'";
+                    query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [SchedulingGroup], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [AMO], [BoxEarly], [Box Sent], [SpecialCustomer], [ServiceEntrance], [DoubleSection], [PaintedBox], [RatedNeutral200], [DNSB], [Complete], [Short], [NameplateRequired], [NameplateOrdered], [LabelsPrinted], [Notes] from [PRL123] where [Tracking]='Shipping' and [PageNumber] = 0";
                 }
                 else if (CurrentProduct == Utility.ProductGroup.PRL4)
                 {
@@ -251,7 +251,7 @@ namespace LightningPRO.Views
                     case "Ship Early":
                         if (CurrentProduct == Utility.ProductGroup.PRL123)
                         {
-                            string query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [Catalogue], [AMO], [BoxEarly], [Box Sent], [SpecialCustomer], [ServiceEntrance], [DoubleSection], [PaintedBox], [RatedNeutral200], [DNSB], [Complete], [Short], [LabelsPrinted] from [PRL123] where [BoxEarly]=True and [Box Sent]=False";
+                            string query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [Catalogue], [AMO], [BoxEarly], [Box Sent], [SpecialCustomer], [ServiceEntrance], [DoubleSection], [PaintedBox], [RatedNeutral200], [DNSB], [Complete], [Short], [LabelsPrinted] from [PRL123] where [BoxEarly]=True and [Box Sent]=False and [PageNumber] = 0";
                             LoadGrid(query);
                             Current_Tab = "Ship Early";
                             ButtonColorChanges();
@@ -414,7 +414,7 @@ namespace LightningPRO.Views
             {
                 if (CurrentProduct == Utility.ProductGroup.PRL123)
                 {
-                    string query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [SchedulingGroup], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [Catalogue], [AMO], [BoxEarly], [Box Sent], [SpecialCustomer], [ServiceEntrance], [DoubleSection], [PaintedBox], [RatedNeutral200], [DNSB], [Complete], [Short], [NameplateRequired], [NameplateOrdered], [LabelsPrinted], [Notes] from [PRL123] where [BoxEarly]=True and [Box Sent]=False";
+                    string query = "select [ID], [GO_Item], [GO], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [SchedulingGroup], [Customer], [Quantity], [EnteredDate], [ReleaseDate], [CommitDate], [Tracking], [Urgency], [Catalogue], [AMO], [BoxEarly], [Box Sent], [SpecialCustomer], [ServiceEntrance], [DoubleSection], [PaintedBox], [RatedNeutral200], [DNSB], [Complete], [Short], [NameplateRequired], [NameplateOrdered], [LabelsPrinted], [Notes] from [PRL123] where [BoxEarly]=True and [Box Sent]=False and [PageNumber] = 0";
                     LoadGrid(query);
                     Current_Tab = "Ship Early";
                     ButtonColorChanges();
@@ -730,7 +730,7 @@ namespace LightningPRO.Views
 
             if (CurrentProduct == Utility.ProductGroup.PRL123)
             {
-                query += "[ServiceEntrance], [RatedNeutral200], [BoxEarly], [Box Sent], [DoubleSection] from [PRL123] where [GO_Item]='" + GOI.Text + "'";
+                query += "[ServiceEntrance], [RatedNeutral200], [BoxEarly], [Box Sent], [DoubleSection] from [PRL123] where [GO_Item]='" + GOI.Text + "' and [PageNumber]=0";
             }
             else if (CurrentProduct == Utility.ProductGroup.PRL4)
             {
@@ -985,7 +985,7 @@ namespace LightningPRO.Views
             page = 0;
             if (CurrentProduct == Utility.ProductGroup.PRL123)
             {
-                GetGOs("select [GO_Item], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Quantity], [Urgency], [BoxEarly] from [PRL123] where [GO]='" + GOI.Text.Substring(0, 10) + "' order by [GO_Item]");
+                GetGOs("select [GO_Item], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [Quantity], [Urgency], [BoxEarly] from [PRL123] where [GO]='" + GOI.Text.Substring(0, 10) + "' and [PageNumber] = 0 order by [GO_Item]");
             }
             else if (CurrentProduct == Utility.ProductGroup.PRL4)
             {

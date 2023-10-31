@@ -99,5 +99,7 @@ namespace LightningPRO.Models
         public bool NameplateRequired { get; set; }
         [Column] 
         public string SchedulingGroup { get; set; }
+        [Column]
+        public int PageNumber { get; set; }
     }
 }

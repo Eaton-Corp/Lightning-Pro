@@ -149,12 +149,88 @@ namespace LightningPRO
             {
                 if (FieldText == "ShopOrder")
                 {
-                    query = "select Distinct PRL123.[ID], PRL123.[GO_Item], PRL123.[GO], CSALabel.[ProductID], PRL123.[ShopOrderInterior], PRL123.[ShopOrderBox], PRL123.[ShopOrderTrim], PRL123.[SchedulingGroup], PRL123.[Customer], PRL123.[Quantity], PRL123.[EnteredDate], PRL123.[ReleaseDate], PRL123.[CommitDate], PRL123.[Tracking], PRL123.[Urgency], PRL123.[AMO], PRL123.[BoxEarly], PRL123.[Box Sent], PRL123.[SpecialCustomer], PRL123.[ServiceEntrance], PRL123.[DoubleSection], PRL123.[PaintedBox], PRL123.[RatedNeutral200], PRL123.[DNSB], PRL123.[Complete], PRL123.[Short], PRL123.[NameplateRequired], PRL123.[NameplateOrdered], PRL123.[LabelsPrinted], PRL123.[Notes] from [PRL123] inner join [CSALabel] on PRL123.[GO_Item] = CSALabel.[GO_Item] where PRL123.ShopOrderInterior like '%" + SearchText + "%' OR PRL123.ShopOrderTrim like '%" + SearchText + "%' OR PRL123.ShopOrderBox like '%" + SearchText + "%' OR PRL123.SchedulingGroup like '%" + SearchText + "%'";
+                    query =
+                        "SELECT DISTINCT " +
+                        "PRL123.[ID], " +
+                        "PRL123.[GO_Item], " +
+                        "PRL123.[GO], " +
+                        "CSALabel.[ProductID], " +
+                        "PRL123.[ShopOrderInterior], " +
+                        "PRL123.[ShopOrderBox], " +
+                        "PRL123.[ShopOrderTrim], " +
+                        "PRL123.[SchedulingGroup], " +
+                        "PRL123.[Customer], " +
+                        "PRL123.[Quantity], " +
+                        "PRL123.[EnteredDate], " +
+                        "PRL123.[ReleaseDate], " +
+                        "PRL123.[CommitDate], " +
+                        "PRL123.[Tracking], " +
+                        "PRL123.[Urgency], " +
+                        "PRL123.[AMO], " +
+                        "PRL123.[BoxEarly], " +
+                        "PRL123.[Box Sent], " +
+                        "PRL123.[SpecialCustomer], " +
+                        "PRL123.[ServiceEntrance], " +
+                        "PRL123.[DoubleSection], " +
+                        "PRL123.[PaintedBox], " +
+                        "PRL123.[RatedNeutral200], " +
+                        "PRL123.[DNSB], " +
+                        "PRL123.[Complete], " +
+                        "PRL123.[Short], " +
+                        "PRL123.[NameplateRequired], " +
+                        "PRL123.[NameplateOrdered], " +
+                        "PRL123.[LabelsPrinted], " +
+                        "PRL123.[Notes] " +
+                        "FROM [PRL123] " +
+                        "INNER JOIN [CSALabel] " +
+                        "ON PRL123.[GO_Item] = CSALabel.[GO_Item] " +
+                        "WHERE (PRL123.ShopOrderInterior LIKE '%" + SearchText + "%' " +
+                        "OR PRL123.ShopOrderTrim LIKE '%" + SearchText + "%' " +
+                        "OR PRL123.ShopOrderBox LIKE '%" + SearchText + "%' " +
+                        "OR PRL123.SchedulingGroup LIKE '%" + SearchText + "%') " +
+                        "AND PRL123.[PageNumber] = 0";
                 }
                 else
                 {
-                    query = "select Distinct PRL123.[ID], PRL123.[GO_Item], PRL123.[GO], CSALabel.[ProductID], PRL123.[ShopOrderInterior], PRL123.[ShopOrderBox], PRL123.[ShopOrderTrim], PRL123.[SchedulingGroup], PRL123.[Customer], PRL123.[Quantity], PRL123.[EnteredDate], PRL123.[ReleaseDate], PRL123.[CommitDate], PRL123.[Tracking], PRL123.[Urgency], PRL123.[AMO], PRL123.[BoxEarly], PRL123.[Box Sent], PRL123.[SpecialCustomer], PRL123.[ServiceEntrance], PRL123.[DoubleSection], PRL123.[PaintedBox], PRL123.[RatedNeutral200], PRL123.[DNSB], PRL123.[Complete], PRL123.[Short], PRL123.[NameplateRequired], PRL123.[NameplateOrdered], PRL123.[LabelsPrinted], PRL123.[Notes] from [PRL123] inner join [CSALabel] on PRL123.[GO_Item] = CSALabel.[GO_Item] where PRL123.[" + FieldText + "] like '%" + SearchText + "%'";
+                    query =
+                        "SELECT DISTINCT " +
+                        "PRL123.[ID], " +
+                        "PRL123.[GO_Item], " +
+                        "PRL123.[GO], " +
+                        "CSALabel.[ProductID], " +
+                        "PRL123.[ShopOrderInterior], " +
+                        "PRL123.[ShopOrderBox], " +
+                        "PRL123.[ShopOrderTrim], " +
+                        "PRL123.[SchedulingGroup], " +
+                        "PRL123.[Customer], " +
+                        "PRL123.[Quantity], " +
+                        "PRL123.[EnteredDate], " +
+                        "PRL123.[ReleaseDate], " +
+                        "PRL123.[CommitDate], " +
+                        "PRL123.[Tracking], " +
+                        "PRL123.[Urgency], " +
+                        "PRL123.[AMO], " +
+                        "PRL123.[BoxEarly], " +
+                        "PRL123.[Box Sent], " +
+                        "PRL123.[SpecialCustomer], " +
+                        "PRL123.[ServiceEntrance], " +
+                        "PRL123.[DoubleSection], " +
+                        "PRL123.[PaintedBox], " +
+                        "PRL123.[RatedNeutral200], " +
+                        "PRL123.[DNSB], " +
+                        "PRL123.[Complete], " +
+                        "PRL123.[Short], " +
+                        "PRL123.[NameplateRequired], " +
+                        "PRL123.[NameplateOrdered], " +
+                        "PRL123.[LabelsPrinted], " +
+                        "PRL123.[Notes] " +
+                        "FROM [PRL123] " +
+                        "INNER JOIN [CSALabel] " +
+                        "ON PRL123.[GO_Item] = CSALabel.[GO_Item] " +
+                        "WHERE PRL123.[" + FieldText + "] LIKE '%" + SearchText + "%' " +
+                        "AND PRL123.[PageNumber] = 0";
                 }
+
             }
             else if (CurrentProduct == ProductGroup.PRL4)
             {
@@ -428,7 +504,7 @@ namespace LightningPRO
                 string command = "";
                 if (currentProduct == ProductGroup.PRL123)
                 {
-                    command = "update [PRL123] set [LastSave]='" + updateTime + "' where [GO_Item]='" + GO_Item + "'";
+                    command = "update [PRL123] set [LastSave]='" + updateTime + "' where [GO_Item]='" + GO_Item + "' and [PageNumber]=" + pgNumber.ToString();
                 }
                 else if (currentProduct == ProductGroup.PRL4)
                 {
@@ -455,7 +531,7 @@ namespace LightningPRO
                 string query = "";
                 if (currentProduct == ProductGroup.PRL123)
                 {
-                    query = "select [LastSave] from [PRL123] where [GO_Item]='" + GO_Item + "'";
+                    query = "select [LastSave] from [PRL123] where [GO_Item]='" + GO_Item + "' and [PageNumber]=" + pgNumber.ToString();;
                 }
                 else if (currentProduct == ProductGroup.PRL4)
                 {
@@ -606,7 +682,7 @@ namespace LightningPRO
                
                 if (currentProduct == ProductGroup.PRL123)
                 {
-                    query = "select [ImageFilePath] from [PRL123] where [GO_Item]='" + GO_Item + "'";
+                    query = "select [ImageFilePath] from [PRL123] where [GO_Item]='" + GO_Item + "' and [PageNumber]=" + pgNumber.ToString();;
                 }
                 else if (currentProduct == ProductGroup.PRL4)
                 {
@@ -665,7 +741,7 @@ namespace LightningPRO
 
             if (CurrentProduct == ProductGroup.PRL123)
             {
-                query = "select [FilePath] from [PRL123] where [GO_Item]='" + SelectedGO + "'";
+                query = "select [FilePath] from [PRL123] where [GO_Item]='" + SelectedGO + "' AND [PageNumber]=0";
             }
             else if (CurrentProduct == ProductGroup.PRL4)
             {
@@ -744,6 +820,10 @@ namespace LightningPRO
                     Boolean Complete = false;
                     Boolean Short = false;
 
+                    //PRL123 Specific
+                    Boolean DoubleSection = false;
+                   
+
                     string type = "";
                     string volts = "";
                     string amps = "";
@@ -761,7 +841,50 @@ namespace LightningPRO
                     Boolean LabelsPrinted = false;
 
                     string query = "";
-                    if (CurrentProduct == ProductGroup.PRL4)
+                    if (CurrentProduct == ProductGroup.PRL123) 
+                    {
+                        query = "select [ShopOrderInterior],"
+                              + "[ShopOrderBox],"
+                              + "[ShopOrderTrim],"
+                              + "[SchedulingGroup],"
+                              + "[Customer],"
+                              + "[Quantity],"
+                              + "[EnteredDate],"
+                              + "[ReleaseDate],"
+                              + "[CommitDate],"
+                              + "[Tracking],"
+                              + "[Urgency],"
+                              + "[SpecialCustomer],"
+                              + "[AMO],"
+                              + "[PaintedBox],"
+                              + "[NameplateRequired],"
+                              + "[NameplateOrdered],"
+                              + "[DNSB],"
+                              + "[Complete],"
+                              + "[Short],"
+                              + "[Type],"
+                              + "[Volts],"
+                              + "[Amps],"
+                              + "[Torque],"
+                              + "[Appearance],"
+                              + "[Bus],"
+                              + "[Catalogue],"
+                              + "[ProductSpecialist],"
+                              + "[FilePath],"
+                              + "[ImageFilePath],"
+                              + "[PageNumber],"
+                              + "[Notes],"
+                              + "[LabelsPrinted],"
+                              + "[ServiceEntrance],"
+                              + "[RatedNeutral200],"
+                              + "[BoxEarly],"
+                              + "[Box Sent],"
+                              + "[DoubleSection] "
+                              + "from [PRL123] "
+                              + "where [GO_Item]='" + SelectedGO + "' "
+                              + "order by [GO_Item],[PageNumber]";
+                    }
+                    else if (CurrentProduct == ProductGroup.PRL4)
                     {
                         query = "select [ShopOrderInterior],[ShopOrderBox],[ShopOrderTrim],[SchedulingGroup],[Customer],[Quantity],[EnteredDate],[ReleaseDate],[CommitDate],[Tracking],[Urgency],[SpecialCustomer],[AMO],[PaintedBox],[NameplateRequired],[NameplateOrdered],[DNSB],[Complete],[Short],[Type],[Volts],[Amps],[Torque],[Appearance],[Bus],[Catalogue],[ProductSpecialist],[FilePath],[ImageFilePath],[PageNumber],[Notes],[LabelsPrinted],[ServiceEntrance],[RatedNeutral200],[DoorOverDist],[DoorInDoor],[BoxEarly],[BoxSent] from [PRL4] where [GO_Item]='" + SelectedGO + "' order by [GO_Item],[PageNumber]";
                     }
@@ -795,7 +918,6 @@ namespace LightningPRO
                             DNSB = (Boolean)dtr[16];
                             Complete = (Boolean)dtr[17];
                             Short = (Boolean)dtr[18];
-
                             type = dtr[19].ToString();
                             volts = dtr[20].ToString();
                             amps = dtr[21].ToString();
@@ -812,7 +934,17 @@ namespace LightningPRO
                             notes = dtr[30].ToString();
                             LabelsPrinted = (Boolean)dtr[31];
 
-                            if (CurrentProduct == ProductGroup.PRL4)
+
+                            if (CurrentProduct == ProductGroup.PRL123) 
+                            {
+                                ServiceEntrance = (Boolean)dtr[32];
+                                RatedNeutral200 = (Boolean)dtr[33];
+                                BoxEarly = (Boolean)dtr[34];
+                                BoxSent = (Boolean)dtr[35];
+                                DoubleSection = (Boolean)dtr[36];
+
+                            }
+                            else if (CurrentProduct == ProductGroup.PRL4)
                             {
                                 ServiceEntrance = (Boolean)dtr[32];
                                 RatedNeutral200 = (Boolean)dtr[33];
@@ -821,14 +953,14 @@ namespace LightningPRO
                                 BoxEarly = (Boolean)dtr[36];
                                 BoxSent = (Boolean)dtr[37];
                             }
-                            else if(CurrentProduct == ProductGroup.PRLCS)
+                            else if (CurrentProduct == ProductGroup.PRLCS)
                             {
                                 IncLocLeft = (Boolean)dtr[32];
                                 IncLocRight = (Boolean)dtr[33];
                                 CrossBus = (Boolean)dtr[34];
                                 OpenBottom = (Boolean)dtr[35];
                                 ExtendedTop = (Boolean)dtr[36];
-                                ThirtyDeepEncolsure = (Boolean)dtr[37];                          
+                                ThirtyDeepEncolsure = (Boolean)dtr[37];
                             }                            
                         }
                     }
@@ -836,8 +968,72 @@ namespace LightningPRO
                     pageNumber += 1;
                     imageFilepath = System.IO.Path.GetFullPath(System.IO.Path.Combine(imageFilepath, @"..\" + SelectedGO.Substring(0, 10) + "_" + SelectedGO.Substring(11, SelectedGO.Length - 11) + "_" + pageNumber.ToString() + ".png"));
 
-                    
-                    if (CurrentProduct == ProductGroup.PRL4)
+
+                    if (CurrentProduct == ProductGroup.PRL123)
+                    {
+                        string command = "INSERT INTO [PRL123] ([GO_Item],[GO],[ShopOrderInterior],[ShopOrderBox],"
+                            + "[ShopOrderTrim],[SchedulingGroup],[Customer],[Quantity],"
+                            + "[EnteredDate],[ReleaseDate],[CommitDate],[Tracking],"
+                            + "[Urgency],[SpecialCustomer],[AMO],[ServiceEntrance],"
+                            + "[PaintedBox],[RatedNeutral200],[BoxEarly],[Box Sent],"
+                            + "[NameplateRequired],[NameplateOrdered],[DNSB],[Complete],"
+                            + "[Type],[Volts],[Amps],[Torque],"
+                            + "[Appearance],[Bus],[Catalogue],[ProductSpecialist],"
+                            + "[FilePath],[ImageFilePath],[PageNumber],[Notes],"
+                            + "[LabelsPrinted], [DoubleSection], [Short]) "
+                            + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+
+
+                        using (OleDbCommand cmd = new OleDbCommand(command, MainWindow.LPcon))
+                        {
+                            cmd.Parameters.AddWithValue("[GO_Item]", insertGOI);
+                            cmd.Parameters.AddWithValue("[GO]", insertGO);
+                            cmd.Parameters.AddWithValue("[ShopOrderInterior]", SOInterior);
+                            cmd.Parameters.AddWithValue("[ShopOrderBox]", SOBox);
+                            cmd.Parameters.AddWithValue("[ShopOrderTrim]", SOTrim);
+                            cmd.Parameters.AddWithValue("[SchedulingGroup]", SchedGroup);
+                            cmd.Parameters.AddWithValue("[Customer]", Customer);
+                            cmd.Parameters.AddWithValue("[Quantity]", Quantity);
+
+                            if (EnterDate == null) cmd.Parameters.AddWithValue("EnteredDate", DBNull.Value); else cmd.Parameters.AddWithValue("EnteredDate", EnterDate);
+                            if (ReleaseDate == null) cmd.Parameters.AddWithValue("ReleaseDate", DBNull.Value); else cmd.Parameters.AddWithValue("ReleaseDate", ReleaseDate);
+                            if (CommitDate == null) cmd.Parameters.AddWithValue("CommitDate", DBNull.Value); else cmd.Parameters.AddWithValue("CommitDate", CommitDate);
+
+                            cmd.Parameters.AddWithValue("[Tracking]", Tracking);
+                            cmd.Parameters.AddWithValue("[Urgency]", Urgency);
+                            cmd.Parameters.AddWithValue("[SpecialCustomer]", SpecialCustomer);
+                            cmd.Parameters.AddWithValue("[AMO]", AMO);
+                            cmd.Parameters.AddWithValue("ServiceEntrance", ServiceEntrance);
+                            cmd.Parameters.AddWithValue("[PaintedBox]", PaintedBox);
+                            cmd.Parameters.AddWithValue("[RatedNeutral200]", RatedNeutral200);
+                            cmd.Parameters.AddWithValue("[BoxEarly]", BoxEarly);
+                            cmd.Parameters.AddWithValue("[Box Sent]", BoxSent);
+                            cmd.Parameters.AddWithValue("NameplateRequired", NameplateRequired);
+                            cmd.Parameters.AddWithValue("NameplateOrdered", NameplateOrdered);
+                            cmd.Parameters.AddWithValue("DNSB", DNSB);
+                            cmd.Parameters.AddWithValue("Complete", Complete);
+                            cmd.Parameters.AddWithValue("[Type]", type);
+                            cmd.Parameters.AddWithValue("[Volts]", volts);
+                            cmd.Parameters.AddWithValue("Amps", amps);
+                            cmd.Parameters.AddWithValue("Torque", torque);
+                            cmd.Parameters.AddWithValue("Appearance", appearance);
+                            cmd.Parameters.AddWithValue("Bus", bus);
+                            cmd.Parameters.AddWithValue("Catalogue", catalogue);
+                            cmd.Parameters.AddWithValue("ProductSpecialist", prodSpecialist);
+                            cmd.Parameters.AddWithValue("FilePath", pdfFilepath);
+                            cmd.Parameters.AddWithValue("ImageFilePath", imageFilepath);
+                            cmd.Parameters.AddWithValue("PageNumber", pageNumber);
+                            cmd.Parameters.AddWithValue("Notes", notes);
+                            cmd.Parameters.AddWithValue("LabelsPrinted", LabelsPrinted);
+                            cmd.Parameters.AddWithValue("[DoubleSection]", DoubleSection);
+                            cmd.Parameters.AddWithValue("[Short]", Short);
+
+
+
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                    else if (CurrentProduct == ProductGroup.PRL4)
                     {
                         string command = "INSERT INTO [PRL4]([GO_Item],[GO],[ShopOrderInterior],[ShopOrderBox],[ShopOrderTrim],[SchedulingGroup],[Customer],[Quantity],[EnteredDate],[ReleaseDate],[CommitDate],[Tracking],[Urgency],[SpecialCustomer],[AMO],[ServiceEntrance],[PaintedBox],[RatedNeutral200],[DoorOverDist],[DoorInDoor],[BoxEarly],[BoxSent],[NameplateRequired],[NameplateOrdered],[DNSB],[Complete],[Short],[Type],[Volts],[Amps],[Torque],[Appearance],[Bus],[Catalogue],[ProductSpecialist],[FilePath],[ImageFilePath],[PageNumber],[Notes],[LabelsPrinted]) " +
                                   "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
@@ -969,9 +1165,9 @@ namespace LightningPRO
                 }
                 return -1;
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("An Error Occurred Trying To AddToShopPackage");
+                MessageBox.Show($"An Error Occurred Trying To AddToShopPackage: {ex.Message}");
                 return -2;
             }
         }
@@ -1242,7 +1438,7 @@ namespace LightningPRO
                 string query = "";
                 if (CurrentProduct == ProductGroup.PRL123)
                 {
-                    query = "select [GO_Item] from [PRL123] where [GO_Item]='" + GO_Item + "'";
+                    query = "select [GO_Item] from [PRL123] where [GO_Item]='" + GO_Item + "' and [PageNumber]=0";
                 }
                 else if (CurrentProduct == ProductGroup.PRL4)
                 {

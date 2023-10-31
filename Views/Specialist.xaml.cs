@@ -79,7 +79,44 @@ namespace LightningPRO.Views
             {
                 if (CurrentProduct == Utility.ProductGroup.PRL123)
                 {
-                    query = "select Distinct PRL123.[ID], PRL123.[GO_Item], PRL123.[GO], CSALabel.[ProductID], PRL123.[ShopOrderInterior], PRL123.[ShopOrderBox], PRL123.[ShopOrderTrim], PRL123.[SchedulingGroup], PRL123.[Customer], PRL123.[Quantity], PRL123.[EnteredDate], PRL123.[ReleaseDate], PRL123.[CommitDate], PRL123.[Tracking], PRL123.[Urgency], PRL123.[AMO], PRL123.[BoxEarly], PRL123.[Box Sent], PRL123.[SpecialCustomer], PRL123.[ServiceEntrance], PRL123.[DoubleSection], PRL123.[PaintedBox], PRL123.[RatedNeutral200], PRL123.[DNSB], PRL123.[Complete], PRL123.[Short], PRL123.[NameplateRequired], PRL123.[NameplateOrdered], PRL123.[LabelsPrinted], PRL123.[Notes] from [PRL123] inner join [CSALabel] on PRL123.[GO_Item] = CSALabel.[GO_Item] where PRL123.[Tracking]='" + Current_Tab + "'";
+                    query =
+                        "SELECT DISTINCT " +
+                        "PRL123.[ID], " +
+                        "PRL123.[GO_Item], " +
+                        "PRL123.[GO], " +
+                        "CSALabel.[ProductID], " +
+                        "PRL123.[ShopOrderInterior], " +
+                        "PRL123.[ShopOrderBox], " +
+                        "PRL123.[ShopOrderTrim], " +
+                        "PRL123.[SchedulingGroup], " +
+                        "PRL123.[Customer], " +
+                        "PRL123.[Quantity], " +
+                        "PRL123.[EnteredDate], " +
+                        "PRL123.[ReleaseDate], " +
+                        "PRL123.[CommitDate], " +
+                        "PRL123.[Tracking], " +
+                        "PRL123.[Urgency], " +
+                        "PRL123.[AMO], " +
+                        "PRL123.[BoxEarly], " +
+                        "PRL123.[Box Sent], " +
+                        "PRL123.[SpecialCustomer], " +
+                        "PRL123.[ServiceEntrance], " +
+                        "PRL123.[DoubleSection], " +
+                        "PRL123.[PaintedBox], " +
+                        "PRL123.[RatedNeutral200], " +
+                        "PRL123.[DNSB], " +
+                        "PRL123.[Complete], " +
+                        "PRL123.[Short], " +
+                        "PRL123.[NameplateRequired], " +
+                        "PRL123.[NameplateOrdered], " +
+                        "PRL123.[LabelsPrinted], " +
+                        "PRL123.[Notes] " +
+                        "FROM [PRL123] " +
+                        "INNER JOIN [CSALabel] " +
+                        "ON PRL123.[GO_Item] = CSALabel.[GO_Item] " +
+                        "WHERE PRL123.[Tracking]='" + Current_Tab + "' " +
+                        "AND PRL123.[PageNumber] = 0";
+
                 }
                 else if (CurrentProduct == Utility.ProductGroup.PRL4)
                 {
@@ -330,29 +367,6 @@ namespace LightningPRO.Views
         {
             if (Selected != -1)
             {
-                if(CurrentProduct == Utility.ProductGroup.PRL123)
-                {
-                    if (MultipleSelected.Count > 1)
-                    {
-                        foreach (int id in MultipleSelected)
-                        {
-                            string query = "update [PRL123] set [Tracking]='MIComplete' where [ID]=" + id.ToString();
-                            Utility.ExecuteNonQueryLP(query);
-                        }
-                        LoadGrid();
-                        UpdateStatus("MULTIPLE SUCCESSFULLY APPROVED");
-                    }
-                    else
-                    {
-                        string query = "update [PRL123] set [Tracking]='MIComplete' where [ID]=" + Selected.ToString();
-                        Utility.ExecuteNonQueryLP(query);
-
-                        LoadGrid();
-                        UpdateStatus(SelectedGO + " SUCCESSFULLY APPROVED");
-                    }
-                }
-                else
-                {
                     if (MultipleSelected.Count > 1)
                     {
                         foreach (string goItem in MultipleSelectedGO)
@@ -372,7 +386,6 @@ namespace LightningPRO.Views
                         UpdateStatus(SelectedGO + " SUCCESSFULLY APPROVED");
                     }
                 }
-            }
         }
 
 
@@ -380,29 +393,6 @@ namespace LightningPRO.Views
         {
             if (Selected != -1)
             {
-                if (CurrentProduct == Utility.ProductGroup.PRL123)
-                {
-                    if (MultipleSelected.Count > 1)
-                    {
-                        foreach (int id in MultipleSelected)
-                        {
-                            string query = "update [PRL123] set [Tracking]='InDevelopment' where [ID]=" + id.ToString();
-                            Utility.ExecuteNonQueryLP(query);
-                        }
-                        LoadGrid();
-                        UpdateStatus("MULTIPLE SUCCESSFULLY RECALLED");
-                    }
-                    else
-                    {
-                        string query = "update [PRL123] set [Tracking]='InDevelopment' where [ID]=" + Selected.ToString();
-                        Utility.ExecuteNonQueryLP(query);
-
-                        LoadGrid();
-                        UpdateStatus(SelectedGO + " RECALLED");
-                    }
-                }
-                else
-                {
                     if (MultipleSelected.Count > 1)
                     {
                         foreach (string goItem in MultipleSelectedGO)
@@ -421,8 +411,7 @@ namespace LightningPRO.Views
                         LoadGrid();
                         UpdateStatus(SelectedGO + " RECALLED");
                     }
-                }
-            }
+                }            
         }
 
 
@@ -473,8 +462,6 @@ namespace LightningPRO.Views
         {
             if (Selected != -1)
             {
-                if (CurrentProduct != Utility.ProductGroup.PRL123)
-                {
                     int check = Utility.ExecuteAddToShopPack(SelectedGO, CurrentProduct);
 
                     if (check == 1)
@@ -485,11 +472,6 @@ namespace LightningPRO.Views
                     {
                         UpdateStatus(SelectedGO + " PAGE ADD ERROR");
                     }
-                }
-                else 
-                {
-                    MessageBox.Show("This Feature Is Not Available For PRL123");
-                }
             }
         }
 
