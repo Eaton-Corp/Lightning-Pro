@@ -170,60 +170,51 @@ namespace LightningPRO.Views
 
 
 
-        public class DateGOIPairs
+
+        public class InfoGOIPairs
         {
-            private readonly string GOI;
-            private DateTime? CommitDate;
+            public string GOI { get; private set; }
+            public string ShopOrderInterior { get; set; }
+            public string ShopOrderBox { get; set; }
+            public string ShopOrderTrim { get; set; }
+            public string SchedulingGroup { get; set; }
+            public DateTime? EnteredDate { get; set; }
+            public DateTime? ReleaseDate { get; set; }
+            public DateTime? CommitDate { get; set; }
+            public string ProductSpecialist { get; set; }
 
-            public DateGOIPairs(string GoItem) 
-            { 
+            public InfoGOIPairs(string GoItem)
+            {
                 GOI = GoItem;
-                CommitDate = null;
-            }
-
-            public string Get_GOI()
-            {
-                return this.GOI;
-            }
-
-            public void Set_CommitDate(DateTime? cDate)
-            {
-                this.CommitDate = cDate;
-            }
-
-            public DateTime? Get_CommitDate()
-            {
-                return this.CommitDate;
             }
         }
 
 
-        List<DateGOIPairs> DateGOIPairsList;
+        List<InfoGOIPairs> InfoGOIPairsList;
 
-        private async void Update_Commits(object sender, RoutedEventArgs e)
+        private async void Update_Jobs(object sender, RoutedEventArgs e)
         {
             try
             {
-                if (MessageBox.Show("You Are About To Update All Commit Dates of Jobs in LightningPro.\nWould You Like To Proceed?", "Confirm",
+                if (MessageBox.Show("You Are About To Update All Information of Jobs in LightningPro.\nWould You Like To Proceed?", "Confirm",
                       MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
                     Task<int> ShowProgressBar = TurnOnStatus();
                     int result = await ShowProgressBar;
 
-                    GetDates(Utility.ProductGroup.PRL123,"PRL123");
-                    GetDates(Utility.ProductGroup.PRL4,"PRL4");
-                    GetDates(Utility.ProductGroup.PRLCS,"PRLCS");
+                    GetInfo(Utility.ProductGroup.PRL123, "PRL123");
+                    GetInfo(Utility.ProductGroup.PRL4, "PRL4");
+                    GetInfo(Utility.ProductGroup.PRLCS, "PRLCS");
 
-                    Status.Content = "COMMIT DATES SUCCESSFULLY UPDATED ";
+                    Status.Content = "INFORMATION SUCCESSFULLY UPDATED ";
                 }
             }
             catch
             {
                 Status.Content = "UPDATE ERROR ";
-                MessageBox.Show("Error Updated Commit Dates");
+                MessageBox.Show("Error Updating All Information");
             }
         }
-
 
 
         private async Task<int> TurnOnStatus()
@@ -235,61 +226,57 @@ namespace LightningPRO.Views
 
 
 
-        private void GetDates(Utility.ProductGroup currProd, string currTable)
+        private void GetInfo(Utility.ProductGroup currProd, string currTable)
         {
-            DateGOIPairsList = new List<DateGOIPairs>();
+            InfoGOIPairsList = new List<InfoGOIPairs>();
 
-            //populate DateGOIPairsList with all GO Items
+            string commandStr = currProd == Utility.ProductGroup.PRL123
+                ? "select [GO_Item] from [" + currTable + "]"
+                : "select [GO_Item] from [" + currTable + "] where [PageNumber] = 0";
 
-            string commandStr;
-            if (currProd == Utility.ProductGroup.PRL123)
-            {
-                commandStr = "select [GO_Item] from [" + currTable + "]";
-            }
-            else
-            {
-                commandStr = "select [GO_Item] from [" + currTable + "] where [PageNumber] = 0";
-            }
-           
             DataTable dt = Utility.SearchLP(commandStr);
-            using (DataTableReader dtr = new DataTableReader(dt))
+            foreach (DataRow row in dt.Rows)
             {
-                while (dtr.Read())
-                {
-                    DateGOIPairsList.Add(new DateGOIPairs(dtr[0].ToString()));
-                }
+                InfoGOIPairsList.Add(new InfoGOIPairs(row[0].ToString()));
             }
 
-
-            //pair the new Commit Dates to the GO Items in DateGOIPairsList
-
-            for (int i = 0; i < DateGOIPairsList.Count; i++) 
+            for (int i = 0; i < InfoGOIPairsList.Count; i++)
             {
-                using (DataTableReader dtr = Utility.LoadData("select [Commit Date] from [tblOrderStatus] where [GO Item]='" + DateGOIPairsList[i].Get_GOI() + "'"))
+                using (DataTableReader dtr = Utility.LoadData($"select [Shop Order], [Shop Order B], [Shop Order T], [Attribute1], [Product Specialist], [Commit Date], [Entered Date], [Release Date] from [tblOrderStatus] where [GO Item]='{InfoGOIPairsList[i].GOI}'"))
                 {
                     while (dtr.Read())
                     {
-                        DateTime? cDate = string.IsNullOrEmpty(dtr[0].ToString()) ? null : (DateTime?)Convert.ToDateTime(dtr[0].ToString());
-                        DateGOIPairsList[i].Set_CommitDate(cDate);
+                        InfoGOIPairsList[i].ShopOrderInterior = dtr[0].ToString();
+                        InfoGOIPairsList[i].ShopOrderBox = dtr[1].ToString();
+                        InfoGOIPairsList[i].ShopOrderTrim = dtr[2].ToString();
+                        InfoGOIPairsList[i].SchedulingGroup = dtr[3].ToString();
+                        InfoGOIPairsList[i].ProductSpecialist = dtr[4].ToString();
+                        InfoGOIPairsList[i].CommitDate = string.IsNullOrEmpty(dtr[5].ToString()) ? null : (DateTime?)Convert.ToDateTime(dtr[5].ToString());
+                        InfoGOIPairsList[i].EnteredDate = string.IsNullOrEmpty(dtr[6].ToString()) ? null : (DateTime?)Convert.ToDateTime(dtr[6].ToString());
+                        InfoGOIPairsList[i].ReleaseDate = string.IsNullOrEmpty(dtr[7].ToString()) ? null : (DateTime?)Convert.ToDateTime(dtr[7].ToString());
                     }
                 }
             }
 
-
-            //update Commit Dates in LP database
-
             string updateStr;
-            for (int i = 0; i < DateGOIPairsList.Count; i++)
+            for (int i = 0; i < InfoGOIPairsList.Count; i++)
             {
-                updateStr = "update [" + currTable + "] set [CommitDate] = ? where [GO_Item]='" + DateGOIPairsList[i].Get_GOI() + "'";
+                updateStr = $"update [{currTable}] set [ShopOrderInterior]=?, [ShopOrderBox]=?, [ShopOrderTrim]=?, [SchedulingGroup]=?, [ProductSpecialist]=?, [CommitDate]=?, [EnteredDate]=?, [ReleaseDate]=? where [GO_Item]='{InfoGOIPairsList[i].GOI}'";
                 using (OleDbCommand cmd = new OleDbCommand(updateStr, MainWindow.LPcon))
                 {
-                    if (DateGOIPairsList[i].Get_CommitDate() == null) cmd.Parameters.AddWithValue("[CommitDate]", DBNull.Value); else cmd.Parameters.AddWithValue("[CommitDate]", DateGOIPairsList[i].Get_CommitDate());
+                    cmd.Parameters.AddWithValue("[ShopOrderInterior]", InfoGOIPairsList[i].ShopOrderInterior);
+                    cmd.Parameters.AddWithValue("[ShopOrderBox]", InfoGOIPairsList[i].ShopOrderBox);
+                    cmd.Parameters.AddWithValue("[ShopOrderTrim]", InfoGOIPairsList[i].ShopOrderTrim);
+                    cmd.Parameters.AddWithValue("[SchedulingGroup]", InfoGOIPairsList[i].SchedulingGroup);
+                    cmd.Parameters.AddWithValue("[ProductSpecialist]", InfoGOIPairsList[i].ProductSpecialist);
+                    cmd.Parameters.AddWithValue("[CommitDate]", InfoGOIPairsList[i].CommitDate ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("[EnteredDate]", InfoGOIPairsList[i].EnteredDate ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("[ReleaseDate]", InfoGOIPairsList[i].ReleaseDate ?? (object)DBNull.Value);
                     cmd.ExecuteNonQuery();
-                } //end using command
+                }
             }
-
         }
+
 
 
 
@@ -708,7 +695,6 @@ namespace LightningPRO.Views
             PWLCS.Background = Brushes.DarkBlue;
             LoadDeleteGrid();
         }
-
 
     }
 }

@@ -97,7 +97,13 @@
             <Button Name="PWL4" Grid.Column="3"  Content="PRL4"  Height="26"  Background="Blue" VerticalAlignment="Bottom" Foreground="White" Click="PRL4_Click" />
             <Button Name ="PWLCS" Grid.Column="2" Content="CS" Height="26" Background="Blue" VerticalAlignment="Bottom" Foreground="White" Click="PRLCS_Click" />
             <Button Name="PWLEC"  Grid.Column="1"  Content="EC"  Height="26"  Background="Blue" VerticalAlignment="Bottom" Foreground="White" />
-        </Grid> 
+        </Grid>
+
+        <Button Background="White" Foreground="White" Grid.Row="2" Grid.Column="5" BorderThickness="0" Height="40" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Click="Click_Refresh" ToolTip="Refresh">
+            <DockPanel>
+                <Image Width="35" Height="35" Source="/Assets/RefreshButton.png"/>
+            </DockPanel>
+        </Button>
 
         <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5">
             <Grid.ColumnDefinitions>
@@ -215,6 +221,7 @@
                 <ComboBoxItem Content="GO"></ComboBoxItem>
                 <ComboBoxItem Content="Customer"></ComboBoxItem>
                 <ComboBoxItem Content="ShopOrder"></ComboBoxItem>
+                <ComboBoxItem Content="ProductSpecialist"></ComboBoxItem>
             </ComboBox>
             <Button x:Name="SearchButton" Background="LightGray" Foreground="White" FontFamily="Light" Grid.Column="2" Height="25" HorizontalAlignment="Left" Grid.Row="0" VerticalAlignment="Bottom" Width="75" Click="Search_Click" ToolTip="Search">
                 <DockPanel>
