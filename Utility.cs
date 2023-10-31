@@ -149,7 +149,6 @@ namespace LightningPRO
             {
                 if (FieldText == "ShopOrder")
                 {
-<<<<<<< HEAD
                     query =
                         "SELECT DISTINCT " +
                         "PRL123.[ID], " +
@@ -160,6 +159,7 @@ namespace LightningPRO
                         "PRL123.[ShopOrderBox], " +
                         "PRL123.[ShopOrderTrim], " +
                         "PRL123.[SchedulingGroup], " +
+                        "PRL123.[JobName], " +
                         "PRL123.[Customer], " +
                         "PRL123.[Quantity], " +
                         "PRL123.[EnteredDate], " +
@@ -203,6 +203,7 @@ namespace LightningPRO
                         "PRL123.[ShopOrderBox], " +
                         "PRL123.[ShopOrderTrim], " +
                         "PRL123.[SchedulingGroup], " +
+                        "PRL123.[JobName], " +
                         "PRL123.[Customer], " +
                         "PRL123.[Quantity], " +
                         "PRL123.[EnteredDate], " +
@@ -230,13 +231,6 @@ namespace LightningPRO
                         "ON PRL123.[GO_Item] = CSALabel.[GO_Item] " +
                         "WHERE PRL123.[" + FieldText + "] LIKE '%" + SearchText + "%' " +
                         "AND PRL123.[PageNumber] = 0";
-=======
-                    query = "select Distinct PRL123.[ID], PRL123.[GO_Item], PRL123.[GO], CSALabel.[ProductID], PRL123.[ShopOrderInterior], PRL123.[ShopOrderBox], PRL123.[ShopOrderTrim], PRL123.[SchedulingGroup], PRL123.[JobName], PRL123.[Customer], PRL123.[Quantity], PRL123.[EnteredDate], PRL123.[ReleaseDate], PRL123.[CommitDate], PRL123.[Tracking], PRL123.[Urgency], PRL123.[AMO], PRL123.[BoxEarly], PRL123.[Box Sent], PRL123.[SpecialCustomer], PRL123.[ServiceEntrance], PRL123.[DoubleSection], PRL123.[PaintedBox], PRL123.[RatedNeutral200], PRL123.[DNSB], PRL123.[Complete], PRL123.[Short], PRL123.[NameplateRequired], PRL123.[NameplateOrdered], PRL123.[LabelsPrinted], PRL123.[Notes] from [PRL123] inner join [CSALabel] on PRL123.[GO_Item] = CSALabel.[GO_Item] where PRL123.ShopOrderInterior like '%" + SearchText + "%' OR PRL123.ShopOrderTrim like '%" + SearchText + "%' OR PRL123.ShopOrderBox like '%" + SearchText + "%' OR PRL123.SchedulingGroup like '%" + SearchText + "%'";
-                }
-                else
-                {
-                    query = "select Distinct PRL123.[ID], PRL123.[GO_Item], PRL123.[GO], CSALabel.[ProductID], PRL123.[ShopOrderInterior], PRL123.[ShopOrderBox], PRL123.[ShopOrderTrim], PRL123.[SchedulingGroup], PRL123.[JobName], PRL123.[Customer], PRL123.[Quantity], PRL123.[EnteredDate], PRL123.[ReleaseDate], PRL123.[CommitDate], PRL123.[Tracking], PRL123.[Urgency], PRL123.[AMO], PRL123.[BoxEarly], PRL123.[Box Sent], PRL123.[SpecialCustomer], PRL123.[ServiceEntrance], PRL123.[DoubleSection], PRL123.[PaintedBox], PRL123.[RatedNeutral200], PRL123.[DNSB], PRL123.[Complete], PRL123.[Short], PRL123.[NameplateRequired], PRL123.[NameplateOrdered], PRL123.[LabelsPrinted], PRL123.[Notes] from [PRL123] inner join [CSALabel] on PRL123.[GO_Item] = CSALabel.[GO_Item] where PRL123.[" + FieldText + "] like '%" + SearchText + "%'";
->>>>>>> 6d867cd699941cc6a77fe2bae7f270d360fc8d07
                 }
 
             }

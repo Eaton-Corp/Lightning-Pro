@@ -196,7 +196,7 @@ namespace LightningPRO.Views
         {
             try
             {
-                if (MessageBox.Show("You Are About To Update All Information of Jobs in LightningPro.\nWould You Like To Proceed?", "Confirm",
+                if (MessageBox.Show("You Are About To Update All Information of Jobs in LightningPro.\n Note: this may take a couple minutes.\n Would You Like To Proceed?", "Confirm",
                       MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
                     Task<int> ShowProgressBar = TurnOnStatus();
@@ -230,9 +230,7 @@ namespace LightningPRO.Views
         {
             InfoGOIPairsList = new List<InfoGOIPairs>();
 
-            string commandStr = currProd == Utility.ProductGroup.PRL123
-                ? "select [GO_Item] from [" + currTable + "]"
-                : "select [GO_Item] from [" + currTable + "] where [PageNumber] = 0";
+            string commandStr = "select [GO_Item] from [" + currTable + "] where [PageNumber] = 0";
 
             DataTable dt = Utility.SearchLP(commandStr);
             foreach (DataRow row in dt.Rows)

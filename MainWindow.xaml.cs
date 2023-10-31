@@ -169,7 +169,7 @@ namespace LightningPRO
         {
             if (isConfigured)
             {
-                DataContext = new MaterialPlanningViewModel();
+                //DataContext = new MaterialPlanningViewModel();
             }
         }
 
