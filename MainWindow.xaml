@@ -76,6 +76,7 @@
             <HamburgerMenu:HamburgerMenuItem Icon="Assets/settings.png" Text="Settings" Selected="Settings_Clicked"/>
             <HamburgerMenu:HamburgerMenuItem Icon="Assets/Configuration.png" Text="Configure" Selected="Configuration_Clicked"/>
             <HamburgerMenu:HamburgerMenuItem Icon="Assets/MovieCredits.png" Text="Credits" Selected="Credits_Clicked"/>
+            <HamburgerMenu:HamburgerMenuItem Icon="Assets/MovieCredits.png" Text="MaterialShoppingCart" Selected="Cart_Clicked"/>
         </HamburgerMenu:HamburgerMenu>
 
         <Image Grid.Column="2" Grid.Row="3" Grid.ColumnSpan="4"  Grid.RowSpan="2" Stretch="Uniform" Source="/Assets/EatonJPG.jpg"/>

@@ -182,6 +182,7 @@ namespace LightningPRO.Views
             public DateTime? ReleaseDate { get; set; }
             public DateTime? CommitDate { get; set; }
             public string ProductSpecialist { get; set; }
+            public bool RequiresUpdate { get; set; } = false;
 
             public InfoGOIPairs(string GoItem)
             {
@@ -194,26 +195,26 @@ namespace LightningPRO.Views
 
         private async void Update_Jobs(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                if (MessageBox.Show("You Are About To Update All Information of Jobs in LightningPro.\n Note: this may take a couple minutes.\n Would You Like To Proceed?", "Confirm",
+            /*try
+            {*/
+                if (MessageBox.Show("You Are About To Update All Information of Jobs in LightningPro.\nNote: this may take a couple minutes.\nWould You Like To Proceed?", "Confirm",
                       MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
                     Task<int> ShowProgressBar = TurnOnStatus();
                     int result = await ShowProgressBar;
 
-                    GetInfo(Utility.ProductGroup.PRL123, "PRL123");
-                    GetInfo(Utility.ProductGroup.PRL4, "PRL4");
-                    GetInfo(Utility.ProductGroup.PRLCS, "PRLCS");
+                    GetInfo("PRL123");
+                    GetInfo("PRL4");
+                    GetInfo("PRLCS");
 
                     Status.Content = "INFORMATION SUCCESSFULLY UPDATED ";
                 }
-            }
+            /*}
             catch
             {
                 Status.Content = "UPDATE ERROR ";
                 MessageBox.Show("Error Updating All Information");
-            }
+            }*/
         }
 
 
@@ -225,51 +226,79 @@ namespace LightningPRO.Views
         }
 
 
-
-        private void GetInfo(Utility.ProductGroup currProd, string currTable)
+        private void GetInfo(string currTable)
         {
             InfoGOIPairsList = new List<InfoGOIPairs>();
 
-            string commandStr = "select [GO_Item] from [" + currTable + "] where [PageNumber] = 0";
-
-            DataTable dt = Utility.SearchLP(commandStr);
-            foreach (DataRow row in dt.Rows)
-            {
-                InfoGOIPairsList.Add(new InfoGOIPairs(row[0].ToString()));
-            }
-
-            for (int i = 0; i < InfoGOIPairsList.Count; i++)
-            {
-                using (DataTableReader dtr = Utility.LoadData($"select [Shop Order], [Shop Order B], [Shop Order T], [Attribute1], [Product Specialist], [Commit Date], [Entered Date], [Release Date] from [tblOrderStatus] where [GO Item]='{InfoGOIPairsList[i].GOI}'"))
+            // Retrieve current GO items data from LightningPro database for comparison
+            string loadCurrentDataStr = $"SELECT [GO_Item], [ShopOrderInterior], [ShopOrderBox], [ShopOrderTrim], [SchedulingGroup], [ProductSpecialist], [CommitDate], [EnteredDate], [ReleaseDate] FROM [{currTable}] WHERE [PageNumber] = 0";
+            DataTable currentData = Utility.SearchLP(loadCurrentDataStr);
+            Dictionary<string, InfoGOIPairs> currentDataMap = currentData.AsEnumerable().ToDictionary(
+                row => row.Field<string>("GO_Item"),
+                row => new InfoGOIPairs(row.Field<string>("GO_Item"))
                 {
-                    while (dtr.Read())
-                    {
-                        InfoGOIPairsList[i].ShopOrderInterior = dtr[0].ToString();
-                        InfoGOIPairsList[i].ShopOrderBox = dtr[1].ToString();
-                        InfoGOIPairsList[i].ShopOrderTrim = dtr[2].ToString();
-                        InfoGOIPairsList[i].SchedulingGroup = dtr[3].ToString();
-                        InfoGOIPairsList[i].ProductSpecialist = dtr[4].ToString();
-                        InfoGOIPairsList[i].CommitDate = string.IsNullOrEmpty(dtr[5].ToString()) ? null : (DateTime?)Convert.ToDateTime(dtr[5].ToString());
-                        InfoGOIPairsList[i].EnteredDate = string.IsNullOrEmpty(dtr[6].ToString()) ? null : (DateTime?)Convert.ToDateTime(dtr[6].ToString());
-                        InfoGOIPairsList[i].ReleaseDate = string.IsNullOrEmpty(dtr[7].ToString()) ? null : (DateTime?)Convert.ToDateTime(dtr[7].ToString());
-                    }
+                    ShopOrderInterior = row.Field<string>("ShopOrderInterior"),
+                    ShopOrderBox = row.Field<string>("ShopOrderBox"),
+                    ShopOrderTrim = row.Field<string>("ShopOrderTrim"),
+                    SchedulingGroup = row.Field<string>("SchedulingGroup"),
+                    ProductSpecialist = row.Field<string>("ProductSpecialist"),
+                    CommitDate = row.IsNull("CommitDate") ? null : row.Field<DateTime?>("CommitDate"),
+                    EnteredDate = row.IsNull("EnteredDate") ? null : row.Field<DateTime?>("EnteredDate"),
+                    ReleaseDate = row.IsNull("ReleaseDate") ? null : row.Field<DateTime?>("ReleaseDate"),
+                });
+
+            // Retrieve new data from tblOrderStatus to be updated
+            string commandStr = $"SELECT [GO Item], [Shop Order], [Shop Order B], [Shop Order T], [Attribute1], [Product Specialist], [Commit Date], [Entered Date], [Release Date] FROM [tblOrderStatus] WHERE [GO Item] IN (SELECT [GO_Item] FROM [{currTable}] WHERE [PageNumber] = 0)";
+            DataTable newData = Utility.SearchLP(commandStr);
+            foreach (DataRow newRow in newData.Rows)
+            {
+                string goItem = newRow.Field<string>("GO Item");
+                var currentInfo = currentDataMap.ContainsKey(goItem) ? currentDataMap[goItem] : null;
+
+                // Create a new InfoGOIPairs object for each row in newData
+                var newInfo = new InfoGOIPairs(goItem)
+                {
+                    ShopOrderInterior = newRow.Field<string>("Shop Order"),
+                    ShopOrderBox = newRow.Field<string>("Shop Order B"),
+                    ShopOrderTrim = newRow.Field<string>("Shop Order T"),
+                    SchedulingGroup = newRow.Field<string>("Attribute1"),
+                    ProductSpecialist = newRow.Field<string>("Product Specialist"),
+                    CommitDate = newRow.IsNull("Commit Date") ? null : newRow.Field<DateTime?>("Commit Date"),
+                    EnteredDate = newRow.IsNull("Entered Date") ? null : newRow.Field<DateTime?>("Entered Date"),
+                    ReleaseDate = newRow.IsNull("Release Date") ? null : newRow.Field<DateTime?>("Release Date"),
+                };
+
+                // Check for changes between the current database data and new data
+                if (currentInfo != null &&
+                    (currentInfo.ShopOrderInterior != newInfo.ShopOrderInterior ||
+                     currentInfo.ShopOrderBox != newInfo.ShopOrderBox ||
+                     currentInfo.ShopOrderTrim != newInfo.ShopOrderTrim ||
+                     currentInfo.SchedulingGroup != newInfo.SchedulingGroup ||
+                     currentInfo.ProductSpecialist != newInfo.ProductSpecialist ||
+                     currentInfo.CommitDate != newInfo.CommitDate ||
+                     currentInfo.EnteredDate != newInfo.EnteredDate ||
+                     currentInfo.ReleaseDate != newInfo.ReleaseDate))
+                {
+                    // If changes exist, then add to InfoGOIPairsList for update
+                    newInfo.RequiresUpdate = true;
+                    InfoGOIPairsList.Add(newInfo);
                 }
             }
 
-            string updateStr;
-            for (int i = 0; i < InfoGOIPairsList.Count; i++)
+            // Update only those GO items that have changes
+            foreach (var infoPair in InfoGOIPairsList.Where(i => i.RequiresUpdate))
             {
-                updateStr = $"update [{currTable}] set [ShopOrderInterior]=?, [ShopOrderBox]=?, [ShopOrderTrim]=?, [SchedulingGroup]=?, [ProductSpecialist]=?, [CommitDate]=?, [EnteredDate]=?, [ReleaseDate]=? where [GO_Item]='{InfoGOIPairsList[i].GOI}'";
+                string updateStr = $"UPDATE [{currTable}] SET [ShopOrderInterior]=?, [ShopOrderBox]=?, [ShopOrderTrim]=?, [SchedulingGroup]=?, [ProductSpecialist]=?, [CommitDate]=?, [EnteredDate]=?, [ReleaseDate]=? WHERE [GO_Item]='{infoPair.GOI}'";
                 using (OleDbCommand cmd = new OleDbCommand(updateStr, MainWindow.LPcon))
                 {
-                    cmd.Parameters.AddWithValue("[ShopOrderInterior]", InfoGOIPairsList[i].ShopOrderInterior);
-                    cmd.Parameters.AddWithValue("[ShopOrderBox]", InfoGOIPairsList[i].ShopOrderBox);
-                    cmd.Parameters.AddWithValue("[ShopOrderTrim]", InfoGOIPairsList[i].ShopOrderTrim);
-                    cmd.Parameters.AddWithValue("[SchedulingGroup]", InfoGOIPairsList[i].SchedulingGroup);
-                    cmd.Parameters.AddWithValue("[ProductSpecialist]", InfoGOIPairsList[i].ProductSpecialist);
-                    cmd.Parameters.AddWithValue("[CommitDate]", InfoGOIPairsList[i].CommitDate ?? (object)DBNull.Value);
-                    cmd.Parameters.AddWithValue("[EnteredDate]", InfoGOIPairsList[i].EnteredDate ?? (object)DBNull.Value);
-                    cmd.Parameters.AddWithValue("[ReleaseDate]", InfoGOIPairsList[i].ReleaseDate ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("[ShopOrderInterior]", infoPair.ShopOrderInterior ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("[ShopOrderBox]", infoPair.ShopOrderBox ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("[ShopOrderTrim]", infoPair.ShopOrderTrim ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("[SchedulingGroup]", infoPair.SchedulingGroup ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("[ProductSpecialist]", infoPair.ProductSpecialist ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("[CommitDate]", infoPair.CommitDate ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("[EnteredDate]", infoPair.EnteredDate ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("[ReleaseDate]", infoPair.ReleaseDate ?? (object)DBNull.Value);
                     cmd.ExecuteNonQuery();
                 }
             }

@@ -54,7 +54,7 @@ namespace LightningPRO
             cmd.ExecuteReader();
         }
 
-
+        
         public MainWindow()
         {
             InitializeComponent();
@@ -169,7 +169,7 @@ namespace LightningPRO
         {
             if (isConfigured)
             {
-                //DataContext = new MaterialPlanningViewModel();
+                DataContext = new MaterialPlanningViewModel();
             }
         }
 
@@ -217,6 +217,11 @@ namespace LightningPRO
         private void Credits_Clicked(object sender, RoutedEventArgs e)
         {
             DataContext = new CreditsViewModel();
+        }
+
+        private void Cart_Clicked(object sender, RoutedEventArgs e)
+        {
+            DataContext = new BOMShoppingCart();
         }
 
 
