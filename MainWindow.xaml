@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:LightningPRO"
         xmlns:HamburgerMenu="clr-namespace:HamburgerMenu;assembly=HamburgerMenu"
         xmlns:viewmodels="clr-namespace:LightningPRO.ViewModels"
+        
         xmlns:views="clr-namespace:LightningPRO.Views"
         mc:Ignorable="d"
         Title="LightningPRO" Height="550" Width="950" WindowState="Maximized" ResizeMode="CanResize" MinHeight="550" MinWidth="950" Loaded="MainWindow_OnLoaded" ContentRendered="ContentLoaded"
@@ -77,6 +78,9 @@
             <HamburgerMenu:HamburgerMenuItem Icon="Assets/Configuration.png" Text="Configure" Selected="Configuration_Clicked"/>
             <HamburgerMenu:HamburgerMenuItem Icon="Assets/MovieCredits.png" Text="Credits" Selected="Credits_Clicked"/>
             <HamburgerMenu:HamburgerMenuItem Icon="Assets/MovieCredits.png" Text="MaterialShoppingCart" Selected="Cart_Clicked"/>
+            <HamburgerMenu:HamburgerMenuItem Icon="Assets/MovieCredits.png" Text="CategoryMaintenance" Selected="Category_Clicked"/>
+            <HamburgerMenu:HamburgerMenuItem Icon="Assets/MovieCredits.png" Text="CategoryMaintenance" Selected="Attributes_Clicked"/>
+            
         </HamburgerMenu:HamburgerMenu>
 
         <Image Grid.Column="2" Grid.Row="3" Grid.ColumnSpan="4"  Grid.RowSpan="2" Stretch="Uniform" Source="/Assets/EatonJPG.jpg"/>

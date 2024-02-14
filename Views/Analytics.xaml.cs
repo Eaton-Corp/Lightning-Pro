@@ -16,8 +16,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using LightningPRO.Models;
-using System;
-using System.Linq;
 using LiveCharts;
 using LiveCharts.Wpf;
 using LiveCharts.Defaults;

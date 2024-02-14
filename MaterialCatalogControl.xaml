@@ -1,0 +1,433 @@
+﻿<UserControl x:Class="LightningPRO.MaterialCatalogControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:LightningPRO"
+             mc:Ignorable="d" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+            TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+            Background="{DynamicResource MaterialDesignPaper}"
+             d:DesignHeight="600" d:DesignWidth="800" MaxHeight="600" MinWidth="700">
+    <UserControl.Resources>
+        <!--<local:ReplaceButtonVisibilityConverter x:Key="ReplaceButtonVisibilityConverter"/>-->
+
+
+        <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="AliceBlue"/>
+            <Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect ShadowDepth="0" Opacity="0.2" BlurRadius="8"/>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border"
+                CornerRadius="5"
+                Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                RenderTransformOrigin="0.5,0.5">
+                            <Border.RenderTransform>
+                                <ScaleTransform/>
+                            </Border.RenderTransform>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <EventTrigger RoutedEvent="MouseEnter">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="border"
+                                         Storyboard.TargetProperty="RenderTransform.ScaleX"
+                                         To="1.05" Duration="0:0:0.1"/>
+                                        <DoubleAnimation Storyboard.TargetName="border"
+                                         Storyboard.TargetProperty="RenderTransform.ScaleY"
+                                         To="1.05" Duration="0:0:0.1"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="MouseLeave">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="border"
+                                         Storyboard.TargetProperty="RenderTransform.ScaleX"
+                                         To="1.0" Duration="0:0:0.1"/>
+                                        <DoubleAnimation Storyboard.TargetName="border"
+                                         Storyboard.TargetProperty="RenderTransform.ScaleY"
+                                         To="1.0" Duration="0:0:0.1"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="BreadcrumbStyle" TargetType="ItemsControl">
+            <Setter Property="BorderBrush" Value="Gray"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Margin" Value="0,0,0,5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ItemsControl">
+                        <Border 
+                            Background="{DynamicResource PrimaryHueMidBrush}" 
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}" 
+                            CornerRadius="3">
+                            <StackPanel>
+                                <ItemsPresenter/>
+                            </StackPanel>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+
+        <Style x:Key="DataGridCellStyle" TargetType="DataGridCell">
+            <Setter Property="Padding" Value="2,2,2,2"/>
+
+        </Style>
+
+        <Style x:Key="EatonDataGridColumnHeaderStyle" TargetType="{x:Type DataGridColumnHeader}">
+            <Setter Property="Padding" Value="2,2,2,2"/>
+            
+        </Style>
+
+        <!-- Style for DataGrid cell padding -->
+        <Style x:Key="CustomDataGridCellStyle" TargetType="{x:Type DataGridCell}" BasedOn="{StaticResource {x:Type DataGridCell}}">
+            <Setter Property="Padding" Value="5,5,5,5"/>
+            <Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}" />
+            
+        </Style>
+
+        <!-- Style for DataGrid column header padding -->
+        <Style x:Key="CustomDataGridColumnHeaderStyle" TargetType="{x:Type DataGridColumnHeader}" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
+            <Setter Property="Padding" Value="5,15,5,15"/>
+            
+        </Style>
+
+
+
+
+
+
+
+        <!--<local:NavigationPathConverter x:Key="NavigationPathConverter"/>
+        <local:LastItemVisibilityConverter x:Key="LastItemVisibilityConverter"/>-->
+        <Style x:Key="BackButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource MaterialDesignBody}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="10,0,0,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="Gray"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="GreenRowStyle" TargetType="DataGridRow">
+            <Setter Property="Background" Value="LightGreen"/>
+        </Style>
+        <Style x:Key="RedRowStyle" TargetType="DataGridRow">
+            <Setter Property="Background" Value="Salmon"/>
+        </Style>
+        <Style x:Key="AdditionalRowStyle" TargetType="DataGridRow">
+            <Setter Property="Background" Value="LightGreen"/>
+        </Style>
+        <Style x:Key="MissingRowStyle" TargetType="DataGridRow">
+            <Setter Property="Background" Value="LightCoral"/>
+        </Style>
+        
+    </UserControl.Resources>
+
+    <Grid>
+        <materialDesign:DrawerHost VerticalAlignment="Bottom">
+            <materialDesign:DrawerHost.BottomDrawerContent>
+                <StackPanel Margin="16" Orientation="Vertical">
+                    <TextBlock Margin="4" Text="Modification Codes"/>
+                    <local:EatonDataGrid x:Name="myEatonDataGrid"  AutoGenerateColumns="False" IsReadOnly="True"  ItemsSource="{Binding ReplacementItems}">
+                        <DataGrid.CellStyle>
+                            <Style TargetType="DataGridCell" BasedOn="{StaticResource CustomDataGridCellStyle}"/>
+                        </DataGrid.CellStyle>
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource CustomDataGridColumnHeaderStyle}"/>
+                        </DataGrid.ColumnHeaderStyle>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Part #" Binding="{Binding PartNumber}" Width="120"/>
+                            <DataGridTextColumn Header="Locator" Binding="{Binding Locator}" Width="100"/>
+                            <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="*" />
+                        </DataGrid.Columns>
+                    </local:EatonDataGrid>
+
+                    <!--<ListBox x:Name="ModificationCodes" Height="170">
+                        <ListBoxItem Content="Item1"/>
+                        <ListBoxItem Content="Item2"/>
+                        <ListBoxItem Content="Item3"/>
+                        <ListBoxItem Content="Item4"/>
+
+                    </ListBox>-->
+                    <Button Margin="4" Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}" CommandParameter="{x:Static Dock.Bottom}" Content="Close" Style="{StaticResource MaterialDesignFlatButton}" />
+                </StackPanel>
+            </materialDesign:DrawerHost.BottomDrawerContent>
+
+
+
+            <GroupBox Grid.Row="2"
+                      MaxHeight="300"
+                    x:Name="MaterialCatalogGroupBox"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="3"
+                    Header="Material Catalog"
+                    FontWeight="Bold"
+                    
+                    Margin="5">
+            
+            
+
+       
+                
+            
+
+            <StackPanel Grid.Row="2"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="3"
+                            
+                    Orientation="Vertical"
+                    Margin="5">
+
+
+                <DockPanel Margin="0,0,0,10">
+                    <TextBox Name="SearchBox" Width="200" Margin="0,5,5,5" Height="24" DockPanel.Dock="Left" materialDesign:HintAssist.Hint="Search for materials" materialDesign:HintAssist.HelperText="By Oracle #, Part #, Locator or Description" />
+                    <Button Content="Search"
+                    Name="SearchButton"
+                    Click="SearchButton_Click"
+                    Margin="5,0,5,0"
+                    Padding="5"
+                    Height="24"
+                    FontSize="12"
+                    MinWidth="50"
+                    Background="Gray"
+                    Foreground="{DynamicResource MaterialDesignBody}"
+                    Cursor="Hand" DockPanel.Dock="Left"/>
+                    <ProgressBar
+                      x:Name="SearchProgressBar"
+                      IsIndeterminate="True"
+                      Visibility="Collapsed"
+                      Style="{StaticResource MaterialDesignCircularProgressBar}"
+                      Value="35" />
+                    <Button Content="Add Subcategory" Name="AddSubcategoryButton"
+                                Click="AddSubcategoryClick" Width="100"
+                                Margin="5,0,0,0" Background="Blue" Padding="5"
+                                Height="24" FontSize="10" Foreground="White" BorderThickness="1"
+                                Cursor="Hand" HorizontalAlignment="Left" Visibility="Collapsed"/>
+                    <Button Content="Add Material" Name="AddMaterialButton"
+                                Click="AddMaterial_Click" Width="100"
+                                Margin="5,0,0,0" Background="Green" Padding="5"
+                                Height="24" FontSize="10" Foreground="White" BorderThickness="1"
+                                Cursor="Hand" HorizontalAlignment="Right" Visibility="Collapsed"/>
+                    <Button Content="Cancel" Name="CancelMaterialButton"
+                                Click="CancelMaterial_Click" Width="100"
+                                Margin="5,0,0,0" Background="Red" Padding="5"
+                                Height="24" FontSize="10" Foreground="White" BorderThickness="1"
+                                Cursor="Hand" HorizontalAlignment="Right" Visibility="Collapsed"/>
+                    <TextBlock Grid.Row="0" Grid.Column="0"
+                       Text="{Binding CurrentCategoryName, StringFormat='Please search and add material under {0}'}"
+                       x:Name="AddMaterialCopy"
+                       FontSize="10"
+                       Foreground="Gray"
+                       FontWeight="Bold"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center"
+                       Margin="10"
+                       Visibility="Collapsed"/>
+                    <TextBox Name="CategoryTextBox" Width="200" Margin="2,5,5,5" Height="24" DockPanel.Dock="Left" materialDesign:HintAssist.Hint="Subcategory to Add" materialDesign:HintAssist.HelperText="sub-category to add" Visibility="Collapsed"/>
+                    <Button Content="Add" Name="AddSubButtonFinal"
+                                Click="AddSubcategoryNameClick" Width="40"
+                                Margin="5,0,0,0" Background="Gray" Padding="5"
+                                Height="24" FontSize="10" Foreground="White" BorderThickness="1"
+                                Cursor="Hand" HorizontalAlignment="Left" Visibility="Collapsed"/>
+                    <Button Content="Cancel" Name="CancelAddSubcategory"
+                                Click="CancelAddSubcategory_Click" Width="50"
+                                Margin="5,0,0,0" Background="Red" Padding="5"
+                                Height="24" FontSize="10" Foreground="White" BorderThickness="1"
+                                Cursor="Hand" HorizontalAlignment="Right" Visibility="Collapsed"/>
+                    <Button Content="Finish Replace" Name="FinishReplaceButton"
+                                Click="FinishReplaceButton_Click" Width="100"
+                                Margin="5,0,0,0" Background="Green" Padding="5"
+                                Height="24" FontSize="10" Foreground="White" BorderThickness="1"
+                                Cursor="Hand" HorizontalAlignment="Right" Visibility="Collapsed"/>
+                    <Button Content="Cart" Name="ViewCart"
+                                Command="{x:Static materialDesign:DrawerHost.OpenDrawerCommand}"
+                                Width="100"
+                                CommandParameter="{x:Static Dock.Bottom}"
+                                Margin="5,0,0,0" Background="Orange" Padding="5"
+                                Height="24" FontSize="10" Foreground="White" BorderThickness="1"
+                                Cursor="Hand" HorizontalAlignment="Right" Visibility="Collapsed"/>
+
+                    <Button Content="Cancel Replace" Name="CancelReplaceButton"
+                                Click="CancelReplaceButton_Click" Width="100"
+                                Margin="5,0,0,0" Background="Red" Padding="5"
+                                Height="24" FontSize="10" Foreground="White" BorderThickness="1"
+                                Cursor="Hand" HorizontalAlignment="Right" Visibility="Collapsed"/>
+
+                </DockPanel>
+                <StackPanel Orientation="Vertical">
+                    <ItemsControl ItemsSource="{Binding NavigationPath}" Style="{StaticResource BreadcrumbStyle}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}" Margin="5,0" FontWeight="Bold" Cursor="Hand" MouseDown="BreadcrumbClick">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="Transparent"/>
+                                                    <Setter Property="Foreground" Value="Gray"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+
+                    <Grid>
+                        
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!--<materialDesign:DrawerHost VerticalAlignment="Bottom" Grid.ColumnSpan="2" Grid.Row="2" >
+                            <materialDesign:DrawerHost.BottomDrawerContent>
+                                <StackPanel Margin="16" Orientation="Vertical">
+                                    <TextBlock Margin="4" Text="Modification Codes"/>
+                                    <ListBox x:Name="ModificationCodes" Height="170">
+                                        <ListBoxItem Content="Item1"/>
+                                        <ListBoxItem Content="Item2"/>
+                                        <ListBoxItem Content="Item3"/>
+                                        <ListBoxItem Content="Item4"/>
+                           
+                                    </ListBox>
+                                    <Button Margin="4" Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}" CommandParameter="{x:Static Dock.Bottom}" Content="Close" Style="{StaticResource MaterialDesignFlatButton}" />
+                                </StackPanel>
+                            </materialDesign:DrawerHost.BottomDrawerContent>
+                            <Button x:Name="ViewMods"  Command="{x:Static materialDesign:DrawerHost.OpenDrawerCommand}" CommandParameter="{x:Static Dock.Bottom}" Content="View Modifications" Background="Orange" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
+                        </materialDesign:DrawerHost>-->
+
+
+
+
+
+
+                        <ListBox x:Name="PartsListBox" Grid.Row="0" Grid.Column="0" Margin="0,0,1,0"  ItemsSource="{Binding CurrentItems}" SelectionChanged="ListBox_SelectionChanged" MaxHeight="150">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Image Width="15" Height="15" Margin="0">
+                                            <Image.Style>
+                                                <Style TargetType="Image">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsCategory}" Value="True">
+                                                            <Setter Property="Source" Value="/Assets/folder.png"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding IsSetValue}" Value="True">
+                                                            <Setter Property="Source" Value="/Assets/add-mat.png"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Image.Style>
+                                        </Image>
+
+                                        <TextBlock Text="{Binding Name}" VerticalAlignment="Center" FontSize="10" Grid.Column="1" Margin="3,0"/>
+                                        <Button Width="20" Grid.Column="2" Margin="0,0,0,0" 
+                                            Background="Transparent" BorderThickness="0" Cursor="Hand" 
+                                            x:Name="DeleteCategoryButton"
+                                            HorizontalAlignment="Right"
+                                            Click="RemoveCategoryClick"  Visibility="{Binding DataContext.DeleteButtonVisibility, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
+                                            <Image Source="/Assets/remove-button-list.png" Width="15" Height="15" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                            <Button.ToolTip>
+                                                <ToolTip Content="Delete Category"/>
+                                            </Button.ToolTip>
+                                        </Button>
+                                        <Button Width="20" Grid.Column="3" Margin="0,0,0,0" 
+                                            Background="Transparent" BorderThickness="0" Cursor="Hand" 
+                                            x:Name="FavoriteButton"
+                                            Click="FavoriteButton_Click"  >
+                                            <Image Source="/Assets/star.png" Width="15" Height="15" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                            <Button.ToolTip>
+                                                <ToolTip Content="Favorite/Unfavorite" />
+                                            </Button.ToolTip>
+                                        </Button>
+
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+
+                        <local:EatonDataGrid x:Name="SetValuesDataGrid" Grid.Row="0" Grid.Column="1" MinWidth="470"  AutoGenerateColumns="False" IsReadOnly="True" MaxHeight="150"  VerticalAlignment="Top" >
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Oracle #" Binding="{Binding OracleNumber}" Width="60" FontSize="11"  />
+                                <DataGridTextColumn Header="Part #" Binding="{Binding PartNumber}" Width="60" FontSize="11" />
+                                <DataGridTextColumn Header="Locator" Binding="{Binding Locator}" Width="60" FontSize="11"/>
+                                <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="*" FontSize="9" />
+                            </DataGrid.Columns>
+                            <DataGrid.CellStyle>
+                                <Style TargetType="DataGridCell" BasedOn="{StaticResource CustomDataGridCellStyle}"/>
+                            </DataGrid.CellStyle>
+                            <DataGrid.ColumnHeaderStyle>
+                                <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource CustomDataGridColumnHeaderStyle}"/>
+                            </DataGrid.ColumnHeaderStyle>
+                        </local:EatonDataGrid>
+                    </Grid>
+                </StackPanel>
+            </StackPanel>
+        </GroupBox>
+        </materialDesign:DrawerHost>
+    </Grid>
+</UserControl>

@@ -1,0 +1,620 @@
+﻿<Window x:Class="LightningPRO.InsertEC"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LightningPRO"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        mc:Ignorable="d"
+        Title="InsertEC" Height="450" Width="800">
+    <Window.Resources>
+        <local:ComboBoxSelectionConverter x:Key="ComboBoxSelectionConverter"/>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70"/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition Height="1.1*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="900"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Row="3" Grid.Column="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <GroupBox Header="Order Information" FontWeight="Bold" Grid.Column="0" Margin="6" >
+                <Grid x:Name="InformationGrid" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="170"/>
+                        <ColumnDefinition Width="170"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <TextBox
+                  Margin="5, 0, 5, 0"
+                  Name="GOItem"
+                  VerticalAlignment="Center"
+                  materialDesign:HintAssist.Hint="GO Item"
+                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                  Text="{Binding Nomenclature.goItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBox
+                  Margin="5, 0, 5, 0"
+                  Name="Designation"
+                  VerticalAlignment="Center"
+                  materialDesign:HintAssist.Hint="Designation"
+                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                  Text="{Binding Nomenclature.designation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBox
+                  Margin="5, 0, 5, 0"
+                  Name="Type"
+                  VerticalAlignment="Center"
+                  materialDesign:HintAssist.Hint="Type"
+                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                  Text="{Binding Nomenclature.type, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBox
+                  Margin="5, 0, 5, 0"
+                  Name="MainVolts"
+                  VerticalAlignment="Center"
+                  materialDesign:HintAssist.Hint="Main Volts"
+                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                  Text="{Binding Nomenclature.mainVolts, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBox
+                  Margin="5, 0, 5, 0"
+                  Name="CtlVolts"
+                  VerticalAlignment="Center"
+                  materialDesign:HintAssist.Hint="Control Volts"
+                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                  Text="{Binding Nomenclature.controlVolts, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBox
+                  Margin="5, 0, 5, 0"
+                  Name="Phase"
+                  VerticalAlignment="Center"
+                  materialDesign:HintAssist.Hint="Phase"
+                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                  Text="{Binding Nomenclature.phase, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBox
+                  Margin="5, 0, 5, 0"
+                  Name="ControlWire"
+                  VerticalAlignment="Center"
+                  materialDesign:HintAssist.Hint="Control Wire"
+                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                  Text="{Binding Nomenclature.controlWire, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1">
+                        <TextBox
+                  Margin="5, 0, 5, 0"
+                  Name="Horsepower"
+                  VerticalAlignment="Center"
+                  materialDesign:HintAssist.Hint="Horsepower"
+                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                  Text="{Binding Nomenclature.horsepower, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBox
+                  Margin="5, 0, 5, 0"
+                  Name="Enclosure"
+                  VerticalAlignment="Center"
+                  materialDesign:HintAssist.Hint="Enclosure"
+                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                  Text="{Binding Nomenclature.enclosure, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBox
+                  Margin="5, 0, 5, 0"
+                  Name="PowerWire"
+                  VerticalAlignment="Center"
+                  materialDesign:HintAssist.Hint="Power Wire"
+                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                  Text="{Binding Nomenclature.powerWire, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBox
+                  Margin="5, 0, 5, 0"
+                  Name="NoOfUnits"
+                  VerticalAlignment="Center"
+                  materialDesign:HintAssist.Hint="No. of units"
+                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                  Text="{Binding Nomenclature.noOfUnits, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBox
+                  Margin="5, 0, 5, 0"
+                  Name="Wire"
+                  VerticalAlignment="Center"
+                  materialDesign:HintAssist.Hint="Wire"
+                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                  Text="{Binding Nomenclature.wire, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBox
+                  Margin="5, 0, 5, 0"
+                  Name="FaultCap"
+                  VerticalAlignment="Center"
+                  materialDesign:HintAssist.Hint="Fault Cap"
+                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                  Text="{Binding Nomenclature.EC_Info_Fault_Cap, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBox
+                  Margin="5, 0, 5, 0"
+                  Name="InputFreq"
+                  VerticalAlignment="Center"
+                  materialDesign:HintAssist.Hint="Input Freq"
+                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                  Text="{Binding Nomenclature.inputFreq, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+
+                </Grid>
+            </GroupBox>
+            <GroupBox Header="Nomenclature" FontWeight="Bold" Grid.Column="1" Margin="6">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <TextBox
+                  Margin="5, 0, 5, 0"
+                  Name="Nom_Type"
+                  VerticalAlignment="Center"
+                  materialDesign:HintAssist.Hint="Type"
+                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                  Foreground="Magenta"
+                  Text="{Binding Nomenclature.EC_NOM_Type, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBox
+                  Margin="5, 0, 5, 0"
+                  Name="Nom_Design"
+                  VerticalAlignment="Center"
+                  materialDesign:HintAssist.Hint="Design"
+                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                                Foreground="Magenta"
+                  Text="{Binding Nomenclature.EC_NOM_Design, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBox
+                  Margin="5, 0, 5, 0"
+                  Name="Nom_Class"
+                  VerticalAlignment="Center"
+                                Foreground="MediumPurple"
+                  materialDesign:HintAssist.Hint="Class"
+                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                  Text="{Binding Nomenclature.EC_NOM_Class, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBox
+                  Margin="5, 0, 5, 0"
+                  Name="Nom_Size"
+                  VerticalAlignment="Center"
+                  Foreground="Aqua"
+
+                  materialDesign:HintAssist.Hint="Size"
+                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                  Text="{Binding Nomenclature.EC_NOM_Size, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBox
+                  Margin="5, 0, 5, 0"
+                  Name="Nom_EnclType"
+                  VerticalAlignment="Center"
+                  materialDesign:HintAssist.Hint="Enclosure Type"
+                  Foreground="LawnGreen"
+
+                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                  Text="{Binding Nomenclature.EC_NOM_EnclType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBox
+                  Margin="5, 0, 5, 0"
+                  Name="Nom_CtrlXFRMR"
+                  VerticalAlignment="Center"
+                  materialDesign:HintAssist.Hint="Control Transformer"
+                  Foreground="Yellow"
+                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                  Text="{Binding Nomenclature.EC_NOM_CtrlXfrmr, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="2">
+                            <TextBox
+                  Margin="5, 0, 5, 0"
+                  Name="Nom_Main"
+                  VerticalAlignment="Center"
+                  materialDesign:HintAssist.Hint="Main Voltage"
+                  Foreground="Yellow"
+                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                  Text="{Binding Nomenclature.EC_NOM_MainVoltage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBox
+                  Margin="5, 0, 5, 0"
+                  Name="Nom_Coil"
+                  VerticalAlignment="Center"
+                  materialDesign:HintAssist.Hint="Coil Voltage"
+                  Foreground="Yellow"
+                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                  Text="{Binding Nomenclature.EC_NOM_CoilVoltage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBox
+                  Margin="5, 0, 5, 0" 
+                  Name="Nom_CC"
+                  VerticalAlignment="Center"
+                  Foreground="Orange"
+                  materialDesign:HintAssist.Hint="Cover Control"
+                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                  Text="{Binding Nomenclature.EC_NOM_CoverControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBox
+                  Margin="5, 0, 5, 0"
+                  Name="Nom_Poles"
+                  VerticalAlignment="Center"
+                  Foreground="Orange"
+                  materialDesign:HintAssist.Hint="Number of Poles"
+                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                  Text="{Binding Nomenclature.EC_NOM_NumberOfPoles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBox
+                  Margin="5, 0, 5, 0"
+                  Name="Nom_CBTYPE"
+                  VerticalAlignment="Center"
+                  Foreground="Red"
+                  materialDesign:HintAssist.Hint="Disconnect/CB Type"
+                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                  Text="{Binding Nomenclature.EC_NOM_CbType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBox
+                  Margin="5, 0, 5, 0"
+                  Name="Nom_CBRATING"
+                  VerticalAlignment="Center"
+                  Foreground="Red"
+                  materialDesign:HintAssist.Hint="Disconnect/CB Rating"
+                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                  Text="{Binding Nomenclature.EC_NOM_CbRating, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+                    </Grid>
+                    <!-- DrawerHost for Bottom Drawer -->
+                    <materialDesign:DrawerHost Grid.Row="1">
+                        <!-- Bottom Drawer Content -->
+                        <materialDesign:DrawerHost.BottomDrawerContent>
+                            <StackPanel Margin="16" Orientation="Vertical">
+                                <TextBlock Margin="4" Text="Modification Codes" />
+                                <ListBox x:Name="ModificationCodes" Height="170" ItemsSource="{Binding Nomenclature.EC_NOM_Modification_Codes_Detailed}" >
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding}" TextWrapping="Wrap" />
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                                <!-- Add your information display elements here -->
+                                <Button Margin="4" Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}" CommandParameter="{x:Static Dock.Bottom}" Content="Close" Style="{StaticResource MaterialDesignFlatButton}" />
+                            </StackPanel>
+                        </materialDesign:DrawerHost.BottomDrawerContent>
+                        <!-- Button to Open Bottom Drawer -->
+                        <Button x:Name="ViewMods" Command="{x:Static materialDesign:DrawerHost.OpenDrawerCommand}" CommandParameter="{x:Static Dock.Bottom}" Content="{Binding Nomenclature.EC_Info_Modification_Codes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
+                    </materialDesign:DrawerHost>
+                </Grid>
+            </GroupBox>
+        </Grid>
+        <local:BOMShoppingCart x:Name="BomCart" Grid.Row="1" Grid.Column="0" Grid.RowSpan="2" ProductGroup="EC"/>
+        <local:ImageViewer x:Name="ImageView" Grid.Row="1" Grid.RowSpan="3" Grid.Column="1"/>
+
+        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="127"/>
+                <ColumnDefinition Width="127"/>
+                <ColumnDefinition Width="127"/>
+                <ColumnDefinition Width="127"/>
+                <ColumnDefinition Width="127"/>
+                <ColumnDefinition Width="127"/>
+                <ColumnDefinition Width="127"/>
+                <ColumnDefinition Width="127"/>
+            </Grid.ColumnDefinitions>
+            <!--<StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
+                <Button
+                Margin="10"
+                materialDesign:ButtonProgressAssist.IsIndeterminate="True"
+                materialDesign:ButtonProgressAssist.IsIndicatorVisible="False"
+                materialDesign:ButtonProgressAssist.Value="-1"
+                IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                Style="{StaticResource MaterialDesignOutlinedDarkButton}" Click="uploadXMLClicked">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontSize="14" Text="Load XML" VerticalAlignment="Center"/>
+                        <materialDesign:PackIcon Kind="Xml" Height="20" Width="20" Margin="5,0,0,0"/>
+                    </StackPanel>
+                </Button>
+
+                <Button
+                Margin="2,0"
+                materialDesign:ButtonProgressAssist.IsIndeterminate="True"
+                materialDesign:ButtonProgressAssist.IsIndicatorVisible="False"
+                materialDesign:ButtonProgressAssist.Value="-1"
+                IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                Style="{StaticResource MaterialDesignOutlinedDarkButton}" Click="generateClicked">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontSize="14" Text="Generate Drawing" VerticalAlignment="Center"/>
+                        <materialDesign:PackIcon Kind="Drawing" Height="20" Width="20" Margin="5,0,0,0"/>
+                    </StackPanel>
+                </Button>
+
+            </StackPanel>-->
+
+            <ToolBarTray Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="9" VerticalAlignment="Top">
+                <ToolBar ClipToBounds="False" Style="{StaticResource MaterialDesignToolBar}">
+                    <Button
+                        Margin="5,5"
+                        Height="60"
+                        materialDesign:ButtonProgressAssist.IsIndeterminate="True"
+                        materialDesign:ButtonProgressAssist.IsIndicatorVisible="False"
+                        materialDesign:ButtonProgressAssist.Value="-1"
+                        IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                        Style="{StaticResource MaterialDesignOutlinedDarkButton}"
+                        Click="uploadXMLClicked"> 
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock FontSize="14" Text="Load XML" VerticalAlignment="Center"/>
+                            <materialDesign:PackIcon Kind="Xml" Height="20" Width="20" Margin="0,0,0,0"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button
+                        Margin="5,5"
+                        Height="60"
+                        materialDesign:ButtonProgressAssist.IsIndeterminate="True"
+                        materialDesign:ButtonProgressAssist.IsIndicatorVisible="False"
+                        materialDesign:ButtonProgressAssist.Value="-1"
+                        IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                        Style="{StaticResource MaterialDesignOutlinedDarkButton}" Click="generateClicked">  
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock FontSize="14" Text="Generate Drawing" VerticalAlignment="Center"/>
+                            <materialDesign:PackIcon Kind="Drawing" Height="20" Width="20" Margin="5,0,0,0"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button
+                        Margin="5,5"
+                        Height="60"
+                        materialDesign:ButtonProgressAssist.IsIndeterminate="True"
+                        materialDesign:ButtonProgressAssist.IsIndicatorVisible="False"
+                        materialDesign:ButtonProgressAssist.Value="-1"
+                        IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                        Style="{StaticResource MaterialDesignOutlinedDarkButton}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock FontSize="14" Text="Sync Drawing" VerticalAlignment="Center"/>
+                            <materialDesign:PackIcon Kind="FileSync" Height="20" Width="20" Margin="5,0,0,0"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button
+                        Margin="5,5"
+                        Height="60"
+                        materialDesign:ButtonProgressAssist.IsIndeterminate="True"
+                        materialDesign:ButtonProgressAssist.IsIndicatorVisible="False"
+                        materialDesign:ButtonProgressAssist.Value="-1"
+                        IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                        Style="{StaticResource MaterialDesignOutlinedDarkButton}" Click="generateClicked">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock FontSize="14" Text="Open Drawing" VerticalAlignment="Center"/>
+                            <materialDesign:PackIcon Kind="OpenInNew" Height="20" Width="20" Margin="5,0,0,0"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button
+                        Margin="5,5"
+                        Height="60"
+                        materialDesign:ButtonProgressAssist.IsIndeterminate="True"
+                        materialDesign:ButtonProgressAssist.IsIndicatorVisible="False"
+                        materialDesign:ButtonProgressAssist.Value="-1"
+                        IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                        Style="{StaticResource MaterialDesignOutlinedDarkButton}" Click="generateClicked">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock FontSize="14" Text="Upload Page" VerticalAlignment="Center"/>
+                            <materialDesign:PackIcon Kind="Drawing" Height="20" Width="20" Margin="5,0,0,0"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button
+                        Margin="5,5"
+                        Height="60"
+                        materialDesign:ButtonProgressAssist.IsIndeterminate="True"
+                        materialDesign:ButtonProgressAssist.IsIndicatorVisible="False"
+                        materialDesign:ButtonProgressAssist.Value="-1"
+                        IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                        Style="{StaticResource MaterialDesignOutlinedDarkButton}" Click="generateClicked">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock FontSize="14" Text="Insert" VerticalAlignment="Center"/>
+                            <materialDesign:PackIcon Kind="Drawing" Height="20" Width="20" Margin="5,0,0,0"/>
+                        </StackPanel>
+                    </Button>
+                    <ComboBox Grid.Column="2"
+              x:Name="EC_DESIGN"
+              VerticalAlignment="Bottom"
+              Margin="5"
+              IsEditable="True"
+              materialDesign:HintAssist.Hint="Design"
+              materialDesign:TextFieldAssist.HasClearButton="True"
+              HorizontalContentAlignment="Left"
+              Foreground="Magenta"
+              ItemsSource="{Binding MyComboBoxItems}"
+              Style="{StaticResource MaterialDesignOutlinedComboBox}"
+              SelectedItem="{Binding Nomenclature.EC_Design_Selector, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    </ComboBox>
+
+                    <ComboBox Grid.Column="3"
+              x:Name="EC_CLASS"
+              VerticalAlignment="Bottom"
+              Margin="5"
+              IsEditable="True"
+              materialDesign:HintAssist.Hint="Class"
+              materialDesign:TextFieldAssist.HasClearButton="True"
+              HorizontalContentAlignment="Left"
+              Foreground="BlueViolet"
+
+              ItemsSource="{Binding MyComboBoxItems}"
+              Style="{StaticResource MaterialDesignOutlinedComboBox}"
+              SelectedItem="{Binding Nomenclature.EC_Class_Selector, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    </ComboBox>
+
+                    <ComboBox Grid.Column="4"
+              x:Name="EC_SIZE"
+              VerticalAlignment="Bottom"
+              Margin="5"
+              IsEditable="True"
+                      Foreground="Aqua"
+              materialDesign:HintAssist.Hint="Size"
+              materialDesign:TextFieldAssist.HasClearButton="True"
+              HorizontalContentAlignment="Left"
+              ItemsSource="{Binding MyComboBoxItems}"
+              Style="{StaticResource MaterialDesignOutlinedComboBox}"
+              SelectedItem="{Binding Nomenclature.EC_Size_Selector, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    </ComboBox>
+
+                    <ComboBox Grid.Column="5"
+              x:Name="EC_ENCL"
+              VerticalAlignment="Bottom"
+              Margin="5"
+              IsEditable="True"
+                      Foreground="LawnGreen"
+              materialDesign:HintAssist.Hint="Enclosure"
+              materialDesign:TextFieldAssist.HasClearButton="True"
+              HorizontalContentAlignment="Left"
+              ItemsSource="{Binding MyComboBoxItems}"
+              Style="{StaticResource MaterialDesignOutlinedComboBox}"
+              SelectedItem="{Binding Nomenclature.EC_Encl_Selector, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    </ComboBox>
+
+                    <ComboBox Grid.Column="6"
+              x:Name="EC_TRANS"
+              VerticalAlignment="Bottom"
+              Margin="5"
+              IsEditable="True"
+                      Foreground="Yellow"
+              materialDesign:HintAssist.Hint="Transformer"
+              materialDesign:TextFieldAssist.HasClearButton="True"
+              HorizontalContentAlignment="Left"
+              ItemsSource="{Binding MyComboBoxItems}"
+              Style="{StaticResource MaterialDesignOutlinedComboBox}"
+              SelectedItem="{Binding Nomenclature.EC_Trans_Selector, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    </ComboBox>
+
+                    <ComboBox Grid.Column="7"
+              x:Name="EC_CC"
+              VerticalAlignment="Bottom"
+              Margin="5"
+              IsEditable="True"
+                      Foreground="Orange"
+              materialDesign:HintAssist.Hint="Cover Control"
+              materialDesign:TextFieldAssist.HasClearButton="True"
+              HorizontalContentAlignment="Left"
+              ItemsSource="{Binding MyComboBoxItems}"
+              Style="{StaticResource MaterialDesignOutlinedComboBox}"
+              SelectedItem="{Binding Nomenclature.EC_CC_Selector, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    </ComboBox>
+
+                    <ComboBox Grid.Column="8"
+              x:Name="EC_DISC"
+              VerticalAlignment="Bottom"
+              Margin="5"
+              IsEditable="True"
+                      Foreground="Red"
+              materialDesign:HintAssist.Hint="Disconnect"
+              materialDesign:TextFieldAssist.HasClearButton="True"
+              HorizontalContentAlignment="Left"
+              ItemsSource="{Binding MyComboBoxItems}"
+              Style="{StaticResource MaterialDesignOutlinedComboBox}"
+              SelectedItem="{Binding Nomenclature.EC_Disc_Selector, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    </ComboBox>
+
+
+                </ToolBar>
+            </ToolBarTray>
+
+
+            
+
+
+            <!--<ComboBox Grid.Column="2"
+              x:Name="EC_DESIGN"
+              VerticalAlignment="Bottom"
+              Margin="5"
+              IsEditable="True"
+              materialDesign:HintAssist.Hint="Design"
+              materialDesign:TextFieldAssist.HasClearButton="True"
+              HorizontalContentAlignment="Left"
+              Foreground="Magenta"
+              ItemsSource="{Binding MyComboBoxItems}"
+              Style="{StaticResource MaterialDesignOutlinedComboBox}"
+              SelectedItem="{Binding Nomenclature.EC_Design_Selector, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            </ComboBox>
+
+            <ComboBox Grid.Column="3"
+              x:Name="EC_CLASS"
+              VerticalAlignment="Bottom"
+              Margin="5"
+              IsEditable="True"
+              materialDesign:HintAssist.Hint="Class"
+              materialDesign:TextFieldAssist.HasClearButton="True"
+              HorizontalContentAlignment="Left"
+              Foreground="BlueViolet"
+
+              ItemsSource="{Binding MyComboBoxItems}"
+              Style="{StaticResource MaterialDesignOutlinedComboBox}"
+              SelectedItem="{Binding Nomenclature.EC_Class_Selector, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            </ComboBox>
+
+            <ComboBox Grid.Column="4"
+              x:Name="EC_SIZE"
+              VerticalAlignment="Bottom"
+              Margin="5"
+              IsEditable="True"
+                      Foreground="Aqua"
+              materialDesign:HintAssist.Hint="Size"
+              materialDesign:TextFieldAssist.HasClearButton="True"
+              HorizontalContentAlignment="Left"
+              ItemsSource="{Binding MyComboBoxItems}"
+              Style="{StaticResource MaterialDesignOutlinedComboBox}"
+              SelectedItem="{Binding Nomenclature.EC_Size_Selector, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            </ComboBox>
+
+            <ComboBox Grid.Column="5"
+              x:Name="EC_ENCL"
+              VerticalAlignment="Bottom"
+              Margin="5"
+              IsEditable="True"
+                      Foreground="LawnGreen"
+              materialDesign:HintAssist.Hint="Enclosure"
+              materialDesign:TextFieldAssist.HasClearButton="True"
+              HorizontalContentAlignment="Left"
+              ItemsSource="{Binding MyComboBoxItems}"
+              Style="{StaticResource MaterialDesignOutlinedComboBox}"
+              SelectedItem="{Binding Nomenclature.EC_Encl_Selector, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            </ComboBox>
+
+            <ComboBox Grid.Column="6"
+              x:Name="EC_TRANS"
+              VerticalAlignment="Bottom"
+              Margin="5"
+              IsEditable="True"
+                      Foreground="Yellow"
+              materialDesign:HintAssist.Hint="Transformer"
+              materialDesign:TextFieldAssist.HasClearButton="True"
+              HorizontalContentAlignment="Left"
+              ItemsSource="{Binding MyComboBoxItems}"
+              Style="{StaticResource MaterialDesignOutlinedComboBox}"
+              SelectedItem="{Binding Nomenclature.EC_Trans_Selector, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            </ComboBox>
+
+            <ComboBox Grid.Column="7"
+              x:Name="EC_CC"
+              VerticalAlignment="Bottom"
+              Margin="5"
+              IsEditable="True"
+                      Foreground="Orange"
+              materialDesign:HintAssist.Hint="Cover Control"
+              materialDesign:TextFieldAssist.HasClearButton="True"
+              HorizontalContentAlignment="Left"
+              ItemsSource="{Binding MyComboBoxItems}"
+              Style="{StaticResource MaterialDesignOutlinedComboBox}"
+              SelectedItem="{Binding Nomenclature.EC_CC_Selector, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            </ComboBox>
+
+            <ComboBox Grid.Column="8"
+              x:Name="EC_DISC"
+              VerticalAlignment="Bottom"
+              Margin="5"
+              IsEditable="True"
+                      Foreground="Red"
+              materialDesign:HintAssist.Hint="Disconnect"
+              materialDesign:TextFieldAssist.HasClearButton="True"
+              HorizontalContentAlignment="Left"
+              ItemsSource="{Binding MyComboBoxItems}"
+              Style="{StaticResource MaterialDesignOutlinedComboBox}"
+              SelectedItem="{Binding Nomenclature.EC_Disc_Selector, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            </ComboBox>
+            !-->
+
+        </Grid>
+    </Grid>
+</Window>

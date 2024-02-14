@@ -224,6 +224,16 @@ namespace LightningPRO
             DataContext = new BOMShoppingCart();
         }
 
+        private void Category_Clicked(object sender, RoutedEventArgs e)
+        {
+            DataContext = new CategoryMaintenance();
+        }
+
+        private void Attributes_Clicked(object sender, RoutedEventArgs e)
+        {
+            DataContext = new AttributesMaintenance();
+        }
+
 
 
         public static void UpdateConnectionStrings(string name, string connectionString)

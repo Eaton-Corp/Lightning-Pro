@@ -64,6 +64,9 @@ namespace LightningPRO.Views
             {
                 PRL123_Set();
             }
+            else if (CurrentProduct == Utility.ProductGroup.PRLCS) { 
+                
+            }
 
         }
 
@@ -271,6 +274,12 @@ namespace LightningPRO.Views
             Selected = -1;
         }
 
+        private void EC_Click(object sender, RoutedEventArgs e)
+        {
+            EC_Set();
+            Selected = -1;
+        }
+
         private void PRL4_Click(object sender, RoutedEventArgs e)
         {
             PRL4_Set();
@@ -317,6 +326,18 @@ namespace LightningPRO.Views
             LoadGrid();
         }
 
+        private void EC_Set()
+        {
+            CurrentProduct = Utility.ProductGroup.EC;
+            MainWindow.ProductGroup = Utility.ProductGroup.EC;
+            //ProductTable = "EC";
+            PWL4.Background = Brushes.Blue;
+            PWL123.Background = Brushes.Blue;
+            PWLCS.Background = Brushes.Blue;
+            EC.Background = Brushes.DarkBlue;
+            //LoadGrid();
+        }
+
 
         private void Insert_Click(object sender, RoutedEventArgs e)
         {
@@ -333,6 +354,11 @@ namespace LightningPRO.Views
             else if (CurrentProduct == Utility.ProductGroup.PRLCS)
             {
                 InsertPRLCS sf = new InsertPRLCS();
+                sf.Show();
+            }
+            else if (CurrentProduct == Utility.ProductGroup.EC) 
+            {
+                InsertEC sf = new InsertEC();
                 sf.Show();
             }
         }

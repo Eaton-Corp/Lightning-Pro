@@ -1,0 +1,139 @@
+﻿<UserControl x:Class="LightningPRO.ImageViewer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:LightningPRO"
+             xmlns:Views="clr-namespace:LightningPRO.Views"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+             Background="{DynamicResource MaterialDesignPaper}"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Grid.Column="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Separator Grid.Column="0" Margin="10,2,2,2">
+                <Separator.LayoutTransform>
+                    <RotateTransform Angle="90"/>
+                </Separator.LayoutTransform>
+            </Separator>
+
+            <Button Grid.Column="1" Margin="2"                    
+                Background="Transparent"
+                Foreground="{DynamicResource PrimaryHueMidBrush}"
+                BorderThickness="0"
+                Content="Reset"
+                Opacity="0.75"
+                FontWeight="Normal"
+                ToolTip="Reset View" 
+                Click="Click_Reset"/>
+
+            <Separator Grid.Column="2" Margin="2">
+                <Separator.LayoutTransform>
+                    <RotateTransform Angle="90"/>
+                </Separator.LayoutTransform>
+            </Separator>
+
+            <Button Grid.Column="3" Margin="2"                    
+                Background="Transparent"
+                Foreground="{DynamicResource PrimaryHueMidBrush}"
+                BorderThickness="0"
+                Content="{materialDesign:PackIcon Kind=MagnifyMinus}"
+                Opacity="0.75"
+                FontWeight="Normal"
+                ToolTip="Zoom Out" 
+                Click="Click_ZoomOut"/>
+
+            <Label Name="percentage" Grid.Column="4" Margin="2" Content="100 %" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+            <Button Grid.Column="5" Margin="2"                    
+                Background="Transparent"
+                Foreground="{DynamicResource PrimaryHueMidBrush}"
+                BorderThickness="0"
+                Content="{materialDesign:PackIcon Kind=MagnifyPlus}"
+                Opacity="0.75"
+                FontWeight="Normal"
+                ToolTip="Zoom In" 
+                Click="Click_Zoom"/>
+
+            <Separator Grid.Column="6" Margin="2">
+                <Separator.LayoutTransform>
+                    <RotateTransform Angle="90"/>
+                </Separator.LayoutTransform>
+            </Separator>
+
+            <Slider Name="ZoomAmount" Grid.Column="7" Margin="5" VerticalAlignment="Center" Minimum="0" Maximum="400" ValueChanged="Slider_move"/>
+
+            <Separator Grid.Column="8" Margin="2">
+                <Separator.LayoutTransform>
+                    <RotateTransform Angle="90"/>
+                </Separator.LayoutTransform>
+            </Separator>
+
+            <Button Grid.Column="9" Margin="2"                    
+                Background="Transparent"
+                Foreground="{DynamicResource PrimaryHueMidBrush}"
+                BorderThickness="0"
+                Content="{materialDesign:PackIcon Kind=ArrowLeft}"
+                Opacity="0.75"
+                FontWeight="Normal"
+                ToolTip="Back" 
+                Click="Back_Click"/>
+
+            <Label x:Name="pageNumberLabel" Grid.Column="10" Margin="2" Content="Page 0 of 0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+            <Button Grid.Column="11" Margin="2"                    
+                Background="Transparent"
+                Foreground="{DynamicResource PrimaryHueMidBrush}"
+                BorderThickness="0"
+                Content="{materialDesign:PackIcon Kind=ArrowRight}"
+                Opacity="0.75"
+                FontWeight="Normal"
+                ToolTip="Forward" 
+                Click="Forward_Click"/>
+
+            <Separator Grid.Column="12" Margin="2,2,10,2">
+                <Separator.LayoutTransform>
+                    <RotateTransform Angle="90"/>
+                </Separator.LayoutTransform>
+            </Separator>
+        </Grid>
+
+        <Views:ZoomBorder x:Name="border" ClipToBounds="True" Grid.Row="1" Grid.Column="0">
+            <Grid Name="Component">
+                <Image Name="Back" HorizontalAlignment="Center"/>
+                <Canvas Name="Drawing" HorizontalAlignment="Center">
+                    <Canvas.Background>
+                        <SolidColorBrush Color="White" Opacity="0"/>
+                    </Canvas.Background>
+                </Canvas>
+            </Grid>
+        </Views:ZoomBorder>
+
+    </Grid>
+</UserControl>

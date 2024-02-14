@@ -96,7 +96,7 @@
             <Button Name="PWL123" Grid.Column="4" Content="PRL123" Height="26" Background="Blue" VerticalAlignment="Bottom" Foreground="White" Click="PRL123_Click"/>
             <Button Name="PWL4" Grid.Column="3"  Content="PRL4"  Height="26"  Background="Blue" VerticalAlignment="Bottom" Foreground="White" Click="PRL4_Click" />
             <Button Name ="PWLCS" Grid.Column="2" Content="CS" Height="26" Background="Blue" VerticalAlignment="Bottom" Foreground="White" Click="PRLCS_Click" />
-            <Button Name="PWLEC"  Grid.Column="1"  Content="EC"  Height="26"  Background="Blue" VerticalAlignment="Bottom" Foreground="White" />
+            <Button Name="EC"  Grid.Column="1"  Content="EC"  Height="26"  Background="Blue" VerticalAlignment="Bottom" Foreground="White" Click="EC_Click"/>
         </Grid>
 
         <Button Background="White" Foreground="White" Grid.Row="2" Grid.Column="5" BorderThickness="0" Height="40" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Click="Click_Refresh" ToolTip="Refresh">

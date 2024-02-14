@@ -1,0 +1,19 @@
+﻿<Window x:Class="LightningPRO.InputBoxWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LightningPRO"
+        mc:Ignorable="d"
+        Title="InputBoxWindow" Height="150" Width="400"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}">
+    <StackPanel Margin="20,20,20,20">
+        <TextBox x:Name="InputTextBox" Style="{StaticResource MaterialDesignTextBox}" Width="350" />
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
+            <Button Content="Cancel" Click="CancelButton_Click" Width="Auto" Height="Auto"/>
+            <Button Content="OK" Click="OKButton_Click" Width="Auto" Height="Auto" Margin="5,0,0,0"/>
+        </StackPanel>
+    </StackPanel>
+</Window>

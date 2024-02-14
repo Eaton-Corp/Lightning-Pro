@@ -26,11 +26,11 @@ using SharpCompress.Common;
 using Aspose.CAD.ImageOptions;
 using System.Diagnostics;
 using Image = Aspose.CAD.Image;
-using System.Linq;
 using System.Reflection;
 using Aspose.CAD.FileFormats.Cad.CadConsts;
 using iTextSharp.text.pdf.parser;
-using Autodesk.AutoCAD.DatabaseServices;
+using System.ComponentModel;
+using OfficeOpenXml;
 
 namespace LightningPRO.Views
 {
@@ -45,6 +45,7 @@ namespace LightningPRO.Views
         public Eaton()
         {
             InitializeComponent();
+
             
         }
 
@@ -56,6 +57,8 @@ namespace LightningPRO.Views
             Current_Tab = "InDevelopment";
             ButtonColorChanges();
             LoadGrid();
+            string excelFilePath = @"C:\Users\e0637402\Downloads\Nomenclature.xlsx";
+            //ImportExcelToAccessUsingUtility(excelFilePath);
             //ListCADLayers();
         }
 
@@ -167,6 +170,43 @@ namespace LightningPRO.Views
             ButtonColorChanges();
         }
 
+
+        public static void ImportExcelToAccessUsingUtility(string excelFilePath)
+        {
+            ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial; // Set the license context for EPPlus
+
+            // Read the Excel file
+            using (var package = new ExcelPackage(new FileInfo(excelFilePath)))
+            {
+                var worksheet = package.Workbook.Worksheets[0]; // Assumes data is in the first worksheet
+                int totalRows = worksheet.Dimension.End.Row;
+
+                for (int row = 2; row <= totalRows; row++) // Start at row 2 to skip headers
+                {
+                    // Assuming the Excel columns are structured as per your example
+                    string classId = worksheet.Cells[row, 1].Text.Trim();
+                    string className = worksheet.Cells[row, 2].Text.Trim();
+
+                    // Remove the number and the hyphen (e.g., "04 - " becomes "")
+                    className = System.Text.RegularExpressions.Regex.Replace(className, @"^\d+\s-\s", "");
+
+                    string discCbType = worksheet.Cells[row, 4].Text.Trim();
+                    string reversingNonReversing = worksheet.Cells[row, 5].Text.Trim();
+                    string type = worksheet.Cells[row, 6].Text.Trim();
+                    string classCode = worksheet.Cells[row, 7].Text.Trim();
+
+                    string attrValue = $"{classId}: {className} (DISC/CB TYPE: {discCbType}, REVERSING/NON-REVERSING: {reversingNonReversing}, TYPE: {type}, CLASS CODE: {classCode})";
+
+                    string query = $"INSERT INTO TBL_ATTRIBUTE_OPTIONS (ATTR_ID, ATTR_VALUE, Disabled) VALUES (64, '{attrValue.Replace("'", "''")}', False)";
+
+                    MessageBox.Show(query);
+                    Utility.ExecuteNonQueryLP(query);
+                }
+            }
+        }
+
+
+
         public CadImage UpdateTextInCAD(CadImage cd, string searchText, string updateText)
         {
             // Load an existing DWG file
@@ -205,39 +245,130 @@ namespace LightningPRO.Views
             return cd;
         }
 
+        public void ConvertDwgToPng(string dwgFilePath, string outputDirectory)
+        {
+            try
+            {
+                // Load the DWG file
+                using (Image image = Image.Load(dwgFilePath))
+                {
+                    // Create an instance of CadRasterizationOptions and set its properties
+                    CadRasterizationOptions rasterizationOptions = new CadRasterizationOptions
+                    {
+                        // Set page width & height
+                        PageWidth = 1200,
+                        PageHeight = 1200,
 
-        public void RemoveByLayerName(CadImage cadImage, string LayerName) {
-            CadEntityBase[] entities = cadImage.Entities;
-            //int k = 0;
+                        // Additional options can be set here if needed
+                        DrawType = CadDrawTypeMode.UseObjectColor
+                    };
+
+                    // Create an instance of PngOptions for the resultant image
+                    PngOptions pngOptions = new PngOptions
+                    {
+                        VectorRasterizationOptions = rasterizationOptions
+                    };
+
+                    // Define the output file path
+                    string outputFilePath = System.IO.Path.Combine(outputDirectory, "testpic1.png");
+
+                    // Save the resultant image
+                    image.Save(outputFilePath, pngOptions);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error during conversion: " + ex.Message);
+            }
+        }
+
+        public void RemoveByLayerName(CadImage cadImage)
+        {
+            CadEntityBase[] entities = cadImage.Entities.ToArray();
+
+            // List of layer names to keep
+            List<string> layerNamesToKeep = new List<string>
+            {
+                "2POLE",
+                "HOA WITHOUT OL",
+                "RED RUN",
+                "TRANSFORMER (L-L)",
+                "1NO-1NC (C1)",
+                "APPROVAL",
+                "GENERAL INFORMATION",
+                "_MULTI_WIRE",
+                "0",
+                "AM_4",
+                "AM_VIEWS",
+                "BLK_12_THHN",
+                "CONSTRUCTION",
+                "Customer Information",
+                "Defpoints",
+                "DESC",
+                "DESCCHILD",
+                "Dimension (ANSI)",
+                "Disclaimer",
+                "FMT_ATT",
+                "FORMAT",
+                "FUSE TABLE",
+                "LINK",
+                "LOC",
+                "LOCBOX",
+                "MISC",
+                "PDF_Geometry",
+                "PDF_Solid Fills",
+                "PDF_Text",
+                "POS",
+                "RED_14_THHN",
+                "Symbol (ANSI)",
+                "SYMS",
+                "TAGS",
+                "TERMS",
+                "Visible (ANSI)",
+                "Visible Narrow (ANSI)",
+                "WHT_12_THHN",
+                "WIRECOPY",
+                "WIREFIXED",
+                "WIRENO",
+                "WIREREF",
+                "WIRES",
+                "XREF",
+                "XREFCHILD",
+                "YEL_14_THHN"
+            };
+
+            // Temporary list to store layer names (for debugging or logging)
             List<string> layerNames = new List<string>();
 
             foreach (CadEntityBase baseEntity in entities)
             {
-                layerNames.Add(baseEntity.LayerName);
-
+                string trimmedLayerName = baseEntity.LayerName.Trim();
+                layerNames.Add(trimmedLayerName);
 
                 if (baseEntity.TypeName != CadEntityTypeName.TEXT)
                 {
-                    //MessageBox.Show("Removing entitys for the following:" + baseEntity.LayerName);
-                    cadImage.RemoveEntity(baseEntity);
-                    //cadImage.RemoveEntityAt(k);
-                    
-                    //k--;
+                    // Check if the LayerName exactly matches any of the specified strings to keep
+                    bool shouldKeep = layerNamesToKeep.Any(name => trimmedLayerName.Equals(name.Trim()));
+
+                    if (!shouldKeep)
+                    {
+                        // If the LayerName does not exactly match any of the specified strings, remove the entity
+                        cadImage.RemoveEntity(baseEntity);
+                    }
                 }
-                //k++;
             }
+
+            // Optionally, write the layer names to a file for reference
             File.AppendAllLines("C:\\Users\\e0637402\\Downloads\\names.txt", layerNames);
-
         }
-
 
 
 
         private void ListCADLayers()
         {
-            // Specify the path to your DWG file
-            string filePathDWG = @"C:\Users\e0637402\Downloads\ECTemplate_all.dwg";
-            string filePathFinish2 = @"C:\Users\e0637402\Downloads\TestBigFile4.pdf";
+            string filePathDWG = @"C:\Users\e0637402\Downloads\BASICTEMPLATE-1.dwg";
+            string filePathFinish2 = @"C:\Users\e0637402\Downloads\TestBigFile8.pdf";
+
             Stopwatch stopWatch = new Stopwatch();
 
             try
@@ -245,158 +376,20 @@ namespace LightningPRO.Views
                 using (CadImage cadImage = (CadImage)Image.Load(filePathDWG))
                 {
 
-                    RemoveByLayerName(cadImage, "POLE");
+                    RemoveByLayerName(cadImage);
                    
-
-
                     CadRasterizationOptions rasterizationOptions = new CadRasterizationOptions();
                     rasterizationOptions.DrawType = CadDrawTypeMode.UseObjectColor;
 
                     CadLayersList newList = cadImage.Layers;
 
-                    CadLayerTable redLayer = new CadLayerTable();
-                    redLayer.Name = "REDLAYER";
-                    redLayer.ColorId = 1; // ID of red color               
-                    redLayer.ObjectHandle = "REDLAYER";
-
-                    CadLayerTable greenLayer = new CadLayerTable();
-                    greenLayer.Name = "GREENLAYER";
-                    greenLayer.ObjectHandle = "GREENLAYER";
-                    greenLayer.ColorId = 2; // ID of green color
-
-                    newList.AddRange(new CadLayerTable[] { redLayer, greenLayer });
-
-                    cadImage.Layers = newList;
-                    foreach (CadEntityBase entity in cadImage.Entities)
-                    {
-                        if (entity.TypeName == CadEntityTypeName.INSERT)
-                        {
-                            CadInsertObject insert = (CadInsertObject)entity;
-
-                            // the required block to change color for is identified by name
-                            if (insert.Name == "3")
-                            {
-                                insert.LayerName = "REDLAYER";
-                            }
-
-                            if (insert.Name == "2")
-                            {
-                                insert.LayerName = "GREENLAYER";
-                            }
-                        }
-                    }
+                    
 
                     PdfOptions pdfOptions = new PdfOptions();
                     pdfOptions.VectorRasterizationOptions = rasterizationOptions;
 
                     cadImage.Save(filePathFinish2, pdfOptions);
 
-                    //stopWatch.Start();
-                    //using (CadImage cadImage = (CadImage)Image.Load(filePathDWG))
-                    //{
-                    //list<string> layers = cadimage.layers.getlayersnames();
-
-                    //foreach (string s in layers)
-                    //{
-                    //    messagebox.show("the layer name is:" + s);
-                    //}
-                    //cadImage.Layers.Clear();
-                    //List<string> layerNamesFromCAD = layers.GetLayersNames();
-                    //CadLayerTable layerTable = layers.GetLayer("RED RUN");
-
-
-                    /*foreach(string layerName in layerNamesFromCAD)
-                    {
-                        MessageBox.Show("LAYER NAME IS THE FOLLOWING:" + layerName);
-
-                    }*/
-
-
-
-                    //List<CadEntityBase> validentitys = new List<CadEntityBase>();
-                    //foreach (CadEntityBase entity in cadImage.Entities) {
-                    //    if (entity.Visible == 1)
-                    //    {
-                    //        MessageBox.Show("The layer name of visible entity is:" + entity.LayerName);
-                            
-                    //        /*PropertyInfo[] properties = entity.GetType().GetProperties();
-                    //        string props = "";
-
-                    //        foreach (PropertyInfo property in properties)
-                    //        {
-                    //            try
-                    //            {
-                    //                // Get the value of the property
-                    //                object value = property.GetValue(entity);
-
-                    //                // Display the property name and its value
-                    //                props += (property.Name + ": " + (value != null ? value.ToString() : "null"));
-                    //                props += "\n";
-
-                                
-                    //            }
-                    //            catch (Exception ex)
-                    //            {
-                    //                // Handle potential exceptions, such as properties that don't have a getter
-                    //                MessageBox.Show("Error retrieving value of " + property.Name + ": " + ex.Message);
-                    //            }
-                    //        }
-                    //        MessageBox.Show(props);*/
-
-
-
-                    //        //entity.Visible = 1;
-                        
-                    //        //MessageBox.Show("The layer is: " + entity.LayerName);
-                    //        //MessageBox.Show("The entity visibility is:" + entity.Visible.ToString());
-                    //        //MessageBox.Show("The entity layer type is:" + entity.LType);
-                    //        validentitys.Add(entity);
-                    //    }
-                    //}
-
-                   
-
-                    //var existingentities = cadImage.Entities;
-                    //var newentities = validentitys.ToArray();
-
-
-                    //cadImage.Entities = existingentities.Concat(newentities).ToArray();
-                    ////cadImage.Entities = validentitys.ToArray();
-                    ////cadImage.Save(filePathDWG);
-                    //cadImage.UpdateSize();
-
-
-                    //stopWatch.Stop();
-
-
-                    //// Get the elapsed time as a TimeSpan value. 
-                    //TimeSpan ts = stopWatch.Elapsed;
-
-                    //// Format and display the TimeSpan value. 
-                    //string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
-                    //    ts.Hours, ts.Minutes, ts.Seconds,
-                    //    ts.Milliseconds / 10);
-                    //Console.WriteLine("RunTime for loading " + elapsedTime);
-
-                    //CadRasterizationOptions rasterizationOptions2 = new CadRasterizationOptions();
-                    //rasterizationOptions.PageWidth = 1600;
-                    //rasterizationOptions.PageHeight = 1600;
-                    //PdfOptions pdfOptions2 = new PdfOptions();
-                    //pdfOptions.VectorRasterizationOptions = rasterizationOptions;
-
-                    //stopWatch = new Stopwatch();
-                    //stopWatch.Start();
-                    //cadImage.Save(filePathFinish, pdfOptions);
-                    //stopWatch.Stop();
-
-                    //// Get the elapsed time as a TimeSpan value. 
-                    //ts = stopWatch.Elapsed;
-
-                    //// Format and display the TimeSpan value. 
-                    //elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
-                    //   ts.Hours, ts.Minutes, ts.Seconds,
-                    //   ts.Milliseconds / 10);
-                    //Console.WriteLine("RunTime for converting " + elapsedTime);
                 }
             }
             catch (Exception ex)

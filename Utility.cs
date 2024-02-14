@@ -20,6 +20,12 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.ComponentModel.Composition;
 using System.Windows.Shapes;
+using System.Windows.Controls;
+using Microsoft.Win32;
+using JsonLogic.Net;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using System.Dynamic;
 
 namespace LightningPRO
 {
@@ -92,11 +98,39 @@ namespace LightningPRO
                     cmd.ExecuteNonQuery();
                 } //end using command
             }
-            catch
+            catch (OleDbException ex)
             {
-                MessageBox.Show("An Error Occurred Trying To ExecuteNonQuery With LPdatabase");
+                MessageBox.Show($"Database error: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An Error Occurred Trying To ExecuteNonQuery With LPdatabase: {ex.Message}");
             }
         }
+
+        public static void ExecuteNonQueryLPWithParams(string query, params OleDbParameter[] parameters)
+        {
+            try
+            {
+                using (OleDbCommand cmd = new OleDbCommand(query, MainWindow.LPcon))
+                {
+                    foreach (var param in parameters)
+                    {
+                        cmd.Parameters.Add(param);
+                    }
+
+                    if (MainWindow.LPcon.State != ConnectionState.Open)
+                        MainWindow.LPcon.Open();
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An Error Occurred Trying To ExecuteNonQuery With LPdatabase: {ex.Message}");
+            }
+        }
+
 
 
         // The following is used to return a DataTableReader for any query from LPdatabase
@@ -732,7 +766,6 @@ namespace LightningPRO
             }
             return img;
         }
-
 
         // The following is used to get the Directory for the BLT & CONSTR feature
         public static string GetDirectoryForOrderFiles(string SelectedGO, ProductGroup CurrentProduct)
@@ -1713,6 +1746,464 @@ namespace LightningPRO
             return true;
         }
 
+        //SEEMO'S UTILITY METHODS =======================================================================================================================================
+
+        // The following is used to populate attribute names in the Attributes Maintenance user form
+        public static string[] FilterAttributeMaintenance(string Family1, string Family2, string Family3)
+        {
+            var listBoxItems = new List<string>();
+
+            string query = $@"
+            SELECT [ATTR_NAME]
+            FROM [TBL_ATTRIBUTE_OPTIONS] 
+            INNER JOIN [TBL_ATTRIBUTES_LIST] 
+            ON [TBL_ATTRIBUTES_LIST].[ATTR_ID] = [TBL_ATTRIBUTE_OPTIONS].[ATTR_ID] 
+            WHERE [ATTR_TYPE] <> 1 AND [Family1] = '{Family1}' AND [Family2] = '{Family2}' AND [Family3] = '{Family3}' 
+            ORDER BY [ATTR_NAME]";
+
+            DataTable attributes = Utility.SearchLP(query);
+
+            foreach (DataRow row in attributes.Rows)
+            {
+                listBoxItems.Add(row["ATTR_NAME"].ToString());
+            }
+
+            return listBoxItems.Distinct().ToArray();
+        }
+
+        // The following is used to populate attribute names in the Attributes Maintenance user form
+        public static string[] SearchAttributeMaintenance(string AttributeName)
+        {
+            var listBoxItems = new List<string>();
+
+            string query = $@"
+            SELECT [ATTR_NAME]
+            FROM [TBL_ATTRIBUTE_OPTIONS] 
+            INNER JOIN [TBL_ATTRIBUTES_LIST] 
+            ON [TBL_ATTRIBUTES_LIST].[ATTR_ID] = [TBL_ATTRIBUTE_OPTIONS].[ATTR_ID] 
+            WHERE [ATTR_TYPE] <> 1 AND [ATTR_NAME] LIKE '%{AttributeName}%' 
+            ORDER BY [ATTR_NAME]";
+
+            DataTable attributes = Utility.SearchLP(query);
+
+            foreach (DataRow row in attributes.Rows)
+            {
+                listBoxItems.Add(row["ATTR_NAME"].ToString());
+            }
+
+            return listBoxItems.Distinct().ToArray();
+        }
+
+        // The following is used to populate attribute options in the Attributes Maintenance user form
+        public static string[] SearchAttributeOptionsMaintenance(string AttributeName)
+        {
+            var listBoxItems = new List<string>();
+
+            string query = $@"
+            SELECT [ATTR_VALUE] 
+            FROM [TBL_ATTRIBUTE_OPTIONS] 
+            INNER JOIN [TBL_ATTRIBUTES_LIST] 
+            ON [TBL_ATTRIBUTES_LIST].[ATTR_ID] = [TBL_ATTRIBUTE_OPTIONS].[ATTR_ID] 
+            WHERE [ATTR_NAME] = '{AttributeName}' ";
+
+            DataTable attributes = Utility.SearchLP(query);
+
+            foreach (DataRow row in attributes.Rows)
+            {
+                listBoxItems.Add(row["ATTR_VALUE"].ToString());
+            }
+
+            var sortedListBoxItems = listBoxItems
+                .OrderBy(item =>
+                    int.TryParse(item, out int num) ? num : int.MaxValue)
+                .ToArray();
+
+            return sortedListBoxItems.Distinct().ToArray();
+        }
+
+        // The following is used to populate ComboBox content from TBL_ATTRIBUTES_LIST and TBL_ATTRIBUTE_OPTIONS if they were added in code-behind
+        public static string[] AddConfiguratorUIOptions(string comboBoxName, string Family1, string Family2, string Family3)
+        {
+            var comboBoxItems = new List<string>();
+
+            string query = $@"
+            SELECT [ATTR_VALUE] 
+            FROM [TBL_ATTRIBUTE_OPTIONS] 
+            INNER JOIN [TBL_ATTRIBUTES_LIST] 
+            ON [TBL_ATTRIBUTES_LIST].[ATTR_ID] = [TBL_ATTRIBUTE_OPTIONS].[ATTR_ID] 
+            WHERE [FAMILY1] = '{Family1.Replace("'", "''")}' AND [FAMILY2] = '{Family2.Replace("'", "''")}' AND [FAMILY3] = '{Family3.Replace("'", "''")}' 
+            AND [Disabled] = {false} AND [ATTR_NAME] = '{comboBoxName}' 
+            ORDER BY [ATTR_NAME]";
+
+            DataTable attributes = Utility.SearchLP(query);
+
+            foreach (DataRow row in attributes.Rows)
+            {
+                comboBoxItems.Add(row["ATTR_VALUE"].ToString());
+            }
+
+            var sortedComboBoxItems = comboBoxItems
+                .OrderBy(item =>
+                    int.TryParse(item, out int num) ? num : int.MaxValue)
+                .ToArray();
+
+            return sortedComboBoxItems;
+        }
+
+        // The following is used to populate ComboBox content from TBL_ATTRIBUTES_LIST and TBL_ATTRIBUTE_OPTIONS if they are in XAML
+        public static void AssignOptionsToComboBoxesInXAML(GroupBox groupbox, string Family1, string Family2, string Family3)
+        {
+            if (groupbox.Content is Grid grid)
+            {
+                foreach (UIElement element in grid.Children)
+                {
+                    if (element is ComboBox comboBox && !string.IsNullOrEmpty(comboBox.Name))
+                    {
+                        string[] options = AddConfiguratorUIOptions(comboBox.Name, Family1, Family2, Family3);
+                        comboBox.ItemsSource = options;
+                    }
+                }
+            }
+        }
+
+        // ==============================================================         SEEMO ADDED UTILITY FUNCTIONS/METHODS         =============================================================
+
+        /// <summary>
+        /// Processes a data object in JSON format through a series of filtering to return a list of set values (Attributes and Materials), a dictionary of flags (if any), and a refreshed Json object.
+        /// The Json object is refreshed by updating its properties with the set values returned from valid conditions.
+        /// This process involves a two-step procedure for processing of the data object (bit-wise filtering for boolean properties, and Json filtering for non-boolean properties).
+        /// Tables involved: [TBL_ATTRIBUTES_LIST], [TBL_CONDITION_SETS].
+        /// </summary>
+        /// <param name="dataObject">The object containing data to be processed.</param>
+        /// <param name="family1">The first family identifier used to filter data in the query.</param>
+        /// <param name="family2">The second family identifier used to filter data in the query.</param>
+        /// <param name="family3">The third family identifier used to filter data in the query.</param>
+        /// <param name="PROCESS_STEP">Process step identifier.</param>
+        /// <returns>A List of SetValue objects, each containing a list of Attributes and a list of Materials corresponding to each condition ID.</returns>
+        public static (List<SetValue> ConditionSets, Dictionary<SetValue, List<string>> SetValueFlagsDict, object UpdatedJsonDataObject) RunDataObjectLogic(object jsonDataObject, string family1, string family2, string family3, int PROCESS_STEP)
+        {
+            bool recordsExist = true;
+
+            List<SetValue> conditionSets = new List<SetValue>();
+            Dictionary<SetValue, List<string>> setValueFlagsDict = new Dictionary<SetValue, List<string>>();
+
+            while (recordsExist)
+            {
+                // Step 1: Get Data Bits Array and Boolean Values Object
+                var (dataBitsArray, booleanValuesObject) = ReturnBitNums(jsonDataObject, family1, family2, family3);
+
+                // Step 2: Calculate Data Bit using Boolean Values Object
+                long calculatedDataBit = CalculateDataBit(booleanValuesObject, dataBitsArray);
+
+                // Step 3: Prepare COND_SET_ID table
+                string query = $@"SELECT [COND_SET_ID], [PROCESS_STEP], [CONDITIONS_ATTR1], [CONDITIONS_ATTR2], [CONDITIONS_JSON], [SET_VALUES] FROM [TBL_CONDITION_SETS] 
+                    WHERE [FAMILY1] = '{family1}' 
+                    AND [FAMILY2] = '{family2}' 
+                    AND [FAMILY3] = '{family3}' 
+                    AND [PROCESS_STEP] = {PROCESS_STEP}";
+                DataTable conditionSetTable = SearchLP(query);
+
+                if (conditionSetTable.Rows.Count == 0)
+                {
+                    recordsExist = false;
+                    break;
+                }
+
+                // Step 4: Get Condition Set IDs
+                List<int> conditionSetIds = ReturnBitwiseAndJsonFilteredConditionIDs(jsonDataObject, conditionSetTable, calculatedDataBit, family1, family2, family3);
+
+                // Step 5: Prepare Set Value list, loop through each condition set ID and refresh data object
+                foreach (int condSetId in conditionSetIds)
+                {
+                    var (Attributes, Materials, UpdatedJsonDataObject) = RefreshJsonObjectAndReturnSetValues(conditionSetTable, condSetId, jsonDataObject);
+                    conditionSets.Add(new SetValue
+                    {
+                        Attributes = Attributes,
+                        Materials = Materials
+                    });
+
+                    jsonDataObject = UpdatedJsonDataObject;
+                }
+
+                // Update the flags dictionary after each PROCESS_STEP
+                setValueFlagsDict = ReturnFlagsFromSetValues(conditionSets);
+
+                PROCESS_STEP++;
+            }
+
+            // Return conditionSets and setValueFlagsDict
+            return (conditionSets, setValueFlagsDict, jsonDataObject);
+        }
+
+
+        private static Dictionary<SetValue, List<string>> ReturnFlagsFromSetValues(List<SetValue> conditionSets)
+        {
+            var setValueFlagsDict = new Dictionary<SetValue, List<string>>();
+
+            foreach (var conditionSet in conditionSets)
+            {
+                if (conditionSet.Attributes != null)
+                {
+                    List<string> flags = new List<string>();
+
+                    foreach (var attribute in conditionSet.Attributes)
+                    {
+                        if (attribute.Contains("Flag"))
+                        {
+                            flags.Add(attribute);
+                        }
+                    }
+
+                    if (flags.Any())
+                    {
+                        setValueFlagsDict.Add(conditionSet, flags);
+                    }
+                }
+            }
+
+            return setValueFlagsDict;
+        }
+
+        //given family1,2,3 AND dataObject, returns an array of [BIT_NUM] in the same order as [ATTR_NAME] in the dictionary
+        public static (long[] BitNums, dynamic BooleanValuesObject) ReturnBitNums(object data, string family1, string family2, string family3)
+        {
+            List<long> bitNums = new List<long>();
+            dynamic booleanValuesObject = new ExpandoObject();
+            var booleanValuesDict = (IDictionary<string, Object>)booleanValuesObject;
+
+            string query = $@"SELECT [ATTR_NAME], [BIT_NUM] FROM [TBL_ATTRIBUTES_LIST] WHERE 
+        [ATTR_TYPE] = 1 AND [FAMILY1] = '{family1}' 
+        AND [FAMILY2] = '{family2}' AND [FAMILY3] = '{family3}'";
+
+            DataTable dt = SearchLP(query);
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                var dataDict = ((JObject)data).ToObject<Dictionary<string, JToken>>();
+                foreach (var kvp in dataDict)
+                {
+                    if (kvp.Value.Type == JTokenType.Boolean)
+                    {
+                        string propName = kvp.Key;
+                        bool propValue = kvp.Value.ToObject<bool>();
+
+                        var filteredRows = dt.AsEnumerable()
+                            .Where(row => row.Field<string>("ATTR_NAME") == propName);
+
+                        foreach (var row in filteredRows)
+                        {
+                            bitNums.Add(row.Field<int>("BIT_NUM"));
+                            booleanValuesDict[propName] = propValue;
+                        }
+                    }
+                }
+            }
+
+            return (bitNums.ToArray(), booleanValuesObject);
+        }
+
+        //given dataObject AND array of [BIT_NUM] in the same order as [ATTR_NAME], returns DATA BIT integer (calculation found in Confluence under business logic)
+        public static long CalculateDataBit(dynamic data, long[] bitNums)
+        {
+            var properties = (IDictionary<string, Object>)data;
+            if (properties.Count != bitNums.Length)
+            {
+                throw new ArgumentException("The number of bit numbers must match the number of dataBooleanObject properties.");
+            }
+
+            long dataBits = 0;
+
+            int i = 0;
+            foreach (var prop in properties)
+            {
+                bool propValue = (bool)prop.Value;
+                int multiplier = propValue ? 1 : 0;
+                dataBits += multiplier * (long)Math.Pow(2, bitNums[i] - 1);
+                i++;
+            }
+
+            return dataBits;
+        }
+
+        //given data object, filtered conditions table, and data bit, returns list of Bitwise AND JSON filtered [COND_SET_ID]s
+        public static List<int> ReturnBitwiseAndJsonFilteredConditionIDs(object data, DataTable dt, long dataBit, string family1, string family2, string family3)
+        {
+            List<int> validConditionIds = new List<int>();
+
+            if (dt != null)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    long conditionsAttr1 = (long)row["CONDITIONS_ATTR1"];
+
+                    // If not bitwise, only Json filtering
+                    if (conditionsAttr1 == 0)
+                    {
+                        string jsonLogic = row["CONDITIONS_JSON"].ToString();
+                        if (jsonLogic != null && jsonLogic != "")
+                        {
+                            object result = JsonParser.EvaluateJsonLogic(jsonLogic, data);
+                            if (result != null && !result.Equals(false))
+                            {
+                                validConditionIds.Add((int)row["COND_SET_ID"]);
+                            }
+                        }
+                    }
+                    else if ((conditionsAttr1 & dataBit) == conditionsAttr1)
+                    {
+                        string jsonLogic = row["CONDITIONS_JSON"].ToString();
+
+                        // Bitwise, no Json filtering
+                        if (jsonLogic == null || jsonLogic == "")
+                        {
+                            validConditionIds.Add((int)row["COND_SET_ID"]);
+                        }
+                        // Bitwise and Json filtering
+                        else
+                        {
+                            object result = JsonParser.EvaluateJsonLogic(jsonLogic, data);
+                            if (result != null && !result.Equals(false))
+                            {
+                                validConditionIds.Add((int)row["COND_SET_ID"]);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return validConditionIds;
+        }
+
+        // given filtered conditions table and condition set ID, returns 2 set value list objects (Attributes, Material) for that condition
+        public static (List<string> Attributes, List<string> Materials, object UpdatedJsonDataObject) RefreshJsonObjectAndReturnSetValues(DataTable dt, int condSetId, object jsonDataObject)
+        {
+            var matchedRow = dt.AsEnumerable()
+                               .FirstOrDefault(row => row.Field<int>("COND_SET_ID") == condSetId);
+
+            if (matchedRow != null)
+            {
+                string jsonSetValues = matchedRow["SET_VALUES"].ToString();
+
+                return JsonParser.ParseJsonSetValue(jsonSetValues, jsonDataObject);
+            }
+            else
+            {
+                return (null, null, null);
+            }
+        }
+
+        /// <summary>
+        /// Provides functionality for parsing and evaluating JSON data using JSON Logic.
+        /// This class contains methods to apply JSON Logic rules to data objects and to parse specific JSON structures for set values.
+        /// </summary>
+        public class JsonParser
+        {
+            /// <summary>
+            /// Evaluates a given JSON Logic string against a data object.
+            /// This method applies JSON Logic rules defined in the JSON string to the provided data object and returns the result.
+            /// </summary>
+            /// <param name="jsonLogic">The JSON Logic string representing the logic to be applied.</param>
+            /// <param name="dataObject">The object containing data to be processed by the JSON Logic.</param>
+            /// <returns>The result of applying the JSON Logic to the data object.</returns>
+            public static object EvaluateJsonLogic(string jsonLogic, object dataObject)
+            {
+                object data = dataObject;
+                var rule = JObject.Parse(jsonLogic);
+                var evaluator = new JsonLogicEvaluator(EvaluateOperators.Default);
+                object result = evaluator.Apply(rule, data);
+
+                return result;
+            }
+
+            /// <summary>
+            /// Parses a JSON string to extract 'Attributes' and 'Material' lists.
+            /// This method assumes the JSON string contains 'Attributes' and 'Material' fields, each containing a list of strings.
+            /// </summary>
+            /// <param name="jsonString">The JSON string to be parsed.</param>
+            /// <returns>An updated Data Object and two lists: ('Attributes' and 'Material').</returns>
+            public static (List<string> Attributes, List<string> Materials, object UpdatedJsonDataObject) ParseJsonSetValue(string jsonSetValue, object jsonDataObject)
+            {
+                var setValueJObject = JObject.Parse(jsonSetValue);
+                var jsonDataJObject = JObject.FromObject(jsonDataObject);
+                var attributeObjects = setValueJObject["Attributes"].ToObject<List<JToken>>();
+                var materials = setValueJObject["Material"].ToObject<List<string>>();
+                List<string> attributeValues = new List<string>();
+                foreach (var attributeToken in attributeObjects)
+                {
+                    foreach (var jProperty in attributeToken.Children<JProperty>())
+                    {
+                        string attributeName = jProperty.Name;
+                        var attributeValueToken = jProperty.Value;
+
+                        // Check if the value is an array
+                        if (attributeValueToken.Type == JTokenType.Array)
+                        {
+                            List<string> listOfValues = attributeValueToken.ToObject<List<string>>();
+                            string existingValue = jsonDataJObject[attributeName]?.ToString() ?? string.Empty;
+                            // Append each item from the list to the existing value
+                            foreach (var value in listOfValues)
+                            {
+                                existingValue += "|" + value + "|";
+                            }
+                            jsonDataJObject[attributeName] = existingValue;
+                            attributeValues.Add(existingValue);
+                        }
+                        else
+                        {
+                            string attributeValue = attributeValueToken.ToString();
+                            attributeValues.Add(attributeValue);
+
+                            if (jsonDataJObject.ContainsKey(attributeName))
+                            {
+                                jsonDataJObject[attributeName] = attributeValue;
+                            }
+                            else
+                            {
+                                MessageBox.Show($"'{attributeName}'= {attributeValue} does not exist in jsonDataObject", "Attribute Not Found");
+                            }
+                        }
+                    }
+                }
+                var updatedJsonDataObject = JsonConvert.DeserializeAnonymousType(jsonDataJObject.ToString(), jsonDataObject);
+                return (attributeValues, materials, updatedJsonDataObject);
+            }
+        }
+        /// <summary>
+        /// Represents a set of values extracted from JSON data.
+        /// This class stores lists of 'Attributes' and 'Materials', typically parsed from a JSON string.
+        /// </summary>
+        public class SetValue
+        {
+            public List<string> Attributes { get; set; }
+            public List<string> Materials { get; set; }
+        }
+
+
+
+        // ==============================================================         SEEMO ADDED UTILITY FUNCTIONS/METHODS         =============================================================
+
+
+
+        // END OF SEEMO'S UTILITY METHODS ================================================================================================================================
+
+
+        public static string SelectXMLFile()
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                // Set filter for file extension and default file extension 
+                DefaultExt = ".xml",
+                Filter = "XML files (*.xml)|*.xml|All files (*.*)|*.*",
+                Title = "Select an XML File"
+            };
+
+            bool? result = openFileDialog.ShowDialog();
+
+            if (result == true)
+            {
+                return openFileDialog.FileName;
+            }
+            return null;
+        }
 
     }
 }

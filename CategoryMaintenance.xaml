@@ -3,10 +3,134 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+                Background="{DynamicResource MaterialDesignPaper}" TextElement.Foreground="{DynamicResource MaterialDesignBody}"
              xmlns:local="clr-namespace:LightningPRO"
+             Loaded="CategorySets_OnLoaded"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="White">
+    <UserControl.Resources>
+        <Style TargetType="Button" BasedOn="{StaticResource CustomAppButtonStyle}" >
+            <Setter Property="Foreground" Value="{DynamicResource SecondaryHueMidBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource SecondaryHueMidBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+
+    </UserControl.Resources>
+    <Grid Width="1000">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="1.5*"/>
+        </Grid.RowDefinitions>
+        <local:MaterialCatalogControl x:Name="MaterialCatalogControl" Grid.Row="1" Grid.Column="0" />
+        <GroupBox Header="Category Sets Maintanence" FontWeight="Bold" FontSize="15"  materialDesign:ColorZoneAssist.Mode="SecondaryMid">
             
+            <Grid Grid.Row="0">
+                <Grid.Resources>
+                    <Style TargetType="ComboBox" BasedOn="{StaticResource MaterialDesignFilledComboBox}">
+                        <Setter Property="Margin" Value="5"/>
+                        <Setter Property="IsEditable" Value="True"/>
+                        <Setter Property="materialDesign:HintAssist.HintOpacity" Value=".26"/>
+                        <Setter Property="materialDesign:ComboBoxAssist.MaxLength" Value="25"/>
+                        <Setter Property="materialDesign:TextFieldAssist.HasClearButton" Value="True"/>
+                        <Setter Property="materialDesign:TextFieldAssist.UnderlineBrush" Value="{DynamicResource SecondaryHueMidBrush}"/>
+                        <Setter Property="materialDesign:HintAssist.Foreground" Value="{DynamicResource SecondaryHueMidBrush}"/>
+                        <EventSetter Event="SelectionChanged" Handler="ComboBox_SelectionChanged"/>
+                    </Style>
+                </Grid.Resources>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <ComboBox Name="Family1ComboBox" Grid.Column="0" materialDesign:HintAssist.Hint="Family 1" />
+                <ComboBox Name="Family2ComboBox" Grid.Column="1" materialDesign:HintAssist.Hint="Family 2" />
+                <ComboBox Name="Family3ComboBox" Grid.Column="2" materialDesign:HintAssist.Hint="Family 3" />
+                <Button Grid.Column="3" Margin="5" Width="120" Height="35" Click="ReloadButton_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Reload" Margin="0,0,5,0"/>
+                        <TextBlock Text="Reload" />
+                    </StackPanel>
+                </Button>
+                <Button Grid.Column="4" Margin="5" Width="120" Height="35" Click="FilterButton_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Filter" Margin="0,0,5,0"/>
+                        <TextBlock Text="Filter" />
+                    </StackPanel>
+                </Button>
+                <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3"  Text="Used for managing and editing LightningPro catalogs for materials"
+                   Margin="0" 
+                   FontSize="10"
+                   Foreground="DarkGray"
+                   FontWeight="Light"
+                   HorizontalAlignment="Left" 
+                   VerticalAlignment="Top"/>
+                
+            </Grid>
+            
+
+        </GroupBox>
+
+        
+
+
+
+
+
+
+
+
+        <!--<GroupBox Margin="10">
+            <StackPanel Grid.Row="0" Orientation="Vertical" Margin="10">
+                <TextBlock Text="Catalog Maintenance" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+                    <ComboBox x:Name="Family1ComboBox" Width="120" Margin="5" />
+                    <ComboBox x:Name="Family2ComboBox" Width="120" Margin="5" />
+                    <ComboBox x:Name="Family3ComboBox" Width="120" Margin="5" />
+                    <Button Content="Fetch" Width="80" Margin="5" Click="FetchButton_Click"/>
+                </StackPanel>
+            </StackPanel>
+        </GroupBox>
+        <GroupBox Margin="10" Grid.Row="1">
+            <StackPanel Orientation="Vertical"  VerticalAlignment="Top" Margin="10" >
+                <ItemsControl ItemsSource="{Binding NavigationPath}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" MouseDown="BreadcrumbClick" Cursor="Hand" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                
+
+                
+                <ListBox x:Name="PartsListBox" ItemsSource="{Binding CurrentItems}" SelectionChanged="ListBox_SelectionChanged">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                
+                                <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Margin="5"/>
+                                
+                                <Button Content="Add Subcategory" Click="AddSubcategory_Click" Tag="{Binding}" Margin="5"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+            </StackPanel>
+        </GroupBox>-->
+
     </Grid>
 </UserControl>
